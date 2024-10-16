@@ -2,7 +2,7 @@ import unittest
 import httpx
 
 
-# 4 test integrations happy path
+# 5 test integrations happy path
 # 4 test integrations edge cases
 class TestLocation(unittest.TestCase):
 

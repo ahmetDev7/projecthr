@@ -1,8 +1,7 @@
 import unittest
 import httpx 
 
-# 5 test integrations happy path
-# 2 test integrations edge cases
+# 7 test integrations happy path
 class TestGlobal(unittest.TestCase):
     
     def setUp(self):        

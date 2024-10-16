@@ -17,11 +17,6 @@ class TestShipments(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("id", response.json())
-
-    # def test_get_incorrect_id(self):
-    #     response = self.client.get("/shipments/-1")
-
-    #     self.assertEqual(response.status_code, 404)
     
     def test_create_shipment(self):
         new_shipment = {

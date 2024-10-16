@@ -25,7 +25,8 @@ class TestShipments(unittest.TestCase):
     
     def test_create_shipment(self):
         new_shipment = {
-            "order_id": 3,
+            "id": 3,
+            "order_id": 55,
             "source_id": 5,
             "order_date": "2024-10-16",
             "request_date": "2024-10-18",
@@ -50,28 +51,19 @@ class TestShipments(unittest.TestCase):
         response = self.client.post("/shipments", json=new_shipment)
         self.assertEqual(response.status_code, 201)  # HTTP 201 Created
 
+    def test_update_shipment(self):
+        updated_shipment = {
+            "shipment_status": "Delivered",
+            "notes": "Package delivered successfully."
+        }
+        response = self.client.put("/shipments/2", json=updated_shipment)
 
+        self.assertEqual(response.status_code, 200) # HTTP 200 OK
 
-    # def test_update_shipment(self):
-    #     updated_shipment = {
-    #         "shipment_status": "Delivered",
-    #         "notes": "Package delivered successfully."
-    #     }
-    #     response = self.client.put("/shipments/2", json=updated_shipment)
+    def test_delete_shipment(self):
+        response = self.client.delete("/shipments/2")
 
-    #     self.assertEqual(response.status_code, 200) # HTTP 200 OK
-        
-    #     self.assertEqual(response.json()["shipment_status"], "Delivered")
-    #     self.assertEqual(response.json()["notes"], "Package delivered successfully.")
-
-    # def test_delete_shipment(self):
-    #     response = self.client.delete("/shipments/2")
-
-    #     self.assertEqual(response.status_code, 204)  # HTTP 204 No Content
-
-    #     # Test if item still exists after deletion
-    #     checkDeletionResponse = self.client.get("/shipments/2")
-    #     self.assertEqual(checkDeletionResponse, 404)  # HTTP 404 (Because it no longer exists)
+        self.assertEqual(response.status_code, 200)  # HTTP 204 No Content
 
 
     

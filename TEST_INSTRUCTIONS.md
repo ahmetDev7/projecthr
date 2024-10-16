@@ -14,4 +14,5 @@ Execture unit test with package unitest: `py -m test_calculator`
 ## Packages
 - `pip install coverage`
 - `pip install httpx`
+- `pip install fastapi`
 

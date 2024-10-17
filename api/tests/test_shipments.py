@@ -2,7 +2,7 @@ import unittest
 from httpx import Client
 from httpx import codes
 
-# 5 test integrations happy path
+# 7 test integrations happy path
 # 5 test integrations edge cases
 
 class TestShipments(unittest.TestCase):
@@ -12,6 +12,9 @@ class TestShipments(unittest.TestCase):
 
     def set_random_key(self):
         self.client.headers["API_KEY"] = "xd"
+
+    def set_reader_key(self):
+        self.client.headers["API_KEY"] = "f6g7h8i9j0"
 
     def test_get_all(self):
         response = self.client.get("/shipments")
@@ -24,6 +27,12 @@ class TestShipments(unittest.TestCase):
         response = self.client.get("/shipments")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
+
+    def test_get_all_reader(self):
+        self.set_reader_key()
+        response = self.client.get("/shipments")
+
+        self.assertEqual(response.status_code, codes.OK)
         
     def test_get_single(self):
         response = self.client.get("/shipments/1")
@@ -36,6 +45,12 @@ class TestShipments(unittest.TestCase):
         response = self.client.get("/shipments/1")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
+    
+    def test_get_single_reader(self):
+        self.set_reader_key()
+        response = self.client.get("/shipments/1")
+
+        self.assertEqual(response.status_code, codes.OK)
     
     def test_create_shipment(self):
         new_shipment = {

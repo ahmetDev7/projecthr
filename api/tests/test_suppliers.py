@@ -2,7 +2,7 @@ import unittest
 from httpx import Client
 from httpx import codes
 
-# 9 test integrations happy path
+# 11 test integrations happy path
 # 0 test integrations edge cases
 class TestSuppliers(unittest.TestCase):
     
@@ -12,8 +12,6 @@ class TestSuppliers(unittest.TestCase):
         self.headers = {"Content-Type": "application/json", "API_KEY": ""}
         self.client = Client(base_url="http://localhost:3000/api/v1", headers=self.headers)
 
-    
-  
     # Get all
     def test_get_all_suppliers_as_admin(self):
         self.client.headers["API_KEY"] = self.admin_token
@@ -72,8 +70,40 @@ class TestSuppliers(unittest.TestCase):
         self.assertEqual(response.status_code, codes.OK)
 
 
+    def test_create_supplier_with_long_name_and_special_characters(self):
+        self.client.headers["API_KEY"] = self.admin_token
+
+        supplier_with_special_name = {
+            "id": 1000000006,
+            "code": "LONGNAME",
+            "name": "López, García & O'Connor S.A. - International Supplies",
+            "city": "Global City",
+            "country": "Mexico",
+        }
+
+        create_response = self.client.post("/suppliers", json=supplier_with_special_name)
+        self.assertEqual(create_response.status_code, codes.CREATED)
+
+
+        
+    # Create a new supplier limited data.
+    def test_create_supplier_limited_data_as_admin(self):
+        self.client.headers["API_KEY"] = self.admin_token
+
+        new_supplier = {
+            "id": 1000000002,
+            "code": "NEWCODE",
+            "name": "Test Supplier",
+            "city": "Test City",
+            "country": "Belgium",
+            "contact_name": "John Doe"
+        }
+
+        create_response = self.client.post("/suppliers", json=new_supplier)
+        self.assertEqual(create_response.status_code, codes.CREATED)
+
     # Create a new supplier.
-    def test_create_supplier_as_admin(self):
+    def test_create_supplier_complete_as_admin(self):
         self.client.headers["API_KEY"] = self.admin_token
 
         new_supplier = {

@@ -2,7 +2,7 @@ import unittest
 import httpx
 
 
-# 5 test integrations happy path
+# 7 test integrations happy path
 # 4 test integrations edge cases
 class TestLocation(unittest.TestCase):
 
@@ -11,6 +11,9 @@ class TestLocation(unittest.TestCase):
         self.reader_token = "f6g7h8i9j0"
         self.headers = {"Content-Type": "application/json", "API_KEY": self.admin_token}
         self.client = httpx.Client(base_url="http://localhost:3000/api/v1", headers=self.headers)
+        
+    def set_reader_key(self):
+        self.client.headers["API_KEY"] = self.reader_token
     
     # Returns an 500 error
     def test_get_location_not_found(self):
@@ -64,6 +67,18 @@ class TestLocation(unittest.TestCase):
         response = self.client.get("/locations")
         self.assertEqual(response.status_code, httpx.codes.OK)
         self.assertGreaterEqual(len(response.json()), 1)
+        
+    def test_get_all_locations_as_reader(self):
+        self.set_reader_key()
+        response = self.client.get("/locations")
+        self.assertEqual(response.status_code, httpx.codes.OK)
+        self.assertGreaterEqual(len(response.json()), 1)
+        
+    def test_get_location_by_id_as_reader(self):    
+        self.set_reader_key()            
+        response = self.client.get("/locations/1")
+        self.assertEqual(response.status_code, httpx.codes.OK)
+        self.assertIn("id", response.json())
         
 if __name__ == "__main__":
     unittest.main()

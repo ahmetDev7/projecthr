@@ -16,43 +16,43 @@ class TestShipments(unittest.TestCase):
     def set_reader_key(self):
         self.client.headers["API_KEY"] = "f6g7h8i9j0"
 
-    def test_get_all(self):
+    def test_get_all(self): # Test Geval ID: 1
         response = self.client.get("/shipments")
 
         self.assertEqual(response.status_code, codes.OK)
         self.assertTrue(len(response.json()) > 0)
 
-    def test_get_all_unauthorized(self):
+    def test_get_all_unauthorized(self): # Test Geval ID: 6
         self.set_random_key()
         response = self.client.get("/shipments")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
 
-    def test_get_all_reader(self):
+    def test_get_all_reader(self): # Test Geval ID: 7
         self.set_reader_key()
         response = self.client.get("/shipments")
 
         self.assertEqual(response.status_code, codes.OK)
         
-    def test_get_single(self):
+    def test_get_single(self): # Test Geval ID: 2
         response = self.client.get("/shipments/1")
 
         self.assertEqual(response.status_code, codes.OK)
         self.assertIn("id", response.json())
 
-    def test_get_single_unauthorized(self):
+    def test_get_single_unauthorized(self): # Test Geval ID: 8
         self.set_random_key()
         response = self.client.get("/shipments/1")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
     
-    def test_get_single_reader(self):
+    def test_get_single_reader(self): # Test Geval ID: 9
         self.set_reader_key()
         response = self.client.get("/shipments/1")
 
         self.assertEqual(response.status_code, codes.OK)
     
-    def test_create_shipment(self):
+    def test_create_shipment(self): # Test Geval ID: 3
         new_shipment = {
             "id": 3,
             "order_id": 55,
@@ -80,7 +80,7 @@ class TestShipments(unittest.TestCase):
         response = self.client.post("/shipments", json=new_shipment)
         self.assertEqual(response.status_code, codes.CREATED)  # HTTP 201 Created
 
-    def test_create_shipment_unauthorized(self):
+    def test_create_shipment_unauthorized(self): # Test Geval ID: 10
         self.set_random_key()
         new_shipment = {
             "id": 3,
@@ -109,7 +109,7 @@ class TestShipments(unittest.TestCase):
         response = self.client.post("/shipments", json=new_shipment)
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)  # HTTP 401 UNAUTHORIZED
 
-    def test_update_shipment(self):
+    def test_update_shipment(self): # Test Geval ID: 4
         updated_shipment = {
             "shipment_status": "Delivered",
             "notes": "Package delivered successfully."
@@ -118,7 +118,7 @@ class TestShipments(unittest.TestCase):
 
         self.assertEqual(response.status_code, codes.OK) # HTTP 200 OK
     
-    def test_update_shipment_unauthorized(self):
+    def test_update_shipment_unauthorized(self): # Test Geval ID: 11
         self.set_random_key()
         
         updated_shipment = {
@@ -129,7 +129,7 @@ class TestShipments(unittest.TestCase):
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED) # HTTP 401 UNAUTHORIZED
 
-    def test_delete_shipment(self):
+    def test_delete_shipment(self): # Test Geval ID: 5
         response = self.client.delete("/shipments/2")
 
         self.assertEqual(response.status_code, codes.OK)  # HTTP 200 OK

@@ -2,44 +2,36 @@ import unittest
 from httpx import Client
 from httpx import codes
 
-# 7 happy paths
-# 3 edge cases
-# 10 unauthorized cases
+# 5 happy paths
+# 9 edge cases
 
 
-class TestShipments(unittest.TestCase):
+class TestClients(unittest.TestCase):
 
     def setUp(self):
         self.client = Client(base_url="http://localhost:3000/api/v1/",
                              headers={"Content-Type": "application/json", "API_KEY": "a1b2c3d4e5"})
 
-# Test UNAUTHORIZED
     def test_unauthorized_get_all(self):
-        self.client.headers["API_KEY"]="wrong_key"
+        self.client.headers["API_KEY"] = "wrong_key"
         response = self.client.get("/clients")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
 
     def test_get_single_incorrect_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
-        response = self.client.get("/clients/90")
+        self.client.headers["API_KEY"] = "wrong_key"
+        response = self.client.get("/clients/-90")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
 
     def test_get_single_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
+        self.client.headers["API_KEY"] = "wrong_key"
         response = self.client.get("/clients/8")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
-      
-    def test_get_incorrect_id_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
-        response = self.client.get("/clients/-1")
 
-        self.assertEqual(response.status_code, codes.UNAUTHORIZED) 
-    
     def test_create_client_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
+        self.client.headers["API_KEY"] = "wrong_key"
         new_client = {
             "id": 9,
             "name": "Alperen Smith",
@@ -57,10 +49,10 @@ class TestShipments(unittest.TestCase):
         }
 
         response = self.client.post("/clients", json=new_client)
-        self.assertEqual(response.status_code, codes.UNAUTHORIZED) 
+        self.assertEqual(response.status_code, codes.UNAUTHORIZED)
 
     def test_update_client_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
+        self.client.headers["API_KEY"] = "wrong_key"
         updated_client = {
             "id": 3,
             "name": "Alperen Baytimur",
@@ -78,26 +70,62 @@ class TestShipments(unittest.TestCase):
 
         response = self.client.put("/clients/3", json=updated_client)
 
-        self.assertEqual(response.status_code, codes.UNAUTHORIZED) 
+        self.assertEqual(response.status_code, codes.UNAUTHORIZED)
 
     def test_delete_client_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
+        self.client.headers["API_KEY"] = "wrong_key"
         response = self.client.delete("/clients/90")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
-    
+
     def test_delete_incorrect_id_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
+        self.client.headers["API_KEY"] = "wrong_key"
         response = self.client.delete("/clients/-10")
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
-    
-    def test_update_client2_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
+
+    def test_get_all(self):
+        response = self.client.get("/clients")
+
+        self.assertEqual(response.status_code, codes.OK)
+        self.assertTrue(len(response.json()) > 0)
+
+    def test_get_single(self):
+        response = self.client.get("/clients/8")
+
+        self.assertEqual(response.status_code, codes.OK)
+        self.assertIn("id", response.json())
+
+    def test_get_incorrect_id(self):
+        response = self.client.get("/clients/-1")
+
+        self.assertEqual(response.status_code, codes.NOT_FOUND)
+
+    def test_create_client(self):
+        new_client = {
+            "id": 9,
+            "name": "Alperen Smith",
+            "address": "300 straat",
+            "city": "Carrillomouth",
+            "zip_code": "14452",
+            "province": "Virginia",
+            "country": "United States",
+            "contact_name": "Sylvia Zimmerman",
+            "contact_phone": "001-635-714-6053",
+            "contact_email": "zsmith@example.com",
+            "created_at": "1996-04-23 20:51:11",
+            "updated_at": "1997-09-21 23:06:24"
+
+        }
+
+        response = self.client.post("/clients", json=new_client)
+        self.assertEqual(response.status_code, 201)
+
+    def test_update_client(self):
         updated_client = {
-            "id": 11,
-            "name": "Alperen johnathan",
-            "address": "4 musketiers straat",
+            "id": 3,
+            "name": "Alperen Baytimur",
+            "address": "3 musketiers straat",
             "city": "Carrillomouth",
             "zip_code": "14452",
             "province": "Zuid-Holland",
@@ -109,117 +137,16 @@ class TestShipments(unittest.TestCase):
             "updated_at": "1997-09-21 23:06:24"
         }
 
-        response = self.client.put("/clients/11", json=updated_client)
+        response = self.client.put("/clients/3", json=updated_client)
 
-        self.assertEqual(response.status_code, codes.UNAUTHORIZED)
-    
-    def test_get_single2_unauthorized(self):
-        self.client.headers["API_KEY"]="wrong_key"
-        response = self.client.get("/clients/12")
+        self.assertEqual(response.status_code, codes.OK)
 
-        self.assertEqual(response.status_code, codes.UNAUTHORIZED)
-    
+    def test_delete_client(self):
+        response = self.client.delete("/clients/90")
 
+        self.assertEqual(response.status_code, codes.OK)
 
-    # def test_get_all(self):
-    #     response = self.client.get("/clients")
+    def test_delete_incorrect_id(self):
+        response = self.client.delete("/clients/-10")
 
-    #     self.assertEqual(response.status_code, codes.OK)
-    #     self.assertTrue(len(response.json()) > 0)
-    
-    # def test_get_single_incorrect(self):
-    #     response = self.client.get("/clients/90")
-
-    #     self.assertEqual(response.status_code, codes.NOT_FOUND)
-
-    # def test_get_single(self):
-    #     response = self.client.get("/clients/8")
-
-    #     self.assertEqual(response.status_code, codes.OK)
-    #     self.assertIn("id", response.json())
-
-    # def test_get_incorrect_id(self):
-    #     response = self.client.get("/clients/-1")
-
-    #     self.assertEqual(response.status_code, codes.NOT_FOUND)  
-
-    # def test_create_client(self):
-    #     new_client = {
-    #         "id": 9,
-    #         "name": "Alperen Smith",
-    #         "address": "300 straat",
-    #         "city": "Carrillomouth",
-    #         "zip_code": "14452",
-    #         "province": "Virginia",
-    #         "country": "United States",
-    #         "contact_name": "Sylvia Zimmerman",
-    #         "contact_phone": "001-635-714-6053",
-    #         "contact_email": "zsmith@example.com",
-    #         "created_at": "1996-04-23 20:51:11",
-    #         "updated_at": "1997-09-21 23:06:24"
-
-    #     }
-
-    #     response = self.client.post("/clients", json=new_client)
-    #     self.assertEqual(response.status_code, 201)  
-
-    # def test_update_client(self):
-    #     updated_client = {
-    #         "id": 3,
-    #         "name": "Alperen Baytimur",
-    #         "address": "3 musketiers straat",
-    #         "city": "Carrillomouth",
-    #         "zip_code": "14452",
-    #         "province": "Zuid-Holland",
-    #         "country": "Netherlands",
-    #         "contact_name": "Osman",
-    #         "contact_phone": "001-635-714-6053",
-    #         "contact_email": "zsmith@example.com",
-    #         "created_at": "1996-04-23 20:51:11",
-    #         "updated_at": "1997-09-21 23:06:24"
-    #     }
-
-    #     response = self.client.put("/clients/3", json=updated_client)
-
-    #     self.assertEqual(response.status_code, codes.OK) 
-
-    # def test_delete_client(self):
-    #     response = self.client.delete("/clients/90")
-
-    #     self.assertEqual(response.status_code, codes.OK)
-
-    # def test_delete_incorrect_id(self):
-    #     response = self.client.delete("/clients/-10")
-
-    #     self.assertEqual(response.status_code, codes.NOT_FOUND)
-
-
-    ######## hier ben ik gebleven
-
-    # def test_update_client2(self):
-    #     updated_client = {
-    #         "id": 11,
-    #         "name": "Alperen johnathan",
-    #         "address": "4 musketiers straat",
-    #         "city": "Carrillomouth",
-    #         "zip_code": "14452",
-    #         "province": "Zuid-Holland",
-    #         "country": "Netherlands",
-    #         "contact_name": "Osman",
-    #         "contact_phone": "001-635-714-6053",
-    #         "contact_email": "zsmith@example.com",
-    #         "created_at": "1996-04-23 20:51:11",
-    #         "updated_at": "1997-09-21 23:06:24"
-    #     }
-
-    #     response = self.client.put("/clients/11", json=updated_client)
-
-    #     self.assertEqual(response.status_code, codes.OK)
-
-    # def test_get_single2(self):
-    #     response = self.client.get("/clients/12")
-
-    #     self.assertEqual(response.status_code, codes.OK)
-    #     self.assertIn("id", response.json())
-    
-    
+        self.assertEqual(response.status_code, codes.NOT_FOUND)

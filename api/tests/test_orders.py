@@ -166,5 +166,6 @@ class TestOrders(unittest.TestCase):
 
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)  # HTTP 401 UNAUTHORIZED
 
-
+if __name__ == "__main__":
+    unittest.main()
     

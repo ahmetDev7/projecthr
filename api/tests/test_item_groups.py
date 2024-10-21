@@ -108,3 +108,6 @@ class Testitem_groups(unittest.TestCase):
         response = self.client.delete("/item_groups/-10")
 
         self.assertEqual(response.status_code, codes.NOT_FOUND)
+
+if __name__ == "__main__":
+    unittest.main()

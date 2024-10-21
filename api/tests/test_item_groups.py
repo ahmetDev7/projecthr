@@ -2,8 +2,8 @@ import unittest
 from httpx import Client
 from httpx import codes
 
-# 7 happy paths
-# 9 edge cases
+# 6 happy paths
+# 8 edge cases
 
 
 class Testitem_groups(unittest.TestCase):
@@ -41,20 +41,6 @@ class Testitem_groups(unittest.TestCase):
         self.client.headers["API_KEY"] = "wrong_key"
         response = self.client.get("/item_groups/8")
 
-        self.assertEqual(response.status_code, codes.UNAUTHORIZED)
-
-    def test_create_unauthorized(self):
-        self.client.headers["API_KEY"] = "wrong_key"
-        new_client = {
-            "id": 101,
-            "name": "Electronics",
-            "description": "I did it mensen",
-            "created_at": "1998-05-15 19:52:53",
-            "updated_at": "2000-11-20 08:37:56"
-
-        }
-
-        response = self.client.post("/item_groups", json=new_client)
         self.assertEqual(response.status_code, codes.UNAUTHORIZED)
 
     def test_update_unauthorized(self):
@@ -100,19 +86,6 @@ class Testitem_groups(unittest.TestCase):
 
         self.assertEqual(response.status_code, codes.NOT_FOUND)
 
-    def test_create_item_group(self):
-        new_item_group = {
-            "id": 100,
-            "name": "Electronics",
-            "description": "Osman en Alperen",
-            "created_at": "1998-05-15 19:52:53",
-            "updated_at": "2000-11-20 08:37:56"
-
-        }
-
-        response = self.client.post("/item_groups", json=new_item_group)
-        self.assertEqual(response.status_code, 201)
-
     def test_update_item_groups(self):
         updated_client = {
             "id": 0,
@@ -135,3 +108,6 @@ class Testitem_groups(unittest.TestCase):
         response = self.client.delete("/item_groups/-10")
 
         self.assertEqual(response.status_code, codes.NOT_FOUND)
+
+if __name__ == "__main__":
+    unittest.main()

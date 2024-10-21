@@ -181,3 +181,6 @@ class TestItems(unittest.TestCase):
         response = self.client.delete("/items/-P000097")
 
         self.assertEqual(response.status_code, codes.NOT_FOUND)
+
+if __name__ == "__main__":
+    unittest.main()

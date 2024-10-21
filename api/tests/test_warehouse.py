@@ -2,7 +2,7 @@ import unittest
 from httpx import Client
 from httpx import codes
 
-# 9 test integrations happy path
+# 12 test integrations happy path
 # 0 test integrations edge cases
 class TestWarehouse(unittest.TestCase):
 
@@ -55,6 +55,52 @@ class TestWarehouse(unittest.TestCase):
         }
         response = self.client.put(f"/warehouses/89745564", json=updated_data)
         self.assertEqual(response.status_code, codes.OK)
+
+    # Create Warehouse limited data.
+    def test_create_warehouse_with_limited_data(self):
+        self.client.headers["API_KEY"] = self.admin_token
+
+        minimal_warehouse = {
+            "id": 1000001,
+            "name": "Minimal Warehouse",
+            "location": "Utrecht"
+        }
+
+        response = self.client.post("/warehouses", json=minimal_warehouse)
+        self.assertEqual(response.status_code, codes.CREATED)        
+
+
+    #create warehouse with location details
+    def test_create_warehouse_with_location_details(self):
+        self.client.headers["API_KEY"] = self.admin_token
+
+        detailed_location_warehouse = {
+            "id": 1000007,
+            "name": "Detailed Location Warehouse",
+            "location": "Nijmegen",
+            "address": "123 Industrial Zone",
+            "zip_code": "6541 AB",
+            "capacity": 1500
+        }
+
+        response = self.client.post("/warehouses", json=detailed_location_warehouse)
+        self.assertEqual(response.status_code, codes.CREATED)        
+
+
+    #Create Warehouse with large capacity
+    def test_create_warehouse_with_large_capacity(self):
+        self.client.headers["API_KEY"] = self.admin_token
+
+        large_capacity_warehouse = {
+            "id": 1000002,
+            "name": "Large Capacity Warehouse",
+            "location": "Eindhoven",
+            "capacity": 100000
+        }
+
+        response = self.client.post("/warehouses", json=large_capacity_warehouse)
+        self.assertEqual(response.status_code, codes.CREATED)        
+
 
     # Create Warehouse
     def test_create_warehouse_as_admin(self):

@@ -2,16 +2,29 @@ import unittest
 from httpx import Client
 from httpx import codes
 
-# 5 happy paths
+# 7 happy paths
 # 9 edge cases
 
 
 class TestClients(unittest.TestCase):
 
     def setUp(self):
+        self.reader_token = "f6g7h8i9j0"
         self.client = Client(base_url="http://localhost:3000/api/v1/",
                              headers={"Content-Type": "application/json", "API_KEY": "a1b2c3d4e5"})
 
+    def test_get_all_readertoken(self):
+        self.client.headers["API_KEY"] = self.reader_token
+        response = self.client.get("/clients")
+
+        self.assertEqual(response.status_code, codes.OK)
+    
+    def test_get_single_readertoken(self):
+        self.client.headers["API_KEY"] = self.reader_token
+        response = self.client.get("/clients/8")
+
+        self.assertEqual(response.status_code, codes.OK)
+    
     def test_unauthorized_get_all(self):
         self.client.headers["API_KEY"] = "wrong_key"
         response = self.client.get("/clients")

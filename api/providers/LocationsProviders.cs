@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
 
 public class LocationsProvider : ICRUD<Location>
@@ -13,7 +11,6 @@ public class LocationsProvider : ICRUD<Location>
 
     public List<Location> GetAll()
     {
-
         var jsonString = File.ReadAllText(_filePath);
         var options = new JsonSerializerOptions
         {
@@ -21,15 +18,6 @@ public class LocationsProvider : ICRUD<Location>
             AllowTrailingCommas = true 
         };
         List<Location>? decodedLocations = JsonSerializer.Deserialize<List<Location>>(jsonString, options);
-
-        if (decodedLocations != null)
-        {
-            Console.WriteLine(decodedLocations);
-            foreach (var l in decodedLocations)
-            {
-                Console.WriteLine(l.Name);
-            }
-        }
 
         return decodedLocations;
     }

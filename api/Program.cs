@@ -5,6 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers();
+
+string jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "jsondata/locations.json");
+builder.Services.AddSingleton(new LocationsProvider(jsonFilePath));
+
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello world 🚀");
@@ -12,6 +19,7 @@ app.MapGet("/", () => "Hello world 🚀");
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.MapControllers();
 
 app.Run("http://localhost:5000");
 

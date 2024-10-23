@@ -19,7 +19,7 @@ public class WarehouseProvider
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase, 
             AllowTrailingCommas = true 
         };
-        List<Warehouse>? decodedLocations = JsonSerializer.Deserialize<List<Warehouse>>(jsonString, options);
+        List<Warehouse> ?decodedLocations = JsonSerializer.Deserialize<List<Warehouse>>(jsonString, options);
 
         return decodedLocations;
     }
@@ -34,10 +34,10 @@ public class WarehouseProvider
         };
 
         // Deserialiseer de JSON naar een lijst van warehouses
-        List<Warehouse> warehouses = JsonSerializer.Deserialize<List<Warehouse>>(jsonString, options);
+        List<Warehouse> ?warehouses = JsonSerializer.Deserialize<List<Warehouse>>(jsonString, options);
 
         // Zoek naar een warehouse met het gegeven id
-        var warehouse = warehouses.FirstOrDefault(w => w.id == id);
+        var warehouse = warehouses?.FirstOrDefault(w => w.id == id);
 
         // Controleer of een warehouse is gevonden
         if (warehouse == null)

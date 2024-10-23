@@ -7,7 +7,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
-string jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "jsondata/locations.json");
+string jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "data/locations.json");
 builder.Services.AddSingleton(new LocationsProvider(jsonFilePath));
 
 builder.Services.AddControllers();

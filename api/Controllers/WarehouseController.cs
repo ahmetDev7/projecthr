@@ -22,4 +22,23 @@ public class WarehousesController : ControllerBase
         var warehouses = _warehouseProvider.Getall();
         return Ok(warehouses);
     }
+
+    [HttpGet("{id}")]  // Dit specificeert dat {id} een routeparameter is
+    public ActionResult<Warehouse> GetByID(int id)
+    {
+        try
+        {
+            var warehouse = _warehouseProvider.GetByID(id);
+            return Ok(warehouse);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { Message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = ex.Message });
+        }
+    }
+
 }

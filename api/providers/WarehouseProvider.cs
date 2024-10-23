@@ -48,4 +48,64 @@ public class WarehouseProvider
         return warehouse;
     }
 
+    public void CreateWarehouse(Warehouse newWarehouse)
+    {
+        // 1. Haal de bestaande lijst van warehouses op
+        List<Warehouse> warehouses = Getall();
+
+        // 2. Controleer of er al een warehouse bestaat met hetzelfde Id of Name
+        bool warehouseExists = warehouses.Any(w => w.id == newWarehouse.id || w.Name.Equals(newWarehouse.Name, StringComparison.OrdinalIgnoreCase));
+
+        if (warehouseExists)
+        {
+            throw new InvalidOperationException($"A warehouse with Id {newWarehouse.id} or Name '{newWarehouse.Name}' already exists.");
+        }
+
+        // 3. Voeg het nieuwe warehouse toe aan de lijst
+        warehouses.Add(newWarehouse);
+
+        // 4. Seraliseer de bijgewerkte lijst terug naar JSON
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
+        string updatedJson = JsonSerializer.Serialize(warehouses, options);
+
+        // 5. Schrijf de bijgewerkte JSON naar het bestand
+        File.WriteAllText(_filepath, updatedJson);
+    }
+
+    public void UpdateWarehouse(Warehouse updatedWarehouse)
+    {
+        // 1. Haal de bestaande lijst van warehouses op
+        List<Warehouse> warehouses = Getall();
+
+        // 2. Zoek naar het bestaande warehouse op basis van het Id
+        var existingWarehouseIndex = warehouses.FindIndex(w => w.id == updatedWarehouse.id);
+
+        if (existingWarehouseIndex == -1)
+        {
+            throw new InvalidOperationException($"Warehouse with Id {updatedWarehouse.id} does not exist.");
+        }
+
+        // 3. Vervang het bestaande warehouse met het nieuwe warehouse
+        warehouses[existingWarehouseIndex] = updatedWarehouse;
+
+        // 4. Seraliseer de bijgewerkte lijst terug naar JSON
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
+        string updatedJson = JsonSerializer.Serialize(warehouses, options);
+
+        // 5. Schrijf de bijgewerkte JSON naar het bestand
+        File.WriteAllText(_filepath, updatedJson);
+    }
+
+
+
 }

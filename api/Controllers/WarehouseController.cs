@@ -41,4 +41,38 @@ public class WarehousesController : ControllerBase
         }
     }
 
+    [HttpPost]
+    public IActionResult CreateWarehouse([FromBody] Warehouse newWarehouse)
+    {
+        try
+        {
+            _warehouseProvider.CreateWarehouse(newWarehouse);
+            return Ok(new { Message = "Warehouse created successfully!" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = ex.Message });
+        }
+    }
+
+    [HttpPut]
+    public IActionResult UpdateWarehouse([FromBody] Warehouse updatedWarehouse)
+    {
+        try
+        {
+            _warehouseProvider.UpdateWarehouse(updatedWarehouse);
+            return Ok(new { Message = "Warehouse updated successfully!" });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { Message = ex.Message });  // 404 Not Found
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = ex.Message });  // 500 Internal Server Error
+        }
+    }
+
+
+
 }

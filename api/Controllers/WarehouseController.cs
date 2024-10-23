@@ -73,6 +73,25 @@ public class WarehousesController : ControllerBase
         }
     }
 
+    [HttpDelete("{id}")]
+    public IActionResult DeleteWarehouse(int id)
+    {
+        try
+        {
+            _warehouseProvider.DeleteWarehouse(id);
+            return Ok(new { Message = "Warehouse deleted successfully!" });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { Message = ex.Message }); // 404 Not Found
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = ex.Message }); // 500 Internal Server Error
+        }
+    }
+
+
 
 
 }

@@ -24,9 +24,10 @@ public class LocationsController : ControllerBase
 
 
     [HttpGet("{id}")]
-    public IActionResult GetLocation(Guid id)
+    public IActionResult GetLocation(int id)
     {
-        return Ok(new { message = "Single location" });
+        var getLocationId = _locationProvider.GetById(id);
+        return Ok(getLocationId);
 
     }
 

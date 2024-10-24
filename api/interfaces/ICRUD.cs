@@ -1,8 +1,8 @@
 public interface ICRUD<T> {
     
-    public T GetById();
+    public T GetById(int id);
     public List<T> GetAll();
     public T Create();
-    public T Update();
-    public T Delete();
+    public T Update(int id);
+    public T Delete(int id);
 }

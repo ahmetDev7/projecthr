@@ -18,13 +18,20 @@ public class LocationsProvider : ICRUD<Location>
             AllowTrailingCommas = true 
         };
         List<Location>? decodedLocations = JsonSerializer.Deserialize<List<Location>>(jsonString, options);
-
-        return decodedLocations;
+        if(decodedLocations != null){
+            return decodedLocations;
+        }
+        throw new Exception($"Locaties niet gevonden.");
     }
 
-    public Location GetById()
+    public Location GetById(int id)
     {
-        throw new NotImplementedException();
+        List<Location> allLocation = GetAll();
+        Location? location = allLocation.FirstOrDefault(loc =>loc.Id == id);
+        if(location != null){
+            return location;
+        }
+        throw new Exception($"Locatie met id {id} niet gevonden.");
     }
 
     public Location Create()
@@ -32,12 +39,12 @@ public class LocationsProvider : ICRUD<Location>
         throw new NotImplementedException();
     }
 
-    public Location Delete()
+    public Location Delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Location Update()
+    public Location Update(int id)
     {
         throw new NotImplementedException();
     }

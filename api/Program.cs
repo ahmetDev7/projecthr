@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -5,12 +6,47 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Register the TokenService
+builder.Services.AddScoped<TokenService>();
+
+// Configure JWT authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecretKeyThatIs32BytesLongX")),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+
+    // FOR DEBUG PURPOSES
+
+    // options.Events = new JwtBearerEvents
+    // {
+    //     OnAuthenticationFailed = context =>
+    //     {
+    //         var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+    //         logger.LogWarning("Authentication failed: {Message}", context.Exception.Message);
+    //         return Task.CompletedTask;
+    //     },
+    //     OnTokenValidated = context =>
+    //     {
+    //         var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+    //         logger.LogInformation("Token validated successfully for user {UserId}", context.Principal?.Identity?.Name);
+    //         return Task.CompletedTask;
+    //     }
+    // };
+});
 
 // Configure Swagger
 builder.Services.AddSwaggerGen(c =>
@@ -51,10 +87,10 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
 
-app.MapGet("/", () => "Hello world 🚀");
+app.MapControllers();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

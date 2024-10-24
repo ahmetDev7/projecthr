@@ -1,0 +1,190 @@
+Table warehouse {
+  id int [pk]
+  code varchar
+  name varchar
+  address varchar
+  zip varchar
+  city varchar
+  province varchar
+  country varchar
+  contact json
+  created_at datetime
+  updated_at datetime
+}
+
+Table location {
+  id int [pk]
+  warehouse_id int [ref: > warehouse.id]
+  code varchar
+  name varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table client {
+  id int [pk]
+  name varchar
+  address varchar
+  city varchar
+  zip_code varchar
+  province varchar
+  country varchar
+  contact_name varchar
+  contact_phone varchar
+  contact_email varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table inventory {
+  id int [pk]
+  item_id int [ref: > items.id]
+  description varchar
+  item_reference varchar
+  total_on_hand int
+  total_expected int
+  total_ordered int
+  total_allocated int
+  total_available int
+  created_at datetime
+  updated_at datetime
+}
+
+Table location_inventory {
+  inventory_id int [ref: > inventory.id]
+  location_id int [ref: > location.id]
+}
+
+Table item_groups {
+  id int [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table item_lines {
+  id int [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table item_types {
+  id int [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table items {
+  id int [pk]
+  code varchar
+  description varchar
+  short_description varchar
+  upc_code varchar
+  model_number varchar
+  commodity_code varchar
+  item_line int [ref: > item_lines.id]
+  item_group int [ref: > item_groups.id]
+  item_type int [ref: > item_types.id]
+  unit_purchase_quantity int
+  unit_order_quantity int
+  pack_order_quantity int
+  supplier_id int [ref: > suppliers.id]
+  supplier_code varchar
+  supplier_part_number varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table suppliers {
+  id int [pk]
+  code varchar
+  name varchar
+  address varchar
+  address_extra varchar
+  city varchar
+  zip_code varchar
+  province varchar
+  country varchar
+  contact_name varchar
+  phonenumber varchar
+  reference varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table orders {
+  id int [pk]
+  source_id int
+  order_date datetime
+  request_date datetime
+  reference varchar
+  reference_extra varchar
+  order_status varchar
+  notes varchar
+  shipping_notes varchar
+  picking_notes varchar
+  warehouse_id int [ref: > warehouse.id]
+  ship_to varchar
+  bill_to varchar
+  shipment_id int [ref: > shipments.id]
+  total_amount decimal(10, 2)
+  total_discount decimal(10, 2)
+  total_tax decimal(10, 2)
+  total_surcharge decimal(10, 2)
+  created_at datetime
+  updated_at datetime
+}
+
+Table order_items {
+  order_id int [ref: > orders.id]
+  item_id int [ref: > items.id]
+  amount int
+}
+
+Table shipments {
+  id int [pk]
+  order_id int [ref: > orders.id]
+  source_id int
+  order_date datetime
+  request_date datetime
+  shipment_date datetime
+  shipment_type varchar
+  shipment_status varchar
+  notes varchar
+  carrier_code varchar
+  carrier_description varchar
+  service_code varchar
+  payment_type varchar
+  transfer_mode varchar
+  total_package_count int
+  total_package_weight decimal(10, 2)
+  created_at datetime
+  updated_at datetime
+}
+
+Table shipment_items {
+  shipment_id int [ref: > shipments.id]
+  item_id int [ref: > items.id]
+  amount int
+}
+
+Table transfers {
+  id int [pk]
+  reference varchar
+  transfer_from int
+  transfer_to int
+  transfer_status varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table transfer_items {
+  transfer_id int [ref: > transfers.id]
+  item_id int [ref: > items.id]
+  amount int
+}

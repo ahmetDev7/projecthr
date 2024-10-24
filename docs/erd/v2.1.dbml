@@ -15,6 +15,7 @@ Table addresses {
   street varchar
   house_number varchar
   house_number_extension varchar
+  house_number_extension_extra varchar
   zipcode varchar
   city varchar
   province varchar
@@ -32,7 +33,6 @@ Table contacts {
 
 Table locations {
   id uuid [pk]
-  code varchar
   row varchar
   rack varchar
   shelf varchar
@@ -61,7 +61,7 @@ Table items {
   unit_purchase_quantity int
   unit_order_quantity int
   pack_order_quantity int
-  supplier_code varchar // TODO: Veranderen naar supplier_reference_code
+  supplier_reference_code varchar
   supplier_part_number varchar
   created_at datetime
   updated_at datetime
@@ -134,8 +134,8 @@ Table orders {
   notes varchar
   shipping_notes varchar
   picking_notes varchar
-  ship_to varchar //  TODO: ship_to_client
-  bill_to varchar // TODO: bill_to_client
+  ship_to_client uuid [ref: > clients.id]
+  bill_to_client uuid [ref: > clients.id]
   total_amount decimal(10, 2)
   total_discount decimal(10, 2)
   total_tax decimal(10, 2)
@@ -166,7 +166,7 @@ Table shipments {
   payment_type varchar
   transfer_mode varchar
   total_package_count int
-  total_package_weight decimal(10, 2) // alles in KG en 4 cijfers achter de komma
+  total_package_weight decimal(10, 4) // alles in KG en 4 cijfers achter de komma
   created_at datetime
   updated_at datetime
   order_id uuid [ref: > orders.id]
@@ -182,8 +182,8 @@ Table shipment_items {
 Table transfers {
   id uuid [pk]
   reference varchar
-  transfer_from int
-  transfer_to int
+  transfer_from uuid [ref: > locations.id]
+  transfer_to uuid [ref: > locations.id]
   transfer_status varchar
   created_at datetime
   updated_at datetime

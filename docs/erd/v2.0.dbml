@@ -1,0 +1,209 @@
+Table warehouses {
+  id uuid [pk]
+  code varchar
+  name varchar
+  created_at datetime
+  updated_at datetime
+  contact_id uuid [ref: > contacts.id]
+  address_id uuid [ref: > addresses.id]
+}
+
+Table addresses {
+  id uuid [pk]
+  street varchar
+  house_number varchar
+  house_number_extension varchar
+  zipcode varchar
+  city varchar
+  province varchar
+  country_code varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table contacts {
+  id uuid [pk]
+  name varchar
+  phone varchar
+  email varchar
+}
+
+Table locations {
+  id uuid [pk]
+  code varchar // code is een gecombineerde versie van row, rack en shelf heeft het meerwaarde als we dit erin laten?
+  row varchar
+  rack varchar
+  shelf varchar
+  created_at datetime
+  updated_at datetime
+  warehouse_id uuid [ref: > warehouses.id]
+}
+
+Table clients {
+  id uuid [pk]
+  name varchar
+  created_at datetime
+  updated_at datetime
+  contact_id uuid [ref: > contacts.id]
+  address_id uuid [ref: > addresses.id]
+}
+
+Table items {
+  id uuid [pk]
+  code varchar
+  description varchar
+  short_description varchar
+  upc_code varchar
+  model_number varchar
+  commodity_code varchar
+  unit_purchase_quantity int
+  unit_order_quantity int
+  pack_order_quantity int
+  supplier_code varchar // supplier_code matched niet met supplier_id?
+  supplier_part_number varchar // supplier_part_number bestaat niet in supplier table voor wat is dit nodig?
+  created_at datetime
+  updated_at datetime
+  item_line uuid [ref: > item_lines.id]
+  item_group uuid [ref: > item_groups.id]
+  item_type uuid [ref: > item_types.id]
+  supplier_id uuid [ref: > suppliers.id] 
+}
+
+Table item_groups {
+  id uuid [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table item_lines {
+  id uuid [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table item_types {
+  id uuid [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table suppliers {
+  id uuid [pk]
+  code varchar
+  name varchar
+  reference varchar
+  contact_id uuid [ref: > contacts.id]
+  created_at datetime
+  updated_at datetime
+}
+
+// max 2 restriction for suppliers_id
+Table supplier_addresses {
+  supplier_id uuid [ref: > suppliers.id]
+  address_id uuid [ref: > addresses.id]
+  created_at datetime
+  updated_at datetime
+}
+
+Table inventories {
+  id uuid [pk]
+  description varchar
+  item_reference varchar // waarom item reference als je de item_id heb?
+  total_on_hand int
+  total_expected int
+  total_ordered int
+  total_allocated int
+  total_available int
+  created_at datetime
+  updated_at datetime
+  item_id uuid [ref: > items.id]
+}
+
+Table location_inventory {
+  inventory_id uuid [ref: > inventories.id]
+  location_id uuid [ref: > locations.id]
+}
+
+Table orders {
+  id uuid [pk]
+  order_date datetime
+  request_date datetime
+  reference varchar
+  reference_extra varchar
+  order_status varchar // Zijn dit enums die bestaan uit ["deliverd", "in_transit", "processing", "cancled"]?
+  notes varchar
+  shipping_notes varchar
+  picking_notes varchar
+  ship_to varchar // naar wat een address? suggestie: address_id?
+  bill_to varchar // naar wat een address? suggestie: address_id?
+  total_amount decimal(10, 2)
+  total_discount decimal(10, 2)
+  total_tax decimal(10, 2)
+  total_surcharge decimal(10, 2) // welke currency is het?
+  created_at datetime
+  updated_at datetime
+  warehouse_id uuid [ref: > warehouses.id]
+  shipment_id uuid [ref: > shipments.id]
+  source_id int // naar wat linkt dit? client, warehouse of location?
+}
+
+Table order_items {
+  order_id uuid [ref: > orders.id]
+  item_id uuid [ref: > items.id]
+  amount int // De aantal items die hier zijn gekozen moet je dan in table inventories de column total_orderd gelijk zijn aan alles wat hier in deze tussen tabel zit als totaal
+}
+
+Table shipments {
+  id uuid [pk]
+  order_date datetime
+  request_date datetime
+  shipment_date datetime
+  shipment_type varchar // zijn hiervoor ook enums? Zo ja wat zijn ze?
+  shipment_status varchar // zijn hiervoor ook enums? zoals order_status
+  notes varchar
+  carrier_code varchar
+  carrier_description varchar
+  service_code varchar
+  payment_type varchar  // zijn hiervoor ook enums? Zo ja wat zijn ze?
+  transfer_mode varchar // zijn hiervoor ook enums? Zo ja wat zijn ze?
+  total_package_count int
+  total_package_weight decimal(10, 2) //weight in wat kg,lb? hoe accuraat willen we zijn?
+  created_at datetime
+  updated_at datetime
+  order_id uuid [ref: > orders.id]
+  source_id int // naar wat linkt dit? client, warehouse of location?
+}
+
+Table shipment_items {
+  shipment_id uuid [ref: > shipments.id]
+  item_id uuid [ref: > items.id] // moet dit dan ook niet opgeteld worden in inventories?
+  amount int
+}
+// transfers van wat? Heb je verschillende soorten transfers? suggestie: transfer_type?
+Table transfers {
+  id uuid [pk]
+  reference varchar
+  transfer_from int // from waar warehouse, location of supplier? In de json data kan je niet uitlezen
+  transfer_to int // to waar warehouse, location of supplier? In de json data kan je niet uitlezen
+  transfer_status varchar // zijn hiervoor ook enums? Zo ja wat zijn ze?
+  created_at datetime
+  updated_at datetime
+}
+
+Table transfer_items {
+  transfer_id uuid [ref: > transfers.id]
+  item_id uuid [ref: > items.id]
+  amount int
+}
+
+
+
+
+
+

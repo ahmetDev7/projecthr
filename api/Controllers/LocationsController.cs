@@ -6,18 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 public class LocationsController : ControllerBase
 {
 
-    private readonly LocationsProvider _locationProvider;
+    private readonly LocationsProvider _locationsProvider;
 
     public LocationsController(LocationsProvider locationProvider)
     {
-        _locationProvider = locationProvider;
+        _locationsProvider = locationProvider;
     }
 
 
     [HttpGet]
     public IActionResult GetLocations()
     {
-        var locations = _locationProvider.GetAll();
+        var locations = _locationsProvider.GetAll();
 
         return Ok(locations);
     }
@@ -26,7 +26,7 @@ public class LocationsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetLocation(int id)
     {
-        var getLocationId = _locationProvider.GetById(id);
+        var getLocationId = _locationsProvider.GetById(id);
         return Ok(getLocationId);
 
     }
@@ -45,9 +45,13 @@ public class LocationsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public  IActionResult DeleteLocation(Guid id)
+    public  IActionResult DeleteLocation(int id)
     {
-        return Ok(new { message = "Location deleted!" });
+        bool deletedLocation = _locationsProvider.Delete(id);
+        if (deletedLocation){
+            return Ok("Location deleted!");
+        }
+        return Ok("Location is not deleted!");
 
     }
 

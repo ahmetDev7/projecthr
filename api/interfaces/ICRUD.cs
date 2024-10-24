@@ -2,7 +2,7 @@ public interface ICRUD<T> {
     
     public T GetById(int id);
     public List<T> GetAll();
-    public T Create();
+    public bool Create();
     public T Update(int id);
-    public T Delete(int id);
+    public bool Delete(int id);
 }

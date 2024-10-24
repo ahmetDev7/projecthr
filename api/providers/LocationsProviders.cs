@@ -34,14 +34,21 @@ public class LocationsProvider : ICRUD<Location>
         throw new Exception($"Locatie met id {id} niet gevonden.");
     }
 
-    public Location Create()
+    public bool Create()
     {
         throw new NotImplementedException();
     }
 
-    public Location Delete(int id)
+    public bool Delete(int id)
     {
-        throw new NotImplementedException();
+        Location locationToDelete = GetById(id);
+        List<Location> allLocations = GetAll();
+        bool removeStatus = allLocations.Remove(locationToDelete);
+        if (removeStatus){
+            return true;
+        }
+        return false;
+
     }
 
     public Location Update(int id)

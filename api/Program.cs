@@ -29,23 +29,21 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false
     };
 
-    // FOR DEBUG PURPOSES
-
-    // options.Events = new JwtBearerEvents
-    // {
-    //     OnAuthenticationFailed = context =>
-    //     {
-    //         var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-    //         logger.LogWarning("Authentication failed: {Message}", context.Exception.Message);
-    //         return Task.CompletedTask;
-    //     },
-    //     OnTokenValidated = context =>
-    //     {
-    //         var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-    //         logger.LogInformation("Token validated successfully for user {UserId}", context.Principal?.Identity?.Name);
-    //         return Task.CompletedTask;
-    //     }
-    // };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+            logger.LogWarning("Authentication failed: {Message}", context.Exception.Message);
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation("Token validated successfully for user {UserId}", context.Principal?.Identity?.Name);
+            return Task.CompletedTask;
+        }
+    };
 });
 
 // Configure Swagger

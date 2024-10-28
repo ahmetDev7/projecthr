@@ -45,10 +45,7 @@ public class ItemsProvider : ICRUD<Item>
         throw new NotImplementedException();
     }
 
-    public Item? GetById(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    public Item? GetById(Guid id) => _db.Items.FirstOrDefault(i => i.Id == id);
 
     public Item? Update(Guid id)
     {

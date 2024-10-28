@@ -69,6 +69,8 @@ Table items {
   item_group uuid [ref: > item_groups.id]
   item_type uuid [ref: > item_types.id]
   supplier_id uuid [ref: > suppliers.id] 
+  created_at datetime
+  updated_at datetime
 }
 
 Table item_groups {

@@ -7,9 +7,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
+
 string jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "data/warehouses.json");
 builder.Services.AddSingleton(new WarehouseProvider(jsonFilePath));
-
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -20,6 +21,7 @@ app.MapGet("/", () => "Hello world 🚀");
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.MapControllers();
 
 app.Run("http://localhost:5000");
 

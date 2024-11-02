@@ -17,7 +17,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
     {
         WarehouseDTO? request = newElement as WarehouseDTO;
         if (request == null) throw new Exception("Request invalid");
-
+        if(request.Name == _db.Warehouses.FirstOrDefault(w => w.Name == request.Name)?.Name) throw new Exception("Warehouse already exists");
         // Case 1: contact_id is ingevuld
         // if contact_id is ingevuld
         // check als contact_id bestaat zo niet return error

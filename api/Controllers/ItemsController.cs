@@ -41,4 +41,12 @@ public class ItemsController : ControllerBase
         if (foundItem == null) return NotFound(new { message = $"Item not found for id '{id}'" });
         return Ok(foundItem);
     }
+
+    [HttpGet("all")]
+    public IActionResult AllItems()
+    {
+        List<Item>? allItems = _itemsProvider.GetAll();
+        if (allItems == null) return NotFound(new { message = $"No items found" });
+        return Ok(allItems);
+    }
 }

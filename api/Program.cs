@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddTransient<ItemsProvider>();
+builder.Services.AddTransient<LocationsProvider>();
 
 builder.Services.AddControllers();
 

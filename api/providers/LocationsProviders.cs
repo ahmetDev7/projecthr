@@ -2,42 +2,46 @@ using System.Text.Json;
 
 public class LocationsProvider : ICRUD<Location>
 {
-    private readonly string _filePath;
-
-    public LocationsProvider(string filePath)
-    {
-        _filePath = filePath;
+    private readonly AppDbContext _db;
+    public LocationsProvider(AppDbContext db){
+        _db = db;
     }
-
-    public List<Location> GetAll()
+    public Location? Create<IDTO>(IDTO dto)
     {
-        var jsonString = File.ReadAllText(_filePath);
-        var options = new JsonSerializerOptions
+        LocationDTO? req = dto as LocationDTO;
+        if (req == null) throw new ApiFlowException("Could not process create location request. Save new location failed.");
+        
+        Location newLocation = new()
         {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase, 
-            AllowTrailingCommas = true 
+            Row = req.Row,
+            Rack =req.Rack,
+            Shelf =req.Shelf,
+            WarehouseId = req.WarehouseId
         };
-        List<Location>? decodedLocations = JsonSerializer.Deserialize<List<Location>>(jsonString, options);
-
-        return decodedLocations;
+        
+        _db.Locations.Add(newLocation);
+        
+        DBUtil.SaveChanges(_db, "Location not stored");
+        
+        return newLocation;      
     }
 
-    public Location GetById()
+    public Location? Delete(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public Location Create()
+    public List<Location>? GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Location Delete()
+    public Location? GetById(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public Location Update()
+    public Location? Update(Guid id)
     {
         throw new NotImplementedException();
     }

@@ -1,6 +1,7 @@
+using CargoHub.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
- 
+
 
 
 [Route("api/[controller]")]
@@ -8,19 +9,21 @@ using System.Collections.Generic;
 public class WarehousesController : ControllerBase
 {
 
-   private readonly WarehouseProvider _warehouseProvider;
+    private readonly WarehouseProvider _warehouseProvider;
 
-   public WarehousesController(WarehouseProvider warehouseProvider)
-   {
-         _warehouseProvider = warehouseProvider;
-   } 
+    public WarehousesController(WarehouseProvider warehouseProvider)
+    {
+        _warehouseProvider = warehouseProvider;
+    }
 
     [HttpPost]
-    public IActionResult CreateWarehouse([FromBody] Warehouse newWarehouse)
+    public IActionResult CreateWarehouse([FromBody] WarehouseDTO request)
     {
         try
         {
-            _warehouseProvider.CreateWarehouse(newWarehouse);
+            Warehouse? createdWarehouse = _warehouseProvider.Create(request);
+            if (createdWarehouse == null) BadRequest(new { Message = "Something went wrong while storing the warehouse." });
+
             return Ok(new { Message = "Warehouse created successfully!" });
         }
         catch (Exception ex)

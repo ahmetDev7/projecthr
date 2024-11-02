@@ -1,56 +1,86 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using Microsoft.AspNetCore.Http.HttpResults;
+using CargoHub.DTOs;
 
-public class WarehouseProvider 
+public class WarehouseProvider : ICRUD<Warehouse>
 {
-    private readonly string _filepath;
-    public WarehouseProvider(string filepath)
+    private readonly AppDbContext _db;
+    private readonly AddressProvider _addressProvider;
+    private readonly ContactProvider _contactProvider;
+
+    public WarehouseProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider)
     {
-        _filepath = filepath;
+        _db = db;
+        _addressProvider = addressProvider;
+        _contactProvider = contactProvider;
     }
-    
-    public List<Warehouse> Getall()
+
+    public Warehouse? Create<IDTO>(IDTO newElement)
     {
-        var jsonString = File.ReadAllText(_filepath);
-        var options = new JsonSerializerOptions
+        WarehouseDTO? request = newElement as WarehouseDTO;
+        if (request == null) throw new Exception("Request invalid");
+
+        // Case 1: contact_id is ingevuld
+        // if contact_id is ingevuld
+        // check als contact_id bestaat zo niet return error
+
+        // Case 2: als contact_id niet is ingevuld dan is contact field verplicht en moet daar naar gekeken worden om nieuwe contact te maken
+
+        // Case 3: address_id is ingevuld
+        // if address_id is ingevuld
+        // check als address_id bestaat zo niet return error
+
+        // Case 4: als address_id niet is ingevuld dan is contact field verplicht en moet daar naar gekeken worden om nieuwe contact te maken
+
+
+        // TODO: contact maken in de database op basis van de request en dan de contact.id pakken nadat de contact is gemaakt in de database 
+        // als deze add contact null is return new exception error
+        // Create a new Warehouse entity from the WarehouseDTO
+
+        if (request.Contact == null) throw new Exception("Address must be filled");
+        Contact? newContact = _contactProvider.Create<ContactDTO>(request.Contact);
+        if(newContact == null) throw new Exception("An error occurred while saving the warehouse contact");
+
+        // Create Address based on request.Address
+        if (request.Address == null) throw new Exception("Address must be filled");
+        Address? newAddress = _addressProvider.Create<AddressDTO>(request.Address);
+
+        if (newAddress == null) throw new Exception("An error occurred while saving the warehouse address");
+
+        Warehouse newWarehouse = new()
         {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase, 
-            AllowTrailingCommas = true 
+            Code = request.Code,
+            Name = request.Name,
+            ContactId = newContact.Id,
+            AddressId = newAddress.Id,
         };
-        List<Warehouse> ?decodedLocations = JsonSerializer.Deserialize<List<Warehouse>>(jsonString, options);
 
-        return decodedLocations;
-    }
+        _db.Warehouses.Add(newWarehouse);
 
-    public void CreateWarehouse(Warehouse newWarehouse)
-    {
-        // 1. Haal de bestaande lijst van warehouses op
-        List<Warehouse> warehouses = Getall();
-
-        // 2. Controleer of er al een warehouse bestaat met hetzelfde Id of Name
-        bool warehouseExists = warehouses.Any(w => w.id == newWarehouse.id || w.Name.Equals(newWarehouse.Name, StringComparison.OrdinalIgnoreCase));
-
-        if (warehouseExists)
+        if (_db.SaveChanges() < 1)
         {
-            throw new InvalidOperationException($"A warehouse with Id {newWarehouse.id} or Name '{newWarehouse.Name}' already exists.");
+            throw new Exception("An error occurred while saving the warehouse");
         }
 
-        // 3. Voeg het nieuwe warehouse toe aan de lijst
-        warehouses.Add(newWarehouse);
-
-        // 4. Seraliseer de bijgewerkte lijst terug naar JSON
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
-
-        string updatedJson = JsonSerializer.Serialize(warehouses, options);
-
-        // 5. Schrijf de bijgewerkte JSON naar het bestand
-        File.WriteAllText(_filepath, updatedJson);
+        return newWarehouse;
     }
 
+
+    public Warehouse Delete(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Warehouse> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Warehouse GetById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Warehouse Update(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }

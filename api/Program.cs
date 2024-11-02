@@ -14,16 +14,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddTransient<AddressProvider>();
+builder.Services.AddTransient<ContactProvider>();
+builder.Services.AddTransient<WarehouseProvider>();
 
-
-string jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "data/warehouses.json");
-builder.Services.AddSingleton(new WarehouseProvider(jsonFilePath));
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
 app.MapControllers();
-
 app.MapGet("/", () => "Hello world 🚀");
 
 
@@ -32,4 +31,3 @@ app.UseSwaggerUI();
 app.MapControllers();
 
 app.Run("http://localhost:5000");
-

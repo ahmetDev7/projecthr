@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-public class AddressDTO
+public class AddressDTO : IDTO
 {
     [Required]
     [JsonPropertyName("street")]

@@ -1,3 +1,26 @@
 
 GET http://localhost:5000/api/locations/1
 Content-Type: application/json
+###
+
+POST http://localhost:5000/api/warehouses
+Content-Type: application/json
+
+{
+    "code": "TEST",
+    "name": "Warehouse Test",
+    "contact": {        
+        "name": "Henk",
+        "phone": "+3164589874",
+        "email": "henk@gmail.com"
+    },
+    "address": {        
+        "street": "some street",
+        "house_number": "12",
+        "zipcode": "3022VB",
+        "country_code": "NL",
+        "city": "Rotterdam"
+    }
+}
+
+###

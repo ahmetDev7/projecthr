@@ -14,9 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
-
-string jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "data/locations.json");
-builder.Services.AddSingleton(new LocationsProvider(jsonFilePath));
+builder.Services.AddTransient<ItemsProvider>();
 
 builder.Services.AddControllers();
 

@@ -31,10 +31,7 @@ public class LocationsProvider : ICRUD<Location>
         throw new NotImplementedException();
     }
 
-    public List<Location>? GetAll()
-    {
-        throw new NotImplementedException();
-    }
+    public List<Location>? GetAll() => _db.Locations.ToList();
 
     public Location? GetById(Guid id)
     {

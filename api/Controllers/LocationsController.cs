@@ -15,12 +15,12 @@ public class LocationsController : ControllerBase
     }
 
 
-    [HttpGet]
+    [HttpGet("all")]
     public IActionResult GetLocations()
     {
-        var locations = _locationsProvider.GetAll();
-
-        return Ok(locations);
+        List<Location>? allLocations = _locationsProvider.GetAll();
+        if (allLocations == null) return NotFound(new { message = $"No location found" });
+        return Ok(allLocations);
     }
 
 

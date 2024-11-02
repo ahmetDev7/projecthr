@@ -33,10 +33,7 @@ public class LocationsProvider : ICRUD<Location>
 
     public List<Location>? GetAll() => _db.Locations.ToList();
 
-    public Location? GetById(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    public Location? GetById(Guid id) => _db.Locations.FirstOrDefault(l => l.Id == id );
 
     public Location? Update(Guid id)
     {

@@ -34,7 +34,7 @@ public class LocationsController : ControllerBase
     }
 
     [HttpPost()]
-    public IActionResult CreateLocation([FromBody]LocationDTO req)
+    public IActionResult CreateLocation([FromBody] LocationDTO req)
     {
         try
         {
@@ -42,11 +42,11 @@ public class LocationsController : ControllerBase
             if (newLocation == null) throw new ApiFlowException("Saving new location failed.");
             return Ok(new { message = "Location created!", new_location = newLocation });
         }
-        catch(ApiFlowException apiFlowException)
+        catch (ApiFlowException apiFlowException)
         {
             return Problem(apiFlowException.Message, statusCode: 500);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return Problem("An error occurred while creating an location. Please try again.", statusCode: 500);
         }
@@ -60,9 +60,24 @@ public class LocationsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public  IActionResult DeleteLocation(Guid id)
+    public IActionResult DeleteLocation(Guid id)
     {
-        return Ok(new { message = "Location deleted!" });
+        try
+        {
+            Location? deletedLocation = _locationsProvider.Delete(id);
+
+            if (deletedLocation == null) return NotFound(new { message = $"Location not found for id '{id}'" });
+
+            return Ok(new { message = "Location deleted!", deleted_location = deletedLocation });
+        }
+        catch (ApiFlowException apiFlowException)
+        {
+            return Problem(apiFlowException.Message, statusCode: 500);
+        }
+        catch (Exception)
+        {
+            return Problem("An error occurred while creating an location. Please try again.", statusCode: 500);
+        }
 
     }
 }

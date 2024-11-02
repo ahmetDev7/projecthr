@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 public class LocationsProvider : ICRUD<Location>
 {
     private readonly AppDbContext _db;
@@ -28,7 +26,14 @@ public class LocationsProvider : ICRUD<Location>
 
     public Location? Delete(Guid id)
     {
-        throw new NotImplementedException();
+        Location? foundLocation = GetById(id);
+        if(foundLocation == null) return null;
+
+        _db.Locations.Remove(foundLocation);
+        
+        DBUtil.SaveChanges(_db, "Location not deleted");
+
+        return foundLocation;
     }
 
     public List<Location>? GetAll() => _db.Locations.ToList();

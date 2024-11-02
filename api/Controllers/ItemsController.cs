@@ -47,6 +47,6 @@ public class ItemsController : ControllerBase
     {
         List<Item>? allItems = _itemsProvider.GetAll();
         if (allItems == null) return NotFound(new { message = $"No items found" });
-        return Ok(_itemsProvider.GetAll());
+        return Ok(allItems);
     }
 }

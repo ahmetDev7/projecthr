@@ -25,3 +25,13 @@ GET http://localhost:5000/api/items/80df97cd-b781-4a74-a859-9f2581fbd3c5
 Content-Type: application/json
 ###
 
+POST http://localhost:5000/api/locations
+Content-Type: application/json
+
+{
+    "row" : "1",
+    "rack" : "2",
+    "shelf" : "3",
+    "warehouse_id" : "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
+}
+###

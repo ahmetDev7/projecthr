@@ -1,3 +1,4 @@
+using DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -6,18 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 public class LocationsController : ControllerBase
 {
 
-    private readonly LocationsProvider _locationProvider;
+    private readonly LocationsProvider _locationsProvider;
 
     public LocationsController(LocationsProvider locationProvider)
     {
-        _locationProvider = locationProvider;
+        _locationsProvider = locationProvider;
     }
 
 
     [HttpGet]
     public IActionResult GetLocations()
     {
-        var locations = _locationProvider.GetAll();
+        var locations = _locationsProvider.GetAll();
 
         return Ok(locations);
     }
@@ -30,14 +31,27 @@ public class LocationsController : ControllerBase
 
     }
 
-    [HttpPost]
-    public IActionResult CreateLocation(LocationDTO location)
+    [HttpPost()]
+    public IActionResult CreateLocation([FromBody]LocationDTO req)
     {
-        return Ok(new { message = "Location created!" });
+        try
+        {
+            Location? newLocation = _locationsProvider.Create<LocationDTO>(req);
+            if (newLocation == null) throw new ApiFlowException("Saving new location failed.");
+            return Ok(new { message = "Location created!", new_location = newLocation });
+        }
+        catch(ApiFlowException apiFlowException)
+        {
+            return Problem(apiFlowException.Message, statusCode: 500);
+        }
+        catch(Exception)
+        {
+            return Problem("An error occurred while creating an location. Please try again.", statusCode: 500);
+        }
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateLocation(Guid id, LocationDTO location)
+    public IActionResult UpdateLocation(Guid id)
     {
         return Ok(new { message = "Location updated!" });
 
@@ -48,11 +62,5 @@ public class LocationsController : ControllerBase
     {
         return Ok(new { message = "Location deleted!" });
 
-    }
-
-
-    // DTO: Data Transferable Object
-    public class LocationDTO {
-        public string Name {get; set;}
     }
 }

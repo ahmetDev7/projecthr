@@ -31,7 +31,8 @@ public class ItemsProvider : ICRUD<Item>
 
         _db.Items.Add(newItem);
 
-        if (!DBUtil.IsSaved(_db.SaveChanges())) throw new ApiFlowException("Item not stored.");
+
+        DBUtil.SaveChanges(_db, "Item not stored");        
 
         return newItem;
     }

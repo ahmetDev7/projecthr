@@ -27,7 +27,9 @@ public class LocationsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetLocation(Guid id)
     {
-        return Ok(new { message = "Single location" });
+        Location? foundLocation = _locationsProvider.GetById(id);
+        if (foundLocation == null) return NotFound(new { message = $"Location not found for id '{id}'" });
+        return Ok(foundLocation);
 
     }
 

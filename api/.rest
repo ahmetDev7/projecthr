@@ -1,4 +1,8 @@
 
+GET http://localhost:5000/api/locations/bc9f1924-fa1a-4ec9-9e3a-d55434b8d701
+Content-Type: application/json
+###
+
 GET http://localhost:5000/api/locations/all
 Content-Type: application/json
 ###

@@ -1,5 +1,5 @@
 
-GET http://localhost:5000/api/locations/1
+GET http://localhost:5000/api/locations/all
 Content-Type: application/json
 ###
 

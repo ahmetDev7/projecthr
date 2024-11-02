@@ -33,4 +33,12 @@ public class ItemsController : ControllerBase
             return Problem("An error occurred while creating an item. Please try again.", statusCode: 500);
         }
     }
+
+    [HttpGet("{id}")]
+    public IActionResult SingleItem(Guid id)
+    {
+        Item? foundItem = _itemsProvider.GetById(id);
+        if (foundItem == null) return NotFound(new { message = $"Item not found for id '{id}'" });
+        return Ok(foundItem);
+    }
 }

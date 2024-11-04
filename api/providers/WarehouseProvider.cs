@@ -17,10 +17,6 @@ public class WarehouseProvider : ICRUD<Warehouse>
     {
         if (newElement is not WarehouseDTO request) throw new Exception("Request invalid");
 
-        // Check if warehouse already exists
-        if (_db.Warehouses.Any(w => w.Name == request.Name))
-            throw new Exception("Warehouse already exists");
-
         // Case 1 and 2 and 5: Validate ContactId and AddressId if provided
         if (request.ContactId != null)
         {

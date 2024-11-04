@@ -1,5 +1,7 @@
 using DTOs;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Models.Location;
 
 
 [Route("api/[controller]")]
@@ -46,6 +48,10 @@ public class LocationsController : ControllerBase
         {
             return Problem(apiFlowException.Message, statusCode: 500);
         }
+        catch (ValidationException ValidationException)
+        {
+            return BadRequest(ValidationException.Errors);
+        }
         catch (Exception)
         {
             return Problem("An error occurred while creating an location. Please try again.", statusCode: 500);
@@ -53,9 +59,32 @@ public class LocationsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateLocation(Guid id)
+    public IActionResult UpdateLocation(Guid id, [FromBody] LocationDTO req)
     {
-        return Ok(new { message = "Location updated!" });
+        try
+        {
+            Location? updatedLocation = _locationsProvider.Update(id, req);
+
+            if (updatedLocation == null)
+            {
+                return NotFound(new { message = $"Location not found for id '{id}'" });
+            }
+
+            return Ok(new { message = "Location updated!", updated_location = updatedLocation });
+        }
+        catch (ApiFlowException ex)
+        {
+            return Problem(ex.Message, statusCode: 500);
+        }
+        catch (ValidationException ValidationException)
+        {
+            return BadRequest(ValidationException.Errors);
+        }
+        catch (Exception)
+        {
+            return Problem("An error occurred while updating the location. Please try again.", statusCode: 500);
+        }
+
 
     }
 

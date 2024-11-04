@@ -98,8 +98,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse GetById(Guid id)
     {
-        if(_db.Warehouses.Any(w => w.Id == id)) throw new Exception("Warehouse ID not found");
-        return _db.Warehouses.Find(id)!;
+        throw new NotImplementedException();
     }
 
     public Warehouse Update(Guid id)

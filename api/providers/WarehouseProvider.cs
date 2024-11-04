@@ -21,7 +21,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
         if (_db.Warehouses.Any(w => w.Name == request.Name))
             throw new Exception("Warehouse already exists");
 
-        // Case 1 and 2: Validate ContactId and AddressId if provided
+        // Case 1 and 2 and 5: Validate ContactId and AddressId if provided
         if (request.ContactId != null)
         {
             var contact = _db.Contacts.Find(request.ContactId);

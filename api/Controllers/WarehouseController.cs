@@ -21,8 +21,8 @@ public class WarehousesController : ControllerBase
     {
         try
         {
-            Warehouse? createdWarehouse = _warehouseProvider.Create(request);
-            if (createdWarehouse == null) BadRequest(new { Message = "Something went wrong while storing the warehouse." });
+            Warehouse? createdWarehouse = _warehouseProvider.Create<WarehouseDTO>(request);
+            if (createdWarehouse == null) throw new Exception("An error occurred while creating the warehouse");
             return Ok(new { Message = "Warehouse created successfully!" });
         }
         catch (Exception ex)

@@ -72,8 +72,8 @@ public class WarehouseProvider : ICRUD<Warehouse>
         {
             Code = request.Code,
             Name = request.Name,
-            ContactId = newContact?.Id ?? Guid.Empty,
-            AddressId = newAddress?.Id ?? Guid.Empty,
+            ContactId = newContact.Id, 
+            AddressId = newAddress.Id
         };
 
         _db.Warehouses.Add(newWarehouse);

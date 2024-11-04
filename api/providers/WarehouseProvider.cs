@@ -42,7 +42,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
         if (request.AddressId == null && request.Address == null)
             throw new Exception("Either addressId or address fields must be filled");
 
-       
+
         // Create new Contact if provided
         Contact? newContact;
         if (request.Contact != null)
@@ -98,9 +98,18 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse GetById(Guid id)
     {
-        if(_db.Warehouses.Any(w => w.Id == id)) throw new Exception("Warehouse ID not found");
-        return _db.Warehouses.Find(id)!;
+        // Check if the warehouse exists
+        var warehouse = _db.Warehouses.Find(id);
+
+        // If warehouse is not found, throw an exception or return null based on your requirements
+        if (warehouse == null)
+        {
+            throw new Exception("Warehouse not found");
+        }
+
+        return warehouse;
     }
+
 
     public Warehouse Update(Guid id)
     {

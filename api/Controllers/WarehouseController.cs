@@ -1,6 +1,6 @@
+using CargoHub.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
- 
 
 
 [Route("api/[controller]")]
@@ -15,21 +15,33 @@ public class WarehousesController : ControllerBase
          _warehouseProvider = warehouseProvider;
    } 
 
-    [HttpGet("{id}")]  // Dit specificeert dat {id} een routeparameter is
-    public ActionResult<Warehouse> GetByID(int id)
+    // GET: api/warehouses
+    [HttpGet]
+    public ActionResult<IEnumerable<Warehouse>> GetAll()
     {
         try
         {
-            var warehouse = _warehouseProvider.GetByID(id);
-            return Ok(warehouse);
-        }
-        catch (InvalidOperationException ex)
-        {
-            return NotFound(new { Message = ex.Message });
+            return Ok(_warehouseProvider.GetAll());
         }
         catch (Exception ex)
         {
             return StatusCode(500, new { Message = ex.Message });
         }
     }
+
+    [HttpPost]
+    public IActionResult CreateWarehouse([FromBody] WarehouseDTO request)
+    {
+        try
+        {
+            Warehouse? createdWarehouse = _warehouseProvider.Create(request);
+            if (createdWarehouse == null) BadRequest(new { Message = "Something went wrong while storing the warehouse." });
+            return Ok(new { Message = "Warehouse created successfully!" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = ex.Message });
+        }
+    }
+    
 }

@@ -1,0 +1,216 @@
+// Dit is de aangepaste versie van de ERD na overleg met de PO
+
+Table warehouses {
+  id uuid [pk]
+  code varchar
+  name varchar
+  created_at datetime
+  updated_at datetime
+  contact_id uuid [ref: > contacts.id]
+  address_id uuid [ref: > addresses.id]
+}
+
+Table addresses {
+  id uuid [pk]
+  street varchar
+  house_number varchar
+  house_number_extension varchar
+  house_number_extension_extra varchar
+  zipcode varchar
+  city varchar
+  province varchar
+  country_code varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table contacts {
+  id uuid [pk]
+  name varchar
+  phone varchar
+  email varchar
+}
+
+Table locations {
+  id uuid [pk]
+  row varchar
+  rack varchar
+  shelf varchar
+  created_at datetime
+  updated_at datetime
+  warehouse_id uuid [ref: > warehouses.id]
+}
+
+Table clients {
+  id uuid [pk]
+  name varchar
+  created_at datetime
+  updated_at datetime
+  contact_id uuid [ref: > contacts.id]
+  address_id uuid [ref: > addresses.id]
+}
+
+Table items {
+  id uuid [pk]
+  code varchar
+  description varchar
+  short_description varchar
+  upc_code varchar
+  model_number varchar
+  commodity_code varchar
+  unit_purchase_quantity int
+  unit_order_quantity int
+  pack_order_quantity int
+  supplier_reference_code varchar
+  supplier_part_number varchar
+  created_at datetime
+  updated_at datetime
+  item_line uuid [ref: > item_lines.id]
+  item_group uuid [ref: > item_groups.id]
+  item_type uuid [ref: > item_types.id]
+  supplier_id uuid [ref: > suppliers.id] 
+  created_at datetime
+  updated_at datetime
+}
+
+Table item_groups {
+  id uuid [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table item_lines {
+  id uuid [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table item_types {
+  id uuid [pk]
+  name varchar
+  description varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table suppliers {
+  id uuid [pk]
+  code varchar
+  name varchar
+  reference varchar
+  contact_id uuid [ref: > contacts.id]
+  created_at datetime
+  updated_at datetime
+}
+
+Table inventories {
+  id uuid [pk]
+  description varchar
+  item_reference varchar
+  total_on_hand int
+  total_expected int
+  total_ordered int
+  total_allocated int
+  total_available int
+  created_at datetime
+  updated_at datetime
+  item_id uuid [ref: > items.id]
+}
+
+Table location_inventory {
+  inventory_id uuid [ref: > inventories.id]
+  location_id uuid [ref: > locations.id]
+}
+
+Table orders {
+  id uuid [pk]
+  order_date datetime
+  request_date datetime
+  reference varchar
+  reference_extra varchar
+  order_status varchar
+  notes varchar
+  shipping_notes varchar
+  picking_notes varchar
+  ship_to_client uuid [ref: > clients.id]
+  bill_to_client uuid [ref: > clients.id]
+  total_amount decimal(10, 2)
+  total_discount decimal(10, 2)
+  total_tax decimal(10, 2)
+  total_surcharge decimal(10, 2) //alles in euros
+  created_at datetime
+  updated_at datetime
+  warehouse_id uuid [ref: > warehouses.id]
+  shipment_id uuid [ref: > shipments.id]
+}
+
+Table order_items {
+  order_id uuid [ref: > orders.id]
+  item_id uuid [ref: > items.id]
+  amount int // De aantal orderd items optellen en bij de juiste inventory total_ordered zetten
+}
+
+Table shipments {
+  id uuid [pk]
+  order_date datetime
+  request_date datetime
+  shipment_date datetime
+  shipment_type varchar
+  shipment_status varchar
+  notes varchar
+  carrier_code varchar
+  carrier_description varchar
+  service_code varchar
+  payment_type varchar
+  transfer_mode varchar
+  total_package_count int
+  total_package_weight decimal(10, 4) // alles in KG en 4 cijfers achter de komma
+  created_at datetime
+  updated_at datetime
+  order_id uuid [ref: > orders.id]
+}
+
+Table shipment_items {
+  shipment_id uuid [ref: > shipments.id]
+  item_id uuid [ref: > items.id]
+  amount int
+}
+
+// transfers is in de zelfde warehouse van locatie a naar locatie b
+Table transfers {
+  id uuid [pk]
+  reference varchar
+  transfer_from uuid [ref: > locations.id]
+  transfer_to uuid [ref: > locations.id]
+  transfer_status varchar
+  created_at datetime
+  updated_at datetime
+}
+
+Table transfer_items {
+  transfer_id uuid [ref: > transfers.id]
+  item_id uuid [ref: > items.id]
+  amount int
+}
+
+Table employees {
+  id uuid [pk]
+  name varchar
+  role varchar // ['admin', 'employee', etc...]
+  created_at datetime
+  updated_at datetime
+}
+
+Table logs {
+  id uuid [pk]
+  action varchar // ['created', 'updated', 'deleted']
+  short_description varchar
+  created_at datetime
+  employee_id uuid [ref: > employees.id]
+  order_id uuid [ref: > orders.id, null] // Optioneel
+  shipment_id uuid [ref: > shipments.id, null] // Optioneel
+}

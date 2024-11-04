@@ -19,11 +19,15 @@ public class WarehousesController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Warehouse>> GetAll()
     {
-        var warehouses = _warehouseProvider.Getall();
-        return Ok(warehouses);
+        try
+        {
+            return Ok(_warehouseProvider.GetAll());
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = ex.Message });
+        }
     }
-
-
 
     [HttpPost]
     public IActionResult CreateWarehouse([FromBody] WarehouseDTO request)

@@ -93,12 +93,13 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public List<Warehouse> GetAll()
     {
-        throw new NotImplementedException();
+        return _db.Warehouses.ToList();
     }
 
     public Warehouse GetById(Guid id)
     {
-        throw new NotImplementedException();
+        if(_db.Warehouses.Any(w => w.Id == id)) throw new Exception("Warehouse ID not found");
+        return _db.Warehouses.Find(id)!;
     }
 
     public Warehouse Update(Guid id)

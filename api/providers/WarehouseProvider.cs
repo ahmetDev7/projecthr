@@ -15,42 +15,65 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? Create<IDTO>(IDTO newElement)
     {
-        WarehouseDTO? request = newElement as WarehouseDTO;
-        if (request == null) throw new Exception("Request invalid");
-        if(request.Name == _db.Warehouses.FirstOrDefault(w => w.Name == request.Name)?.Name) throw new Exception("Warehouse already exists");
-        // Case 1: contact_id is ingevuld
-        // if contact_id is ingevuld
-        // check als contact_id bestaat zo niet return error
+        if (newElement is not WarehouseDTO request) throw new Exception("Request invalid");
 
-        // Case 2: als contact_id niet is ingevuld dan is contact field verplicht en moet daar naar gekeken worden om nieuwe contact te maken
+        // Check if warehouse already exists
+        if (_db.Warehouses.Any(w => w.Name == request.Name))
+            throw new Exception("Warehouse already exists");
 
-        // Case 3: address_id is ingevuld
-        // if address_id is ingevuld
-        // check als address_id bestaat zo niet return error
+        // Case 1 and 2: Validate ContactId and AddressId if provided
+        if (request.ContactId != null)
+        {
+            var contact = _db.Contacts.Find(request.ContactId);
+            if (contact == null) throw new Exception("ContactID does not exist");
+        }
 
-        // Case 4: als address_id niet is ingevuld dan is contact field verplicht en moet daar naar gekeken worden om nieuwe contact te maken
+        if (request.AddressId != null)
+        {
+            var address = _db.Addresses.Find(request.AddressId);
+            if (address == null) throw new Exception("AddressID does not exist");
+        }
 
+        // Case 3: If ContactId is not provided and contact fields are empty
+        if (request.ContactId == null && request.Contact == null)
+            throw new Exception("Either contactId or contact fields must be filled");
 
-        // TODO: contact maken in de database op basis van de request en dan de contact.id pakken nadat de contact is gemaakt in de database 
-        // als deze add contact null is return new exception error
-        // Create a new Warehouse entity from the WarehouseDTO
+        // Case 4: If AddressId is not provided and address fields are empty
+        if (request.AddressId == null && request.Address == null)
+            throw new Exception("Either addressId or address fields must be filled");
 
-        if (request.Contact == null) throw new Exception("Address must be filled");
-        Contact? newContact = _contactProvider.Create<ContactDTO>(request.Contact);
-        if(newContact == null) throw new Exception("An error occurred while saving the warehouse contact");
+       
+        // Create new Contact if provided
+        Contact? newContact;
+        if (request.Contact != null)
+        {
+            newContact = _contactProvider.Create<ContactDTO>(request.Contact);
+            if (newContact == null) throw new Exception("An error occurred while saving the warehouse contact");
+        }
+        else
+        {
+            newContact = _db.Contacts.Find(request.ContactId);
+        }
 
-        // Create Address based on request.Address
-        if (request.Address == null) throw new Exception("Address must be filled");
-        Address? newAddress = _addressProvider.Create<AddressDTO>(request.Address);
+        // Create new Address if provided
+        Address? newAddress;
+        if (request.Address != null)
+        {
+            newAddress = _addressProvider.Create<AddressDTO>(request.Address);
+            if (newAddress == null) throw new Exception("An error occurred while saving the warehouse address");
+        }
+        else
+        {
+            newAddress = _db.Addresses.Find(request.AddressId);
+        }
 
-        if (newAddress == null) throw new Exception("An error occurred while saving the warehouse address");
-
+        // Create the new Warehouse entry
         Warehouse newWarehouse = new()
         {
             Code = request.Code,
             Name = request.Name,
-            ContactId = newContact.Id,
-            AddressId = newAddress.Id,
+            ContactId = newContact?.Id ?? Guid.Empty,
+            AddressId = newAddress?.Id ?? Guid.Empty,
         };
 
         _db.Warehouses.Add(newWarehouse);
@@ -62,7 +85,6 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
         return newWarehouse;
     }
-
 
     public Warehouse Delete(Guid id)
     {

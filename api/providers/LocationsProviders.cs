@@ -1,44 +1,47 @@
-// using System.Text.Json;
+public class LocationsProvider : ICRUD<Location>
+{
+    private readonly AppDbContext _db;
+    public LocationsProvider(AppDbContext db){
+        _db = db;
+    }
+    public Location? Create<IDTO>(IDTO dto)
+    {
+        LocationDTO? req = dto as LocationDTO;
+        if (req == null) throw new ApiFlowException("Could not process create location request. Save new location failed.");
+        
+        Location newLocation = new()
+        {
+            Row = req.Row,
+            Rack =req.Rack,
+            Shelf =req.Shelf,
+            WarehouseId = req.WarehouseId
+        };
+        
+        _db.Locations.Add(newLocation);
+        
+        DBUtil.SaveChanges(_db, "Location not stored");
+        
+        return newLocation;      
+    }
 
-// public class LocationsProvider : ICRUD<Location>
-// {
-//     private readonly string _filePath;
+    public Location? Delete(Guid id)
+    {
+        Location? foundLocation = GetById(id);
+        if(foundLocation == null) return null;
 
-//     public LocationsProvider(string filePath)
-//     {
-//         _filePath = filePath;
-//     }
+        _db.Locations.Remove(foundLocation);
+        
+        DBUtil.SaveChanges(_db, "Location not deleted");
 
-//     public List<Location> GetAll()
-//     {
-//         var jsonString = File.ReadAllText(_filePath);
-//         var options = new JsonSerializerOptions
-//         {
-//             PropertyNamingPolicy = JsonNamingPolicy.CamelCase, 
-//             AllowTrailingCommas = true 
-//         };
-//         List<Location>? decodedLocations = JsonSerializer.Deserialize<List<Location>>(jsonString, options);
+        return foundLocation;
+    }
 
-//         return decodedLocations;
-//     }
+    public List<Location>? GetAll() => _db.Locations.ToList();
 
-//     public Location GetById()
-//     {
-//         throw new NotImplementedException();
-//     }
+    public Location? GetById(Guid id) => _db.Locations.FirstOrDefault(l => l.Id == id );
 
-//     public Location Create()
-//     {
-//         throw new NotImplementedException();
-//     }
-
-//     public Location Delete()
-//     {
-//         throw new NotImplementedException();
-//     }
-
-//     public Location Update()
-//     {
-//         throw new NotImplementedException();
-//     }
-// }
+    public Location? Update(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+}

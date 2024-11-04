@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 builder.Services.AddTransient<AddressProvider>();
 builder.Services.AddTransient<ContactProvider>();
 builder.Services.AddTransient<WarehouseProvider>();
+builder.Services.AddTransient<ItemsProvider>();
+builder.Services.AddTransient<LocationsProvider>();
 
 builder.Services.AddControllers();
 

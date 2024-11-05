@@ -9,11 +9,15 @@ public class WarehousesController : ControllerBase
 {
 
     private readonly WarehouseProvider _warehouseProvider;
+    private readonly LocationsProvider _locationsProvider;
 
-    public WarehousesController(WarehouseProvider warehouseProvider)
+    public WarehousesController(WarehouseProvider warehouseProvider, LocationsProvider locationsProvider)
     {
         _warehouseProvider = warehouseProvider;
+        _locationsProvider = locationsProvider;
     }
+
+
     [HttpGet("{id}")]
     public ActionResult<Warehouse> GetById(Guid id)
     {
@@ -28,6 +32,14 @@ public class WarehousesController : ControllerBase
         List<Warehouse>? allWarehouses = _warehouseProvider.GetAll();
         if (allWarehouses == null) return NotFound(new { message = $"No warehouses found" });
         return Ok(allWarehouses);
+    }
+
+    [HttpGet("{WarehouseId}/locations")]
+    public ActionResult<IEnumerable<Location>> GetLocations(Guid WarehouseId)
+    {
+        List<Location>? allLocations = _locationsProvider.GetAll();
+        if (allLocations == null) return NotFound(new { message = $"No locations found" });
+        return Ok(allLocations);
     }
 
     [HttpPost]

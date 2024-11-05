@@ -82,4 +82,6 @@ public class WarehouseProvider : ICRUD<Warehouse>
     {
         throw new NotImplementedException();
     }
+
+    public Location? GetLocation(Guid id) => _db.Locations.FirstOrDefault(l => l.WarehouseId == id);
 }

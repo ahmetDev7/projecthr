@@ -90,6 +90,9 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddTransient<AddressProvider>();
+builder.Services.AddTransient<ContactProvider>();
+builder.Services.AddTransient<WarehouseProvider>();
 builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
 
@@ -97,8 +100,12 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers();
+app.MapGet("/", () => "Hello world 🚀");
+
 
 app.MapControllers();
 
@@ -111,4 +118,3 @@ app.UseSwaggerUI(c =>
 });
 
 app.Run("http://localhost:5000");
-

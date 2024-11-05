@@ -34,13 +34,17 @@ public class WarehousesController : ControllerBase
     {
         try
         {
-            Warehouse? createdWarehouse = _warehouseProvider.Create(request);
-            if (createdWarehouse == null) BadRequest(new { Message = "Something went wrong while storing the warehouse." });
+            Warehouse? createdWarehouse = _warehouseProvider.Create<WarehouseDTO>(request);
+            if (createdWarehouse == null) throw new ApiFlowException("An error occurred while creating the warehouse");
             return Ok(new { Message = "Warehouse created successfully!" });
         }
-        catch (Exception ex)
+        catch (ApiFlowException apiFlowException)
         {
-            return StatusCode(500, new { Message = ex.Message });
+            return Problem(apiFlowException.Message, statusCode: 500);
+        }
+        catch (Exception)
+        {
+            return Problem("An error occurred while creating an warehouse. Please try again.", statusCode: 500);
         }
     }
     

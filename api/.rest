@@ -1,4 +1,81 @@
 
+//normal  create warehouse
+POST http://localhost:5000/api/warehouses
+Content-Type: application/json
+
+{
+    "code": "Alperen",
+    "name": "Tst",
+    "contact": {        
+        "name": "Henk",
+        "phone": "+3164589874",
+        "email": "henk@gmail.com"
+    },
+    "address": {        
+        "street": "some street",
+        "house_number": "12",
+        "zipcode": "3022VB",
+        "country_code": "NL",
+        "city": "Rotterdam"
+    }
+}
+###
+//creat warehouse zonder contact maar met contactid en addressid
+POST http://localhost:5000/api/warehouses
+Content-Type: application/json
+
+{
+    "code": "TEST",
+    "name": "Opa",
+    "contact_id": "49386594-f72b-4c33-852d-66445301ec0b",
+    "address": {        
+        "street": "some street",
+        "house_number": "12",
+        "zipcode": "3022VB",
+        "country_code": "NL",
+        "city": "Rotterdam"
+    }
+    
+}
+
+###
+//test if either contact or contact_id is required
+POST http://localhost:5000/api/warehouses
+Content-Type: application/json
+
+{
+    "code": "TEST",
+    "name": "ada",
+    "contact_id": "49386594-f72b-4c30-852d-66445301ec0b",
+    "address": {        
+        "street": "some street",
+        "house_number": "12",
+        "zipcode": "3022VB",
+        "country_code": "NL",
+        "city": "Rotterdam"
+    }
+}
+
+###
+//addresid en address is empty test
+POST http://localhost:5000/api/warehouses
+Content-Type: application/json
+
+{
+    "code": "TEST",
+    "name": "aa",
+    "contact_id": "49386594-f72b-4c30-852d-66445301ec0b",
+    "address": {        
+        "street": "some street",
+        "house_number": "12",
+        "zipcode": "3022VB",
+        "country_code": "NL",
+        "city": "Rotterdam"
+    }
+}
+
+###
+
 GET http://localhost:5000/api/locations/bc9f1924-fa1a-4ec9-9e3a-d55434b8d701
 Content-Type: application/json
 ###

@@ -66,9 +66,16 @@ public class WarehouseProvider : ICRUD<Warehouse>
                : throw new ApiFlowException("An error occurred while saving the warehouse address");
     }
 
-    public Warehouse Delete(Guid id)
+    public Warehouse? Delete(Guid id)
     {
-        throw new NotImplementedException();
+        Warehouse? foundWarehouse = GetById(id);
+        if(foundWarehouse == null) return null;
+
+        _db.Warehouses.Remove(foundWarehouse);
+        
+        DBUtil.SaveChanges(_db, "Warehouse not deleted");
+
+        return foundWarehouse;
     }
 
     public List<Warehouse> GetAll()

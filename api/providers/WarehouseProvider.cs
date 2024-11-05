@@ -73,7 +73,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public List<Warehouse> GetAll()
     {
-        throw new NotImplementedException();
+        return _db.Warehouses.ToList();
     }
 
     public Warehouse GetById(Guid id)

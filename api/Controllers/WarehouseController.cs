@@ -8,12 +8,19 @@ using System.Collections.Generic;
 [ApiController]
 public class WarehousesController : ControllerBase
 {
+   private readonly WarehouseProvider _warehouseProvider;
 
-    private readonly WarehouseProvider _warehouseProvider;
+   public WarehousesController(WarehouseProvider warehouseProvider)
+   {
+         _warehouseProvider = warehouseProvider;
+   } 
 
-    public WarehousesController(WarehouseProvider warehouseProvider)
+    [HttpGet]
+    public ActionResult<IEnumerable<Warehouse>> GetAll()
     {
-        _warehouseProvider = warehouseProvider;
+        List<Warehouse>? allWarehouses = _warehouseProvider.GetAll();
+        if (allWarehouses == null) return NotFound(new { message = $"No warehouses found" });
+        return Ok(allWarehouses);
     }
 
     [HttpPost]
@@ -35,5 +42,4 @@ public class WarehousesController : ControllerBase
         }
     }
     
-
 }

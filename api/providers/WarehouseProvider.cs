@@ -15,37 +15,26 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? Create<IDTO>(IDTO newElement)
     {
-        if (newElement is not WarehouseDTO request) throw new Exception("Request invalid");
+        WarehouseDTO? request = newElement as WarehouseDTO;
 
-        var existingWarehouse = _db.Warehouses.FirstOrDefault(w => w.Code == request.Code && w.Name == request.Name);
+        if (request == null) throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
 
-        if (existingWarehouse != null)
-        {
-            throw new Exception("Warehouse with the same Code and Name already exists");
-        }
-        // Case 1 and 2 and 5: Validate ContactId and AddressId if provided
         if (request.ContactId != null)
         {
-            var contact = _db.Contacts.Find(request.ContactId);
-            if (contact == null) throw new Exception("ContactID does not exist");
+            if (_contactProvider.GetById(request.ContactId.Value) == null) throw new ApiFlowException("ContactID does not exist");
         }
 
         if (request.AddressId != null)
         {
-            var address = _db.Addresses.Find(request.AddressId);
-            if (address == null) throw new Exception("AddressID does not exist");
+           if(_addressProvider.GetById(request.AddressId.Value) == null) throw new ApiFlowException("AddressID does not exist");
         }
 
-        // Case 3: If ContactId is not provided and contact fields are empty
         if (request.ContactId == null && request.Contact == null)
-            throw new Exception("Either contactId or contact fields must be filled");
+            throw new Exception("Either contact_id or contact fields must be filled");
 
-        // Case 4: If AddressId is not provided and address fields are empty
         if (request.AddressId == null && request.Address == null)
-            throw new Exception("Either addressId or address fields must be filled");
+            throw new Exception("Either address_id or address fields must be filled");
 
-
-        // Create new Contact if provided
         Contact? newContact;
         if (request.Contact != null)
         {
@@ -57,7 +46,6 @@ public class WarehouseProvider : ICRUD<Warehouse>
             newContact = _db.Contacts.Find(request.ContactId);
         }
 
-        // Create new Address if provided
         Address? newAddress;
         if (request.Address != null)
         {

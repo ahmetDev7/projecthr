@@ -96,20 +96,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
         return _db.Warehouses.ToList();
     }
 
-    public Warehouse GetById(Guid id)
-    {
-        // Check if the warehouse exists
-        var warehouse = _db.Warehouses.Find(id);
-
-        // If warehouse is not found, throw an exception or return null based on your requirements
-        if (warehouse == null)
-        {
-            throw new Exception("Warehouse not found");
-        }
-
-        return warehouse;
-    }
-
+    public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id );
 
     public Warehouse Update(Guid id)
     {

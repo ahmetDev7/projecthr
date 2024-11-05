@@ -17,16 +17,9 @@ public class WarehousesController : ControllerBase
     [HttpGet("{id}")]
     public ActionResult<Warehouse> GetById(Guid id)
     {
-        try
-        {
-            Warehouse? warehouse = _warehouseProvider.GetById(id);
-            if (warehouse == null) return NotFound(new { Message = "Warehouse not found" });
-            return Ok(warehouse);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { Message = ex.Message });
-        }
+        Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
+        if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
+        return Ok(foundWarehouse);
     }
 
     // GET: api/warehouses

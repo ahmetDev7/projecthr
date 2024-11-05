@@ -68,7 +68,12 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse Delete(Guid id)
     {
-        throw new NotImplementedException();
+        Warehouse foundWarehouse = GetById(id) ?? throw new ApiFlowException("Warehouse not found");
+
+        _db.Warehouses.Remove(foundWarehouse);
+        DBUtil.SaveChanges(_db, "Warehouse not deleted");
+
+        return foundWarehouse;
     }
 
     public List<Warehouse> GetAll()

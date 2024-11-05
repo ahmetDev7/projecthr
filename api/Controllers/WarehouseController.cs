@@ -49,4 +49,23 @@ public class WarehousesController : ControllerBase
         }
     }
 
+    [HttpDelete("{id}")]
+    public IActionResult DeleteWarehouse(Guid id)
+    {
+        try
+        {
+            Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
+            if (deletedWarehouse == null) throw new ApiFlowException("An error occurred while deleting the warehouse");
+            return Ok(new { Message = "Warehouse deleted successfully!" });
+        }
+        catch (ApiFlowException apiFlowException)
+        {
+            return Problem(apiFlowException.Message, statusCode: 500);
+        }
+        catch (Exception)
+        {
+            return Problem("An error occurred while deleting a warehouse. Please try again.", statusCode: 500);
+        }
+    }
+
 }

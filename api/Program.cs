@@ -6,6 +6,11 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load Env vars
+DotNetEnv.Env.Load();
+string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+if(connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -83,6 +88,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddControllers();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddTransient<ItemsProvider>();
+builder.Services.AddTransient<LocationsProvider>();
+
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -91,6 +103,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseSwagger();
+
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "CargoHub API");

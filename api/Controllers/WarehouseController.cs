@@ -29,9 +29,9 @@ public class WarehousesController : ControllerBase
         {
             return Problem(apiFlowException.Message, statusCode: 500);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return Problem(ex.Message, statusCode: 500);
+            return Problem("Something went wrong....", statusCode: 500);
         }
     }
     

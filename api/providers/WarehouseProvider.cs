@@ -15,62 +15,55 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? Create<IDTO>(IDTO newElement)
     {
-        WarehouseDTO? request = newElement as WarehouseDTO;
-
-        if (request == null) throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
-
-        if (request.ContactId != null)
-        {
-            if (_contactProvider.GetById(request.ContactId.Value) == null) throw new ApiFlowException("ContactID does not exist");
-        }
-
-        if (request.AddressId != null)
-        {
-           if(_addressProvider.GetById(request.AddressId.Value) == null) throw new ApiFlowException("AddressID does not exist");
-        }
+        var request = newElement as WarehouseDTO ?? throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
 
         if (request.ContactId == null && request.Contact == null)
-            throw new Exception("Either contact_id or contact fields must be filled");
+            throw new ApiFlowException("Either contact_id or contact fields must be filled");
 
         if (request.AddressId == null && request.Address == null)
-            throw new Exception("Either address_id or address fields must be filled");
+            throw new ApiFlowException("Either address_id or address fields must be filled");
 
-        Contact? newContact;
-        if (request.Contact != null)
-        {
-            newContact = _contactProvider.Create<ContactDTO>(request.Contact);
-            if (newContact == null) throw new Exception("An error occurred while saving the warehouse contact");
-        }
-        else
-        {
-            newContact = _db.Contacts.Find(request.ContactId);
-        }
+        var relatedContact = GetOrCreateContact(request);
+        var relatedAddress = GetOrCreateAddress(request);
 
-        Address? newAddress;
-        if (request.Address != null)
-        {
-            newAddress = _addressProvider.Create<AddressDTO>(request.Address);
-            if (newAddress == null) throw new Exception("An error occurred while saving the warehouse address");
-        }
-        else
-        {
-            newAddress = _db.Addresses.Find(request.AddressId);
-        }
+        if (relatedContact == null || relatedAddress == null)
+            throw new ApiFlowException("Failed to process address or contact");
 
         // Create the new Warehouse entry
-        Warehouse newWarehouse = new()
+        var newWarehouse = new Warehouse
         {
             Code = request.Code,
             Name = request.Name,
-            ContactId = newContact.Id,
-            AddressId = newAddress.Id
+            ContactId = relatedContact.Id,
+            AddressId = relatedAddress.Id
         };
 
         _db.Warehouses.Add(newWarehouse);
-
         DBUtil.SaveChanges(_db, "Location not stored");
 
         return newWarehouse;
+    }
+
+    private Contact? GetOrCreateContact(WarehouseDTO request)
+    {
+        if (request.ContactId != null)
+            return _contactProvider.GetById(request.ContactId.Value)
+                   ?? throw new ApiFlowException("contact_id does not exist");
+
+        return request.Contact != null
+               ? _contactProvider.Create<ContactDTO>(request.Contact)
+               : throw new ApiFlowException("An error occurred while saving the warehouse contact");
+    }
+
+    private Address? GetOrCreateAddress(WarehouseDTO request)
+    {
+        if (request.AddressId != null)
+            return _addressProvider.GetById(request.AddressId.Value)
+                   ?? throw new ApiFlowException("address_id does not exist");
+
+        return request.Address != null
+               ? _addressProvider.Create<AddressDTO>(request.Address)
+               : throw new ApiFlowException("An error occurred while saving the warehouse address");
     }
 
     public Warehouse Delete(Guid id)

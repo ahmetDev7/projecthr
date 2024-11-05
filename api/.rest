@@ -1,14 +1,15 @@
 
+### GET LOCATION BY ID
 GET http://localhost:5000/api/locations/bc9f1924-fa1a-4ec9-9e3a-d55434b8d701
 Content-Type: application/json
 ###
 
+### GET ALL LOCATIONS
 GET http://localhost:5000/api/locations/all
 Content-Type: application/json
 ###
-DELETE  http://localhost:5000/api/locations/00c944a3-e731-4bf9-a82f-50151c05a9a1
-Content-Type: application/json
-###
+
+### CREATE LOCATION
 POST http://localhost:5000/api/locations
 Content-Type: application/json
 
@@ -16,18 +17,27 @@ Content-Type: application/json
     "row" : "3",
     "rack" : "26",
     "shelf" : "124",
-    "warehouse_id" : "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
+    "warehouse_id" : "385baef7-f174-4e74-ac50-297215227120"
 }
 ###
 
-PUT  http://localhost:5000/api/locations/cdd22e34-09f2-4da7-b713-8bcf3b760fcb
+### UPDATE LOCATION
+PUT  http://localhost:5000/api/locations/a6e26a17-2876-4367-a3b3-2d28ebcbc012
 Content-Type: application/json
 
 {
-  "rack" : "123"
+  "rack" : "123",
+  "row" : "123"
+
 }
 ###
 
+### DELETE LOCATION
+DELETE  http://localhost:5000/api/locations/00c944a3-e731-4bf9-a82f-50151c05a9a1
+Content-Type: application/json
+###
+
+### GET ALL ITEMS
 POST http://localhost:5000/api/items
 Content-Type: application/json
 
@@ -46,6 +56,8 @@ Content-Type: application/json
 }
 ###
 
+
+### GET ITEM BY ID
 GET http://localhost:5000/api/items/80df97cd-b781-4a74-a859-9f2581fbd3c5
 Content-Type: application/json
 ###

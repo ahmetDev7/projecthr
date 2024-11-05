@@ -1,5 +1,3 @@
-using DTOs;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Models.Location;
 
@@ -32,81 +30,30 @@ public class LocationsController : ControllerBase
         Location? foundLocation = _locationsProvider.GetById(id);
         if (foundLocation == null) return NotFound(new { message = $"Location not found for id '{id}'" });
         return Ok(foundLocation);
-
     }
 
     [HttpPost()]
     public IActionResult CreateLocation([FromBody] LocationDTO req)
     {
-        try
-        {
-            Location? newLocation = _locationsProvider.Create<LocationDTO>(req);
-            if (newLocation == null) throw new ApiFlowException("Saving new location failed.");
-            return Ok(new { message = "Location created!", new_location = newLocation });
-        }
-        catch (ApiFlowException apiFlowException)
-        {
-            return Problem(apiFlowException.Message, statusCode: 500);
-        }
-        catch (ValidationException ValidationException)
-        {
-            return BadRequest(ValidationException.Errors);
-        }
-        catch (Exception)
-        {
-            return Problem("An error occurred while creating an location. Please try again.", statusCode: 500);
-        }
+        Location? newLocation = _locationsProvider.Create<LocationDTO>(req);
+        if (newLocation == null) throw new ApiFlowException("Saving new location failed.");
+        return Ok(new { message = "Location created!", new_location = newLocation });
     }
 
     [HttpPut("{id}")]
     public IActionResult UpdateLocation(Guid id, [FromBody] LocationDTO req)
     {
-        try
-        {
-            Location? updatedLocation = _locationsProvider.Update(id, req);
-
-            if (updatedLocation == null)
-            {
-                return NotFound(new { message = $"Location not found for id '{id}'" });
-            }
-
-            return Ok(new { message = "Location updated!", updated_location = updatedLocation });
-        }
-        catch (ApiFlowException ex)
-        {
-            return Problem(ex.Message, statusCode: 500);
-        }
-        catch (ValidationException ValidationException)
-        {
-            return BadRequest(ValidationException.Errors);
-        }
-        catch (Exception)
-        {
-            return Problem("An error occurred while updating the location. Please try again.", statusCode: 500);
-        }
-
-
+        Location? updatedLocation = _locationsProvider.Update(id, req);
+        if (updatedLocation == null) return NotFound(new { message = $"Location not found for id '{id}'" });
+        return Ok(new { message = "Location updated!", updated_location = updatedLocation });
     }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteLocation(Guid id)
     {
-        try
-        {
-            Location? deletedLocation = _locationsProvider.Delete(id);
-
-            if (deletedLocation == null) return NotFound(new { message = $"Location not found for id '{id}'" });
-
-            return Ok(new { message = "Location deleted!", deleted_location = deletedLocation });
-        }
-        catch (ApiFlowException apiFlowException)
-        {
-            return Problem(apiFlowException.Message, statusCode: 500);
-        }
-        catch (Exception)
-        {
-            return Problem("An error occurred while creating an location. Please try again.", statusCode: 500);
-        }
+        Location? deletedLocation = _locationsProvider.Delete(id);
+        if (deletedLocation == null) return NotFound(new { message = $"Location not found for id '{id}'" });
+        return Ok(new { message = "Location deleted!", deleted_location = deletedLocation });
 
     }
 }

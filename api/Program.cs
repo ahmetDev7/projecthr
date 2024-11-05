@@ -31,6 +31,7 @@ app.MapGet("/", () => "Hello world 🚀");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.Run("http://localhost:5000");
 

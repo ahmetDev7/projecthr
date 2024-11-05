@@ -26,9 +26,7 @@ public class AddressProvider : ICRUD<Address>
 
         _db.Addresses.Add(newAddress);
 
-        if(_db.SaveChanges() < 1){
-            throw new Exception("An error occurred while saving the address");
-        }
+        DBUtil.SaveChanges(_db, "Address not stored");
 
 
         return newAddress;

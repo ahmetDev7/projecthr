@@ -27,9 +27,7 @@ public class ContactProvider : ICRUD<Contact>
 
         _db.Contacts.Add(newContact);
 
-        if(_db.SaveChanges() < 1){
-            throw new Exception("An error occurred while saving the address");
-        }
+        DBUtil.SaveChanges(_db, "Contact not stored");
 
         return newContact; 
     }

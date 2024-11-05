@@ -3,17 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 
-
 [Route("api/[controller]")]
 [ApiController]
 public class WarehousesController : ControllerBase
 {
-   private readonly WarehouseProvider _warehouseProvider;
 
-   public WarehousesController(WarehouseProvider warehouseProvider)
-   {
-         _warehouseProvider = warehouseProvider;
-   } 
+    private readonly WarehouseProvider _warehouseProvider;
+
+    public WarehousesController(WarehouseProvider warehouseProvider)
+    {
+        _warehouseProvider = warehouseProvider;
+    }
+    [HttpGet("{id}")]
+    public ActionResult<Warehouse> GetById(Guid id)
+    {
+        Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
+        if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
+        return Ok(foundWarehouse);
+    }
 
     [HttpGet]
     public ActionResult<IEnumerable<Warehouse>> GetAll()
@@ -41,5 +48,5 @@ public class WarehousesController : ControllerBase
             return Problem("An error occurred while creating an warehouse. Please try again.", statusCode: 500);
         }
     }
-    
+
 }

@@ -76,10 +76,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
         return _db.Warehouses.ToList();
     }
 
-    public Warehouse GetById(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id );
 
     public Warehouse Update(Guid id)
     {

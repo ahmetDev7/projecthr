@@ -31,7 +31,7 @@ public class WarehousesController : ControllerBase
         }
         catch (Exception)
         {
-            return Problem("Something went wrong....", statusCode: 500);
+            return Problem("An error occurred while creating an warehouse. Please try again.", statusCode: 500);
         }
     }
     

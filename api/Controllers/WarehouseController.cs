@@ -55,7 +55,7 @@ public class WarehousesController : ControllerBase
         try
         {
             Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
-            if (deletedWarehouse == null) throw new ApiFlowException("An error occurred while deleting the warehouse");
+            if (deletedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
             return Ok(new { Message = "Warehouse deleted successfully!" });
         }
         catch (ApiFlowException apiFlowException)

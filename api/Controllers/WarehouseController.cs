@@ -15,18 +15,12 @@ public class WarehousesController : ControllerBase
          _warehouseProvider = warehouseProvider;
    } 
 
-    // GET: api/warehouses
     [HttpGet]
     public ActionResult<IEnumerable<Warehouse>> GetAll()
     {
-        try
-        {
-            return Ok(_warehouseProvider.GetAll());
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { Message = ex.Message });
-        }
+        List<Warehouse>? allWarehouses = _warehouseProvider.GetAll();
+        if (allWarehouses == null) return NotFound(new { message = $"No warehouses found" });
+        return Ok(allWarehouses);
     }
 
     [HttpPost]

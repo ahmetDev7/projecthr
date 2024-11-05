@@ -26,7 +26,8 @@ public class WarehouseProvider : ICRUD<Warehouse>
         // Case 1 and 2 and 5: Validate ContactId and AddressId if provided
         if (request.ContactId != null)
         {
-            if (_contactProvider.GetById(request.ContactId) == null) throw new Exception("ContactID does not exist");
+            var contact = _db.Contacts.Find(request.ContactId);
+            if (contact == null) throw new Exception("ContactID does not exist");
         }
 
         if (request.AddressId != null)

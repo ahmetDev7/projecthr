@@ -1,3 +1,6 @@
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Models.Location;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -95,6 +98,8 @@ builder.Services.AddTransient<ContactProvider>();
 builder.Services.AddTransient<WarehouseProvider>();
 builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
+
+builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
 
 builder.Services.AddControllers();
 

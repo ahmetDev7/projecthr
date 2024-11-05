@@ -85,7 +85,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id );
 
-    public Warehouse Update(Guid id)
+    public Warehouse? Update<IDTO>(Guid id, IDTO dto)
     {
         throw new NotImplementedException();
     }

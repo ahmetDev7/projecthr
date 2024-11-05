@@ -11,13 +11,13 @@ namespace CargoHub.DTOs
         [Required]
         public required string Name { get; set; }
 
-        [JsonPropertyName("contact_id")] // TODO: later implentation for flexibility based on existing contact_id
+        [JsonPropertyName("contact_id")]
         public Guid? ContactId { get; set; }
 
         [JsonPropertyName("contact")]
         public ContactDTO? Contact { get; set; }
 
-        [JsonPropertyName("address_id")] // TODO: later implentation for flexibility based on existing address_id
+        [JsonPropertyName("address_id")]
         public Guid? AddressId { get; set; }
 
         [JsonPropertyName("address")]

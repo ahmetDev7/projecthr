@@ -17,6 +17,12 @@ public class WarehouseProvider : ICRUD<Warehouse>
     {
         if (newElement is not WarehouseDTO request) throw new Exception("Request invalid");
 
+        var existingWarehouse = _db.Warehouses.FirstOrDefault(w => w.Code == request.Code && w.Name == request.Name);
+
+        if (existingWarehouse != null)
+        {
+            throw new Exception("Warehouse with the same Code and Name already exists");
+        }
         // Case 1 and 2 and 5: Validate ContactId and AddressId if provided
         if (request.ContactId != null)
         {
@@ -38,7 +44,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
         if (request.AddressId == null && request.Address == null)
             throw new Exception("Either addressId or address fields must be filled");
 
-       
+
         // Create new Contact if provided
         Contact? newContact;
         if (request.Contact != null)
@@ -68,16 +74,13 @@ public class WarehouseProvider : ICRUD<Warehouse>
         {
             Code = request.Code,
             Name = request.Name,
-            ContactId = newContact.Id, 
+            ContactId = newContact.Id,
             AddressId = newAddress.Id
         };
 
         _db.Warehouses.Add(newWarehouse);
 
-        if (_db.SaveChanges() < 1)
-        {
-            throw new Exception("An error occurred while saving the warehouse");
-        }
+        DBUtil.SaveChanges(_db, "Location not stored");
 
         return newWarehouse;
     }

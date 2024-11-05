@@ -49,7 +49,7 @@ public class AddressProvider : ICRUD<Address>
         return _db.Addresses.FirstOrDefault(a => a.Id == id);
     }
 
-    public Address Update(Guid id)
+    public Address? Update<IDTO>(Guid id, IDTO dto)
     {
         throw new NotImplementedException();
     }

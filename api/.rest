@@ -91,13 +91,13 @@ Content-Type: application/json
 
 {
     "row" : "3",
-    "rack" : "26",
+    "rack" : "27",
     "shelf" : "124",
     "warehouse_id" : "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
 }
 ###
 
-PUT  http://localhost:5000/api/locations/cdd22e34-09f2-4da7-b713-8bcf3b760fcb
+PUT  http://localhost:5000/api/locations/3152d4aa-22e9-4dfd-9f27-6bdc9e3f8886
 Content-Type: application/json
 
 {

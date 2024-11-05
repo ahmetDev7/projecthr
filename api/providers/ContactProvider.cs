@@ -32,10 +32,6 @@ public class ContactProvider : ICRUD<Contact>
         return newContact; 
     }
 
-    public Contact Update(Guid id)
-    {
-        throw new NotImplementedException();
-    }
 
     public Contact Delete(Guid id)
     {
@@ -45,5 +41,10 @@ public class ContactProvider : ICRUD<Contact>
     public Contact? GetById(Guid id)
     {
         return _db.Contacts.FirstOrDefault(c => c.Id == id);
+    }
+
+    public Contact? Update<IDTO>(Guid id, IDTO dto)
+    {
+        throw new NotImplementedException();
     }
 }

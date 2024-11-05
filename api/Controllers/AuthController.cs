@@ -19,10 +19,24 @@ public class AuthController : ControllerBase
         return Ok(new { Token = token });
     }
 
+    [HttpGet("generate-reader-token")]
+    public async Task<IActionResult> GenerateReaderToken()
+    {
+        var token = await _tokenService.GenerateReaderToken();
+        return Ok(new { Token = token });
+    }
+
     [HttpGet("admin-only")]
     [Authorize(Roles = "admin")]
     public IActionResult AdminOnly()
     {
-        return Ok(new{message = "Authorized."});
+        return Ok(new{message = "Admin Only Authorized."});
+    }
+
+    [HttpGet("reader")]
+    [Authorize]
+    public IActionResult Reader()
+    {
+        return Ok(new{message = "Reader / Admin Authorized."});
     }
 }

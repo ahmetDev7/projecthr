@@ -83,10 +83,20 @@ public class WarehouseProvider : ICRUD<Warehouse>
         return _db.Warehouses.ToList();
     }
 
-    public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id );
+    public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id);
 
     public Warehouse? Update<IDTO>(Guid id, IDTO dto)
     {
         throw new NotImplementedException();
     }
+
+    public List<Location> GetLocationsByWarehouseId(Guid warehouseId)
+    {
+        var locationsOfspecificWarehouse = _db.Locations.Where(l => l.WarehouseId == warehouseId).ToList();
+        if (locationsOfspecificWarehouse.Count == 0)
+            throw new ApiFlowException("No locations found for this warehouse");
+
+        return locationsOfspecificWarehouse;
+    }
+
 }

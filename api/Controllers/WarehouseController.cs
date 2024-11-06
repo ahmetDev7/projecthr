@@ -10,10 +10,14 @@ public class WarehousesController : ControllerBase
 
     private readonly WarehouseProvider _warehouseProvider;
 
+
     public WarehousesController(WarehouseProvider warehouseProvider)
     {
         _warehouseProvider = warehouseProvider;
+
     }
+
+
     [HttpGet("{id}")]
     public ActionResult<Warehouse> GetById(Guid id)
     {
@@ -22,13 +26,30 @@ public class WarehousesController : ControllerBase
         return Ok(foundWarehouse);
     }
 
-    [HttpGet]
+    [HttpGet("all")]
     public ActionResult<IEnumerable<Warehouse>> GetAll()
     {
         List<Warehouse>? allWarehouses = _warehouseProvider.GetAll();
         if (allWarehouses == null) return NotFound(new { message = $"No warehouses found" });
         return Ok(allWarehouses);
     }
+
+    [HttpGet("{warehouseId}/locations")]
+    public IActionResult GetLocations(Guid warehouseId)
+    {
+        try
+        {
+            var locations = _warehouseProvider.GetLocationsByWarehouseId(warehouseId);
+            return Ok(locations);
+        }
+        catch (ApiFlowException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+
+
 
     [HttpPost]
     public IActionResult CreateWarehouse([FromBody] WarehouseDTO request)

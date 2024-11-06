@@ -24,18 +24,5 @@ namespace CargoHub.DTOs
         public AddressDTO? Address { get; set; }
     }
 
-
-
-    public record WarehouseLocationsDTO
-    {
-        [Required]
-        public required string Code { get; set; }
-
-        [Required]
-        public required string Name { get; set; }
-
-        public List<Location>? Locations { get; set; }
-    }
-
 }
 

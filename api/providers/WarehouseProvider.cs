@@ -1,4 +1,6 @@
-using CargoHub.DTOs;
+using DTOs;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Models.Location;
 
 public class WarehouseProvider : ICRUD<Warehouse>
@@ -7,11 +9,14 @@ public class WarehouseProvider : ICRUD<Warehouse>
     private readonly AddressProvider _addressProvider;
     private readonly ContactProvider _contactProvider;
 
-    public WarehouseProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider)
+    private readonly IValidator<Warehouse> _warehouseValidator;
+
+    public WarehouseProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, IValidator<Warehouse> WarehouseValidator)
     {
         _db = db;
         _addressProvider = addressProvider;
         _contactProvider = contactProvider;
+        _warehouseValidator = WarehouseValidator;
     }
 
     public Warehouse? Create<IDTO>(IDTO newElement)
@@ -67,6 +72,22 @@ public class WarehouseProvider : ICRUD<Warehouse>
                : throw new ApiFlowException("An error occurred while saving the warehouse address");
     }
 
+
+    private Contact? GetOrCreateContactforUpdate(WarehouseUpdateDTO request)
+    {
+        return request.Contact != null
+               ? _contactProvider.Create<ContactDTO>(request.Contact)
+               : throw new ApiFlowException("An error occurred while saving the warehouse contact");
+    }
+
+    private Address? GetOrCreateAddressforUpdate(WarehouseUpdateDTO request)
+    {
+        return request.Address != null
+               ? _addressProvider.Create<AddressDTO>(request.Address)
+               : throw new ApiFlowException("An error occurred while saving the warehouse address");
+    }
+
+
     public Warehouse? Delete(Guid id)
     {
         Warehouse? foundWarehouse = GetById(id);
@@ -88,31 +109,41 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? Update<IDTO>(Guid id, IDTO dto)
     {
-        var request = dto as WarehouseDTO ?? throw new ApiFlowException("Could not process update warehouse request. Update warehouse failed.");
+        var request = dto as WarehouseUpdateDTO ?? throw new ApiFlowException("Could not process update warehouse request. Update warehouse failed.");
 
-        Warehouse? foundWarehouse = GetById(id);
-        if (foundWarehouse == null) return null;
+        Warehouse? foundWarehouseWithContactAndAddress = _db.Warehouses.Include(w => w.Contact).Include(w=> w.Address).FirstOrDefault(w => w.Id == id);
+        if (foundWarehouseWithContactAndAddress == null) return null;
 
-        if (request.ContactId == null && request.Contact == null)
-            throw new ApiFlowException("Either contact_id or contact fields must be filled");
+        Contact? contact = foundWarehouseWithContactAndAddress.Contact;
+        Address? address = foundWarehouseWithContactAndAddress.Address;
 
-        if (request.AddressId == null && request.Address == null)
-            throw new ApiFlowException("Either address_id or address fields must be filled");
+        if(!string.IsNullOrEmpty(request.Code)) foundWarehouseWithContactAndAddress.Code = request.Code;
+        if(!string.IsNullOrEmpty(request.Name)) foundWarehouseWithContactAndAddress.Name = request.Name;
+        if(request.Address != null && address != null)
+        {
+            if(!string.IsNullOrEmpty(request.Address.Street)) address.Street = request.Address.Street;
+            if(!string.IsNullOrEmpty(request.Address.HouseNumber)) address.HouseNumber = request.Address.HouseNumber;
+            if(!string.IsNullOrEmpty(request.Address.HouseNumberExtension)) address.HouseNumberExtension = request.Address.HouseNumberExtension;
+            if(!string.IsNullOrEmpty(request.Address.HouseNumberExtensionExtra)) address.HouseNumberExtensionExtra = request.Address.HouseNumberExtensionExtra;
+            if(!string.IsNullOrEmpty(request.Address.ZipCode)) address.ZipCode = request.Address.ZipCode;
+            if(!string.IsNullOrEmpty(request.Address.City)) address.City = request.Address.City;
+            if(!string.IsNullOrEmpty(request.Address.Province)) address.Province = request.Address.Province;
+            if(!string.IsNullOrEmpty(request.Address.CountryCode)) address.CountryCode = request.Address.CountryCode;
+        }
 
-        var relatedContact = GetOrCreateContact(request);
-        var relatedAddress = GetOrCreateAddress(request);
+        if(request.Contact != null && contact != null){
+            if(!string.IsNullOrEmpty(request.Contact.Name)) contact.Name = request.Contact.Name;
+            if(!string.IsNullOrEmpty(request.Contact.Phone)) contact.Phone = request.Contact.Phone;
+            if(!string.IsNullOrEmpty(request.Contact.Email)) contact.Email = request.Contact.Email;
+        }
+        
 
-        if (relatedContact == null || relatedAddress == null)
-            throw new ApiFlowException("Failed to process address or contact");
 
-        foundWarehouse.Code = request.Code;
-        foundWarehouse.Name = request.Name;
-        foundWarehouse.ContactId = relatedContact.Id;
-        foundWarehouse.AddressId = relatedAddress.Id;
+        validateWarehouse(foundWarehouseWithContactAndAddress);
 
         DBUtil.SaveChanges(_db, "Warehouse not updated");
 
-        return foundWarehouse;
+        return foundWarehouseWithContactAndAddress;
     }
 
     public List<Location> GetLocationsByWarehouseId(Guid warehouseId)
@@ -123,5 +154,39 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
         return locationsOfspecificWarehouse;
     }
+    private void validateWarehouse(Warehouse warehouse)
+    {
 
+        var validationResult = _warehouseValidator.Validate(warehouse);
+        if (validationResult.IsValid == false)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+    }
+
+}
+
+
+public class WarehouseValidator : AbstractValidator<Warehouse>
+{
+    public WarehouseValidator()
+    {
+        // juiste regels toepassen in de validator
+        RuleFor(Warehouse => Warehouse.Name)
+             .NotNull().WithMessage("warehouse name is required.")
+             .NotEmpty().WithMessage("Warehouse name cannot be empty");
+
+        RuleFor(Warehouse => Warehouse.Code)
+            .NotNull().WithMessage("warehouse code is required.")
+            .NotEmpty().WithMessage("Warehouse Code cannot be empty");
+
+        RuleFor(Warehouse => Warehouse.Contact)
+            .NotNull().WithMessage("warehouse contact is required.")
+            .NotEmpty().WithMessage("Warehouse contact cannot be empty.");
+
+        RuleFor(Warehouse => Warehouse.Address)
+            .NotNull().WithMessage("warehouse address is required.")
+            .NotEmpty().WithMessage("Warehouse address cannot be empty.");
+
+    }
 }

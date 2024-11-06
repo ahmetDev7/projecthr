@@ -15,7 +15,11 @@ string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STR
 if(connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        });
 builder.Services.AddEndpointsApiExplorer();
 
 // Register the TokenService
@@ -100,6 +104,8 @@ builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
 
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
+builder.Services.AddScoped<IValidator<Warehouse>, WarehouseValidator>();
+// warehouse validatior
 
 builder.Services.AddControllers();
 

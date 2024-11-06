@@ -1,6 +1,7 @@
-using CargoHub.DTOs;
+using DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using FluentValidation;
 
 
 [Route("api/[controller]")]
@@ -71,21 +72,30 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateWarehouse(Guid id, [FromBody] WarehouseDTO request)
+    public IActionResult UpdateWarehouse(Guid id, [FromBody] WarehouseUpdateDTO request)
     {
-        try
+       try
         {
-            Warehouse? updatedWarehouse = _warehouseProvider.Update<WarehouseDTO>(id, request);
-            if (updatedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-            return Ok(new { Message = "Warehouse updated successfully!" });
+            Warehouse? updatedWarehouse = _warehouseProvider.Update(id, request);
+
+            if (updatedWarehouse == null)
+            {
+                return NotFound(new { message = $"Warehouse not found for id '{id}'" });
+            }
+
+            return Ok(new { message = "Warehouse updated!", updated_Warehouse = updatedWarehouse });
         }
-        catch (ApiFlowException apiFlowException)
+        catch (ApiFlowException ex)
         {
-            return Problem(apiFlowException.Message, statusCode: 500);
+            return Problem(ex.Message, statusCode: 500);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
         }
         catch (Exception)
         {
-            return Problem("An error occurred while updating a warehouse. Please try again.", statusCode: 500);
+            return Problem("An error occurred while updating the location. Please try again.", statusCode: 500);
         }
     }
 

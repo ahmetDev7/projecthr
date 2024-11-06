@@ -70,6 +70,25 @@ public class WarehousesController : ControllerBase
         }
     }
 
+    [HttpPut("{id}")]
+    public IActionResult UpdateWarehouse(Guid id, [FromBody] WarehouseDTO request)
+    {
+        try
+        {
+            Warehouse? updatedWarehouse = _warehouseProvider.Update<WarehouseDTO>(id, request);
+            if (updatedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
+            return Ok(new { Message = "Warehouse updated successfully!" });
+        }
+        catch (ApiFlowException apiFlowException)
+        {
+            return Problem(apiFlowException.Message, statusCode: 500);
+        }
+        catch (Exception)
+        {
+            return Problem("An error occurred while updating a warehouse. Please try again.", statusCode: 500);
+        }
+    }
+
     [HttpDelete("{id}")]
     public IActionResult DeleteWarehouse(Guid id)
     {

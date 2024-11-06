@@ -1,4 +1,5 @@
 using CargoHub.DTOs;
+using Models.Location;
 
 public class WarehouseProvider : ICRUD<Warehouse>
 {
@@ -69,10 +70,10 @@ public class WarehouseProvider : ICRUD<Warehouse>
     public Warehouse? Delete(Guid id)
     {
         Warehouse? foundWarehouse = GetById(id);
-        if(foundWarehouse == null) return null;
+        if (foundWarehouse == null) return null;
 
         _db.Warehouses.Remove(foundWarehouse);
-        
+
         DBUtil.SaveChanges(_db, "Warehouse not deleted");
 
         return foundWarehouse;
@@ -87,7 +88,31 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? Update<IDTO>(Guid id, IDTO dto)
     {
-        throw new NotImplementedException();
+        var request = dto as WarehouseDTO ?? throw new ApiFlowException("Could not process update warehouse request. Update warehouse failed.");
+
+        Warehouse? foundWarehouse = GetById(id);
+        if (foundWarehouse == null) return null;
+
+        if (request.ContactId == null && request.Contact == null)
+            throw new ApiFlowException("Either contact_id or contact fields must be filled");
+
+        if (request.AddressId == null && request.Address == null)
+            throw new ApiFlowException("Either address_id or address fields must be filled");
+
+        var relatedContact = GetOrCreateContact(request);
+        var relatedAddress = GetOrCreateAddress(request);
+
+        if (relatedContact == null || relatedAddress == null)
+            throw new ApiFlowException("Failed to process address or contact");
+
+        foundWarehouse.Code = request.Code;
+        foundWarehouse.Name = request.Name;
+        foundWarehouse.ContactId = relatedContact.Id;
+        foundWarehouse.AddressId = relatedAddress.Id;
+
+        DBUtil.SaveChanges(_db, "Warehouse not updated");
+
+        return foundWarehouse;
     }
 
     public List<Location> GetLocationsByWarehouseId(Guid warehouseId)

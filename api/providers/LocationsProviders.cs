@@ -82,7 +82,6 @@ public class LocationsProvider : ICRUD<Location>
 
 }
 
-
 public class LocationValidator : AbstractValidator<Location>
 {
     public LocationValidator()

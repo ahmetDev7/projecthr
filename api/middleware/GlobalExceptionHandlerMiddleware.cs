@@ -20,7 +20,7 @@ public class GlobalExceptionHandlingMiddleware
         catch(ApiFlowException afe){
             context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
             context.Response.ContentType = CONTENT_TYPE;
-            var response = JsonSerializer.Serialize(new { message = afe.Message });
+            var response = JsonSerializer.Serialize(new { error = afe.Message });
             await context.Response.WriteAsync(response);
         }
         catch (ValidationException ex)
@@ -40,7 +40,7 @@ public class GlobalExceptionHandlingMiddleware
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Response.ContentType = CONTENT_TYPE;
-            var response = JsonSerializer.Serialize(new { message = "An unexpected error occurred." });
+            var response = JsonSerializer.Serialize(new { error = "An unexpected error occurred." });
             await context.Response.WriteAsync(response);
         }
     }

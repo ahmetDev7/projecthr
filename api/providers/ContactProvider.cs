@@ -1,4 +1,3 @@
-using CargoHub.DTOs;
 
 public class ContactProvider : ICRUD<Contact>
 {

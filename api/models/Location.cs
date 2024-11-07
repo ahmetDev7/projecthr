@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using FluentValidation;
 
 namespace Models.Location;
 
@@ -32,4 +30,3 @@ public class Location
     public required Guid WarehouseId { get; set; }
     public Warehouse? Warehouse { get; set; }
 }
-

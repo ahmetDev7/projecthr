@@ -16,22 +16,10 @@ public class ItemsController : ControllerBase
     [HttpPost()]
     public IActionResult CreateItem([FromBody] ItemDTO req)
     {
-        try
-        {
-            Item? newItem = _itemsProvider.Create<ItemDTO>(req);
-            if (newItem == null) throw new ApiFlowException("Saving new Item failed.");
+        Item? newItem = _itemsProvider.Create<ItemDTO>(req);
+        if (newItem == null) throw new ApiFlowException("Saving new Item failed.");
 
-
-            return Ok(new { message = "Item created!", new_item = req });
-        }
-        catch (ApiFlowException apiFlowException)
-        {
-            return Problem(apiFlowException.Message, statusCode: 500);
-        }
-        catch (Exception)
-        {
-            return Problem("An error occurred while creating an item. Please try again.", statusCode: 500);
-        }
+        return Ok(new { message = "Item created!", new_item = req });
     }
 
     [HttpGet("{id}")]

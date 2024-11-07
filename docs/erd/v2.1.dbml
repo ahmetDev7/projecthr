@@ -6,8 +6,8 @@ Table warehouses {
   name varchar
   created_at datetime
   updated_at datetime
-  contact_id uuid [ref: > contacts.id]
-  address_id uuid [ref: > addresses.id]
+  contact_id uuid [ref: > contacts.id] // contact is niet verplicht kan later verplicht
+  address_id uuid [ref: > addresses.id] // warehouse contact aanpasbaar maken
 }
 
 Table addresses {
@@ -63,11 +63,9 @@ Table items {
   pack_order_quantity int
   supplier_reference_code varchar
   supplier_part_number varchar
-  created_at datetime
-  updated_at datetime
-  item_line uuid [ref: > item_lines.id]
-  item_group uuid [ref: > item_groups.id]
-  item_type uuid [ref: > item_types.id]
+  item_line uuid [ref: > item_lines.id] //zijn niet verplicht
+  item_group uuid [ref: > item_groups.id] //zijn niet verplicht
+  item_type uuid [ref: > item_types.id] //zijn niet verplicht
   supplier_id uuid [ref: > suppliers.id] 
   created_at datetime
   updated_at datetime
@@ -113,7 +111,7 @@ Table inventories {
   item_reference varchar
   total_on_hand int
   total_expected int
-  total_ordered int
+  total_ordered int //calculated value op basis van order
   total_allocated int
   total_available int
   created_at datetime

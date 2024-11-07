@@ -73,21 +73,6 @@ public class WarehouseProvider : ICRUD<Warehouse>
     }
 
 
-    private Contact? GetOrCreateContactforUpdate(WarehouseUpdateDTO request)
-    {
-        return request.Contact != null
-               ? _contactProvider.Create<ContactDTO>(request.Contact)
-               : throw new ApiFlowException("An error occurred while saving the warehouse contact");
-    }
-
-    private Address? GetOrCreateAddressforUpdate(WarehouseUpdateDTO request)
-    {
-        return request.Address != null
-               ? _addressProvider.Create<AddressDTO>(request.Address)
-               : throw new ApiFlowException("An error occurred while saving the warehouse address");
-    }
-
-
     public Warehouse? Delete(Guid id)
     {
         Warehouse? foundWarehouse = GetById(id);

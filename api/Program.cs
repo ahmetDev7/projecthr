@@ -99,6 +99,7 @@ builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
 
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
+builder.Services.AddScoped<IValidator<Item>, ItemValidator>();
 
 builder.Services.AddControllers();
 

@@ -21,12 +21,12 @@ public abstract class BaseModel
 
     public virtual void SetTimeStamps()
     {
-        CreatedAt = DateTime.Now;
-        UpdatedAt = DateTime.Now;
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public virtual void SetUpdatedAt()
     {
-        UpdatedAt = DateTime.Now;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

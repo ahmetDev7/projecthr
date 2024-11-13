@@ -14,9 +14,14 @@ public class SupplierDTO : IDTO
     public string? reference {get;set;}
 
     [JsonPropertyName("contact_id")]
-    public required Guid? contact_id{get;set;}
+    public  Guid? contact_id{get;set;}
+    [JsonPropertyName("contact")]
+    public Contact? contact {get;set;}
 
     [JsonPropertyName("address_id")]
-    public required Guid? address_id{get;set;}
+    public  Guid? address_id{get;set;}
+
+    [JsonPropertyName("address")]
+    public Address? address {get;set;}
     
 }

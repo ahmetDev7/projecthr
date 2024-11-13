@@ -4,11 +4,10 @@ namespace Model;
 
 public abstract class BaseModel
 {
-
-    public BaseModel() { }
-    public BaseModel(bool newInstance)
+    public BaseModel(bool newInstance=false, bool isUpdate = false)
     {
-        SetTimeStamps();
+        if(newInstance) SetTimeStamps();
+        if(isUpdate) SetUpdatedAt();
     }
 
     [Required]

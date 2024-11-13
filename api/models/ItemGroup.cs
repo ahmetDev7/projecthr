@@ -4,9 +4,7 @@ namespace Model;
 
 public class ItemGroup : BaseModel
 {
-    public ItemGroup() : base(){}
-
-    public ItemGroup(bool newInstance) : base(newInstance){}
+    public ItemGroup(bool newInstance, bool isUpdate) : base(newInstance, isUpdate){}
 
     [Required]
     public string? Name { get; set; }

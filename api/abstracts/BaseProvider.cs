@@ -10,7 +10,6 @@ public abstract class BaseProvider<T>
         _db = db;
     }
 
-    // Generic method for GetById
     public virtual T? GetById(Guid id) { return default(T); }
     public virtual List<T>? GetAll() => default(List<T>);
     public virtual T? Create<U>(U createValues) where U : IDTO => default(T);
@@ -22,8 +21,5 @@ public abstract class BaseProvider<T>
         DBUtil.SaveChanges(_db, message);
     }
 
-    protected virtual void ValidateModel(T model)
-    {
-        throw new NotImplementedException();
-    }
+    protected abstract void ValidateModel(T model);
 }

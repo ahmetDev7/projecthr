@@ -1,9 +1,13 @@
 public abstract class BaseProvider<T>
 {
-    private string ProviderName {get; set;}
+    private string ProviderName { get; set; }
 
-    public BaseProvider(){
+    protected AppDbContext _db;
+
+    public BaseProvider(AppDbContext db)
+    {
         ProviderName = GetType().Name;
+        _db = db;
     }
 
     // Generic method for GetById
@@ -13,13 +17,13 @@ public abstract class BaseProvider<T>
     public virtual T? Update<U>(Guid id, U updatedValues) where U : IDTO => default(T);
     public virtual T? Delete(Guid id) => default(T);
 
-    protected virtual void SaveToDBOrFail(AppDbContext db, string? errorMessage = null)
-    {
+    protected virtual void SaveToDBOrFail( string? errorMessage = null)    {
         string message = errorMessage ?? $"Failed to save {ProviderName}.";
-        DBUtil.SaveChanges(db, message);
+        DBUtil.SaveChanges(_db, message);
     }
 
-    protected virtual void ValidateModel(T model){
+    protected virtual void ValidateModel(T model)
+    {
         throw new NotImplementedException();
     }
 }

@@ -3,12 +3,10 @@ using FluentValidation;
 
 public class ItemsProvider : BaseProvider<Item>
 {
-    private readonly AppDbContext _db;
     private readonly IValidator<Item> _itemValidator;
 
-    public ItemsProvider(AppDbContext db, IValidator<Item> validator) : base()
+    public ItemsProvider(AppDbContext db, IValidator<Item> validator) : base(db)
     {
-        _db = db;
         _itemValidator = validator;
     }
 
@@ -38,7 +36,7 @@ public class ItemsProvider : BaseProvider<Item>
         
         ValidateModel(newItem);
         _db.Items.Add(newItem);
-        SaveToDBOrFail(_db);
+        SaveToDBOrFail();
         return newItem;
     }
 

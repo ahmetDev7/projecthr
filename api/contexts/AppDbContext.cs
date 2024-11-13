@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Model;
 using Models.Location;
 
 public class AppDbContext : DbContext
@@ -10,4 +11,5 @@ public class AppDbContext : DbContext
     public DbSet<Address> Addresses {get; set;}
     public DbSet<Contact> Contacts {get; set;}
     public DbSet<Item> Items {get; set;}
+    public DbSet<ItemGroup> ItemGroups {get; set;}
 } 

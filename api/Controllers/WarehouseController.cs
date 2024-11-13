@@ -20,19 +20,20 @@ public class WarehousesController : ControllerBase
 
 
     [HttpGet("{id}")]
-    public ActionResult<Warehouse> GetById(Guid id)
+    public ActionResult<WarehouseResultDTO> GetById(Guid id)
     {
-        Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
+        var foundWarehouse = _warehouseProvider.GetByIdAsDTO(id);
         if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-        return Ok(foundWarehouse);
+        return Ok((WarehouseResultDTO)foundWarehouse);
     }
 
     [HttpGet("all")]
-    public ActionResult<IEnumerable<Warehouse>> GetAll()
+    public ActionResult<List<WarehouseResultDTO>> GetAll()
     {
-        List<Warehouse>? allWarehouses = _warehouseProvider.GetAll();
-        if (allWarehouses == null) return NotFound(new { message = $"No warehouses found" });
-        return Ok(allWarehouses);
+        var result = _warehouseProvider.GetAll()
+                                   .OfType<WarehouseResultDTO>()
+                                   .ToList();
+        return Ok(result);
     }
 
     [HttpGet("{warehouseId}/locations")]

@@ -1,5 +1,7 @@
 using System.Data.Common;
+using System.Linq;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Models.Location;
 
 public class LocationsProvider : ICRUD<Location>
@@ -16,8 +18,9 @@ public class LocationsProvider : ICRUD<Location>
         LocationDTO? req = dto as LocationDTO;
         if (req == null) throw new ApiFlowException("Could not process create location request. Save new location failed.");
 
-        // TODO: if warehouse does not exists return apiFlowException
-        // req.WarehouseId
+        var foundwarehouse = _db.Warehouses.Where(l => l.Id == req.WarehouseId).ToList();
+        if (foundwarehouse.Count == 0)
+            throw new ApiFlowException("No warehouse found");
 
         Location newLocation = new Location
         {
@@ -50,9 +53,39 @@ public class LocationsProvider : ICRUD<Location>
         return foundLocation;
     }
 
-    public List<Location>? GetAll() => _db.Locations.ToList();
+    public List<IDTO>? GetAll()
+    {
+      return _db.Locations.Select(l => (IDTO)new LocationResultDTO
+        {
+            Id = l.Id,
+            Row = l.Row,
+            Rack = l.Rack,
+            Shelf = l.Shelf,
+            WarehouseId = l.WarehouseId
+
+        }).ToList();
+    }
+
+
+
 
     public Location? GetById(Guid id) => _db.Locations.FirstOrDefault(l => l.Id == id);
+
+    public IDTO? GetByIdAsDTO(Guid id)
+    {
+        Location? foundLocation = GetById(id);
+        if (foundLocation == null) throw new ApiFlowException("Location not found");
+
+        var locationasDTO = (IDTO)new LocationResultDTO
+        {
+            Id = foundLocation.Id,
+            Row = foundLocation.Row,
+            Rack = foundLocation.Rack,
+            Shelf = foundLocation.Shelf,
+            WarehouseId = foundLocation.WarehouseId
+        };
+        return locationasDTO;
+    }
 
     public Location? Update<IDTO>(Guid id, IDTO dto)
     {
@@ -69,8 +102,9 @@ public class LocationsProvider : ICRUD<Location>
 
         foundLocation.UpdatedAt = DateTime.UtcNow;
 
-        // TODO: if warehouse does not exists return apiFlowException
-        // req.WarehouseId
+        var foundwarehouse = _db.Warehouses.Where(l => l.Id == req.WarehouseId).ToList();
+        if (foundwarehouse.Count == 0)
+            throw new ApiFlowException("No warehouse found");
 
         validateLocation(foundLocation);
 

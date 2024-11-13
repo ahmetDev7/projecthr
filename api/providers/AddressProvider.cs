@@ -38,7 +38,7 @@ public class AddressProvider : ICRUD<Address>
         throw new NotImplementedException();
     }
 
-    public List<Address> GetAll()
+    public List<IDTO>? GetAll()
     {
         throw new NotImplementedException();
     }
@@ -47,6 +47,11 @@ public class AddressProvider : ICRUD<Address>
     public Address? GetById(Guid id)
     {
         return _db.Addresses.FirstOrDefault(a => a.Id == id);
+    }
+
+    public IDTO? GetByIdAsDTO(Guid id)
+    {
+        throw new NotImplementedException();
     }
 
     public Address? Update<IDTO>(Guid id, IDTO dto)

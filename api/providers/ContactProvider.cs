@@ -8,9 +8,12 @@ public class ContactProvider : ICRUD<Contact>
     {
         _db = db;
     }
-    public List<Contact> GetAll()
+    public List<IDTO>? GetAll()
     {
-        return _db.Contacts.ToList();
+        // TODO: FIX
+        throw new NotImplementedException();
+
+        // return _db.Contacts.ToList();
     }
 
     public Contact? Create<IDTO>(IDTO newElement)
@@ -44,6 +47,11 @@ public class ContactProvider : ICRUD<Contact>
     }
 
     public Contact? Update<IDTO>(Guid id, IDTO dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IDTO? GetByIdAsDTO(Guid id)
     {
         throw new NotImplementedException();
     }

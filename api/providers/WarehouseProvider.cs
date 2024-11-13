@@ -1,6 +1,7 @@
 using DTOs;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
 using Models.Location;
 
 public class WarehouseProvider : ICRUD<Warehouse>
@@ -85,9 +86,17 @@ public class WarehouseProvider : ICRUD<Warehouse>
         return foundWarehouse;
     }
 
-    public List<Warehouse> GetAll()
+    public List<IDTO>? GetAll()
     {
-        return _db.Warehouses.ToList();
+        return _db.Warehouses.Include(w => w.Contact).Include(w => w.Address).Select(w => (IDTO)new WarehouseResultDTO
+        {
+            Id = w.Id,
+            Code = w.Code,
+            Name = w.Name,
+            Contact = new ContactDTO { Name = w.Contact.Name, Phone = w.Contact.Phone, Email = w.Contact.Email },
+            Address = new AddressDTO { Street = w.Address.Street, HouseNumber = w.Address.HouseNumber, HouseNumberExtension = w.Address.HouseNumberExtension, HouseNumberExtensionExtra = w.Address.HouseNumberExtensionExtra, ZipCode = w.Address.ZipCode, City = w.Address.City, Province = w.Address.Province, CountryCode = w.Address.CountryCode }
+
+        }).ToList();
     }
 
     public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id);
@@ -96,7 +105,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
     {
         var request = dto as WarehouseUpdateDTO ?? throw new ApiFlowException("Could not process update warehouse request. Update warehouse failed.");
 
-        Warehouse? foundWarehouseWithContactAndAddress = _db.Warehouses.Include(w => w.Contact).Include(w=> w.Address).FirstOrDefault(w => w.Id == id);
+        Warehouse? foundWarehouseWithContactAndAddress = _db.Warehouses.Include(w => w.Contact).Include(w => w.Address).FirstOrDefault(w => w.Id == id);
         if (foundWarehouseWithContactAndAddress == null) return null;
 
         Contact? contact = foundWarehouseWithContactAndAddress.Contact;
@@ -121,7 +130,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
             if(!string.IsNullOrEmpty(request.Contact.Phone)) contact.Phone = request.Contact.Phone;
             if(!string.IsNullOrEmpty(request.Contact.Email)) contact.Email = request.Contact.Email;
         }
-        
+
 
 
         validateWarehouse(foundWarehouseWithContactAndAddress);
@@ -149,13 +158,30 @@ public class WarehouseProvider : ICRUD<Warehouse>
         }
     }
 
+    public IDTO? GetByIdAsDTO(Guid id)
+    {
+        Warehouse? warehouse = _db.Warehouses.Include(w => w.Contact).Include(w => w.Address).FirstOrDefault(l => l.Id == id);
+        if(warehouse == null) return null;
+
+        return new WarehouseResultDTO{
+            Id = warehouse.Id,
+            Code = warehouse.Code,
+            Name = warehouse.Name,
+            Contact = new ContactDTO { Name = warehouse.Contact.Name, Phone = warehouse.Contact.Phone, Email = warehouse.Contact.Email },
+            Address = new AddressDTO { Street = warehouse.Address.Street, HouseNumber = warehouse.Address.HouseNumber, HouseNumberExtension = warehouse.Address.HouseNumberExtension, HouseNumberExtensionExtra = warehouse.Address.HouseNumberExtensionExtra, ZipCode = warehouse.Address.ZipCode, City = warehouse.Address.City, Province = warehouse.Address.Province, CountryCode = warehouse.Address.CountryCode }
+
+        };
+    }
 }
 
 
 public class WarehouseValidator : AbstractValidator<Warehouse>
 {
-    public WarehouseValidator()
+    private readonly AppDbContext? _db;
+    public WarehouseValidator(AppDbContext db)
     {
+        _db = db;
+
         // juiste regels toepassen in de validator
         RuleFor(Warehouse => Warehouse.Name)
              .NotNull().WithMessage("warehouse name is required.")
@@ -167,11 +193,13 @@ public class WarehouseValidator : AbstractValidator<Warehouse>
 
         RuleFor(Warehouse => Warehouse.Contact)
             .NotNull().WithMessage("warehouse contact is required.")
-            .NotEmpty().WithMessage("Warehouse contact cannot be empty.");
+            .NotEmpty().WithMessage("Warehouse contact cannot be empty.")
+            .Must(contact => _db.Contacts.Any(x => x.Id == contact.Id));
 
         RuleFor(Warehouse => Warehouse.Address)
             .NotNull().WithMessage("warehouse address is required.")
-            .NotEmpty().WithMessage("Warehouse address cannot be empty.");
+            .NotEmpty().WithMessage("Warehouse address cannot be empty.")
+            .Must(address => _db.Addresses.Any(x => x.Id == address.Id));
 
     }
 }

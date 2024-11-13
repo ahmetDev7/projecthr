@@ -3,24 +3,7 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 
 namespace Models.Location;
-
-public record LocationDTO : IDTO
-{
-    [JsonPropertyName("row")]
-    public string? Row { get; set; }
-
-    [JsonPropertyName("rack")]
-    public string? Rack { get; set; }
-
-    [JsonPropertyName("shelf")]
-    public string? Shelf { get; set; }
-
-    [JsonPropertyName("warehouse_id")]
-    public Guid? WarehouseId { get; set; }
-}
-
-
-public class Location
+public class Location : IDTO
 {
     public Guid Id { get; set; }
     public DateTime CreatedAt { get; set; }

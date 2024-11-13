@@ -47,7 +47,17 @@ public class ItemsProvider : ICRUD<Item>
 
     public Item? GetById(Guid id) => _db.Items.FirstOrDefault(i => i.Id == id);
 
+    public IDTO? GetByIdAsDTO(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Item? Update<IDTO>(Guid id, IDTO dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    List<IDTO>? ICRUD<Item>.GetAll()
     {
         throw new NotImplementedException();
     }

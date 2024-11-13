@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Models.Location;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -15,11 +14,8 @@ string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STR
 if(connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
 
 // Add services to the container.
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-        });
+builder.Services.AddControllers();
+    
 builder.Services.AddEndpointsApiExplorer();
 
 // Register the TokenService

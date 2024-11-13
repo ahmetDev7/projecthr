@@ -20,7 +20,10 @@ public class LocationsController : ControllerBase
     [HttpGet("all")]
     public IActionResult GetLocations()
     {
-        List<Location>? allLocations = _locationsProvider.GetAll();
+        List<LocationResultDTO>? allLocations = _locationsProvider.GetAll()
+                                   .OfType<LocationResultDTO>()
+                                   .ToList();
+                                  
         if (allLocations == null) return NotFound(new { message = $"No location found" });
         return Ok(allLocations);
     }
@@ -29,7 +32,7 @@ public class LocationsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetLocation(Guid id)
     {
-        Location? foundLocation = _locationsProvider.GetById(id);
+        List<LocationResultDTO>? foundLocation = new List<LocationResultDTO> { _locationsProvider.GetByIdAsDTO(id) as LocationResultDTO };
         if (foundLocation == null) return NotFound(new { message = $"Location not found for id '{id}'" });
         return Ok(foundLocation);
 

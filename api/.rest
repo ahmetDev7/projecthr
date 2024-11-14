@@ -138,3 +138,8 @@ Content-Type: application/json
 ###
 
 
+### GET ALL ITEM GROUPS
+GET http://localhost:5000/api/itemGroups
+Content-Type: application/json
+###
+

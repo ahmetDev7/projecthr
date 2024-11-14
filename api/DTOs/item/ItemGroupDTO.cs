@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace DTO.ItemGroup
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    public class ItemGroupRequest : IDTO
+    public class ItemGroupRequest : BaseDTO
     {
         [JsonPropertyName("name")]
         public string? Name { get; set; }
@@ -13,7 +13,7 @@ namespace DTO.ItemGroup
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
-    public class ItemGroupResponse : IDTO
+    public class ItemGroupResponse : BaseDTO
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }

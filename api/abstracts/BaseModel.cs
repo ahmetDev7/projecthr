@@ -4,6 +4,7 @@ namespace Model;
 
 public abstract class BaseModel
 {
+    public BaseModel (){}
     public BaseModel(bool newInstance=false, bool isUpdate = false)
     {
         if(newInstance) SetTimeStamps();

@@ -12,8 +12,8 @@ public abstract class BaseProvider<T>
 
     public virtual T? GetById(Guid id) { return default(T); }
     public virtual List<T>? GetAll() => default(List<T>);
-    public virtual T? Create<U>(U createValues) where U : IDTO => default(T);
-    public virtual T? Update<U>(Guid id, U updatedValues) where U : IDTO => default(T);
+    public virtual T? Create(BaseDTO  createValues) => default(T);
+    public virtual T? Update(Guid id, BaseDTO updatedValues) => default(T);
     public virtual T? Delete(Guid id) => default(T);
 
     protected virtual void SaveToDBOrFail( string? errorMessage = null)    {

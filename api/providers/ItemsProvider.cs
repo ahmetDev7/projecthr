@@ -14,7 +14,7 @@ public class ItemsProvider : BaseProvider<Item>
 
     public override List<Item>? GetAll() => _db.Items.ToList();
 
-    public override Item? Create<U>(U createValues)
+    public override Item? Create(BaseDTO createValues)
     {
         Base? req = createValues as Base;
         if (req == null) throw new ApiFlowException("Could not process create item request. Save new item failed.");

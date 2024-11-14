@@ -10,12 +10,12 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
         _itemGroupValidator = validator;
      }
 
-    public override ItemGroup? Create<U>(U createValues)
+    public override ItemGroup? Create(BaseDTO createValues)
     {
         ItemGroupRequest? req = createValues as ItemGroupRequest;
         if (req == null) throw new ApiFlowException("Could not process create item group request. Save new item group failed.");
 
-        ItemGroup newItemGroup = new ItemGroup(newInstance:true, isUpdate:false)
+        ItemGroup newItemGroup = new ItemGroup(newInstance:true)
         {
             Name = req.Name,
             Description = req.Description

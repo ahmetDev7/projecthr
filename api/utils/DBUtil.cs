@@ -3,7 +3,8 @@ public static class DBUtil{
         return rowsAffected > 0;
     }
 
-    public static void SaveChanges(AppDbContext db, string errorMessage = "Value not stored"){
+    public static void SaveChanges(AppDbContext db, string? errorMessage  = null){
+        if(errorMessage == null) errorMessage = "Value not stored";
         if (!IsSaved(db.SaveChanges())) throw new ApiFlowException(errorMessage);
     }
 }

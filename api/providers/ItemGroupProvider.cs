@@ -27,5 +27,7 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
         return newItemGroup;
     }
 
+    public override List<ItemGroup>? GetAll() => _db.ItemGroups.ToList();
+
     protected override void ValidateModel(ItemGroup model) => _itemGroupValidator.ValidateAndThrow(model);
 }

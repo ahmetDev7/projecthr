@@ -29,10 +29,19 @@ public class ItemGroupsController : ControllerBase
         if (newItemGroup == null) throw new ApiFlowException("Saving new Item Group failed.");
 
 
-        return Ok(new ItemGroupResponse{
+        return Ok(new ItemGroupResponse
+        {
             Id = newItemGroup.Id,
             Name = newItemGroup.Name,
             Description = newItemGroup.Description
         });
     }
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_itemGroupProvider.GetAll().Select(ig => new ItemGroupResponse
+    {
+        Id = ig.Id,
+        Name = ig.Name,
+        Description = ig.Description
+    }).ToList());
 }

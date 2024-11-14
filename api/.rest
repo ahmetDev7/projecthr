@@ -131,15 +131,18 @@ Content-Type: application/json
 }
 ###
 
-
 ### GET ITEM BY ID
 GET http://localhost:5000/api/items/80df97cd-b781-4a74-a859-9f2581fbd3c5
 Content-Type: application/json
 ###
 
-
 ### GET ALL ITEM GROUPS
 GET http://localhost:5000/api/itemGroups
+Content-Type: application/json
+###
+
+### GET ITEM GROUP BY ID
+GET http://localhost:5000/api/itemGroups/907ef239-bd4f-4d3e-913b-e61d629a6bfd
 Content-Type: application/json
 ###
 

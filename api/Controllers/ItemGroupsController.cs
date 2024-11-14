@@ -37,6 +37,18 @@ public class ItemGroupsController : ControllerBase
         });
     }
 
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id){
+        ItemGroup? foundItemGroup =  _itemGroupProvider.GetById(id);
+        if(foundItemGroup == null) return NotFound(new {message = $"Item group not found for id '{id}'"});
+
+        return Ok(new ItemGroupResponse{
+            Id = foundItemGroup.Id,
+            Name = foundItemGroup.Name,
+            Description = foundItemGroup.Description
+        });
+    }
+
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_itemGroupProvider.GetAll().Select(ig => new ItemGroupResponse
     {

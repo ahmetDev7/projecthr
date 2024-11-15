@@ -1,27 +1,24 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DTOs;
-public class SupplierDTO : IDTO
+[ApiExplorerSettings(IgnoreApi = true)]
+public class SupplierReQuestDTO : BaseDTO
 {
     [Required]
-    public required string? code {get;set;}
-
+    public string? Code { get; set; }
     [Required]
-    public required string? name {get;set;}
+    public string? Name { get; set; }
+    public string? Reference { get; set; }
+    public Contact? Contact { get; set; }
+    public Address? Address { get; set; }
+}
 
-    [JsonPropertyName("reference")]
-    public string? reference {get;set;}
-
-    [JsonPropertyName("contact_id")]
-    public  Guid? contact_id{get;set;}
-    [JsonPropertyName("contact")]
-    public Contact? contact {get;set;}
-
-    [JsonPropertyName("address_id")]
-    public  Guid? address_id{get;set;}
-
-    [JsonPropertyName("address")]
-    public Address? address {get;set;}
-    
+[ApiExplorerSettings(IgnoreApi = true)]
+public class SupplierResponseDTO : BaseDTO
+{
+    public string? Name { get; set; }
+    public string? Reference { get; set; }
+    public Contact? Contact { get; set; }
+    public Address? Address { get; set; }
 }

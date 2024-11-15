@@ -101,7 +101,7 @@ Table suppliers {
   name varchar
   reference varchar
   contact_id uuid [ref: > contacts.id]
-  address_id uuid [ref: > address.id]
+  address_id uuid [ref: > addresses.id]
   created_at datetime
   updated_at datetime
 }

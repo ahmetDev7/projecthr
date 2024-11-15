@@ -1,3 +1,4 @@
+using Model;
 using Utils.Number;
 
 public class Item
@@ -35,13 +36,16 @@ public class Item
 
     public required string SupplierReferenceCode { get; set; }
     public required string SupplierPartNumber { get; set; }
+
+    // Foreign Key Relationship
+    public Guid? ItemGroupId { get; set; }
+    public ItemGroup? ItemGroup { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
     /*
     TODO: 
         item_line uuid [ref: > item_lines.id]
-        item_group uuid [ref: > item_groups.id]
         item_type uuid [ref: > item_types.id]
         supplier_id uuid [ref: > suppliers.id] 
     */

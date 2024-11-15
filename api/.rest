@@ -1,4 +1,10 @@
 
+GET http://localhost:5000/api/warehouses/all
+Content-Type: application/json
+###
+
+
+
 //normal  create warehouse
 POST http://localhost:5000/api/warehouses
 Content-Type: application/json
@@ -20,6 +26,17 @@ Content-Type: application/json
     }
 }
 ###
+
+PUT http://localhost:5000/api/warehouses/f2b949a6-bb56-4868-8519-0acc7a459575
+Content-Type: application/json
+
+{
+    "code": "SUPER TEST",
+    "name": "SUPER TEST NAME"
+}
+###
+
+
 //creat warehouse zonder contact maar met contactid en addressid
 POST http://localhost:5000/api/warehouses
 Content-Type: application/json
@@ -90,14 +107,14 @@ POST http://localhost:5000/api/locations
 Content-Type: application/json
 
 {
-    "row" : "3",
+    "row" : "76",
     "rack" : "27",
     "shelf" : "124",
     "warehouse_id" : "385baef7-f174-4e74-ac50-297215227120"
 }
 ###
 
-PUT  http://localhost:5000/api/locations/3152d4aa-22e9-4dfd-9f27-6bdc9e3f8886
+PUT  http://localhost:5000/api/locations/4dcdf915-930f-4f6c-8c95-85be87a6c7bc
 Content-Type: application/json
 
 {
@@ -137,4 +154,13 @@ GET http://localhost:5000/api/items/80df97cd-b781-4a74-a859-9f2581fbd3c5
 Content-Type: application/json
 ###
 
+GET http://localhost:5000/api/items/all
+Content-Type: application/json
+###
+
+
+### GET ALL ITEM GROUPS
+GET http://localhost:5000/api/itemGroups
+Content-Type: application/json
+###
 

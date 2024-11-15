@@ -27,6 +27,35 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
         return newItemGroup;
     }
 
+public override ItemGroup? Update(Guid id, BaseDTO updatedValues)
+{
+    bool hasChanges = false;
+    ItemGroupRequest? req = updatedValues as ItemGroupRequest;
+    if (req == null) throw new ApiFlowException("Could not process update item group request. Update new item group failed.");
+
+    ItemGroup? foundItemGroup = _db.ItemGroups.FirstOrDefault(ig => ig.Id == id);
+    if (foundItemGroup == null) return null;
+
+    if (!string.IsNullOrEmpty(req.Name) && req.Name != foundItemGroup.Name)
+    {
+        foundItemGroup.Name = req.Name;
+        hasChanges = true;
+    }
+
+    if (req.Description != foundItemGroup.Description)
+    {
+        foundItemGroup.Description = req.Description;
+        hasChanges = true;
+    }
+
+    if (hasChanges) foundItemGroup.SetUpdatedAt();
+
+    SaveToDBOrFail();
+
+    return foundItemGroup;
+}
+
+
     public override List<ItemGroup>? GetAll() => _db.ItemGroups.ToList();
 
     protected override void ValidateModel(ItemGroup model) => _itemGroupValidator.ValidateAndThrow(model);

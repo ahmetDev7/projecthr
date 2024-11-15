@@ -29,5 +29,17 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
 
     public override List<ItemGroup>? GetAll() => _db.ItemGroups.ToList();
 
+    public override ItemGroup? Delete(Guid id)
+    {
+        ItemGroup? foundItemGroup = _db.ItemGroups.FirstOrDefault(i => i.Id == id);
+        if(foundItemGroup == null) return null;
+
+        if(_db.Items.Any(i => i.ItemGroupId == id)) throw new ApiFlowException("The item group has associated items. Please remove these associations before deleting the group.");
+        
+        _db.ItemGroups.Remove(foundItemGroup);
+        SaveToDBOrFail();
+        return foundItemGroup;
+    }
+
     protected override void ValidateModel(ItemGroup model) => _itemGroupValidator.ValidateAndThrow(model);
 }

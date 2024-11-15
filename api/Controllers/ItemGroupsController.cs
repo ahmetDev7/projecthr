@@ -22,6 +22,19 @@ public class ItemGroupsController : ControllerBase
         ShowAll
     */
 
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        ItemGroup? deletedItemGroup = _itemGroupProvider.Delete(id);
+        if (deletedItemGroup == null) throw new ApiFlowException($"Item group not found for id '{id}'");
+
+        return Ok(new {deleted_item_group = new ItemGroupResponse{
+            Id = deletedItemGroup.Id,
+            Name = deletedItemGroup.Name,
+            Description = deletedItemGroup.Description
+        }});
+    }
+
     [HttpPost()]
     public IActionResult Create([FromBody] ItemGroupRequest req)
     {

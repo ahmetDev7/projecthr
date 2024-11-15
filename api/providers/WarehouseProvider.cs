@@ -1,10 +1,8 @@
 using DTOs;
 using Models.Location;
-using DTOs;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
-using Models.Location;
 
 public class WarehouseProvider : ICRUD<Warehouse>
 {
@@ -105,7 +103,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? Update<IDTO>(Guid id, IDTO dto)
     {
-        var request = dto as WarehouseUpdateDTO ?? throw new ApiFlowException("Could not process update warehouse request. Update warehouse failed.");
+        var request = dto as WarehouseDTO ?? throw new ApiFlowException("Could not process update warehouse request. Update warehouse failed.");
 
         Warehouse? foundWarehouseWithContactAndAddress = _db.Warehouses.Include(w => w.Contact).Include(w => w.Address).FirstOrDefault(w => w.Id == id);
         if (foundWarehouseWithContactAndAddress == null) return null;

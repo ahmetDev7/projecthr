@@ -1,4 +1,5 @@
 using DTOs;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -57,7 +58,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateWarehouse(Guid id, [FromBody] WarehouseUpdateDTO request)
+    public IActionResult UpdateWarehouse(Guid id, [FromBody] WarehouseDTO request)
     {
        try
         {

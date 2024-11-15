@@ -1,23 +1,17 @@
 using DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using FluentValidation;
-
 
 [Route("api/[controller]")]
 [ApiController]
 public class WarehousesController : ControllerBase
 {
-
     private readonly WarehouseProvider _warehouseProvider;
-
 
     public WarehousesController(WarehouseProvider warehouseProvider)
     {
         _warehouseProvider = warehouseProvider;
 
     }
-
 
     [HttpGet("{id}")]
     public ActionResult<WarehouseResultDTO> GetById(Guid id)
@@ -39,19 +33,9 @@ public class WarehousesController : ControllerBase
     [HttpGet("{warehouseId}/locations")]
     public IActionResult GetLocations(Guid warehouseId)
     {
-        try
-        {
-            var locations = _warehouseProvider.GetLocationsByWarehouseId(warehouseId);
-            return Ok(locations);
-        }
-        catch (ApiFlowException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var locations = _warehouseProvider.GetLocationsByWarehouseId(warehouseId);
+        return Ok(locations);
     }
-
-
-
 
     [HttpPost]
     public IActionResult CreateWarehouse([FromBody] WarehouseDTO request)
@@ -103,20 +87,8 @@ public class WarehousesController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeleteWarehouse(Guid id)
     {
-        try
-        {
-            Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
-            if (deletedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-            return Ok(new { Message = "Warehouse deleted successfully!" });
-        }
-        catch (ApiFlowException apiFlowException)
-        {
-            return Problem(apiFlowException.Message, statusCode: 500);
-        }
-        catch (Exception)
-        {
-            return Problem("An error occurred while deleting a warehouse. Please try again.", statusCode: 500);
-        }
+        Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
+        if (deletedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
+        return Ok(new { Message = "Warehouse deleted successfully!" });
     }
-
 }

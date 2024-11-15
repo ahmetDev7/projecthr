@@ -1,4 +1,3 @@
-using DTOs;
 
 public class ContactProvider : ICRUD<Contact>
 {

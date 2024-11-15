@@ -1,4 +1,6 @@
 using DTOs;
+using Models.Location;
+using DTOs;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;

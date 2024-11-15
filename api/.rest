@@ -97,12 +97,12 @@ GET http://localhost:5000/api/locations/bc9f1924-fa1a-4ec9-9e3a-d55434b8d701
 Content-Type: application/json
 ###
 
+### GET ALL LOCATIONS
 GET http://localhost:5000/api/locations/all
 Content-Type: application/json
 ###
-DELETE  http://localhost:5000/api/locations/00c944a3-e731-4bf9-a82f-50151c05a9a1
-Content-Type: application/json
-###
+
+### CREATE LOCATION
 POST http://localhost:5000/api/locations
 Content-Type: application/json
 
@@ -110,7 +110,7 @@ Content-Type: application/json
     "row" : "76",
     "rack" : "27",
     "shelf" : "124",
-    "warehouse_id" : "f2b949a6-bb56-4868-8519-0acc7a459575"
+    "warehouse_id" : "385baef7-f174-4e74-ac50-297215227120"
 }
 ###
 
@@ -118,10 +118,18 @@ PUT  http://localhost:5000/api/locations/4dcdf915-930f-4f6c-8c95-85be87a6c7bc
 Content-Type: application/json
 
 {
-  "rack" : "123"
+  "rack" : "123",
+  "row" : "123"
+
 }
 ###
 
+### DELETE LOCATION
+DELETE  http://localhost:5000/api/locations/00c944a3-e731-4bf9-a82f-50151c05a9a1
+Content-Type: application/json
+###
+
+### GET ALL ITEMS
 POST http://localhost:5000/api/items
 Content-Type: application/json
 
@@ -140,6 +148,8 @@ Content-Type: application/json
 }
 ###
 
+
+### GET ITEM BY ID
 GET http://localhost:5000/api/items/80df97cd-b781-4a74-a859-9f2581fbd3c5
 Content-Type: application/json
 ###
@@ -148,4 +158,9 @@ GET http://localhost:5000/api/items/all
 Content-Type: application/json
 ###
 
+
+### GET ALL ITEM GROUPS
+GET http://localhost:5000/api/itemGroups
+Content-Type: application/json
+###
 

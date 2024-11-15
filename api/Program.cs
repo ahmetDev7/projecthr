@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -98,10 +99,11 @@ builder.Services.AddTransient<ContactProvider>();
 builder.Services.AddTransient<WarehouseProvider>();
 builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
+builder.Services.AddTransient<ItemGroupProvider>();
 
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
-builder.Services.AddScoped<IValidator<Warehouse>, WarehouseValidator>();
-// warehouse validatior
+builder.Services.AddScoped<IValidator<Item>, ItemValidator>();
+builder.Services.AddScoped<IValidator<ItemGroup>, ItemGroupValidator>();
 
 builder.Services.AddControllers();
 
@@ -115,7 +117,7 @@ app.MapGet("/", () => "Hello world 🚀");
 
 
 app.MapControllers();
-
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.UseSwagger();
 
 app.UseSwaggerUI(c =>

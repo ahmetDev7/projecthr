@@ -1,4 +1,3 @@
-using System.Data.Common;
 using System.Linq;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -113,17 +112,10 @@ public class LocationsProvider : ICRUD<Location>
         return foundLocation;
     }
 
-    private void validateLocation(Location location)
-    {
-
-        var validationResult = _locationValidator.Validate(location);
-        if (validationResult.IsValid == false)
-        {
-            throw new ValidationException(validationResult.Errors);
-        }
-    }
+    private void validateLocation(Location location) => _locationValidator.ValidateAndThrow(location);
 
 }
+
 public class LocationValidator : AbstractValidator<Location>
 {
     public LocationValidator()

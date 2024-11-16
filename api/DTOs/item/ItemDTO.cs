@@ -1,67 +1,96 @@
+using System.Text.Json.Serialization;
 using Utils.Number;
 
 namespace DTO.Item
 {
-    public class Base : BaseDTO
+    public class ItemRequest : BaseDTO
     {
+        [JsonPropertyName("code")]
         public string? Code { get; set; }
+
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
+
+        [JsonPropertyName("short_description")]
         public string? ShortDescription { get; set; }
+
+        [JsonPropertyName("upc_code")]
         public string? UpcCode { get; set; }
+
+        [JsonPropertyName("model_number")]
         public string? ModelNumber { get; set; }
+
+        [JsonPropertyName("commodity_code")]
         public string? CommodityCode { get; set; }
-        private int _unitPurchaseQuantity = 0;
-        private int _unitOrderQuantity = 0;
-        private int _packOrderQuantity = 0;
+
+        private int _unitPurchaseQuantity = 1;
+        private int _unitOrderQuantity = 1;
+        private int _packOrderQuantity = 1;
+
+        [JsonPropertyName("unit_purchase_quantity")]
         public int UnitPurchaseQuantity
         {
             get => _unitPurchaseQuantity;
-            set => _unitPurchaseQuantity = NumberUtil.EnsureNonNegative(value);
+            set => _unitPurchaseQuantity = NumberUtil.MinimumInt(value, 1);
         }
+
+        [JsonPropertyName("unit_order_quantity")]
         public int UnitOrderQuantity
         {
             get => _unitOrderQuantity;
-            set => _unitOrderQuantity = NumberUtil.EnsureNonNegative(value);
+            set => _unitOrderQuantity = NumberUtil.MinimumInt(value, 1);
         }
+
+        [JsonPropertyName("pack_order_quantity")]
         public int PackOrderQuantity
         {
             get => _packOrderQuantity;
-            set => _packOrderQuantity = NumberUtil.EnsureNonNegative(value);
+            set => _packOrderQuantity = NumberUtil.MinimumInt(value, 1);
         }
 
+        [JsonPropertyName("supplier_reference_code")]
         public string? SupplierReferenceCode { get; set; }
+
+        [JsonPropertyName("supplier_part_number")]
         public string? SupplierPartNumber { get; set; }
     }
 
-    public class Result : BaseDTO
+    public class ItemResponse : BaseDTO
     {
+        [JsonPropertyName("id")]
         public Guid Id { get; set; }
-        public string? Code { get; set; }
-        public string? Description { get; set; }
-        public string? ShortDescription { get; set; }
-        public string? UpcCode { get; set; }
-        public string? ModelNumber { get; set; }
-        public string? CommodityCode { get; set; }
-        private int _unitPurchaseQuantity = 0;
-        private int _unitOrderQuantity = 0;
-        private int _packOrderQuantity = 0;
-        public int UnitPurchaseQuantity
-        {
-            get => _unitPurchaseQuantity;
-            set => _unitPurchaseQuantity = NumberUtil.EnsureNonNegative(value);
-        }
-        public int UnitOrderQuantity
-        {
-            get => _unitOrderQuantity;
-            set => _unitOrderQuantity = NumberUtil.EnsureNonNegative(value);
-        }
-        public int PackOrderQuantity
-        {
-            get => _packOrderQuantity;
-            set => _packOrderQuantity = NumberUtil.EnsureNonNegative(value);
-        }
 
+        [JsonPropertyName("code")]
+        public string? Code { get; set; }
+
+        [JsonPropertyName("description")]
+        public string? Description { get; set; }
+
+        [JsonPropertyName("short_description")]
+        public string? ShortDescription { get; set; }
+
+        [JsonPropertyName("upc_code")]
+        public string? UpcCode { get; set; }
+
+        [JsonPropertyName("model_number")]
+        public string? ModelNumber { get; set; }
+
+        [JsonPropertyName("commodity_code")]
+        public string? CommodityCode { get; set; }
+
+        [JsonPropertyName("unit_purchase_quantity")]
+        public int UnitPurchaseQuantity { get; set; }
+
+        [JsonPropertyName("unit_order_quantity")]
+        public int UnitOrderQuantity { get; set; }
+
+        [JsonPropertyName("pack_order_quantity")]
+        public int PackOrderQuantity { get; set; }
+
+        [JsonPropertyName("supplier_reference_code")]
         public string? SupplierReferenceCode { get; set; }
+
+        [JsonPropertyName("supplier_part_number")]
         public string? SupplierPartNumber { get; set; }
     }
 }

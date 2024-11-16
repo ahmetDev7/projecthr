@@ -99,10 +99,12 @@ builder.Services.AddTransient<WarehouseProvider>();
 builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
 builder.Services.AddTransient<ItemGroupProvider>();
+builder.Services.AddTransient<OrderProvider>();
 
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
 builder.Services.AddScoped<IValidator<Item>, ItemValidator>();
 builder.Services.AddScoped<IValidator<ItemGroup>, ItemGroupValidator>();
+builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
 
 builder.Services.AddControllers();
 

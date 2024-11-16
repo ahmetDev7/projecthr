@@ -10,6 +10,6 @@ public class ItemGroup : BaseModel
     [Required]
     public string? Name { get; set; }
     public string? Description { get; set; }
-    // Navigation property for ItemGroups
-    public ICollection<Item>? ItemGroups { get; set; }
+    // Navigation property for Items
+    public ICollection<Item>? Items { get; set; }
 }

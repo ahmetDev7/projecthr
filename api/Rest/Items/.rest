@@ -1,0 +1,29 @@
+### GET ITEM BY ID
+GET http://localhost:5000/api/items/8aa1448f-9672-4a19-84d6-37bd5224e6d7
+Content-Type: application/json
+###
+
+### GET ALL ITEM 
+GET http://localhost:5000/api/items/
+Content-Type: application/json
+###
+
+### CREATE ITEM
+POST http://localhost:5000/api/items
+Content-Type: application/json
+
+{
+  "code": "ITEM TEST 3",
+  "description": "High-quality ergonomic office chair with adjustable height and back support",
+  "short_description": "Ergonomic office chair",
+  "upc_code": "123456789012",
+  "model_number": "CH-ERG-XL",
+  "commodity_code": "9401710000",
+  "unit_purchase_quantity": -1,
+  "unit_order_quantity": 1,
+  "pack_order_quantity": 10,
+  "supplier_reference_code": "SUP12345",
+  "supplier_part_number": "CH123-XL",
+  "item_group_id": "8aa1448f-9672-4a19-84d6-37bd5224e6d5"
+}
+###

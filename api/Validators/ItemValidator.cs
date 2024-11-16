@@ -2,19 +2,11 @@ using FluentValidation;
 
 public class ItemValidator : AbstractValidator<Item>
 {
-    public ItemValidator()
+    public ItemValidator(AppDbContext db)
     {
         RuleFor(item => item.Code)
             .NotNull().WithMessage("code is required.")
             .NotEmpty().WithMessage("code name cannot be empty.");
-
-        RuleFor(item => item.Description)
-            .NotNull().WithMessage("description is required.")
-            .NotEmpty().WithMessage("description name cannot be empty.");
-
-        RuleFor(item => item.ShortDescription)
-            .NotNull().WithMessage("short_description is required.")
-            .NotEmpty().WithMessage("short_description name cannot be empty.");
 
         RuleFor(item => item.UpcCode)
             .NotNull().WithMessage("upc_code is required.")
@@ -23,9 +15,6 @@ public class ItemValidator : AbstractValidator<Item>
         RuleFor(item => item.ModelNumber)
             .NotNull().WithMessage("model_number is required.")
             .NotEmpty().WithMessage("model_number name cannot be empty.");
-
-        RuleFor(item => item.CommodityCode)
-            .NotNull().WithMessage("commodity_code is required.");
 
         RuleFor(item => item.UnitPurchaseQuantity)
             .NotNull().WithMessage("unit_purchase_quantity is required.");
@@ -40,8 +29,12 @@ public class ItemValidator : AbstractValidator<Item>
             .NotNull().WithMessage("supplier_reference_code is required.")
             .NotEmpty().WithMessage("supplier_reference_code name cannot be empty.");
 
-        RuleFor(item => item.SupplierPartNumber)
-            .NotNull().WithMessage("supplier_part_number is required.")
-            .NotEmpty().WithMessage("supplier_part_number name cannot be empty.");
+        RuleFor(item => item.ItemGroupId)
+            .Custom((itemGroupId, context) => {
+                if (itemGroupId != null && !db.ItemGroups.Any(ig => ig.Id == itemGroupId))
+                {
+                    context.AddFailure("item_group_id", "The provided item_group_id does not exist.");
+                }
+            });
     }
 }

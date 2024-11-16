@@ -1,3 +1,4 @@
+using DTO.Item;
 using DTO.ItemGroup;
 using Microsoft.AspNetCore.Mvc;
 using Model;
@@ -12,15 +13,6 @@ public class ItemGroupsController : ControllerBase
     {
         _itemGroupProvider = itemGroupProvider;
     }
-
-    /*
-        Create
-        Update
-        UpdatePartial
-        Delete
-        ShowSingle
-        ShowAll
-    */
 
     [HttpPost()]
     public IActionResult Create([FromBody] ItemGroupRequest req)
@@ -53,6 +45,21 @@ public class ItemGroupsController : ControllerBase
         );
     }
 
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        ItemGroup? foundItemGroup = _itemGroupProvider.GetById(id);
+
+        return (foundItemGroup == null)
+            ? NotFound(new { message = $"Item group not found for id '{id}'" })
+            : Ok(new ItemGroupResponse
+            {
+                Id = foundItemGroup.Id,
+                Name = foundItemGroup.Name,
+                Description = foundItemGroup.Description
+            });
+    }
+
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_itemGroupProvider.GetAll().Select(ig => new ItemGroupResponse
     {
@@ -60,4 +67,24 @@ public class ItemGroupsController : ControllerBase
         Name = ig.Name,
         Description = ig.Description
     }).ToList());
+
+    [HttpGet("{itemGroupId}/items")]
+    public IActionResult ShowRelatedItems(Guid itemGroupId) =>
+        Ok(_itemGroupProvider.GetRelatedItemsById(itemGroupId)
+        .Select(i => new ItemResponse
+        {
+            Id = i.Id,
+            Code = i.Code,
+            Description = i.Description,
+            ShortDescription = i.ShortDescription,
+            UpcCode = i.UpcCode,
+            ModelNumber = i.ModelNumber,
+            CommodityCode = i.CommodityCode,
+            UnitPurchaseQuantity = i.UnitPurchaseQuantity,
+            UnitOrderQuantity = i.UnitOrderQuantity,
+            PackOrderQuantity = i.PackOrderQuantity,
+            SupplierReferenceCode = i.SupplierReferenceCode,
+            SupplierPartNumber = i.SupplierPartNumber,
+            ItemGroupId = i.ItemGroupId,
+        }).ToList());
 }

@@ -1,0 +1,19 @@
+POST http://localhost:5000/api/orders
+Content-Type: application/json
+
+{
+    "order_date": "2024-11-16",
+    "request_date": "2025-11-16",
+    "reference": "1234",
+    "reference_extra": "",
+    "order_status": "besteld",
+    "note": "0",
+    "ship_to_client": "sidi",
+    "picking_notes": "",
+    "total_amount": "1",
+    "total_discount": "0",
+    "total_tax": "0",
+    "total_surcharge": "0",
+    "warehouse_id": "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
+}
+###

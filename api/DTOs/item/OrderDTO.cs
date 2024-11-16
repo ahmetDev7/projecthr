@@ -20,14 +20,6 @@ namespace DTO.Order
         public string? Notes  { get; set; }
         [JsonPropertyName("picking_notes")]
         public string? PickingNotes  { get; set; }
-        [JsonPropertyName("total_amount")]
-        public float? TotalAmount  { get; set; }
-        [JsonPropertyName("total_discount")]
-        public float? TotalDiscount  { get; set; }
-        [JsonPropertyName("total_tax")]
-        public float? TotalTax  { get; set; }
-        [JsonPropertyName("total_surcharge")]
-        public float? TotalSurcharge  { get; set; }
         [JsonPropertyName("warehouse_id")]
         public Guid? WarehouseId  { get; set; }
         
@@ -45,34 +37,27 @@ namespace DTO.Order
     {
         [JsonPropertyName("id")]
         public Guid Id {get; set;}
-        [JsonPropertyName("orderdate")]
+        [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }
-        [JsonPropertyName("requestdate")]
+        [JsonPropertyName("request_date")]
         public DateTime? RequestDate { get; set; }
         [JsonPropertyName("reference")]
         public string? Reference{ get; set; }
-        [JsonPropertyName("referenceextra")]
+        [JsonPropertyName("reference_extra")]
         public string? ReferenceExtra { get; set; }
-        [JsonPropertyName("orderstatus")]
+        [JsonPropertyName("order_status")]
         public string? OrderStatus  { get; set; }
         [JsonPropertyName("note")]
         public string? Notes  { get; set; }
-        [JsonPropertyName("pickingnotes")]
+        [JsonPropertyName("picking_notes")]
         public string? PickingNotes  { get; set; }
+        [JsonPropertyName("warehouseid")]
+        public Guid? WarehouseId  { get; set; }
         //TODO..
         //  ship_to_client uuid [ref: > clients.id]
         //[Required]
-        //bill_to_client uuid [ref: > clients.id]
-        [JsonPropertyName("totalamount")]
-        public float? TotalAmount  { get; set; }
-        [JsonPropertyName("totaldiscount")]
-        public float? TotalDiscount  { get; set; }
-        [JsonPropertyName("totaltax")]
-        public float? TotalTax  { get; set; }
-        [JsonPropertyName("totalsurcharge")]
-        public float? TotalSurcharge  { get; set; }
-        [JsonPropertyName("warehouseid")]
-        public Guid? WarehouseId  { get; set; }
+        //bill_to_client uuid [ref: > clients.id]}
+  
         //TODO:
         //  shipment_id uuid [ref: > shipments.id]
     }

@@ -1,6 +1,7 @@
 using DTO.ItemGroup;
 using DTO.Order;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Model;
 using Utils.Date;
@@ -28,10 +29,6 @@ public class OrderProvider : BaseProvider<Order>
             OrderStatus = req.OrderStatus,
             Notes = req.Notes,
             PickingNotes = req.PickingNotes,
-            TotalAmount = req.TotalAmount,
-            TotalDiscount = req.TotalDiscount,
-            TotalTax = req.TotalTax,
-            TotalSurcharge = req.TotalSurcharge,
             WarehouseId = req.WarehouseId
         };
         

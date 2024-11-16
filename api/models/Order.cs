@@ -17,13 +17,11 @@ public class Order : BaseModel
     public string? OrderStatus  { get; set; }
     public string? Notes  { get; set; }
     public string? PickingNotes  { get; set; }
-
-    public float? TotalAmount  { get; set; }
-    public float? TotalDiscount  { get; set; }
-    public float? TotalTax  { get; set; }
-    public float? TotalSurcharge  { get; set; }
     [Required]
     public Guid? WarehouseId  { get; set; }
+    
+    public Warehouse? Warehouse {get;set;}
+
     //TODO:
     //  shipment_id uuid [ref: > shipments.id]
     //TODO..

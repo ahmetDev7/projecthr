@@ -22,17 +22,13 @@ public class OrdersController : ControllerBase
 
         return Ok(new OrderResponse{         
             Id = newOrder.Id,
-            RequestDate = newOrder.RequestDate,            
             OrderDate = newOrder.OrderDate,
+            RequestDate = newOrder.RequestDate,          
             Reference = newOrder.Reference,
             ReferenceExtra = newOrder.ReferenceExtra,
             OrderStatus = newOrder.OrderStatus,
             Notes = newOrder.Notes,
             PickingNotes = newOrder.PickingNotes,
-            TotalAmount = newOrder.TotalAmount,
-            TotalDiscount = newOrder.TotalDiscount,
-            TotalTax = newOrder.TotalTax,
-            TotalSurcharge = newOrder.TotalSurcharge,
             WarehouseId = newOrder.WarehouseId,
         });
     }

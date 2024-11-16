@@ -22,7 +22,7 @@ public class OrdersController : ControllerBase
 
         return Ok(new OrderResponse{         
             Id = newOrder.Id,
-            RequestDate = newOrder.            
+            RequestDate = newOrder.RequestDate,            
             OrderDate = newOrder.OrderDate,
             Reference = newOrder.Reference,
             ReferenceExtra = newOrder.ReferenceExtra,
@@ -34,7 +34,7 @@ public class OrdersController : ControllerBase
             TotalDiscount = newOrder.TotalDiscount,
             TotalTax = newOrder.TotalTax,
             TotalSurcharge = newOrder.TotalSurcharge,
-            // WarehouseId = newOrder.WarehouseId,
+            WarehouseId = newOrder.WarehouseId,
         });
     }
 }

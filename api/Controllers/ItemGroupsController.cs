@@ -29,6 +29,22 @@ public class ItemGroupsController : ControllerBase
         });
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ItemGroupRequest req){
+        ItemGroup? updatedItemGroup = _itemGroupProvider.Update(id,req);
+        if(updatedItemGroup == null) return NotFound(new {message = $"Item group not found for id '{id}'"});
+        
+        return Ok(new {
+            message = "Item group updated.", 
+            updated_item_group = new ItemGroupResponse {
+                Id = updatedItemGroup.Id, 
+                Name = updatedItemGroup.Name, 
+                Description = updatedItemGroup.Description
+                }
+            }
+        );
+    }
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

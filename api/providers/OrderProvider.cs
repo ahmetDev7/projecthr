@@ -1,7 +1,10 @@
 using DTO.ItemGroup;
 using DTO.Order;
 using FluentValidation;
+using Microsoft.IdentityModel.Tokens;
 using Model;
+using Utils.Date;
+
 
 public class OrderProvider : BaseProvider<Order>
 {
@@ -18,8 +21,8 @@ public class OrderProvider : BaseProvider<Order>
         if (req == null) throw new ApiFlowException("Could not process create order request. Save new order failed.");
         Order newOrder = new Order(newInstance:true)
         {
-            OrderDate = DateTimeOffset.Parse(req.OrderDate.ToString()).UtcDateTime,
-            RequestDate = DateTimeOffset.Parse(req.RequestDate.ToString()).UtcDateTime,
+            OrderDate = DateUtil.ToUtcOrNull(req.OrderDate),
+            RequestDate = DateUtil.ToUtcOrNull(req.RequestDate),
             Reference = req.Reference,
             ReferenceExtra = req.ReferenceExtra,
             OrderStatus = req.OrderStatus,
@@ -32,7 +35,7 @@ public class OrderProvider : BaseProvider<Order>
             TotalSurcharge = req.TotalSurcharge,
             WarehouseId = req.WarehouseId
         };
-
+        
         ValidateModel(newOrder);
         _db.Orders.Add(newOrder);
         SaveToDBOrFail();

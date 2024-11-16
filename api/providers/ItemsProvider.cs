@@ -16,10 +16,10 @@ public class ItemsProvider : BaseProvider<Item>
 
     public override Item? Create(BaseDTO createValues)
     {
-        Base? req = createValues as Base;
+        ItemRequest? req = createValues as ItemRequest;
         if (req == null) throw new ApiFlowException("Could not process create item request. Save new item failed.");
 
-        Item newItem = new()
+        Item newItem = new(newInstance:true)
         {
             Code = req.Code,
             Description = req.Description,
@@ -32,6 +32,7 @@ public class ItemsProvider : BaseProvider<Item>
             PackOrderQuantity = req.PackOrderQuantity,
             SupplierReferenceCode = req.SupplierReferenceCode,
             SupplierPartNumber = req.SupplierPartNumber,
+            ItemGroupId = req.ItemGroupId
         };
         
         ValidateModel(newItem);

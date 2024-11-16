@@ -10,6 +10,10 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
         _itemGroupValidator = validator;
      }
 
+    public override ItemGroup? GetById(Guid id) => _db.ItemGroups.FirstOrDefault(ig => ig.Id == id);
+
+    public override List<ItemGroup>? GetAll() => _db.ItemGroups.ToList();
+
     public override ItemGroup? Create(BaseDTO createValues)
     {
         ItemGroupRequest? req = createValues as ItemGroupRequest;
@@ -27,7 +31,7 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
         return newItemGroup;
     }
 
-    public override List<ItemGroup>? GetAll() => _db.ItemGroups.ToList();
+    public List<Item> GetRelatedItemsById(Guid itemGroupId) => _db.Items.Where(i => i.ItemGroupId == itemGroupId).ToList();
 
     public override ItemGroup? Delete(Guid id)
     {

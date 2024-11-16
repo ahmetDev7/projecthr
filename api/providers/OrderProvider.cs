@@ -18,8 +18,8 @@ public class OrderProvider : BaseProvider<Order>
         if (req == null) throw new ApiFlowException("Could not process create order request. Save new order failed.");
         Order newOrder = new Order(newInstance:true)
         {
-            OrderDate = req.OrderDate,
-            RequestDate = req.RequestDate,
+            OrderDate = DateTimeOffset.Parse(req.OrderDate.ToString()).UtcDateTime,
+            RequestDate = DateTimeOffset.Parse(req.RequestDate.ToString()).UtcDateTime,
             Reference = req.Reference,
             ReferenceExtra = req.ReferenceExtra,
             OrderStatus = req.OrderStatus,
@@ -30,8 +30,9 @@ public class OrderProvider : BaseProvider<Order>
             TotalDiscount = req.TotalDiscount,
             TotalTax = req.TotalTax,
             TotalSurcharge = req.TotalSurcharge,
-            //WarehouseId = req.WarehouseId
+            WarehouseId = req.WarehouseId
         };
+
         ValidateModel(newOrder);
         _db.Orders.Add(newOrder);
         SaveToDBOrFail();

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116152805_update_items_tbl_based_on_restructured_work_flow")]
+    partial class update_items_tbl_based_on_restructured_work_flow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,65 +174,6 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ItemGroups");
-                });
-
-            modelBuilder.Entity("Model.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("OrderDate")
-                        .IsRequired()
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("OrderStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PickingNotes")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Reference")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ReferenceExtra")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("RequestDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ShipToClient")
-                        .HasColumnType("text");
-
-                    b.Property<float?>("TotalAmount")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("TotalDiscount")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("TotalSurcharge")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("TotalTax")
-                        .HasColumnType("real");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("WarehouseId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Models.Location.Location", b =>

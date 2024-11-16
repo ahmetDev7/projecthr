@@ -1,5 +1,25 @@
+### normal creat order 
+POST http://localhost:5000/api/orders
+Content-Type: application/json
 
-//normal  create warehouse
+{
+    "order_date": "2024-11-16",
+    "request_date": "2025-11-16",
+    "reference": "1234",
+    "reference_extra": "",
+    "order_status": "besteld",
+    "note": "0",
+    "ship_to_client": "sidi",
+    "picking_notes": "",
+    "total_amount": "1",
+    "total_discount": "0",
+    "total_tax": "0",
+    "total_surcharge": "0",
+    "warehouse_id": "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
+}
+###
+
+### normal  create warehouse
 POST http://localhost:5000/api/warehouses
 Content-Type: application/json
 
@@ -19,8 +39,8 @@ Content-Type: application/json
         "city": "Rotterdam"
     }
 }
-###
-//creat warehouse zonder contact maar met contactid en addressid
+### creat warehouse zonder contact maar met contactid en addressid
+
 POST http://localhost:5000/api/warehouses
 Content-Type: application/json
 
@@ -37,8 +57,8 @@ Content-Type: application/json
     }
     
 }
-
 ###
+
 //test if either contact or contact_id is required
 POST http://localhost:5000/api/warehouses
 Content-Type: application/json
@@ -57,7 +77,7 @@ Content-Type: application/json
 }
 
 ###
-//addresid en address is empty test
+### addresid en address is empty test
 POST http://localhost:5000/api/warehouses
 Content-Type: application/json
 

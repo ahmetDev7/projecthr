@@ -18,8 +18,6 @@ namespace DTO.Order
         public string? OrderStatus  { get; set; }
         [JsonPropertyName("note")]
         public string? Notes  { get; set; }
-        [JsonPropertyName("ship_to_client")]
-        public string? ShipToClient  { get; set; }
         [JsonPropertyName("picking_notes")]
         public string? PickingNotes  { get; set; }
         [JsonPropertyName("total_amount")]
@@ -59,8 +57,6 @@ namespace DTO.Order
         public string? OrderStatus  { get; set; }
         [JsonPropertyName("note")]
         public string? Notes  { get; set; }
-        [JsonPropertyName("shiptoclient")]
-        public string? ShipToClient  { get; set; }
         [JsonPropertyName("pickingnotes")]
         public string? PickingNotes  { get; set; }
         //TODO..

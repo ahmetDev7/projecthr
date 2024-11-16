@@ -28,7 +28,6 @@ public class OrdersController : ControllerBase
             ReferenceExtra = newOrder.ReferenceExtra,
             OrderStatus = newOrder.OrderStatus,
             Notes = newOrder.Notes,
-            ShipToClient = newOrder.ShipToClient,
             PickingNotes = newOrder.PickingNotes,
             TotalAmount = newOrder.TotalAmount,
             TotalDiscount = newOrder.TotalDiscount,

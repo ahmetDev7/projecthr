@@ -16,7 +16,6 @@ public class Order : BaseModel
     [Required]
     public string? OrderStatus  { get; set; }
     public string? Notes  { get; set; }
-    public string? ShipToClient  { get; set; }
     public string? PickingNotes  { get; set; }
 
     public float? TotalAmount  { get; set; }

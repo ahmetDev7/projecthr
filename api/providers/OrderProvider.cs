@@ -27,7 +27,6 @@ public class OrderProvider : BaseProvider<Order>
             ReferenceExtra = req.ReferenceExtra,
             OrderStatus = req.OrderStatus,
             Notes = req.Notes,
-            ShipToClient = req.ShipToClient,
             PickingNotes = req.PickingNotes,
             TotalAmount = req.TotalAmount,
             TotalDiscount = req.TotalDiscount,

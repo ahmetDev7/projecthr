@@ -22,7 +22,7 @@ public class ItemsController : ControllerBase
     */
 
     [HttpPost()]
-    public IActionResult Create([FromBody] Base req)
+    public IActionResult Create([FromBody] ItemRequest req)
     {
         Item? newItem = _itemsProvider.Create(req);
         if (newItem == null) throw new ApiFlowException("Saving new Item failed.");
@@ -30,7 +30,7 @@ public class ItemsController : ControllerBase
         return Ok(new
         {
             message = "Item created!",
-            new_item = new Result
+            new_item = new ItemResponse
             {
                 Id = newItem.Id,
                 Code = newItem.Code,
@@ -55,7 +55,7 @@ public class ItemsController : ControllerBase
 
         return (foundItem == null)
             ? NotFound(new { message = $"Item not found for id '{id}'" })
-            : Ok(new Result
+            : Ok(new ItemResponse
             {
                 Id = foundItem.Id,
                 Code = foundItem.Code,
@@ -73,7 +73,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet()]
-    public IActionResult ShowAll() => Ok(_itemsProvider.GetAll()?.Select(i => new Result
+    public IActionResult ShowAll() => Ok(_itemsProvider.GetAll()?.Select(i => new ItemResponse
     {
         Id = i.Id,
         Code = i.Code,

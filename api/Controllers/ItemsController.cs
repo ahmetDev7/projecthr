@@ -44,6 +44,7 @@ public class ItemsController : ControllerBase
                 PackOrderQuantity = newItem.PackOrderQuantity,
                 SupplierReferenceCode = newItem.SupplierReferenceCode,
                 SupplierPartNumber = newItem.SupplierPartNumber,
+                ItemGroupId = newItem.ItemGroupId
             }
         });
     }
@@ -69,6 +70,7 @@ public class ItemsController : ControllerBase
                 PackOrderQuantity = foundItem.PackOrderQuantity,
                 SupplierReferenceCode = foundItem.SupplierReferenceCode,
                 SupplierPartNumber = foundItem.SupplierPartNumber,
+                ItemGroupId = foundItem.ItemGroupId
             });
     }
 
@@ -87,5 +89,6 @@ public class ItemsController : ControllerBase
         PackOrderQuantity = i.PackOrderQuantity,
         SupplierReferenceCode = i.SupplierReferenceCode,
         SupplierPartNumber = i.SupplierPartNumber,
+        ItemGroupId = i.ItemGroupId,
     }).ToList());
 }

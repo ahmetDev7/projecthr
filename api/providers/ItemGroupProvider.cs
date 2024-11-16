@@ -31,5 +31,7 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
         return newItemGroup;
     }
 
+    public List<Item> GetRelatedItemsById(Guid itemGroupId) => _db.Items.Where(i => i.ItemGroupId == itemGroupId).ToList();
+
     protected override void ValidateModel(ItemGroup model) => _itemGroupValidator.ValidateAndThrow(model);
 }

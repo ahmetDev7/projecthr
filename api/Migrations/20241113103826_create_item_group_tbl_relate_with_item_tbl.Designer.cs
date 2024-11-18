@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113103826_create_item_group_tbl_relate_with_item_tbl")]
+    partial class create_item_group_tbl_relate_with_item_tbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,12 +104,14 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CommodityCode")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid?>("ItemGroupId")
@@ -120,9 +125,11 @@ namespace api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ShortDescription")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("SupplierPartNumber")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("SupplierReferenceCode")
@@ -205,70 +212,6 @@ namespace api.Migrations
                     b.HasIndex("WarehouseId");
 
                     b.ToTable("Locations");
-                });
-
-            modelBuilder.Entity("Shipment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CarrierCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CarrierDescription")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("OrderDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("PaymentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("RequestDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ServiceCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("ShipmentDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ShipmentStatus")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ShipmentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TotalPackageAmount")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("TotalPackageCount")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal?>("TotalPackageWeight")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("TransferMode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Shipments");
                 });
 
             modelBuilder.Entity("Warehouse", b =>

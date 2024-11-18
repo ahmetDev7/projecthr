@@ -1,20 +1,25 @@
+using DTO.Item;
+using FluentValidation;
 
-using DTOs;
-
-public class ItemsProvider : ICRUD<Item>
+public class ItemsProvider : BaseProvider<Item>
 {
-    private readonly AppDbContext _db;
-    public ItemsProvider(AppDbContext db)
+    private readonly IValidator<Item> _itemValidator;
+
+    public ItemsProvider(AppDbContext db, IValidator<Item> validator) : base(db)
     {
-        _db = db;
+        _itemValidator = validator;
     }
 
-    public Item? Create<IDTO>(IDTO dto)
+    public override Item? GetById(Guid id) => _db.Items.FirstOrDefault(i => i.Id == id);
+
+    public override List<Item>? GetAll() => _db.Items.ToList();
+
+    public override Item? Create(BaseDTO createValues)
     {
-        ItemDTO? req = dto as ItemDTO;
+        ItemRequest? req = createValues as ItemRequest;
         if (req == null) throw new ApiFlowException("Could not process create item request. Save new item failed.");
 
-        Item newItem = new()
+        Item newItem = new(newInstance:true)
         {
             Code = req.Code,
             Description = req.Description,
@@ -27,28 +32,14 @@ public class ItemsProvider : ICRUD<Item>
             PackOrderQuantity = req.PackOrderQuantity,
             SupplierReferenceCode = req.SupplierReferenceCode,
             SupplierPartNumber = req.SupplierPartNumber,
+            ItemGroupId = req.ItemGroupId
         };
-
+        
+        ValidateModel(newItem);
         _db.Items.Add(newItem);
-
-
-        DBUtil.SaveChanges(_db, "Item not stored");        
-
+        SaveToDBOrFail();
         return newItem;
     }
 
-    public Item? Delete(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public List<Item>? GetAll() => _db.Items.ToList();
-
-
-    public Item? GetById(Guid id) => _db.Items.FirstOrDefault(i => i.Id == id);
-
-    public Item? Update<IDTO>(Guid id, IDTO dto)
-    {
-        throw new NotImplementedException();
-    }
+    protected override void ValidateModel(Item model) => _itemValidator.ValidateAndThrow(model);
 }

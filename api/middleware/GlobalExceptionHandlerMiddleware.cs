@@ -42,6 +42,7 @@ public class GlobalExceptionHandlingMiddleware
             context.Response.ContentType = CONTENT_TYPE;
             var response = JsonSerializer.Serialize(new { error = "An unexpected error occurred." });
             await context.Response.WriteAsync(response);
+            //TODO: add logging
         }
     }
 }

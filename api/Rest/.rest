@@ -112,22 +112,22 @@ DELETE  http://localhost:5000/api/locations/00c944a3-e731-4bf9-a82f-50151c05a9a1
 Content-Type: application/json
 ###
 
-### GET ALL ITEMS
+### CREATE ITEM
 POST http://localhost:5000/api/items
 Content-Type: application/json
 
 {
-  "code": "ITEM TEST",
+  "code": "ITEM TEST 3",
   "description": "High-quality ergonomic office chair with adjustable height and back support",
-  "shortDescription": "Ergonomic office chair",
-  "upcCode": "123456789012",
-  "modelNumber": "CH-ERG-XL",
-  "commodityCode": "9401710000",
-  "unitPurchaseQuantity": 50,
-  "unitOrderQuantity": 1,
-  "packOrderQuantity": 10,
-  "supplierReferenceCode": "SUP12345",
-  "supplierPartNumber": "CH123-XL"
+  "short_description": "Ergonomic office chair",
+  "upc_code": "123456789012",
+  "model_number": "CH-ERG-XL",
+  "commodity_code": "9401710000",
+  "unit_purchase_quantity": -1,
+  "unit_order_quantity": 1,
+  "pack_order_quantity": 10,
+  "supplier_reference_code": "SUP12345",
+  "supplier_part_number": "CH123-XL"
 }
 ###
 
@@ -136,5 +136,3 @@ Content-Type: application/json
 GET http://localhost:5000/api/items/80df97cd-b781-4a74-a859-9f2581fbd3c5
 Content-Type: application/json
 ###
-
-

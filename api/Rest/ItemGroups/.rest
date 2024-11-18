@@ -1,0 +1,39 @@
+### GET ITEM GROUP BY ID
+GET http://localhost:5000/api/itemGroups/8aa1448f-9672-4a19-84d6-37bd5224e6d5
+Content-Type: application/json
+###
+
+### CREATE ITEM GROUP
+POST http://localhost:5000/api/itemGroups
+Content-Type: application/json
+
+{
+    "name" : "Furniture",
+    "description": "Some description..."
+}
+###
+
+### UPDATE ITEM GROUP
+PUT http://localhost:5000/api/itemGroups/8aa1448f-9672-4a19-84d6-37bd5224e6d5
+Content-Type: application/json
+
+{
+    "name" : "Kitchen",
+    "description": "Kitchen stuff"
+}
+###
+
+### DELETE ITEM GROUP
+DELETE http://localhost:5000/api/itemGroups/da582b6a-5466-439a-b4f7-d10fdb0754ad
+Content-Type: application/json
+###
+
+### GET ALL ITEM GROUPS
+GET http://localhost:5000/api/itemGroups
+Content-Type: application/json
+###
+
+### GET ALL ITEMS FROM ITEM GROUP
+GET http://localhost:5000/api/itemGroups/8aa1448f-9672-4a19-84d6-37bd5224e6d5/items
+Content-Type: application/json
+###

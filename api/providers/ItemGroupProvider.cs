@@ -1,6 +1,5 @@
 using DTO.ItemGroup;
 using FluentValidation;
-using Model;
 
 public class ItemGroupProvider : BaseProvider<ItemGroup>
 {

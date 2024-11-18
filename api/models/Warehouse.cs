@@ -1,27 +1,17 @@
 //Why ICollection? See MS docs: https://learn.microsoft.com/en-us/ef/core/modeling/relationships
+using System.ComponentModel.DataAnnotations;
 
-using Models.Location;
-
-public class Warehouse
+public class Warehouse : BaseModel
 {
-
-    public Warehouse()
-    {
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
-    }
-
-    public Guid Id { get; set; }
-    public required string Code { get; set; }
-    public required string Name { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-
-    // Foreign Key Relationships
-    public required Guid ContactId { get; set; }
+    [Required]
+    public string? Code { get; set; }
+    [Required]
+    public string? Name { get; set; }    
+    [Required]
+    public Guid ContactId { get; set; } // Foreign Key Relationships
     public Contact? Contact { get; set; }
-
-    public required Guid AddressId { get; set; }
+    [Required]
+    public Guid AddressId { get; set; } // Foreign Key Relationships
     public Address? Address { get; set; }
 
     // Navigation property for locations

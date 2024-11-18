@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Model;
-using Models.Location;
 
 public class AppDbContext : DbContext
 {

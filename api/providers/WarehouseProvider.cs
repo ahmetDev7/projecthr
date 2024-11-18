@@ -1,5 +1,4 @@
 using DTOs;
-using Models.Location;
 
 public class WarehouseProvider : ICRUD<Warehouse>
 {

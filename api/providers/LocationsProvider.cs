@@ -1,5 +1,4 @@
 using FluentValidation;
-using Models.Location;
 
 public class LocationsProvider : ICRUD<Location>
 {

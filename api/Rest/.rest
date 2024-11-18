@@ -76,7 +76,6 @@ Content-Type: application/json
 
 ###
 
-
 ### CREATE ITEM
 POST http://localhost:5000/api/items
 Content-Type: application/json

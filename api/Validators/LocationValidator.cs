@@ -1,6 +1,4 @@
-using System.Data;
 using FluentValidation;
-using Model;
 
 public class LocationValidator : AbstractValidator<Location>
 {

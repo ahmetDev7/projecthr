@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,7 +95,7 @@ builder.Services.AddTransient<AddressProvider>();
 builder.Services.AddTransient<ContactProvider>();
 builder.Services.AddTransient<WarehouseProvider>();
 builder.Services.AddTransient<ItemsProvider>();
-builder.Services.AddTransient<LocationProvider>();
+builder.Services.AddTransient<LocationsProvider>();
 builder.Services.AddTransient<ItemGroupProvider>();
 
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();

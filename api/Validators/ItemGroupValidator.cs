@@ -1,5 +1,4 @@
 using FluentValidation;
-using Model;
 
 public class ItemGroupValidator : AbstractValidator<ItemGroup>
 {

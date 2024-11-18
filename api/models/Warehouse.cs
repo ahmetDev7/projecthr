@@ -1,7 +1,7 @@
 //Why ICollection? See MS docs: https://learn.microsoft.com/en-us/ef/core/modeling/relationships
 using System.ComponentModel.DataAnnotations;
 
-public class Warehouse
+public class Warehouse : BaseModel
 {
     public Warehouse(){}
     public Warehouse(bool newInstance=false, bool isUpdate = false) : base(newInstance, isUpdate){}

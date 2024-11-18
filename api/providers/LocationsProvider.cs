@@ -15,11 +15,8 @@ public class LocationsProvider : BaseProvider<Location>
     {
         LocationRequest? req = createValues as LocationRequest;
         if (req == null) throw new ApiFlowException("Could not process create location request. Save new location failed.");
-
-        // TODO: if warehouse does not exists return apiFlowException
-        // req.WarehouseId
-
-        Location newLocation = new Location(newInstance:true)
+        
+        Location newLocation = new Location(newInstance: true)
         {
             Row = req.Row,
             Rack = req.Rack,
@@ -35,21 +32,20 @@ public class LocationsProvider : BaseProvider<Location>
 
     public override Location? Update(Guid id, BaseDTO updatedValues)
     {
+        bool hasChanges = false;
+
         LocationRequest? req = updatedValues as LocationRequest;
         if (req == null) throw new ApiFlowException("Could not process update location request. Save location failed.");
 
         Location? foundLocation = GetById(id);
         if (foundLocation == null) return null;
 
-        if (!string.IsNullOrEmpty(req.Row)) foundLocation.Row = req.Row;
-        if (!string.IsNullOrEmpty(req.Rack)) foundLocation.Rack = req.Rack;
-        if (!string.IsNullOrEmpty(req.Shelf)) foundLocation.Shelf = req.Shelf;
-        if (req.WarehouseId.HasValue) foundLocation.WarehouseId = req.WarehouseId.Value;
+        if (!string.IsNullOrEmpty(req.Row)) { foundLocation.Row = req.Row; hasChanges = true; }
+        if (!string.IsNullOrEmpty(req.Rack)) { foundLocation.Rack = req.Rack; hasChanges = true; }
+        if (!string.IsNullOrEmpty(req.Shelf)) { foundLocation.Shelf = req.Shelf; hasChanges = true; }
+        if (req.WarehouseId.HasValue) { foundLocation.WarehouseId = req.WarehouseId.Value; hasChanges = true; }
 
-        foundLocation.UpdatedAt = DateTime.UtcNow;
-
-        // TODO: if warehouse does not exists return apiFlowException
-        // req.WarehouseId
+        if (hasChanges) foundLocation.SetUpdatedAt();
 
         ValidateModel(foundLocation);
         SaveToDBOrFail("Location not updated");

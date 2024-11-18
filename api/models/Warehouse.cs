@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 public class Warehouse : BaseModel
 {
+    public Warehouse(){}
+    public Warehouse(bool newInstance=false, bool isUpdate = false) : base(newInstance, isUpdate){}
+
     [Required]
     public string? Code { get; set; }
     [Required]

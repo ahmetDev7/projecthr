@@ -30,7 +30,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
             throw new ApiFlowException("Failed to process address or contact");
 
         // Create the new Warehouse entry
-        var newWarehouse = new Warehouse
+        var newWarehouse = new Warehouse(newInstance: true)
         {
             Code = request.Code,
             Name = request.Name,

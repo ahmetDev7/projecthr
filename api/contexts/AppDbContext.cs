@@ -13,23 +13,5 @@ public class AppDbContext : DbContext
     public DbSet<Item> Items {get; set;}
     public DbSet<Shipment> Shipments {get; set;}
     public DbSet<ItemGroup> ItemGroups {get; set;}
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-
-        // Configure Shipment-Item many-to-many relationship
-        modelBuilder.Entity<ShipmentItem>()
-            .HasKey(si => new { si.ShipmentId, si.ItemId });
-
-        modelBuilder.Entity<ShipmentItem>()
-            .HasOne(si => si.Shipment)
-            .WithMany(s => s.ShipmentItems)
-            .HasForeignKey(si => si.ShipmentId);
-
-        modelBuilder.Entity<ShipmentItem>()
-            .HasOne(si => si.Item)
-            .WithMany(i => i.ShipmentItems)
-            .HasForeignKey(si => si.ItemId);
-    }
+    public DbSet<ShipmentItem> ShipmentItems { get; set; }
 } 

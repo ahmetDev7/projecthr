@@ -13,5 +13,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
     public override Shipment? GetById(Guid id) => _db.Shipments.FirstOrDefault(s => s.Id == id);
 
+    public override List<Shipment>? GetAll() => _db.Shipments.ToList();
+    
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);
 }

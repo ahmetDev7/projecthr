@@ -1,0 +1,38 @@
+
+GET http://localhost:5000/api/locations/bc9f1924-fa1a-4ec9-9e3a-d55434b8d701
+Content-Type: application/json
+###
+
+### GET ALL LOCATIONS
+GET http://localhost:5000/api/locations/all
+Content-Type: application/json
+###
+
+### CREATE LOCATION
+POST http://localhost:5000/api/locations
+Content-Type: application/json
+
+{
+    "row" : "3",
+    "rack" : "27",
+    "shelf" : "124",
+    "warehouse_id" : "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
+}
+###
+
+PUT  http://localhost:5000/api/locations/34bb1055-2c2a-45df-9c3b-472a40315d21
+Content-Type: application/json
+
+{
+    "rack" : "123",
+    "row" : "123",
+    "warehouse_id" : "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
+
+
+}
+###
+
+### DELETE LOCATION
+DELETE  http://localhost:5000/api/locations/3c402cfe-e91f-4d68-be47-f1876de9bd25
+Content-Type: application/json
+###

@@ -47,9 +47,9 @@ public class LocationProvider : BaseProvider<Location>
         Location? foundLocation = GetById(id);
         if (foundLocation == null) return null;
 
-        if (!string.IsNullOrEmpty(req.Row)) foundLocation.Row = req.Row;
-        if (!string.IsNullOrEmpty(req.Rack)) foundLocation.Rack = req.Rack;
-        if (!string.IsNullOrEmpty(req.Shelf)) foundLocation.Shelf = req.Shelf;
+        foundLocation.Row = req.Row;
+        foundLocation.Rack = req.Rack;
+        foundLocation.Shelf = req.Shelf;
         foundLocation.WarehouseId = req.WarehouseId;
 
         foundLocation.UpdatedAt = DateTime.UtcNow;

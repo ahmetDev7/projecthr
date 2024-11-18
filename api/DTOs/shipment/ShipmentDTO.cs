@@ -55,6 +55,9 @@ namespace DTO.Shipment
             set => _totalPackageWeight = NumberUtil.EnsureNonNegativeWithFourDecimals((decimal)value);
         }
 
+        [JsonPropertyName("items")]
+        public List<ShipmentItemRR>? Items { get; set; }
+
         // TODO: Add Order ID (UUID)
     }
 
@@ -107,11 +110,11 @@ namespace DTO.Shipment
         public DateTime? UpdatedAt { get; set; }
 
         [JsonPropertyName("items")]
-        public List<ShipmentItemResponse>? Items { get; set; }
+        public List<ShipmentItemRR>? Items { get; set; }
     }
-
+    
     [ApiExplorerSettings(IgnoreApi = true)]
-    public class ShipmentItemResponse : BaseDTO
+    public class ShipmentItemRR : BaseDTO
     {
         [JsonPropertyName("item_id")]
         public Guid? ItemId { get; set; }
@@ -120,3 +123,4 @@ namespace DTO.Shipment
         public int? Amount { get; set; }
     }
 }
+

@@ -33,7 +33,12 @@ public class ShipmentProvider : BaseProvider<Shipment>
             PaymentType = req.PaymentType,
             TransferMode = req.TransferMode,
             TotalPackageCount = req.TotalPackageCount,
-            TotalPackageWeight = req.TotalPackageWeight
+            TotalPackageWeight = req.TotalPackageWeight,
+            ShipmentItems = req.Items?.Select(item => new ShipmentItem
+        {
+            ItemId = item.ItemId ?? throw new ApiFlowException("Item ID cannot be null."),
+            Amount = item.Amount ?? throw new ApiFlowException("Amount cannot be null.")
+        }).ToList()
         };
 
         ValidateModel(newShipment);

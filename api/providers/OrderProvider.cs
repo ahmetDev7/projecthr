@@ -22,6 +22,7 @@ public class OrderProvider : BaseProvider<Order>
         if (req == null) throw new ApiFlowException("Could not process create order request. Save new order failed.");
         Order newOrder = new Order(newInstance:true)
         {
+            // TODO: calculated value
             OrderDate = DateUtil.ToUtcOrNull(req.OrderDate),
             RequestDate = DateUtil.ToUtcOrNull(req.RequestDate),
             Reference = req.Reference,

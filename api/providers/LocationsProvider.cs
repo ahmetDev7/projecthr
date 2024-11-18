@@ -1,61 +1,42 @@
 using FluentValidation;
 
-public class LocationsProvider : ICRUD<Location>
+public class LocationsProvider : BaseProvider<Location>
 {
-    private readonly AppDbContext _db;
     private readonly IValidator<Location> _locationValidator;
-    public LocationsProvider(AppDbContext db, IValidator<Location> locationValidator)
+    public LocationsProvider(AppDbContext db, IValidator<Location> locationValidator) : base(db)
     {
-        _db = db;
         _locationValidator = locationValidator;
     }
-    public Location? Create<IDTO>(IDTO dto)
+
+    public override Location? GetById(Guid id) => _db.Locations.FirstOrDefault(l => l.Id == id);
+    public override List<Location>? GetAll() => _db.Locations.ToList();
+
+    public override Location? Create(BaseDTO createValues)
     {
-        LocationDTO? req = dto as LocationDTO;
+        LocationRequest? req = createValues as LocationRequest;
         if (req == null) throw new ApiFlowException("Could not process create location request. Save new location failed.");
 
         // TODO: if warehouse does not exists return apiFlowException
         // req.WarehouseId
 
-        Location newLocation = new Location
+        Location newLocation = new Location(newInstance:true)
         {
             Row = req.Row,
             Rack = req.Rack,
             Shelf = req.Shelf,
-            WarehouseId = req.WarehouseId.Value,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            WarehouseId = req.WarehouseId,
         };
 
-        validateLocation(newLocation);
-
+        ValidateModel(newLocation);
         _db.Locations.Add(newLocation);
-
-        DBUtil.SaveChanges(_db, "Location not stored");
-
+        SaveToDBOrFail("Location not stored");
         return newLocation;
     }
 
-    public Location? Delete(Guid id)
+    public override Location? Update(Guid id, BaseDTO updatedValues)
     {
-        Location? foundLocation = GetById(id);
-        if (foundLocation == null) return null;
-
-        _db.Locations.Remove(foundLocation);
-
-        DBUtil.SaveChanges(_db, "Location not deleted");
-
-        return foundLocation;
-    }
-
-    public List<Location>? GetAll() => _db.Locations.ToList();
-
-    public Location? GetById(Guid id) => _db.Locations.FirstOrDefault(l => l.Id == id);
-
-    public Location? Update<IDTO>(Guid id, IDTO dto)
-    {
-        LocationDTO? req = dto as LocationDTO;
-        if (req == null) throw new ApiFlowException("Could not process create location request. Save new location failed.");
+        LocationRequest? req = updatedValues as LocationRequest;
+        if (req == null) throw new ApiFlowException("Could not process update location request. Save location failed.");
 
         Location? foundLocation = GetById(id);
         if (foundLocation == null) return null;
@@ -70,35 +51,21 @@ public class LocationsProvider : ICRUD<Location>
         // TODO: if warehouse does not exists return apiFlowException
         // req.WarehouseId
 
-        validateLocation(foundLocation);
+        ValidateModel(foundLocation);
+        SaveToDBOrFail("Location not updated");
+        return foundLocation;
+    }
 
-        DBUtil.SaveChanges(_db, "Location not updated");
+    public override Location? Delete(Guid id)
+    {
+        Location? foundLocation = GetById(id);
+        if (foundLocation == null) return null;
+
+        _db.Locations.Remove(foundLocation);
+        SaveToDBOrFail("Location not deleted");
 
         return foundLocation;
     }
 
-    private void validateLocation(Location location) => _locationValidator.ValidateAndThrow(location);
-
-}
-
-public class LocationValidator : AbstractValidator<Location>
-{
-    public LocationValidator()
-    {
-        RuleFor(location => location.Row)
-            .NotNull().WithMessage("row is required.")
-            .NotEmpty().WithMessage("row name cannot be empty.");
-
-        RuleFor(location => location.Rack)
-            .NotNull().WithMessage("rack is required.")
-            .NotEmpty().WithMessage("rack name cannot be empty.");
-
-        RuleFor(location => location.Shelf)
-            .NotNull().WithMessage("shelf is required.")
-            .NotEmpty().WithMessage("shelf name cannot be empty.");
-
-        RuleFor(location => location.WarehouseId)
-            .NotNull().WithMessage("warehouse_id is required.")
-            .NotEmpty().WithMessage("warehouse_id name cannot be empty.");
-    }
+    protected override void ValidateModel(Location model) => _locationValidator.ValidateAndThrow(model);
 }

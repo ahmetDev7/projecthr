@@ -1,6 +1,6 @@
 //Why ICollection? See MS docs: https://learn.microsoft.com/en-us/ef/core/modeling/relationships
 
-using Models.Location;
+using Model;
 
 public class Warehouse
 {

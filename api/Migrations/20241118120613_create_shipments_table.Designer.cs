@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241113104459_create_shipments_table")]
+    [Migration("20241118120613_create_shipments_table")]
     partial class create_shipments_table
     {
         /// <inheritdoc />
@@ -104,15 +104,16 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CommodityCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("ItemGroupId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ModelNumber")
                         .IsRequired()
@@ -122,11 +123,9 @@ namespace api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ShortDescription")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("SupplierPartNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("SupplierReferenceCode")
@@ -148,10 +147,12 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ItemGroupId");
+
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("Models.Location.Location", b =>
+            modelBuilder.Entity("Model.ItemGroup", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,32 +161,22 @@ namespace api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Rack")
-                        .IsRequired()
+                    b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("Row")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Shelf")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("WarehouseId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("WarehouseId");
-
-                    b.ToTable("Locations");
+                    b.ToTable("ItemGroups");
                 });
 
-            modelBuilder.Entity("Shipment", b =>
+            modelBuilder.Entity("Model.Shipment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -249,6 +240,40 @@ namespace api.Migrations
                     b.ToTable("Shipments");
                 });
 
+            modelBuilder.Entity("Models.Location.Location", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Rack")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Row")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Shelf")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("Locations");
+                });
+
             modelBuilder.Entity("Warehouse", b =>
                 {
                     b.Property<Guid>("Id")
@@ -282,6 +307,15 @@ namespace api.Migrations
                     b.HasIndex("ContactId");
 
                     b.ToTable("Warehouses");
+                });
+
+            modelBuilder.Entity("Item", b =>
+                {
+                    b.HasOne("Model.ItemGroup", "ItemGroup")
+                        .WithMany("Items")
+                        .HasForeignKey("ItemGroupId");
+
+                    b.Navigation("ItemGroup");
                 });
 
             modelBuilder.Entity("Models.Location.Location", b =>
@@ -322,6 +356,11 @@ namespace api.Migrations
             modelBuilder.Entity("Contact", b =>
                 {
                     b.Navigation("Warehouses");
+                });
+
+            modelBuilder.Entity("Model.ItemGroup", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Warehouse", b =>

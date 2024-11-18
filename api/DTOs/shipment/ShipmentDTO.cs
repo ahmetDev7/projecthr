@@ -106,6 +106,17 @@ namespace DTO.Shipment
         [JsonPropertyName("updated_at")]
         public DateTime? UpdatedAt { get; set; }
 
-        // TODO Items list
+        [JsonPropertyName("items")]
+        public List<ShipmentItemResponse>? Items { get; set; }
+    }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class ShipmentItemResponse : BaseDTO
+    {
+        [JsonPropertyName("item_id")]
+        public Guid? ItemId { get; set; }
+
+        [JsonPropertyName("amount")]
+        public int? Amount { get; set; }
     }
 }

@@ -12,15 +12,6 @@ public class ItemsController : ControllerBase
         _itemsProvider = itemsProvider;
     }
 
-    /*
-        Create
-        Update
-        UpdatePartial
-        Delete
-        ShowSingle
-        ShowAll
-    */
-
     [HttpPost()]
     public IActionResult Create([FromBody] ItemRequest req)
     {

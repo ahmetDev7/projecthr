@@ -36,8 +36,9 @@ public class GlobalExceptionHandlingMiddleware
             var response = JsonSerializer.Serialize(errorDetails);
             await context.Response.WriteAsync(response);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            throw e;
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Response.ContentType = CONTENT_TYPE;
             var response = JsonSerializer.Serialize(new { error = "An unexpected error occurred." });

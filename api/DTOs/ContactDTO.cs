@@ -11,4 +11,9 @@ public class ContactDTO : IDTO
 
     [JsonPropertyName("email")]
     public required string Email { get; set; }
+
+    public static implicit operator ContactDTO?(Contact? contact)
+    {
+        throw new NotImplementedException();
+    }
 }

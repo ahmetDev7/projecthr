@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
+
 public class AddressDTO : IDTO
 {
     [JsonPropertyName("street")]
@@ -25,4 +27,9 @@ public class AddressDTO : IDTO
 
     [JsonPropertyName("country_code")]
     public string? CountryCode { get; set; }
+
+    public static implicit operator AddressDTO?(Address? v)
+    {
+        throw new NotImplementedException();
+    }
 }

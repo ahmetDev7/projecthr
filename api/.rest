@@ -164,3 +164,26 @@ GET http://localhost:5000/api/itemGroups
 Content-Type: application/json
 ###
 
+POST http://localhost:5000/api/Supplier
+Content-Type: application/json
+
+{
+  "code": "SUPPLIER TEST",
+  "name": "Supplier Test",
+  "reference": "SUP12345",
+  "contact": {
+    "name": "John Doe",
+    "phone": "+31612345678",
+    "email": "osman"
+    },
+  "address": {
+    "street": "Teststraat",
+    "house_number": "123",
+    "zipcode": "1234AB",
+    "country_code": "NL",
+    "city": "Rotterdam",
+    "province": "Zuid-Holland",
+    "country_code": "NL"
+    }
+}
+

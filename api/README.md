@@ -15,7 +15,7 @@
 
 ### 3 Create and execute the migrations
 
-1. Create an migration via the `CLI`
+1. Create an migration via the `CLI`\
 ```sh
 dotnet ef migrations add short_description_of_your_migration
 ``` 

@@ -18,11 +18,6 @@ public class SupplierProvider : BaseProvider<Supplier>
         _contactProvider = contactProvider;
     }
 
-
-    public override Supplier? GetById(Guid id) => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).FirstOrDefault(i => i.Id == id);
-
-    public override List<Supplier> GetAll() => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).ToList();
-
     public override Supplier? Create(BaseDTO createValues)
     {
         SupplierReQuestDTO? req = createValues as SupplierReQuestDTO;
@@ -52,16 +47,6 @@ public class SupplierProvider : BaseProvider<Supplier>
         newSupplier.Address =relatedAddress;
 
         return newSupplier;
-    }
-
-    public override Supplier? Delete(Guid id)
-    {
-        Supplier? supplier = GetById(id);
-        if (supplier == null) return null;
-
-        _db.Suppliers.Remove(supplier);
-        SaveToDBOrFail("Failed to delete supplier");
-        return supplier;
     }
     protected override void ValidateModel(Supplier model) => _supplierValidator.ValidateAndThrow(model);
 

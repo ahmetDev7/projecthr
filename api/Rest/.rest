@@ -76,42 +76,6 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5000/api/locations/bc9f1924-fa1a-4ec9-9e3a-d55434b8d701
-Content-Type: application/json
-###
-
-### GET ALL LOCATIONS
-GET http://localhost:5000/api/locations/all
-Content-Type: application/json
-###
-
-### CREATE LOCATION
-POST http://localhost:5000/api/locations
-Content-Type: application/json
-
-{
-    "row" : "3",
-    "rack" : "27",
-    "shelf" : "124",
-    "warehouse_id" : "385baef7-f174-4e74-ac50-297215227120"
-}
-###
-
-PUT  http://localhost:5000/api/locations/3152d4aa-22e9-4dfd-9f27-6bdc9e3f8886
-Content-Type: application/json
-
-{
-  "rack" : "123",
-  "row" : "123"
-
-}
-###
-
-### DELETE LOCATION
-DELETE  http://localhost:5000/api/locations/00c944a3-e731-4bf9-a82f-50151c05a9a1
-Content-Type: application/json
-###
-
 ### CREATE ITEM
 POST http://localhost:5000/api/items
 Content-Type: application/json

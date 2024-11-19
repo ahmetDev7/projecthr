@@ -1,0 +1,24 @@
+### CREATE WAREHOUSE
+POST http://localhost:5000/api/warehouses/
+Content-Type: application/json
+
+{
+    "code": "AB123",
+    "name": "Test Company",
+    "contact": {
+      "name": "John Doe",
+      "phone": "+1234567890",
+      "email": "john.doe@testcompany.com"
+    },
+    "address": {
+      "street": "Main Street",
+      "house_number": "123",
+      "house_number_extension": "A",
+      "house_number_extension_extra": "Suite 2",
+      "zipcode": "12345",
+      "city": "Testville",
+      "province": "Testshire",
+      "country_code": "US"
+    }
+  }
+  

@@ -1,6 +1,5 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Models.Location;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

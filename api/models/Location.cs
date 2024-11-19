@@ -1,32 +1,17 @@
-using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
-namespace Models.Location;
-
-public record LocationDTO : IDTO
+public class Location : BaseModel
 {
-    [JsonPropertyName("row")]
+    public Location() { }
+    public Location(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
+
+    [Required]
     public string? Row { get; set; }
-
-    [JsonPropertyName("rack")]
+    [Required]
     public string? Rack { get; set; }
-
-    [JsonPropertyName("shelf")]
+    [Required]
     public string? Shelf { get; set; }
-
-    [JsonPropertyName("warehouse_id")]
-    public Guid? WarehouseId { get; set; }
-}
-
-
-public class Location
-{
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public required string Row { get; set; }
-    public required string Rack { get; set; }
-    public required string Shelf { get; set; }
-    // Foreign Key Relationship
-    public required Guid WarehouseId { get; set; }
+    [Required]
+    public Guid? WarehouseId { get; set; } // Foreign Key Relationship
     public Warehouse? Warehouse { get; set; }
 }

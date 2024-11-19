@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Utils.Number;
 
-namespace Model;
-
 public class Shipment : BaseModel
 {
     public Shipment(){}

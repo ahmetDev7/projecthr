@@ -1,6 +1,5 @@
 using DTO.Shipment;
 using FluentValidation;
-using Model;
 
 public class ShipmentProvider : BaseProvider<Shipment>
 {

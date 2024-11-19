@@ -1,6 +1,5 @@
 using DTO.Shipment;
 using Microsoft.AspNetCore.Mvc;
-using Model;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -1,4 +1,4 @@
-
+using DTO.Supplier;
 public class ContactProvider : ICRUD<Contact>
 {
     private readonly AppDbContext _db;
@@ -7,15 +7,18 @@ public class ContactProvider : ICRUD<Contact>
     {
         _db = db;
     }
-    public List<Contact> GetAll()
+    public List<IDTO>? GetAll()
     {
-        return _db.Contacts.ToList();
+        // TODO: FIX
+        throw new NotImplementedException();
+
+        // return _db.Contacts.ToList();
     }
 
     public Contact? Create<IDTO>(IDTO newElement)
     {
         ContactDTO? request = newElement as ContactDTO;
-        if(request == null) throw new Exception("Request invalid");
+        if (request == null) throw new Exception("Request invalid");
 
         Contact newContact = new()
         {
@@ -28,7 +31,7 @@ public class ContactProvider : ICRUD<Contact>
 
         DBUtil.SaveChanges(_db, "Contact not stored");
 
-        return newContact; 
+        return newContact;
     }
 
 
@@ -46,4 +49,34 @@ public class ContactProvider : ICRUD<Contact>
     {
         throw new NotImplementedException();
     }
+
+    public IDTO? GetByIdAsDTO(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual Contact? GetOrCreateContact(SupplierReQuestDTO request)
+    {
+        if (request == null)
+        {
+            throw new ApiFlowException("Request object is null.");
+        }
+
+        if (request.ContactId != null)
+        {
+            Console.WriteLine($"ContactId: {request.ContactId}");
+            Contact? existingContact = GetById(request.ContactId.Value);
+            if (existingContact == null) throw new ApiFlowException("contact_id does not exist");
+            return existingContact;
+        }
+
+        if (request.Contact != null)
+        {
+            Console.WriteLine($"Creating new contact with data: {request.Contact.Name}");
+            return Create<ContactDTO>(request.Contact);
+        }
+
+        throw new ApiFlowException("Both contact_id and contact data are missing. Unable to create supplier contact.");
+    }
+
 }

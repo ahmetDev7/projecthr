@@ -1,4 +1,10 @@
 
+GET http://localhost:5000/api/warehouses/all
+Content-Type: application/json
+###
+
+
+
 //normal  create warehouse
 POST http://localhost:5000/api/warehouses
 Content-Type: application/json
@@ -20,6 +26,17 @@ Content-Type: application/json
     }
 }
 ###
+
+PUT http://localhost:5000/api/warehouses/f2b949a6-bb56-4868-8519-0acc7a459575
+Content-Type: application/json
+
+{
+    "code": "SUPER TEST",
+    "name": "SUPER TEST NAME"
+}
+###
+
+
 //creat warehouse zonder contact maar met contactid en addressid
 POST http://localhost:5000/api/warehouses
 Content-Type: application/json

@@ -168,22 +168,40 @@ POST http://localhost:5000/api/Supplier
 Content-Type: application/json
 
 {
-  "code": "SUPPLIER TEST",
-  "name": "Supplier Test",
-  "reference": "SUP12345",
+  "code": "Alperen",
+  "name": "Alperen",
+  "reference": "RE-123",
   "contact": {
-    "name": "John Doe",
-    "phone": "+31612345678",
-    "email": "osman"
-    },
+    "name": "Osman",
+    "phone": "BABA",
+    "email": "BABA"
+  },
   "address": {
-    "street": "Teststraat",
-    "house_number": "123",
-    "zipcode": "1234AB",
-    "country_code": "NL",
-    "city": "Rotterdam",
-    "province": "Zuid-Holland",
-    "country_code": "NL"
-    }
+    "street": "string",
+    "house_number": "string",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "string",
+    "city": "string",
+    "province": "string",
+    "country_code": "string"
+  }
 }
+###
+
+POST http://localhost:5000/api/Supplier
+Content-Type: application/json
+
+{
+  "code": "string",
+  "name": "string",
+  "reference": "string",
+  "contactid": "4e869f28-e669-453e-b8ec-04f8ec98dbb3",
+  "addressid": "06bf7efc-190f-49e3-87ec-a9e8204359f2"
+}
+
+###
+GET http://localhost:5000/api/Supplier
+Content-Type: application/json
+###w
 

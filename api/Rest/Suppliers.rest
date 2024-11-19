@@ -1,0 +1,30 @@
+POST http://localhost:5000/api/suppliers
+Content-Type: application/json
+
+{
+  "code": "TEST CODE",
+  "name": "TEST NAME",
+  "reference": "REF TEST",
+  "contact": {
+    "name": "SUPER ALPEREN",
+    "phone": "062354984",
+    "email": "test@dev.com"
+  },
+  "address": {
+    "street": "some street",
+    "house_number": "12",
+    "house_number_extension": "a",
+    "house_number_extension_extra": "-1",
+    "zipcode": "1122ab",
+    "city": "Rotterdam",
+    "province": "Zuid-Holland",
+    "country_code": "NL"
+  }
+}
+###
+
+
+
+
+GET http://localhost:5000/api/suppliers/f98d90ef-fc7b-4a68-96a6-49069d34c56b
+Content-Type: application/json

@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241116001318_add_migration_suppliers")]
-    partial class add_migration_suppliers
+    [Migration("20241118151529_add_migration_supplier")]
+    partial class add_migration_supplier
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -246,10 +246,6 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("ContactId");
-
                     b.ToTable("Suppliers");
                 });
 
@@ -306,25 +302,6 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.Navigation("Warehouse");
-                });
-
-            modelBuilder.Entity("Supplier", b =>
-                {
-                    b.HasOne("Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-
-                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("Warehouse", b =>

@@ -96,12 +96,13 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddTransient<AddressProvider>();
 builder.Services.AddTransient<ContactProvider>();
-// builder.Services.AddTransient<WarehouseProvider>();
+builder.Services.AddTransient<WarehouseProvider>();
 builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
 builder.Services.AddTransient<ItemGroupProvider>();
 builder.Services.AddTransient<SupplierProvider>();
 
+builder.Services.AddScoped<IValidator<Warehouse>, WarehouseValidator>();
 builder.Services.AddScoped<IValidator<Supplier>, SupplierValidator>();
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
 builder.Services.AddScoped<IValidator<Item>, ItemValidator>();

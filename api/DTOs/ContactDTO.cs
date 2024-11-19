@@ -5,15 +5,10 @@ public class ContactDTO : IDTO
 {
     [JsonPropertyName("name")]
     public required string Name { get; set; }
-    
+
     [JsonPropertyName("phone")]
     public required string Phone { get; set; }
 
     [JsonPropertyName("email")]
     public required string Email { get; set; }
-
-    public static implicit operator ContactDTO?(Contact? contact)
-    {
-        throw new NotImplementedException();
-    }
 }

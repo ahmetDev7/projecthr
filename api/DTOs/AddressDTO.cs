@@ -9,7 +9,7 @@ public class AddressDTO : IDTO
 
     [JsonPropertyName("house_number")]
     public string? HouseNumber { get; set; }
-    
+
     [JsonPropertyName("house_number_extension")]
     public string? HouseNumberExtension { get; set; }
 
@@ -18,18 +18,14 @@ public class AddressDTO : IDTO
 
     [JsonPropertyName("zipcode")]
     public string? ZipCode { get; set; }
-    
+
     [JsonPropertyName("city")]
     public string? City { get; set; }
-    
+
     [JsonPropertyName("province")]
     public string? Province { get; set; }
 
     [JsonPropertyName("country_code")]
     public string? CountryCode { get; set; }
 
-    public static implicit operator AddressDTO?(Address? v)
-    {
-        throw new NotImplementedException();
-    }
 }

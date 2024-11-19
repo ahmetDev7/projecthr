@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 public class Contact
 {
     public Guid Id { get; set; }
@@ -6,5 +8,6 @@ public class Contact
     public required string Email { get; set; }
 
     // Navigation property for warehouses
+    [JsonIgnore]
     public ICollection<Warehouse>? Warehouses { get; set; }
 }

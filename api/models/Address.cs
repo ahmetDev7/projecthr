@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 public class Address
 {
 
@@ -20,5 +22,6 @@ public class Address
     public DateTime UpdatedAt { get; set; }
 
     // Navigation property for warehouses
+    [JsonIgnore]
     public ICollection<Warehouse>? Warehouses { get; set; }
 }

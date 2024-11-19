@@ -55,7 +55,7 @@ public class ContactProvider : ICRUD<Contact>
         throw new NotImplementedException();
     }
 
-    public virtual Contact? GetOrCreateContact(SupplierReQuestDTO request)
+    public virtual Contact? GetOrCreateContact(SupplierReQuest request)
     {
         if (request == null)
         {

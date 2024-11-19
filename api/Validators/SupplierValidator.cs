@@ -1,5 +1,4 @@
 using FluentValidation;
-using Model;
 
 public class SupplierValidator : AbstractValidator<Supplier>
 {

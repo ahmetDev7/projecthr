@@ -62,7 +62,7 @@ public class AddressProvider : ICRUD<Address>
         throw new NotImplementedException();
     }
 
-    public virtual Address? GetOrCreateAddress(SupplierReQuestDTO request)
+    public virtual Address? GetOrCreateAddress(SupplierReQuest request)
     {
         if (request == null)
         {

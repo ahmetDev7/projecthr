@@ -6,6 +6,8 @@ public class Item : BaseModel
     public Item(){}
     public Item(bool newInstance=false, bool isUpdate=false) : base(newInstance,isUpdate){}
 
+
+    public Guid ItemId { get; set; }
     [Required]
     public string? Code { get; set; }
     public string? Description { get; set; }

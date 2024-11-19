@@ -1,4 +1,6 @@
 using DTOs;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class WarehouseProvider : ICRUD<Warehouse>
 {

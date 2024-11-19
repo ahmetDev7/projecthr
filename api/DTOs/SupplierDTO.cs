@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DTO.Supplier;
 
 [ApiExplorerSettings(IgnoreApi = true)]
-public class SupplierReQuestDTO : BaseDTO
+public class SupplierReQuest : BaseDTO
 {
     [Required]
     public string? Code { get; set; }
@@ -19,7 +19,7 @@ public class SupplierReQuestDTO : BaseDTO
 }
 
 [ApiExplorerSettings(IgnoreApi = true)]
-public class SupplierResponseDTO : BaseDTO
+public class SupplierResponse : BaseDTO
 {
     public Guid Id {get; set;}
     public string? Code { get; set; }

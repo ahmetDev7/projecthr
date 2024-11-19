@@ -1,9 +1,5 @@
-using System.Security.Permissions;
 using DTO.Supplier;
 using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
-using Model;
 
 public class SupplierProvider : BaseProvider<Supplier>
 {
@@ -20,7 +16,7 @@ public class SupplierProvider : BaseProvider<Supplier>
 
     public override Supplier? Create(BaseDTO createValues)
     {
-        SupplierReQuestDTO? req = createValues as SupplierReQuestDTO;
+        SupplierReQuest? req = createValues as SupplierReQuest;
 
         if (req == null) throw new ApiFlowException("Could not process create supplier request. Save new supplier failed.");
 

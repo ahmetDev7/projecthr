@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 public class ShipmentItem : BaseModel
 {
     [Required]
-    public Guid? ShipmentId { get; set; }
+    public Guid? ShipmentId { get; set; } = Guid.NewGuid();
     public Shipment? Shipment { get; set; }
     
     [Required]

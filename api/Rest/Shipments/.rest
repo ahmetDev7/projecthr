@@ -23,3 +23,7 @@ Content-Type: application/json
   ]
 }
 ###
+
+### GET ALL SHIPMENTS
+GET http://localhost:5000/api/shipments
+Content-Type: application/json

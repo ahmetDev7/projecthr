@@ -51,4 +51,7 @@ public class Item : BaseModel
         item_type uuid [ref: > item_types.id]
         supplier_id uuid [ref: > suppliers.id] [Required]
     */
+    
+    // shipment_items table connection
+    public ICollection<ShipmentItem>? ShipmentItems { get; set; }
 }

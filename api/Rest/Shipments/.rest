@@ -1,0 +1,25 @@
+### CREATE SHIPMENT
+POST http://localhost:5000/api/shipments
+Content-Type: application/json
+
+{
+  "order_date": "2023-11-19T14:12:33.807Z",
+  "request_date": "2024-11-19T14:12:33.807Z",
+  "shipment_date": "2024-11-19T14:12:33.807Z",
+  "shipment_status": "Delivered",
+  "notes": "geen notities",
+  "carrier_code": "123",
+  "carrier_description": "description",
+  "service_code": "321",
+  "payment_type": "IDeal",
+  "transfer_mode": "I",
+  "total_package_count": 3,
+  "total_package_weight": 3.4,
+  "items": [
+    {
+      "item_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "amount": 2
+    }
+  ]
+}
+###

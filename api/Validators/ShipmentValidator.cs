@@ -20,5 +20,15 @@ public class ShipmentValidator : AbstractValidator<Shipment>
         RuleFor(shipment => shipment.TransferMode)
             .NotNull().WithMessage("transfer_mode is required.")
             .NotEmpty().WithMessage("transfer_mode cannot be empty.");
+        RuleForEach(shipment => shipment.ShipmentItems).ChildRules(items =>
+        {
+            items.RuleFor(item => item.ItemId)
+                .Custom((itemId, context) => {
+                    if (itemId != null && !db.ShipmentItems.Any(si => si.ItemId == itemId))
+                    {
+                        context.AddFailure("item_id", "The provided item_id does not exist.");
+                    }
+                });
+        });
     }
 }

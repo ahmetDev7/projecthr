@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ShipmentController : ControllerBase
+public class ShipmentsController : ControllerBase
 {
     private ShipmentProvider _shipmentProvider;
 
-    public ShipmentController(ShipmentProvider shipmentProvider)
+    public ShipmentsController(ShipmentProvider shipmentProvider)
     {
         _shipmentProvider = shipmentProvider;
     }

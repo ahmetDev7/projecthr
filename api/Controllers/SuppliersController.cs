@@ -13,7 +13,7 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(SupplierReQuestDTO request)
+    public IActionResult Create(SupplierReQuest request)
     {
         Supplier? supplier = _supplierProvider.Create(request);
         if (supplier == null) return BadRequest("Could not create supplier.");
@@ -22,9 +22,10 @@ public class SuppliersController : ControllerBase
         return Ok(new
         {
             message = "Supplier created successfully.",
-            created_supplier = new SupplierResponseDTO
+            created_supplier = new SupplierResponse
             {
                 Id = supplier.Id,
+                Code = supplier.Code,
                 Name = supplier.Name,
                 Reference = supplier.Reference,
                 Contact = new ContactDTO

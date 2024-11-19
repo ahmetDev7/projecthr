@@ -13,4 +13,5 @@ public class AppDbContext : DbContext
     public DbSet<Item> Items {get; set;}
     public DbSet<ItemGroup> ItemGroups {get; set;}
     public DbSet<Order> Orders {get;set;}
+    public DbSet<OrderItem> OrderItems {get;set;}
 } 

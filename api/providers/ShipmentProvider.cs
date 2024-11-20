@@ -48,5 +48,15 @@ public class ShipmentProvider : BaseProvider<Shipment>
         return newShipment;
     }
 
+    public override Shipment? Delete(Guid id)
+    {
+        Shipment? foundShipment = _db.Shipments.FirstOrDefault(s => s.Id == id);
+        if(foundShipment == null) return null;
+        
+        _db.Shipments.Remove(foundShipment);
+        SaveToDBOrFail();
+        return foundShipment;
+    }
+
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);
 }

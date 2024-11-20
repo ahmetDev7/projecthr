@@ -44,6 +44,34 @@ public class ShipmentsController : ControllerBase
         });
     }
 
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        Shipment? deletedShipment = _shipmentProvider.Delete(id);
+        if (deletedShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
+
+        return Ok(new {deleted_shipment = new ShipmentResponse{
+            Id = deletedShipment.Id,
+            OrderDate = deletedShipment.OrderDate,
+            RequestDate = deletedShipment.RequestDate,
+            ShipmentDate = deletedShipment.ShipmentDate,
+            ShipmentType = deletedShipment.ShipmentType,
+            Notes = deletedShipment.Notes,
+            CarrierCode = deletedShipment.CarrierCode,
+            CarrierDescription = deletedShipment.CarrierDescription,
+            ServiceCode = deletedShipment.ServiceCode,
+            PaymentType = deletedShipment.PaymentType,
+            TransferMode = deletedShipment.TransferMode,
+            TotalPackageCount = deletedShipment.TotalPackageCount,
+            TotalPackageWeight = deletedShipment.TotalPackageWeight,
+            CreatedAt = deletedShipment.CreatedAt,
+            UpdatedAt = deletedShipment.UpdatedAt,
+            Items = deletedShipment.ShipmentItems?.Select(si => new ShipmentItemRR
+            {
+                ItemId = si.ItemId,
+                Amount = si.Amount
+            }).ToList()
+        }});
 
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse

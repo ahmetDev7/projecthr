@@ -23,7 +23,7 @@ public class ShipmentValidator : AbstractValidator<Shipment>
         {
             items.RuleFor(item => item.ItemId)
                 .Custom((itemId, context) => {
-                    if (itemId != null && !db.Items.Any(si => si.Id == itemId))
+                    if (itemId != null && !db.Items.Any(i => i.Id == itemId))
                     {
                         context.AddFailure("item_id", "The provided item_id does not exist.");
                     }

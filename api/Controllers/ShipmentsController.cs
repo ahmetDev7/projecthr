@@ -50,87 +50,84 @@ public class ShipmentsController : ControllerBase
         Shipment? deletedShipment = _shipmentProvider.Delete(id);
         if (deletedShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
 
-        return Ok(new
-        {
-            deleted_shipment = new ShipmentResponse
+        return Ok(new {deleted_shipment = new ShipmentResponse{
+            Id = deletedShipment.Id,
+            OrderDate = deletedShipment.OrderDate,
+            RequestDate = deletedShipment.RequestDate,
+            ShipmentDate = deletedShipment.ShipmentDate,
+            ShipmentType = deletedShipment.ShipmentType,
+            Notes = deletedShipment.Notes,
+            CarrierCode = deletedShipment.CarrierCode,
+            CarrierDescription = deletedShipment.CarrierDescription,
+            ServiceCode = deletedShipment.ServiceCode,
+            PaymentType = deletedShipment.PaymentType,
+            TransferMode = deletedShipment.TransferMode,
+            TotalPackageCount = deletedShipment.TotalPackageCount,
+            TotalPackageWeight = deletedShipment.TotalPackageWeight,
+            CreatedAt = deletedShipment.CreatedAt,
+            UpdatedAt = deletedShipment.UpdatedAt,
+            Items = deletedShipment.ShipmentItems?.Select(si => new ShipmentItemRR
             {
-                Id = deletedShipment.Id,
-                OrderDate = deletedShipment.OrderDate,
-                RequestDate = deletedShipment.RequestDate,
-                ShipmentDate = deletedShipment.ShipmentDate,
-                ShipmentType = deletedShipment.ShipmentType,
-                Notes = deletedShipment.Notes,
-                CarrierCode = deletedShipment.CarrierCode,
-                CarrierDescription = deletedShipment.CarrierDescription,
-                ServiceCode = deletedShipment.ServiceCode,
-                PaymentType = deletedShipment.PaymentType,
-                TransferMode = deletedShipment.TransferMode,
-                TotalPackageCount = deletedShipment.TotalPackageCount,
-                TotalPackageWeight = deletedShipment.TotalPackageWeight,
-                CreatedAt = deletedShipment.CreatedAt,
-                UpdatedAt = deletedShipment.UpdatedAt,
-                Items = deletedShipment.ShipmentItems?.Select(si => new ShipmentItemRR
-                {
-                    ItemId = si.ItemId,
-                    Amount = si.Amount
-                }).ToList()
-            }
-        });	
-    }
-    [HttpGet()]
-        public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
-        {
-            Id = s.Id,
-            OrderDate = s.OrderDate,
-            RequestDate = s.RequestDate,
-            ShipmentDate = s.ShipmentDate,
-            ShipmentType = s.ShipmentType,
-            Notes = s.Notes,
-            CarrierCode = s.CarrierCode,
-            CarrierDescription = s.CarrierDescription,
-            ServiceCode = s.ServiceCode,
-            PaymentType = s.PaymentType,
-            TransferMode = s.TransferMode,
-            TotalPackageCount = s.TotalPackageCount,
-            TotalPackageWeight = s.TotalPackageWeight,
-            CreatedAt = s.CreatedAt,
-            UpdatedAt = s.UpdatedAt,
-            Items = s.ShipmentItems?.Select(item => new ShipmentItemRR
-            {
-                ItemId = item.ItemId,
-                Amount = item.Amount
+                ItemId = si.ItemId,
+                Amount = si.Amount
             }).ToList()
-        }).ToList());
+        }});
+    }
 
-        [HttpGet("{id}")]
-        public IActionResult ShowSingle(Guid id)
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
+    {
+        Id = s.Id,
+        OrderDate = s.OrderDate,
+        RequestDate = s.RequestDate,
+        ShipmentDate = s.ShipmentDate,
+        ShipmentType = s.ShipmentType,
+        Notes = s.Notes,
+        CarrierCode = s.CarrierCode,
+        CarrierDescription = s.CarrierDescription,
+        ServiceCode = s.ServiceCode,
+        PaymentType = s.PaymentType,
+        TransferMode = s.TransferMode,
+        TotalPackageCount = s.TotalPackageCount,
+        TotalPackageWeight = s.TotalPackageWeight,
+        CreatedAt = s.CreatedAt,
+        UpdatedAt = s.UpdatedAt,
+        Items = s.ShipmentItems?.Select(item => new ShipmentItemRR
         {
-            Shipment? foundShipment = _shipmentProvider.GetById(id);
+            ItemId = item.ItemId,
+            Amount = item.Amount
+        }).ToList()
+    }).ToList());
 
-            return (foundShipment == null)
-                ? NotFound(new { message = $"Shipment not found for id '{id}'" })
-                : Ok(new ShipmentResponse
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        Shipment? foundShipment = _shipmentProvider.GetById(id);
+
+        return (foundShipment == null)
+            ? NotFound(new { message = $"Shipment not found for id '{id}'" })
+            : Ok(new ShipmentResponse
+            {        
+                Id = foundShipment.Id,
+                OrderDate = foundShipment.OrderDate,
+                RequestDate = foundShipment.RequestDate,
+                ShipmentDate = foundShipment.ShipmentDate,
+                ShipmentType = foundShipment.ShipmentType,
+                Notes = foundShipment.Notes,
+                CarrierCode = foundShipment.CarrierCode,
+                CarrierDescription = foundShipment.CarrierDescription,
+                ServiceCode = foundShipment.ServiceCode,
+                PaymentType = foundShipment.PaymentType,
+                TransferMode = foundShipment.TransferMode,
+                TotalPackageCount = foundShipment.TotalPackageCount,
+                TotalPackageWeight = foundShipment.TotalPackageWeight,
+                CreatedAt = foundShipment.CreatedAt,
+                UpdatedAt = foundShipment.UpdatedAt,
+                Items = foundShipment.ShipmentItems?.Select(item => new ShipmentItemRR
                 {
-                    Id = foundShipment.Id,
-                    OrderDate = foundShipment.OrderDate,
-                    RequestDate = foundShipment.RequestDate,
-                    ShipmentDate = foundShipment.ShipmentDate,
-                    ShipmentType = foundShipment.ShipmentType,
-                    Notes = foundShipment.Notes,
-                    CarrierCode = foundShipment.CarrierCode,
-                    CarrierDescription = foundShipment.CarrierDescription,
-                    ServiceCode = foundShipment.ServiceCode,
-                    PaymentType = foundShipment.PaymentType,
-                    TransferMode = foundShipment.TransferMode,
-                    TotalPackageCount = foundShipment.TotalPackageCount,
-                    TotalPackageWeight = foundShipment.TotalPackageWeight,
-                    CreatedAt = foundShipment.CreatedAt,
-                    UpdatedAt = foundShipment.UpdatedAt,
-                    Items = foundShipment.ShipmentItems?.Select(item => new ShipmentItemRR
-                    {
-                        ItemId = item.ItemId,
-                        Amount = item.Amount
-                    }).ToList()
-                });
-        }
+                    ItemId = item.ItemId,
+                    Amount = item.Amount
+                }).ToList()
+        });
+    }
 }

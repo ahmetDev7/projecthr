@@ -57,16 +57,12 @@ public class AddressProvider : ICRUD<Address>
 
     public Address? GetOrCreateAddress(SupplierRequest request)
     {
-        if (request == null)
-        {
-            throw new ApiFlowException("Request object is null.");
-        }
 
         if (request.Address_id != null)
         {
-            Address? existingContact = GetById(request.Address_id.Value);
-            if (existingContact == null) throw new ApiFlowException("contact_id does not exist");
-            return existingContact;
+            Address? existingAddress = GetById(request.Address_id.Value);
+            if (existingAddress == null) throw new ApiFlowException("address_id does not exist");
+            return existingAddress;
         }
         Address address = Create<AddressDTO>(request.Address);
 
@@ -75,6 +71,6 @@ public class AddressProvider : ICRUD<Address>
             return address;
         }
 
-        throw new ApiFlowException("Both contact_id and contact data are missing. Unable to create supplier contact.");
+        throw new ApiFlowException("Both address_id and address data are missing. Unable to create supplier address.");
     }
 }

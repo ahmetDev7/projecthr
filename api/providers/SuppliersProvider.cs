@@ -32,10 +32,7 @@ public class SuppliersProvider : BaseProvider<Supplier>
             AddressId = relatedAddress.Id,
         };
 
-        // Validate the new supplier model (uncomment if needed)
         ValidateModel(newSupplier);
-
-        // Add to the database and save
         _db.Suppliers.Add(newSupplier);
         SaveToDBOrFail();
 

@@ -7,9 +7,7 @@ namespace DTO.Supplier;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class SupplierRequest : BaseDTO
 {
-    [Required]
     public string? Code { get; set; }
-    [Required]
     public string? Name { get; set; }
     public string? Reference { get; set; }
     public Guid? Contact_id { get; set; }

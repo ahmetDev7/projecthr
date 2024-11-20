@@ -50,10 +50,6 @@ public class ContactProvider : ICRUD<Contact>
 
     public Contact? GetOrCreateContact(SupplierRequest request)
     {
-        if (request == null)
-        {
-            throw new ApiFlowException("Request object is null.");
-        }
 
         if (request.Contact_id != null)
         {

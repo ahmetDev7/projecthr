@@ -13,8 +13,8 @@ public class Supplier : BaseModel
     public string? Reference { get; set; }
     // foreing key
     public Guid ContactId { get; set; }
-    public Contact? Contact { get; set; } // TODO: is required
-    public Guid AddressId { get; set; } // TODO: is required
+    public Contact? Contact { get; set; }
+    public Guid AddressId { get; set; }
     public Address? Address { get; set; }
 
 

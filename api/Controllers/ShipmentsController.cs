@@ -44,6 +44,32 @@ public class ShipmentsController : ControllerBase
         });
     }
 
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
+    {
+        Id = s.Id,
+        OrderDate = s.OrderDate,
+        RequestDate = s.RequestDate,
+        ShipmentDate = s.ShipmentDate,
+        ShipmentType = s.ShipmentType,
+        Notes = s.Notes,
+        CarrierCode = s.CarrierCode,
+        CarrierDescription = s.CarrierDescription,
+        ServiceCode = s.ServiceCode,
+        PaymentType = s.PaymentType,
+        TransferMode = s.TransferMode,
+        TotalPackageCount = s.TotalPackageCount,
+        TotalPackageWeight = s.TotalPackageWeight,
+        CreatedAt = s.CreatedAt,
+        UpdatedAt = s.UpdatedAt,
+        Items = s.ShipmentItems?.Select(item => new ShipmentItemRR
+        {
+            ItemId = item.ItemId,
+            Amount = item.Amount
+        }).ToList()
+    }).ToList());
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

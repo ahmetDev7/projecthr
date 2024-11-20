@@ -23,3 +23,8 @@ Content-Type: application/json
   ]
 }
 ###
+
+### GET SHIPMENT BY ID (change ID to existing ID in your database)
+GET http://localhost:5000/api/shipments/85e299a8-71e3-4c6b-baf5-d0112129a8c5
+Content-Type: application/json
+

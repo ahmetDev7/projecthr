@@ -14,6 +14,11 @@ Content-Type: application/json
     "total_discount": "0",
     "total_tax": "0",
     "total_surcharge": "0",
-    "warehouse_id": "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
+    "warehouse_id": "02034874-7901-4b5b-abe0-82fa559bb680",
+    "order_items": [
+            {
+                "item_id": "79283cb6-52ab-40c5-b478-e5087cdaf39c",
+                "amount": 23
+            }] 
 }
 ###

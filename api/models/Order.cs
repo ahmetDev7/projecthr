@@ -21,7 +21,7 @@ public class Order : BaseModel
     public Guid? WarehouseId { get; set; }
 
     public Warehouse? Warehouse { get; set; }
-    [Required]
+    
     public ICollection<OrderItem>? OrderItems { get; set; }
     //TODO:
     //  shipment_id uuid [ref: > shipments.id]

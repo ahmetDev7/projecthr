@@ -21,6 +21,20 @@ public class OrderValidator : AbstractValidator<Order>
                     context.AddFailure("warehouse_id", "The provided warehouse_id does not exist");
                 }
             });
+        RuleFor(order => order.OrderItems)
+            .NotNull().WithMessage("order_items required")
+            .NotEmpty().WithMessage("order_items cannot be empty.")
+            .ForEach(orderItem => {
+                orderItem.ChildRules(item =>
+                {
+                    item.RuleFor(i => i.ItemId)
+                        .NotNull().WithMessage("The ItemId field is required.")
+                        .NotEmpty().WithMessage("The ItemId field cannot be empty.");
+                    
+                    item.RuleFor(i => i.Amount)
+                        .GreaterThan(0).WithMessage("Amount must be greater than 0.");
+                });
+            });
         //TODO:clientsId
 
     }

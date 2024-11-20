@@ -22,6 +22,8 @@ namespace DTO.Order
         public string? PickingNotes  { get; set; }
         [JsonPropertyName("warehouse_id")]
         public Guid? WarehouseId  { get; set; }
+        [JsonPropertyName("order_items")]
+        public List<OrderItemRequest>? OrderItems { get; set; }
         
         
         //TODO:
@@ -53,6 +55,8 @@ namespace DTO.Order
         public string? PickingNotes  { get; set; }
         [JsonPropertyName("warehouseid")]
         public Guid? WarehouseId  { get; set; }
+        [JsonPropertyName("order_items")]
+        public List<OrderItemRequest>? Items { get; set; }
         //TODO..
         //  ship_to_client uuid [ref: > clients.id]
         //[Required]
@@ -60,5 +64,14 @@ namespace DTO.Order
   
         //TODO:
         //  shipment_id uuid [ref: > shipments.id]
+    }
+    public class OrderItemRequest  : BaseDTO
+    {
+        [JsonPropertyName("item_id")]
+        public Guid? ItemId { get; set; }
+        [JsonPropertyName("amount")]
+        public int? Amount { get; set; } // 10 fietsen besteld
+
+
     }
 }

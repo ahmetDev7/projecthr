@@ -30,6 +30,11 @@ public class OrdersController : ControllerBase
             Notes = newOrder.Notes,
             PickingNotes = newOrder.PickingNotes,
             WarehouseId = newOrder.WarehouseId,
+            Items = newOrder.OrderItems?.Select(oi => new OrderItemRequest
+            {
+                ItemId = oi.ItemId,
+                Amount = oi.Amount
+            }).ToList()
         });
     }
 }

@@ -30,7 +30,12 @@ public class OrderProvider : BaseProvider<Order>
             OrderStatus = req.OrderStatus,
             Notes = req.Notes,
             PickingNotes = req.PickingNotes,
-            WarehouseId = req.WarehouseId
+            WarehouseId = req.WarehouseId,
+            OrderItems = req.OrderItems?.Select(oi => new OrderItem
+            {
+                ItemId = oi.ItemId,
+                Amount = oi.Amount
+            }).ToList()
         };
         
         ValidateModel(newOrder);

@@ -72,6 +72,7 @@ public class ShipmentsController : ControllerBase
                 Amount = si.Amount
             }).ToList()
         }});
+    }
 
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse

@@ -1,13 +1,13 @@
 using DTO.Supplier;
 using FluentValidation;
 
-public class SupplierProvider : BaseProvider<Supplier>
+public class SuppliersProvider : BaseProvider<Supplier>
 {
     private ContactProvider _contactProvider;
     private AddressProvider _addressProvider;
     private IValidator<Supplier> _supplierValidator;
 
-    public SupplierProvider(AppDbContext db, IValidator<Supplier> validator, ContactProvider contactProvider, AddressProvider addressProvider) : base(db)
+    public SuppliersProvider(AppDbContext db, IValidator<Supplier> validator, ContactProvider contactProvider, AddressProvider addressProvider) : base(db)
     {
         _supplierValidator = validator;
         _addressProvider = addressProvider;

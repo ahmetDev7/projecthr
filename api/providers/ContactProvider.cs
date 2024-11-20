@@ -48,7 +48,7 @@ public class ContactProvider : ICRUD<Contact>
         throw new NotImplementedException();
     }
 
-    public virtual Contact? GetOrCreateContact(SupplierRequest request)
+    public Contact? GetOrCreateContact(SupplierRequest request)
     {
         if (request == null)
         {

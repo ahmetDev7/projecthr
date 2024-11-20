@@ -11,7 +11,8 @@ public class ShipmentProvider : BaseProvider<Shipment>
         _shipmentValidator = validator;
     }
 
-    public override Shipment? GetById(Guid id) => _db.Shipments.FirstOrDefault(s => s.Id == id);
+    public override Shipment? GetById(Guid id) => 
+        _db.Shipments.Include(s => s.ShipmentItems).FirstOrDefault(s => s.Id == id);
 
     public override List<Shipment>? GetAll() => _db.Shipments.Include(s => s.ShipmentItems).ToList();
 

@@ -44,6 +44,7 @@ public class ShipmentsController : ControllerBase
         });
     }
 
+
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
     {
@@ -68,4 +69,36 @@ public class ShipmentsController : ControllerBase
             Amount = item.Amount
         }).ToList()
     }).ToList());
+
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        Shipment? foundShipment = _shipmentProvider.GetById(id);
+
+        return (foundShipment == null)
+            ? NotFound(new { message = $"Shipment not found for id '{id}'" })
+            : Ok(new ShipmentResponse
+            {        
+                Id = foundShipment.Id,
+                OrderDate = foundShipment.OrderDate,
+                RequestDate = foundShipment.RequestDate,
+                ShipmentDate = foundShipment.ShipmentDate,
+                ShipmentType = foundShipment.ShipmentType,
+                Notes = foundShipment.Notes,
+                CarrierCode = foundShipment.CarrierCode,
+                CarrierDescription = foundShipment.CarrierDescription,
+                ServiceCode = foundShipment.ServiceCode,
+                PaymentType = foundShipment.PaymentType,
+                TransferMode = foundShipment.TransferMode,
+                TotalPackageCount = foundShipment.TotalPackageCount,
+                TotalPackageWeight = foundShipment.TotalPackageWeight,
+                CreatedAt = foundShipment.CreatedAt,
+                UpdatedAt = foundShipment.UpdatedAt,
+                Items = foundShipment.ShipmentItems?.Select(item => new ShipmentItemRR
+                {
+                    ItemId = item.ItemId,
+                    Amount = item.Amount
+                }).ToList()
+        });
+    }
 }

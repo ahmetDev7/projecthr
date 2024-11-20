@@ -1,0 +1,4 @@
+### Get all orders
+GET http://localhost:5000/api/orders
+Content-Type: application/json
+###

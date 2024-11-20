@@ -1,4 +1,3 @@
-
 using DTO.Supplier;
 
 public class ContactProvider : ICRUD<Contact>
@@ -49,24 +48,22 @@ public class ContactProvider : ICRUD<Contact>
         throw new NotImplementedException();
     }
 
-    public virtual Contact? GetOrCreateContact(SupplierReQuest request)
+    public virtual Contact? GetOrCreateContact(SupplierRequest request)
     {
         if (request == null)
         {
             throw new ApiFlowException("Request object is null.");
         }
 
-        if (request.ContactId != null)
+        if (request.Contact_id != null)
         {
-            Console.WriteLine($"ContactId: {request.ContactId}");
-            Contact? existingContact = GetById(request.ContactId.Value);
+            Contact? existingContact = GetById(request.Contact_id.Value);
             if (existingContact == null) throw new ApiFlowException("contact_id does not exist");
             return existingContact;
         }
 
         if (request.Contact != null)
         {
-            Console.WriteLine($"Creating new contact with data: {request.Contact.Name}");
             return Create<ContactDTO>(request.Contact);
         }
 

@@ -5,16 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace DTO.Supplier;
 
 [ApiExplorerSettings(IgnoreApi = true)]
-public class SupplierReQuest : BaseDTO
+public class SupplierRequest : BaseDTO
 {
     [Required]
     public string? Code { get; set; }
     [Required]
     public string? Name { get; set; }
     public string? Reference { get; set; }
-    public Guid? ContactId { get; set; }
+    public Guid? Contact_id { get; set; }
     public ContactDTO? Contact { get; set; }
-    public Guid? AddressId { get; set; }
+    public Guid? Address_id { get; set; }
     public AddressDTO? Address { get; set; }
 }
 
@@ -25,10 +25,8 @@ public class SupplierResponse : BaseDTO
     public string? Code { get; set; }
     public string? Name { get; set; }
     public string? Reference { get; set; }
-    [JsonIgnore]
-    public Contact? ContactId { get; set; }
+    public Contact? Contact_id { get; set; }
     public ContactDTO? Contact { get; set; }
-    [JsonIgnore]
-    public Address? AddressId { get; set; }
+    public Address? Address_id { get; set; }
     public AddressDTO? Address { get; set; }
 }

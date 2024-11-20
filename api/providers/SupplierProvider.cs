@@ -16,7 +16,7 @@ public class SupplierProvider : BaseProvider<Supplier>
 
     public override Supplier? Create(BaseDTO createValues)
     {
-        SupplierReQuest? req = createValues as SupplierReQuest;
+        SupplierRequest? req = createValues as SupplierRequest;
 
         if (req == null) throw new ApiFlowException("Could not process create supplier request. Save new supplier failed.");
 

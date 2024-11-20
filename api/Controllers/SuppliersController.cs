@@ -13,10 +13,10 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(SupplierReQuest request)
+    public IActionResult Create(SupplierRequest request)
     {
         Supplier? supplier = _supplierProvider.Create(request);
-        if (supplier == null) return BadRequest("Could not create supplier.");
+        if (supplier == null) throw new ApiFlowException("Saving new Supplier failed.");
 
 
         return Ok(new

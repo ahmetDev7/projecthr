@@ -1,4 +1,3 @@
-
 using DTO.Supplier;
 
 public class AddressProvider : ICRUD<Address>
@@ -56,17 +55,17 @@ public class AddressProvider : ICRUD<Address>
         throw new NotImplementedException();
     }
 
-    public Address? GetOrCreateAddress(SupplierReQuest request)
+    public Address? GetOrCreateAddress(SupplierRequest request)
     {
         if (request == null)
         {
             throw new ApiFlowException("Request object is null.");
         }
 
-        if (request.AddressId != null)
+        if (request.Address_id != null)
         {
-            Console.WriteLine($"ContactId: {request.AddressId}");
-            Address? existingContact = GetById(request.AddressId.Value);
+            Console.WriteLine($"ContactId: {request.Address_id}");
+            Address? existingContact = GetById(request.Address_id.Value);
             if (existingContact == null) throw new ApiFlowException("contact_id does not exist");
             return existingContact;
         }

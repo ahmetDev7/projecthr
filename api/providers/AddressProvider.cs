@@ -64,7 +64,6 @@ public class AddressProvider : ICRUD<Address>
 
         if (request.Address_id != null)
         {
-            Console.WriteLine($"ContactId: {request.Address_id}");
             Address? existingContact = GetById(request.Address_id.Value);
             if (existingContact == null) throw new ApiFlowException("contact_id does not exist");
             return existingContact;
@@ -73,7 +72,6 @@ public class AddressProvider : ICRUD<Address>
 
         if (request.Address != null)
         {
-            Console.WriteLine($"Creating new contact with data: {request.Address.Street}");
             return address;
         }
 

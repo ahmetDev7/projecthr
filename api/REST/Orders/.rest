@@ -10,15 +10,16 @@ Content-Type: application/json
     "note": "0",
     "ship_to_client": "sidi",
     "picking_notes": "",
-    "total_amount": "1",
+    "total_amount": "1.3455",
     "total_discount": "0",
     "total_tax": "0",
     "total_surcharge": "0",
-    "warehouse_id": "02034874-7901-4b5b-abe0-82fa559bb680",
+    "warehouse_id": "d323b35d-f6f2-41f7-99ee-b9a8eb366504",
     "order_items": [
             {
-                "item_id": "79283cb6-52ab-40c5-b478-e5087cdaf39c",
+                "item_id": "ac3811c9-a02b-45a9-9ea7-4db7c3422843",
                 "amount": 23
-            }] 
+            }
+] 
 }
 ###

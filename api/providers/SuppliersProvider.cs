@@ -1,5 +1,6 @@
 using DTO.Supplier;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class SuppliersProvider : BaseProvider<Supplier>
 {
@@ -14,33 +15,43 @@ public class SuppliersProvider : BaseProvider<Supplier>
         _contactProvider = contactProvider;
     }
 
-    public override Supplier? Create(BaseDTO createValues)
+    public override Supplier? Update(Guid id, BaseDTO updatedValues)
     {
-        SupplierRequest? req = createValues as SupplierRequest;
+        SupplierRequest? req = updatedValues as SupplierRequest;
+        if (req == null) throw new ApiFlowException("If you want to Update, you need to change something");
 
-        if (req == null) throw new ApiFlowException("Could not process create supplier request. Save new supplier failed.");
+        Supplier? foundSupplier = GetById(id);
+        if (foundSupplier == null) throw new ApiFlowException("No Supplier found");
 
-        Contact? relatedContact = _contactProvider.GetOrCreateContact(req);
-        Address? relatedAddress = _addressProvider.GetOrCreateAddress(req);
+        // Update the found supplier with the new values
+        foundSupplier.Code = req.Code;
+        foundSupplier.Name = req.Name;
+        foundSupplier.Reference = req.Reference;
 
-        Supplier newSupplier = new Supplier(newInstance: true)
-        {
-            Code = req.Code,
-            Name = req.Name,
-            Reference = req.Reference,
-            ContactId = relatedContact.Id,
-            AddressId = relatedAddress.Id,
-        };
+        // Update the Contact and Address entities
+        foundSupplier.Contact.Name = req.Contact.Name;
+        foundSupplier.Contact.Email = req.Contact.Email;
+        foundSupplier.Contact.Phone = req.Contact.Phone;
 
-        ValidateModel(newSupplier);
-        _db.Suppliers.Add(newSupplier);
+        foundSupplier.Address.Street = req.Address.Street;
+        foundSupplier.Address.HouseNumber = req.Address.HouseNumber;
+        foundSupplier.Address.HouseNumberExtension = req.Address.HouseNumberExtension;
+        foundSupplier.Address.HouseNumberExtensionExtra = req.Address.HouseNumberExtensionExtra;
+        foundSupplier.Address.ZipCode = req.Address.ZipCode;
+        foundSupplier.Address.City = req.Address.City;
+        foundSupplier.Address.Province = req.Address.Province;
+        foundSupplier.Address.CountryCode = req.Address.CountryCode;
+
+        // Validate the updated supplier
+        ValidateModel(foundSupplier);
+
+        // Save changes to the DB
         SaveToDBOrFail();
 
-        newSupplier.Contact =relatedContact;
-        newSupplier.Address =relatedAddress;
-
-        return newSupplier;
+        return foundSupplier;
     }
+
+    public override Supplier? GetById(Guid id) => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).FirstOrDefault(i => i.Id == id);
     protected override void ValidateModel(Supplier model) => _supplierValidator.ValidateAndThrow(model);
 
 }

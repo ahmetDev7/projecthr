@@ -5,47 +5,47 @@ using DTO.Supplier;
 [Route("api/[controller]")]
 public class SuppliersController : ControllerBase
 {
-    private readonly SupplierProvider _supplierProvider;
+    private readonly SuppliersProvider _supplierProvider;
 
-    public SuppliersController(SupplierProvider supplierProvider)
+    public SuppliersController(SuppliersProvider supplierProvider)
     {
         _supplierProvider = supplierProvider;
     }
 
-    [HttpPost]
-    public IActionResult Create(SupplierRequest request)
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, SupplierRequest request)
     {
-        Supplier? supplier = _supplierProvider.Create(request);
-        if (supplier == null) throw new ApiFlowException("Saving new Supplier failed.");
-
-
+        Supplier? updatedSupplier = _supplierProvider.Update(id, request);
+        if(updatedSupplier == null) return NotFound(new {message = $"Item group not found for id '{id}'"});
+        
         return Ok(new
         {
-            message = "Supplier created successfully.",
-            created_supplier = new SupplierResponse
+            message = "Supplier updated successfully.",
+            updated_supplier = new SupplierResponse
             {
-                Id = supplier.Id,
-                Code = supplier.Code,
-                Name = supplier.Name,
-                Reference = supplier.Reference,
-                Contact = new ContactDTO
+                Id = updatedSupplier.Id,
+                Code = updatedSupplier.Code,
+                Name = updatedSupplier.Name,
+                Reference = updatedSupplier.Reference,
+                Contact = updatedSupplier.Contact != null ? new ContactDTO
                 {
-                    Name = supplier.Contact.Name,
-                    Email = supplier.Contact.Email,
-                    Phone = supplier.Contact.Phone
-                },
-                Address = new AddressDTO
+                    Name = updatedSupplier.Contact.Name,
+                    Email = updatedSupplier.Contact.Email,
+                    Phone = updatedSupplier.Contact.Phone
+                } : null,
+                Address = updatedSupplier.Address != null ? new AddressDTO
                 {
-                    Street = supplier.Address.Street,
-                    HouseNumber = supplier.Address.HouseNumber,
-                    HouseNumberExtension = supplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = supplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = supplier.Address.ZipCode,
-                    City = supplier.Address.City,
-                    Province = supplier.Address.Province,
-                    CountryCode = supplier.Address.CountryCode,
-                }
+                    Street = updatedSupplier.Address.Street,
+                    HouseNumber = updatedSupplier.Address.HouseNumber,
+                    HouseNumberExtension = updatedSupplier.Address.HouseNumberExtension,
+                    HouseNumberExtensionExtra = updatedSupplier.Address.HouseNumberExtensionExtra,
+                    ZipCode = updatedSupplier.Address.ZipCode,
+                    City = updatedSupplier.Address.City,
+                    Province = updatedSupplier.Address.Province,
+                    CountryCode = updatedSupplier.Address.CountryCode
+                } : null
             }
         });
     }
+
 }

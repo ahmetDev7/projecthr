@@ -5,9 +5,9 @@ using DTO.Supplier;
 [Route("api/[controller]")]
 public class SuppliersController : ControllerBase
 {
-    private readonly SuppliersProvider _supplierProvider;
+    private readonly SupplierProvider _supplierProvider;
 
-    public SuppliersController(SuppliersProvider supplierProvider)
+    public SuppliersController(SupplierProvider supplierProvider)
     {
         _supplierProvider = supplierProvider;
     }
@@ -16,8 +16,8 @@ public class SuppliersController : ControllerBase
     public IActionResult Update(Guid id, SupplierRequest request)
     {
         Supplier? updatedSupplier = _supplierProvider.Update(id, request);
-        if(updatedSupplier == null) return NotFound(new {message = $"Item group not found for id '{id}'"});
-        
+        if(updatedSupplier == null) return NotFound(new {message = $"Supplier not found for id '{id}'"});
+
         return Ok(new
         {
             message = "Supplier updated successfully.",
@@ -47,5 +47,4 @@ public class SuppliersController : ControllerBase
             }
         });
     }
-
 }

@@ -98,7 +98,7 @@ builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
 builder.Services.AddTransient<ItemGroupProvider>();
 builder.Services.AddTransient<ShipmentProvider>();
-builder.Services.AddTransient<SuppliersProvider>();
+builder.Services.AddTransient<SupplierProvider>();
 
 builder.Services.AddScoped<IValidator<Supplier>, SupplierValidator>();
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();

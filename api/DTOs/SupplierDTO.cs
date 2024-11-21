@@ -23,8 +23,6 @@ public class SupplierResponse : BaseDTO
     public string? Code { get; set; }
     public string? Name { get; set; }
     public string? Reference { get; set; }
-    public Contact? Contact_id { get; set; }
     public ContactDTO? Contact { get; set; }
-    public Address? Address_id { get; set; }
     public AddressDTO? Address { get; set; }
 }

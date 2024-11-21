@@ -1,0 +1,23 @@
+PUT http://localhost:5000/api/Suppliers/5f7fb1cb-51b2-41a9-80e1-894a326f0c23
+Content-Type: application/json
+
+{
+  "code": "DIT IS GETEST",
+  "name": "DIT IS GETEST",
+  "reference": "DIT IS GETEST",
+  "contact": {
+    "name": "DIT IS GETEST",
+    "phone": "DIT IS GETEST",
+    "email": "DIT IS GETEST"
+  },
+  "address": {
+    "street": "DIT IS GETEST",
+    "house_number": "DIT IS GETEST",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "DIT IS GETEST",
+    "city": "string",
+    "province": "string",
+    "country_code": "string"
+  }
+}

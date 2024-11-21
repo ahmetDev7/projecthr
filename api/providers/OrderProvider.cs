@@ -1,3 +1,4 @@
+using System.Data;
 using DTO.ItemGroup;
 using DTO.Order;
 using FluentValidation;
@@ -22,7 +23,6 @@ public class OrderProvider : BaseProvider<Order>
         if (req == null) throw new ApiFlowException("Could not process create order request. Save new order failed.");
         Order newOrder = new Order(newInstance:true)
         {
-            // TODO: calculated value
             OrderDate = DateUtil.ToUtcOrNull(req.OrderDate),
             RequestDate = DateUtil.ToUtcOrNull(req.RequestDate),
             Reference = req.Reference,
@@ -30,11 +30,15 @@ public class OrderProvider : BaseProvider<Order>
             OrderStatus = req.OrderStatus,
             Notes = req.Notes,
             PickingNotes = req.PickingNotes,
+            TotalAmount =  req.TotalAmount,
+            TotalDiscount =  req.TotalDiscount,
+            TotalTax = req.TotalTax,
+            TotalSurcharge = req.TotalSurcharge,
             WarehouseId = req.WarehouseId,
             OrderItems = req.OrderItems?.Select(oi => new OrderItem
             {
-                ItemId = oi.ItemId,
-                Amount = oi.Amount
+                ItemId = oi.ItemId ?? throw new ApiFlowException("Item ID cannot be null."),
+                Amount = oi.Amount?? throw new ApiFlowException("Amount cannot be null.")
             }).ToList()
         };
         

@@ -29,6 +29,10 @@ public class OrdersController : ControllerBase
             OrderStatus = newOrder.OrderStatus,
             Notes = newOrder.Notes,
             PickingNotes = newOrder.PickingNotes,
+            TotalAmount = newOrder.TotalAmount,
+            TotalDiscount = newOrder.TotalDiscount,
+            TotalTax = newOrder.TotalTax,
+            TotalSurcharge = newOrder.TotalSurcharge,
             WarehouseId = newOrder.WarehouseId,
             Items = newOrder.OrderItems?.Select(oi => new OrderItemRequest
             {

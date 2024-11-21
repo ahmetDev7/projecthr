@@ -20,6 +20,16 @@ namespace DTO.Order
         public string? Notes  { get; set; }
         [JsonPropertyName("picking_notes")]
         public string? PickingNotes  { get; set; }
+        [JsonPropertyName("total_amount")]
+        public decimal? TotalAmount { get; set;}
+
+        [JsonPropertyName("total_discount")]
+        public decimal? TotalDiscount { get; set;}
+        [JsonPropertyName("total_tax")]
+        public decimal? TotalTax { get; set;}
+
+        [JsonPropertyName("total_surcharge")]
+        public decimal? TotalSurcharge { get; set;}
         [JsonPropertyName("warehouse_id")]
         public Guid? WarehouseId  { get; set; }
         [JsonPropertyName("order_items")]
@@ -53,6 +63,17 @@ namespace DTO.Order
         public string? Notes  { get; set; }
         [JsonPropertyName("picking_notes")]
         public string? PickingNotes  { get; set; }
+
+        [JsonPropertyName("total_amount")]
+        public decimal? TotalAmount { get; set;}
+
+        [JsonPropertyName("total_discount")]
+        public decimal? TotalDiscount { get; set;}
+        [JsonPropertyName("total_tax")]
+        public decimal? TotalTax { get; set;}
+
+        [JsonPropertyName("total_surcharge")]
+        public decimal? TotalSurcharge { get; set;}
         [JsonPropertyName("warehouseid")]
         public Guid? WarehouseId  { get; set; }
         [JsonPropertyName("order_items")]

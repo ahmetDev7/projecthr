@@ -18,17 +18,15 @@ public class SuppliersProvider : BaseProvider<Supplier>
     public override Supplier? Update(Guid id, BaseDTO updatedValues)
     {
         SupplierRequest? req = updatedValues as SupplierRequest;
-        if (req == null) throw new ApiFlowException("If you want to Update, you need to change something");
+        if (req == null) throw new ApiFlowException("Could not process update supplier request. Update new supplier failed.");
 
         Supplier? foundSupplier = GetById(id);
         if (foundSupplier == null) throw new ApiFlowException("No Supplier found");
 
-        // Update the found supplier with the new values
         foundSupplier.Code = req.Code;
         foundSupplier.Name = req.Name;
         foundSupplier.Reference = req.Reference;
 
-        // Update the Contact and Address entities
         foundSupplier.Contact.Name = req.Contact.Name;
         foundSupplier.Contact.Email = req.Contact.Email;
         foundSupplier.Contact.Phone = req.Contact.Phone;
@@ -42,10 +40,7 @@ public class SuppliersProvider : BaseProvider<Supplier>
         foundSupplier.Address.Province = req.Address.Province;
         foundSupplier.Address.CountryCode = req.Address.CountryCode;
 
-        // Validate the updated supplier
         ValidateModel(foundSupplier);
-
-        // Save changes to the DB
         SaveToDBOrFail();
 
         return foundSupplier;

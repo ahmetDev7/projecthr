@@ -1,21 +1,18 @@
 using System.ComponentModel.DataAnnotations;
 
-
 public class Supplier : BaseModel
 {
     public Supplier() { }
     public Supplier(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
-    [Required]
     public string? Code { get; set; }
-    [Required]
     public string? Name { get; set; }
-    [Required]
     public string? Reference { get; set; }
     // foreing key
     public Guid ContactId { get; set; }
     public Contact? Contact { get; set; }
     public Guid AddressId { get; set; }
     public Address? Address { get; set; }
-
-
+    // Timestamps
+    public override DateTime CreatedAt { get => base.CreatedAt; set => base.CreatedAt = value; }
+    public override DateTime UpdatedAt { get => base.UpdatedAt; set => base.UpdatedAt = value; }
 }

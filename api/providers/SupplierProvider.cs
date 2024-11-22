@@ -4,15 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 public class SupplierProvider : BaseProvider<Supplier>
 {
-    private ContactProvider _contactProvider;
-    private AddressProvider _addressProvider;
     private IValidator<Supplier> _supplierValidator;
 
-    public SupplierProvider(AppDbContext db, IValidator<Supplier> validator, ContactProvider contactProvider, AddressProvider addressProvider) : base(db)
+    public SupplierProvider(AppDbContext db, IValidator<Supplier> validator) : base(db)
     {
         _supplierValidator = validator;
-        _addressProvider = addressProvider;
-        _contactProvider = contactProvider;
     }
 
     public override Supplier? Update(Guid id, BaseDTO updatedValues)

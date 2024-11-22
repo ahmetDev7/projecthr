@@ -32,7 +32,6 @@ public class ContactProvider : ICRUD<Contact>
         return newContact; 
     }
 
-
     public Contact Delete(Guid id)
     {
         throw new NotImplementedException();

@@ -17,5 +17,4 @@ public class SupplierProvider : BaseProvider<Supplier>
 
     public override Supplier? GetById(Guid id) => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).FirstOrDefault(i => i.Id == id);
     protected override void ValidateModel(Supplier model) => _supplierValidator.ValidateAndThrow(model);
-
 }

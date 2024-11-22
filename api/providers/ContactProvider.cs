@@ -51,9 +51,9 @@ public class ContactProvider : ICRUD<Contact>
     public Contact? GetOrCreateContact(SupplierRequest request)
     {
 
-        if (request.Contact_id != null)
+        if (request.ContactId != null)
         {
-            Contact? existingContact = GetById(request.Contact_id.Value);
+            Contact? existingContact = GetById(request.ContactId.Value);
             if (existingContact == null) throw new ApiFlowException("contact_id does not exist");
             return existingContact;
         }

@@ -45,7 +45,8 @@ public class SuppliersController : ControllerBase
                     Province = supplier.Address.Province,
                     CountryCode = supplier.Address.CountryCode,
                 },
-                Created_at = supplier.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                CreatedAt = supplier.CreatedAt,
+                UpdatedAt = supplier.UpdatedAt
             }
         });
     }

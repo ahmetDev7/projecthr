@@ -12,17 +12,4 @@ public class Supplier : BaseModel
     public Contact? Contact { get; set; }
     public Guid AddressId { get; set; }
     public Address? Address { get; set; }
-    // Timestamps
-    public override DateTime CreatedAt { get; set; }
-    public override DateTime UpdatedAt { get; set; }
-
-    public override void SetTimeStamps()
-    {
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
-    }
-    public override void SetUpdatedAt()
-    {
-        UpdatedAt = DateTime.UtcNow;
-    }
 }

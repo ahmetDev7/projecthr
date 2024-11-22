@@ -1,0 +1,23 @@
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "string",
+  "name": "string",
+  "reference": "string",
+  "contact": {
+    "name": "string",
+    "phone": "string",
+    "email": "string"
+  },
+  "address": {
+    "street": "string",
+    "house_number": "string",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "string",
+    "city": "string",
+    "province": "string",
+    "country_code": "string"
+  }
+}

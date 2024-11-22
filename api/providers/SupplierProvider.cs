@@ -30,7 +30,9 @@ public class SupplierProvider : BaseProvider<Supplier>
             Reference = req.Reference,
             ContactId = relatedContact.Id,
             AddressId = relatedAddress.Id,
+            UpdatedAt = DateTime.MinValue
         };
+        
 
         ValidateModel(newSupplier);
         _db.Suppliers.Add(newSupplier);

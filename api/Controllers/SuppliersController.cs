@@ -12,7 +12,6 @@ public class SuppliersController : ControllerBase
         _supplierProvider = supplierProvider;
     }
     
-
     [HttpGet("{id}")]
     public IActionResult GetById(Guid id)
     {
@@ -43,8 +42,8 @@ public class SuppliersController : ControllerBase
                 Province = supplier.Address.Province,
                 CountryCode = supplier.Address.CountryCode,
             },
-            Created_at = supplier.CreatedAt,
-            Updated_at = supplier.UpdatedAt
+            Created_at = supplier.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
+            Updated_at = supplier.UpdatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
         });
     }
 }

@@ -2,7 +2,7 @@ POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
 
 {
-  "code": "Alperen",
+  "code": "Otto is hier",
   "name": "string",
   "reference": "string",
   "contact": {

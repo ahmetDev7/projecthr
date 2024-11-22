@@ -21,3 +21,29 @@ Content-Type: application/json
     "country_code": "string"
   }
 }
+
+###
+
+PUT http://localhost:5000/api/Suppliers/3cbe9de4-df5b-49af-90c8-d5b614b359d7
+Content-Type: application/json
+  
+ {
+  "code": "VANAF NU IS HET EEN UPDATE TEST",
+  "name": "string",
+  "reference": "string",
+  "contact": {
+    "name": "Accepteer het",
+    "phone": "string",
+    "email": "string"
+  },
+  "address": {
+    "street": "string",
+    "house_number": "string",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "string",
+    "city": "string",
+    "province": "string",
+    "country_code": "string"
+  }
+}

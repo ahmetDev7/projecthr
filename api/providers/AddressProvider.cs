@@ -58,9 +58,9 @@ public class AddressProvider : ICRUD<Address>
     public Address? GetOrCreateAddress(SupplierRequest request)
     {
 
-        if (request.Address_id != null)
+        if (request.AddressId != null)
         {
-            Address? existingAddress = GetById(request.Address_id.Value);
+            Address? existingAddress = GetById(request.AddressId.Value);
             if (existingAddress == null) throw new ApiFlowException("address_id does not exist");
             return existingAddress;
         }

@@ -15,7 +15,7 @@ public abstract class BaseModel
     [Required]
     public virtual DateTime CreatedAt { get; set; }
     [Required]
-    public virtual DateTime? UpdatedAt { get; set; }
+    public virtual DateTime UpdatedAt { get; set; }
 
     public virtual void SetTimeStamps()
     {

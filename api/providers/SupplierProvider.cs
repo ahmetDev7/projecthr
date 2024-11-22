@@ -30,7 +30,6 @@ public class SupplierProvider : BaseProvider<Supplier>
             Reference = req.Reference,
             ContactId = relatedContact.Id,
             AddressId = relatedAddress.Id,
-            UpdatedAt = null
         };
         
 

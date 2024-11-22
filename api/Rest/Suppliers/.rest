@@ -21,3 +21,8 @@ Content-Type: application/json
     "country_code": "string"
   }
 }
+
+###
+
+GET http://localhost:5000/api/Suppliers/01c5e735-eb58-49e2-b484-a3cb91dc7c07
+Content-Type: application/json

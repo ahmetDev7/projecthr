@@ -12,42 +12,38 @@ public class SuppliersController : ControllerBase
         _supplierProvider = supplierProvider;
     }
 
-    [HttpPost]
-    public IActionResult Create(SupplierRequest request)
+   [HttpGet("{id}")]
+    public IActionResult GetById(Guid id)
     {
-        Supplier? supplier = _supplierProvider.Create(request);
-        if (supplier == null) throw new ApiFlowException("Saving new Supplier failed.");
+        Supplier? supplier = _supplierProvider.GetById(id);
 
+        if (supplier == null) return NotFound("Supplier not found.");
 
-        return Ok(new
+        return Ok(new SupplierResponse
         {
-            message = "Supplier created successfully.",
-            created_supplier = new SupplierResponse
+            Id = supplier.Id,
+            Name = supplier.Name,
+            Code = supplier.Code,
+            Reference = supplier.Reference,
+            Contact = new ContactDTO
             {
-                Id = supplier.Id,
-                Code = supplier.Code,
-                Name = supplier.Name,
-                Reference = supplier.Reference,
-                Contact = new ContactDTO
-                {
-                    Name = supplier.Contact.Name,
-                    Email = supplier.Contact.Email,
-                    Phone = supplier.Contact.Phone
-                },
-                Address = new AddressDTO
-                {
-                    Street = supplier.Address.Street,
-                    HouseNumber = supplier.Address.HouseNumber,
-                    HouseNumberExtension = supplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = supplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = supplier.Address.ZipCode,
-                    City = supplier.Address.City,
-                    Province = supplier.Address.Province,
-                    CountryCode = supplier.Address.CountryCode,
-                },
-                CreatedAt = supplier.CreatedAt,
-                UpdatedAt = supplier.UpdatedAt
-            }
+                Name = supplier.Contact.Name,
+                Email = supplier.Contact.Email,
+                Phone = supplier.Contact.Phone
+            },
+            Address = new AddressDTO
+            {
+                Street = supplier.Address.Street,
+                HouseNumber = supplier.Address.HouseNumber,
+                HouseNumberExtension = supplier.Address.HouseNumberExtension,
+                HouseNumberExtensionExtra = supplier.Address.HouseNumberExtensionExtra,
+                ZipCode = supplier.Address.ZipCode,
+                City = supplier.Address.City,
+                Province = supplier.Address.Province,
+                CountryCode = supplier.Address.CountryCode,
+            },
+            CreatedAt = supplier.CreatedAt,
+            UpdatedAt = supplier.UpdatedAt
         });
     }
 }

@@ -25,4 +25,6 @@ public class SupplierResponse : BaseDTO
     public string? Reference { get; set; }
     public ContactDTO? Contact { get; set; }
     public AddressDTO? Address { get; set; }
+    public DateTime Created_at{get;set;}
+    public DateTime Updated_at{get;set;}
 }

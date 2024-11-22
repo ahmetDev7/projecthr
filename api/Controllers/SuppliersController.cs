@@ -43,7 +43,9 @@ public class SuppliersController : ControllerBase
                     City = updatedSupplier.Address.City,
                     Province = updatedSupplier.Address.Province,
                     CountryCode = updatedSupplier.Address.CountryCode
-                } : null
+                } : null,
+                Created_at = _supplierProvider.GetById(id).CreatedAt,
+                Updated_at = updatedSupplier.UpdatedAt
             }
         });
     }

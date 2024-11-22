@@ -43,7 +43,8 @@ public class SupplierProvider : BaseProvider<Supplier>
             foundSupplier.Address.Province = req.Address.Province;
             foundSupplier.Address.CountryCode = req.Address.CountryCode;
         }
-
+        foundSupplier.CreatedAt = GetById(id).CreatedAt;
+        foundSupplier.UpdatedAt = foundSupplier.UpdatedAt;
         SaveToDBOrFail();
 
         return foundSupplier;

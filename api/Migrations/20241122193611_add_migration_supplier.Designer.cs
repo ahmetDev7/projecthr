@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241122184342_add_migration_supplier_update_4")]
-    partial class add_migration_supplier_update_4
+    [Migration("20241122193611_add_migration_supplier")]
+    partial class add_migration_supplier
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -323,7 +323,7 @@ namespace api.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ContactId")
+                    b.Property<Guid?>("ContactId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -431,9 +431,7 @@ namespace api.Migrations
 
                     b.HasOne("Contact", "Contact")
                         .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContactId");
 
                     b.Navigation("Address");
 

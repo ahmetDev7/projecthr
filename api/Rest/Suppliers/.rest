@@ -2,17 +2,17 @@ POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
 
 {
-  "code": "string",
+  "code": "Alperen",
   "name": "string",
   "reference": "string",
   "contact": {
-    "name": "string",
-    "phone": "string",
-    "email": "string"
+    "name": "123",
+    "phone": "123",
+    "email": "123"
   },
   "address": {
-    "street": "string",
-    "house_number": "string",
+    "street": "otto",
+    "house_number": "otto",
     "house_number_extension": "string",
     "house_number_extension_extra": "string",
     "zipcode": "string",

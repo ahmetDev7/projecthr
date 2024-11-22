@@ -320,7 +320,7 @@ namespace api.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ContactId")
+                    b.Property<Guid?>("ContactId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -428,9 +428,7 @@ namespace api.Migrations
 
                     b.HasOne("Contact", "Contact")
                         .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContactId");
 
                     b.Navigation("Address");
 

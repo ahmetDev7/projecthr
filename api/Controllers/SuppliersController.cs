@@ -11,43 +11,33 @@ public class SuppliersController : ControllerBase
     {
         _supplierProvider = supplierProvider;
     }
-
-    [HttpPost]
-    public IActionResult Create(SupplierRequest request)
+    [HttpGet]
+    public IActionResult ShowAll() => Ok(_supplierProvider.GetAll().Select(ig => new SupplierResponse
     {
-        Supplier? supplier = _supplierProvider.Create(request);
-        if (supplier == null) throw new ApiFlowException("Saving new Supplier failed.");
-
-
-        return Ok(new
+        Id = ig.Id,
+        Code = ig.Code,
+        Name = ig.Name,
+        Reference = ig.Reference,
+        Contact = new ContactDTO
         {
-            message = "Supplier created successfully.",
-            created_supplier = new SupplierResponse
-            {
-                Id = supplier.Id,
-                Code = supplier.Code,
-                Name = supplier.Name,
-                Reference = supplier.Reference,
-                Contact = new ContactDTO
-                {
-                    Name = supplier.Contact.Name,
-                    Email = supplier.Contact.Email,
-                    Phone = supplier.Contact.Phone
-                },
-                Address = new AddressDTO
-                {
-                    Street = supplier.Address.Street,
-                    HouseNumber = supplier.Address.HouseNumber,
-                    HouseNumberExtension = supplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = supplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = supplier.Address.ZipCode,
-                    City = supplier.Address.City,
-                    Province = supplier.Address.Province,
-                    CountryCode = supplier.Address.CountryCode,
-                },
-                CreatedAt = supplier.CreatedAt,
-                UpdatedAt = supplier.UpdatedAt
-            }
-        });
-    }
+            Name = ig.Contact.Name,
+            Email = ig.Contact.Email,
+            Phone = ig.Contact.Phone
+        },
+        Address = new AddressDTO
+        {
+            Street = ig.Address.Street,
+            HouseNumber = ig.Address.HouseNumber,
+            HouseNumberExtension = ig.Address.HouseNumberExtension,
+            HouseNumberExtensionExtra = ig.Address.HouseNumberExtensionExtra,
+            ZipCode = ig.Address.ZipCode,
+            City = ig.Address.City,
+            Province = ig.Address.Province,
+            CountryCode = ig.Address.CountryCode,
+        },
+        CreatedAt = ig.CreatedAt,
+        UpdatedAt = ig.UpdatedAt
+        
+    }).ToList());
+
 }

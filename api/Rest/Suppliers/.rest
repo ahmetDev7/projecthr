@@ -72,3 +72,8 @@ Content-Type: application/json
   },
   "address_id": "96010731-e113-4b43-845e-acd8027dde76"
 }
+
+###
+
+GET http://localhost:5000/api/Suppliers
+Content-Type: application/json

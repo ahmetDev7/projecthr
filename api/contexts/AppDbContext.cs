@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Model;
 
 public class AppDbContext : DbContext
 {
@@ -13,5 +14,6 @@ public class AppDbContext : DbContext
     public DbSet<ItemGroup> ItemGroups {get; set;}
     public DbSet<Order> Orders {get;set;}
     public DbSet<OrderItem> OrderItems {get;set;}
+    public DbSet<Supplier> Suppliers { get; set; }
 } 
 

@@ -3,8 +3,8 @@ using Utils.Number;
 
 public class Item : BaseModel
 {
-    public Item(){}
-    public Item(bool newInstance=false, bool isUpdate=false) : base(newInstance,isUpdate){}
+    public Item() { }
+    public Item(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
 
     [Required]
     public string? Code { get; set; }
@@ -44,6 +44,8 @@ public class Item : BaseModel
     // Foreign Key Relationship
     public Guid? ItemGroupId { get; set; }
     public ItemGroup? ItemGroup { get; set; }
+
+    public ICollection<OrderItem>? OrderItems { get; set; }
 
     /*
     TODO: 

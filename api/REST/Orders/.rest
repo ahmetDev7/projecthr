@@ -22,4 +22,8 @@ Content-Type: application/json
             }
 ] 
 }
+### DELETE ORDER (change ID to the ID in your database)
+DELETE http://localhost:5000/api/orders/934bccff-0d78-43e2-9149-4a3fd702b1b5
+Content-Type: application/json
+
 ###

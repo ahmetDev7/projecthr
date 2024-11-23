@@ -1,9 +1,16 @@
-public class Contact
+using System.ComponentModel.DataAnnotations;
+
+public class Contact : BaseModel
 {
-    public Guid Id { get; set; }
-    public required string Name { get; set; }
-    public required string Phone { get; set; }
-    public required string Email { get; set; }
+    public Contact() { }
+    public Contact(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
+
+    [Required]
+    public string? Name { get; set; }
+    [Required]
+    public string? Phone { get; set; }
+    [Required]
+    public string? Email { get; set; }
 
     // Navigation property for warehouses
     public ICollection<Warehouse>? Warehouses { get; set; }

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Model;
 using Utils.Number;
 
 public class Item : BaseModel
@@ -38,8 +37,8 @@ public class Item : BaseModel
         set => _packOrderQuantity = NumberUtil.MinimumInt(value, 1);
     }
 
-    [Required] // original name was supplier_part_number
-    public string? SupplierReferenceCode { get; set; }
+    [Required]
+    public string? SupplierReferenceCode { get; set; } // original name was supplier_part_number
     public string? SupplierPartNumber { get; set; }
 
     // Foreign Key Relationship
@@ -54,5 +53,7 @@ public class Item : BaseModel
         item_type uuid [ref: > item_types.id]
         supplier_id uuid [ref: > suppliers.id] [Required]
     */
-
+    
+    // shipment_items table connection
+    public ICollection<ShipmentItem>? ShipmentItems { get; set; }
 }

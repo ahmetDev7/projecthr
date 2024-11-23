@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Model;
-
 public class ItemGroup : BaseModel
 {
     public ItemGroup(){}

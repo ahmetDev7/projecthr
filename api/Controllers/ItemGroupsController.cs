@@ -1,7 +1,6 @@
 using DTO.Item;
 using DTO.ItemGroup;
 using Microsoft.AspNetCore.Mvc;
-using Model;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -27,6 +26,35 @@ public class ItemGroupsController : ControllerBase
             Name = newItemGroup.Name,
             Description = newItemGroup.Description
         });
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ItemGroupRequest req){
+        ItemGroup? updatedItemGroup = _itemGroupProvider.Update(id,req);
+        if(updatedItemGroup == null) return NotFound(new {message = $"Item group not found for id '{id}'"});
+        
+        return Ok(new {
+            message = "Item group updated.", 
+            updated_item_group = new ItemGroupResponse {
+                Id = updatedItemGroup.Id, 
+                Name = updatedItemGroup.Name, 
+                Description = updatedItemGroup.Description
+                }
+            }
+        );
+    }
+    
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        ItemGroup? deletedItemGroup = _itemGroupProvider.Delete(id);
+        if (deletedItemGroup == null) throw new ApiFlowException($"Item group not found for id '{id}'");
+
+        return Ok(new {deleted_item_group = new ItemGroupResponse{
+            Id = deletedItemGroup.Id,
+            Name = deletedItemGroup.Name,
+            Description = deletedItemGroup.Description
+        }});
     }
 
     [HttpGet("{id}")]

@@ -11,6 +11,7 @@ public class SuppliersController : ControllerBase
     {
         _supplierProvider = supplierProvider;
     }
+    
     [HttpGet]
     public IActionResult ShowAll() => Ok(_supplierProvider.GetAll().Select(ig => new SupplierResponse
     {

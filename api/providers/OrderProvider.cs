@@ -48,5 +48,14 @@ public class OrderProvider : BaseProvider<Order>
         return newOrder;
     }
 
+    public override Order? Delete(Guid id)
+    {
+            Order? foundOrder = _db.Orders.FirstOrDefault(s => s.Id == id);
+            if (foundOrder == null) return null;
+
+            _db.Orders.Remove(foundOrder);
+            SaveToDBOrFail();
+            return foundOrder;
+    }
     protected override void ValidateModel(Order model) => _orderValidator.ValidateAndThrow(model);
 }

@@ -76,6 +76,11 @@ namespace DTO.Order
         public decimal? TotalSurcharge { get; set;}
         [JsonPropertyName("warehouseid")]
         public Guid? WarehouseId  { get; set; }
+         [JsonPropertyName("created_at")]
+        public DateTime? CreatedAt { get; set; }
+
+        [JsonPropertyName("updated_at")]
+        public DateTime? UpdatedAt { get; set; }
         [JsonPropertyName("order_items")]
         public List<OrderItemRequest>? Items { get; set; }
         //TODO..

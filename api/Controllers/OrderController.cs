@@ -34,6 +34,8 @@ public class OrdersController : ControllerBase
             TotalTax = newOrder.TotalTax,
             TotalSurcharge = newOrder.TotalSurcharge,
             WarehouseId = newOrder.WarehouseId,
+            CreatedAt = newOrder.CreatedAt,
+            UpdatedAt = newOrder.UpdatedAt,
             Items = newOrder.OrderItems?.Select(oi => new OrderItemRequest
             {
                 ItemId = oi.ItemId,

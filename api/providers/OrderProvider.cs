@@ -37,8 +37,8 @@ public class OrderProvider : BaseProvider<Order>
             WarehouseId = req.WarehouseId,
             OrderItems = req.OrderItems?.Select(oi => new OrderItem
             {
-                ItemId = oi.ItemId ?? throw new ApiFlowException("Item ID cannot be null."),
-                Amount = oi.Amount?? throw new ApiFlowException("Amount cannot be null.")
+                ItemId = oi.ItemId,
+                Amount = oi.Amount
             }).ToList()
         };
         

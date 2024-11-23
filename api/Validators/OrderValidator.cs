@@ -29,7 +29,14 @@ public class OrderValidator : AbstractValidator<Order>
                 {
                     item.RuleFor(i => i.ItemId)
                         .NotNull().WithMessage("The ItemId field is required.")
-                        .NotEmpty().WithMessage("The ItemId field cannot be empty.");
+                        .NotEmpty().WithMessage("The ItemId field cannot be empty.")
+                        .Custom((itemId, context) =>
+                        {
+                            if (!db.Items.Any(i => i.Id == itemId))
+                            {
+                                context.AddFailure("ItemId", $"The ItemId '{itemId}' does not exist in the database.");
+                            }
+                        });
                     
                     item.RuleFor(i => i.Amount)
                         .GreaterThan(0).WithMessage("Amount must be greater than 0.");

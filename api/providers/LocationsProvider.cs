@@ -40,10 +40,10 @@ public class LocationsProvider : BaseProvider<Location>
         Location? foundLocation = GetById(id);
         if (foundLocation == null) return null;
 
-        if (!string.IsNullOrEmpty(req.Row)) { foundLocation.Row = req.Row; hasChanges = true; }
-        if (!string.IsNullOrEmpty(req.Rack)) { foundLocation.Rack = req.Rack; hasChanges = true; }
-        if (!string.IsNullOrEmpty(req.Shelf)) { foundLocation.Shelf = req.Shelf; hasChanges = true; }
-        if (req.WarehouseId.HasValue) { foundLocation.WarehouseId = req.WarehouseId.Value; hasChanges = true; }
+        foundLocation.Row = req.Row;
+        foundLocation.Rack = req.Rack;
+        foundLocation.Shelf = req.Shelf;
+        foundLocation.WarehouseId = req.WarehouseId;
 
         if (hasChanges) foundLocation.SetUpdatedAt();
 

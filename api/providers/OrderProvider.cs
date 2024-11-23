@@ -16,7 +16,8 @@ public class OrderProvider : BaseProvider<Order>
     {
         _orderValidator = validator;
     }
-
+    public override Order? GetById(Guid id)=>
+    _db.Orders.Include(s => s.OrderItems).FirstOrDefault(s => s.Id == id);
     public override Order? Create(BaseDTO createValues)
     {
         OrderRequest? req = createValues as OrderRequest;

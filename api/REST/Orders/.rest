@@ -20,6 +20,9 @@ Content-Type: application/json
                 "item_id": "ac3811c9-a02b-45a9-9ea7-4db7c3422843",
                 "amount": 23
             }
-] 
+        ] 
 }
 ###
+### GET ORDER BY ID (change ID to existing ID in your database)
+GET http://localhost:5000/api/orders/934bccff-0d78-43e2-9149-4a3fd702b1b5
+Content-Type: application/json

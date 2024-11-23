@@ -12,41 +12,36 @@ public class SuppliersController : ControllerBase
         _supplierProvider = supplierProvider;
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update(Guid id, SupplierRequest request)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
     {
-        Supplier? updatedSupplier = _supplierProvider.Update(id, request);
-        if(updatedSupplier == null) return NotFound(new {message = $"Supplier not found for id '{id}'"});
-
-        return Ok(new
-        {
-            message = "Supplier updated successfully.",
-            updated_supplier = new SupplierResponse
+        Supplier? deletedSupplier = _supplierProvider.Delete(id);
+        if (deletedSupplier == null) throw new ApiFlowException($"Supplier not found for id '{id}'");
+    
+        return Ok(new { Message = "Supplier succesfully deleted", deleted_supplier = new SupplierResponse{
+            Id = deletedSupplier.Id,
+            Code = deletedSupplier.Code,
+            Name = deletedSupplier.Name,
+            Reference = deletedSupplier.Reference,
+            Contact = new ContactDTO
             {
-                Id = updatedSupplier.Id,
-                Code = updatedSupplier.Code,
-                Name = updatedSupplier.Name,
-                Reference = updatedSupplier.Reference,
-                Contact = updatedSupplier.Contact != null ? new ContactDTO
-                {
-                    Name = updatedSupplier.Contact.Name,
-                    Email = updatedSupplier.Contact.Email,
-                    Phone = updatedSupplier.Contact.Phone
-                } : null,
-                Address = updatedSupplier.Address != null ? new AddressDTO
-                {
-                    Street = updatedSupplier.Address.Street,
-                    HouseNumber = updatedSupplier.Address.HouseNumber,
-                    HouseNumberExtension = updatedSupplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = updatedSupplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = updatedSupplier.Address.ZipCode,
-                    City = updatedSupplier.Address.City,
-                    Province = updatedSupplier.Address.Province,
-                    CountryCode = updatedSupplier.Address.CountryCode
-                } : null,
-                CreatedAt = _supplierProvider.GetById(id).CreatedAt,
-                UpdatedAt = updatedSupplier.UpdatedAt
-            }
-        });
+                Name = deletedSupplier.Contact.Name,
+                Email = deletedSupplier.Contact.Email,
+                Phone = deletedSupplier.Contact.Phone
+            },
+            Address = new AddressDTO
+            {
+                Street = deletedSupplier.Address.Street,
+                HouseNumber = deletedSupplier.Address.HouseNumber,
+                HouseNumberExtension = deletedSupplier.Address.HouseNumberExtension,
+                HouseNumberExtensionExtra = deletedSupplier.Address.HouseNumberExtensionExtra,
+                ZipCode = deletedSupplier.Address.ZipCode,
+                City = deletedSupplier.Address.City,
+                Province = deletedSupplier.Address.Province,
+                CountryCode = deletedSupplier.Address.CountryCode
+            },
+            CreatedAt = deletedSupplier.CreatedAt,
+            UpdatedAt = deletedSupplier.UpdatedAt
+        }});
     }
 }

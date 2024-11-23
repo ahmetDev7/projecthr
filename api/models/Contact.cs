@@ -9,7 +9,6 @@ public class Contact : BaseModel
     public string? Name { get; set; }
     [Required]
     public string? Phone { get; set; }
-    [Required]
     public string? Email { get; set; }
 
     // Navigation property for warehouses

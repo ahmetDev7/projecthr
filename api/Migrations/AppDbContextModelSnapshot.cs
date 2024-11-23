@@ -39,7 +39,6 @@ namespace api.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("HouseNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HouseNumberExtension")
@@ -53,7 +52,6 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Street")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -78,7 +76,6 @@ namespace api.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -332,7 +329,6 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Reference")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")

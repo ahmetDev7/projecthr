@@ -45,6 +45,16 @@ public class SupplierProvider : BaseProvider<Supplier>
 
         return newSupplier;
     }
+
+    public List<Item> GetItemsByReferenceCode(string Reference)
+    {
+        var itemsSpecificSupplier = _db.Items.Where(l => l.SupplierReferenceCode == Reference).ToList();
+        if (itemsSpecificSupplier.Count == 0)
+            throw new ApiFlowException("No items found for this supplier");
+
+        return itemsSpecificSupplier;
+    }
+
     protected override void ValidateModel(Supplier model) => _supplierValidator.ValidateAndThrow(model);
 
 }

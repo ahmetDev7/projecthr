@@ -9,6 +9,7 @@ public class Supplier : BaseModel
     public string? Code { get; set; }
     [Required]
     public string? Name { get; set; }
+    [Required]
     public string? Reference { get; set; }
     // foreing key
     public Guid ContactId { get; set; }

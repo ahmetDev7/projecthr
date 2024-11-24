@@ -1,5 +1,6 @@
 using DTO.Supplier;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class SupplierProvider : BaseProvider<Supplier>
 {
@@ -17,7 +18,9 @@ public class SupplierProvider : BaseProvider<Supplier>
     public override Supplier? Create(BaseDTO createValues)
     {
         SupplierRequest? req = createValues as SupplierRequest;
+        var allSuppliers = _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).ToList();
 
+        if(allSuppliers.Any(s => s.Reference == req.Reference)) throw new ApiFlowException("Could not process create supplier request. Supplier with this reference code already exists.");
         if (req == null) throw new ApiFlowException("Could not process create supplier request. Save new supplier failed.");
 
         Contact? relatedContact = _contactProvider.GetOrCreateContact(req);

@@ -32,8 +32,6 @@ public class LocationsProvider : BaseProvider<Location>
 
     public override Location? Update(Guid id, BaseDTO updatedValues)
     {
-        bool hasChanges = false;
-
         LocationRequest? req = updatedValues as LocationRequest;
         if (req == null) throw new ApiFlowException("Could not process update location request. Save location failed.");
 
@@ -45,10 +43,11 @@ public class LocationsProvider : BaseProvider<Location>
         foundLocation.Shelf = req.Shelf;
         foundLocation.WarehouseId = req.WarehouseId;
 
-        if (hasChanges) foundLocation.SetUpdatedAt();
 
         ValidateModel(foundLocation);
-        SaveToDBOrFail("Location not updated");
+
+        _db.Locations.Update(foundLocation);
+        SaveToDBOrFail();
         return foundLocation;
     }
 

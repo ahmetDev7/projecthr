@@ -48,29 +48,36 @@ public class OrdersController : ControllerBase
     public IActionResult Delete(Guid id)
     {
         Order? deletedOrder = _orderProvider.Delete(id);
-        if(deletedOrder == null) throw new ApiFlowException($"Order not found for id '{id}'");
-
-        return Ok(new OrderResponse{         
-            Id = deletedOrder.Id,
-            OrderDate = deletedOrder.OrderDate,
-            RequestDate = deletedOrder.RequestDate,          
-            Reference = deletedOrder.Reference,
-            ReferenceExtra = deletedOrder.ReferenceExtra,
-            OrderStatus = deletedOrder.OrderStatus,
-            Notes = deletedOrder.Notes,
-            PickingNotes = deletedOrder.PickingNotes,
-            TotalAmount = deletedOrder.TotalAmount,
-            TotalDiscount = deletedOrder.TotalDiscount,
-            TotalTax = deletedOrder.TotalTax,
-            TotalSurcharge = deletedOrder.TotalSurcharge,
-            WarehouseId = deletedOrder.WarehouseId,
-            CreatedAt = deletedOrder.CreatedAt,
-            UpdatedAt = deletedOrder.UpdatedAt,
-            Items = deletedOrder.OrderItems?.Select(oi => new OrderItemRequest
+        
+        return deletedOrder == null
+            ? NotFound(new { message = $"Order not found for id '{id}'" })
+            : Ok(new
             {
-                ItemId = oi.ItemId,
-                Amount = oi.Amount
-            }).ToList()
-        });
+                message = "Order deleted!",
+                deleted_order = new OrderResponse
+                {
+                    Id = deletedOrder.Id,
+                    OrderDate = deletedOrder.OrderDate,
+                    RequestDate = deletedOrder.RequestDate,
+                    Reference = deletedOrder.Reference,
+                    ReferenceExtra = deletedOrder.ReferenceExtra,
+                    OrderStatus = deletedOrder.OrderStatus,
+                    Notes = deletedOrder.Notes,
+                    PickingNotes = deletedOrder.PickingNotes,
+                    TotalAmount = deletedOrder.TotalAmount,
+                    TotalDiscount = deletedOrder.TotalDiscount,
+                    TotalTax = deletedOrder.TotalTax,
+                    TotalSurcharge = deletedOrder.TotalSurcharge,
+                    WarehouseId = deletedOrder.WarehouseId,
+                    CreatedAt = deletedOrder.CreatedAt,
+                    UpdatedAt = deletedOrder.UpdatedAt,
+                    Items = deletedOrder.OrderItems?.Select(oi => new OrderItemRequest
+                    {
+                        ItemId = oi.ItemId,
+                        Amount = oi.Amount
+                    }).ToList()
+                }
+            });
     }
+
 }

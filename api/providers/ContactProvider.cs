@@ -49,22 +49,15 @@ public class ContactProvider : ICRUD<Contact>
         throw new NotImplementedException();
     }
 
-    public Contact? GetOrCreateContact(SupplierRequest request)
-    {
+    public Contact? GetOrCreateContact(ContactDTO? contact = null, Guid? contactId = null)  
+    {  
+        if (contact == null && contactId == null) return null;  
 
-        if (request.ContactId != null)
-        {
-            Contact? existingContact = GetById(request.ContactId.Value);
-            if (existingContact == null) throw new ApiFlowException("contact_id does not exist");
-            return existingContact;
-        }
+        if (contactId != null) return GetById(contactId.Value);  
 
-        if (request.Contact != null)
-        {
-            return Create<ContactDTO>(request.Contact);
-        }
+        if(contact != null) return Create(contact);  
 
-        throw new ApiFlowException("Both contact_id and contact data are missing. Unable to create supplier contact.");
-    }
+        return null;  
+    } 
 
 }

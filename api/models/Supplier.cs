@@ -11,9 +11,9 @@ public class Supplier : BaseModel
     public string? Name { get; set; }
     public string? Reference { get; set; }
     // foreing key
-    public Guid ContactId { get; set; }
+    public Guid? ContactId { get; set; }
     public Contact? Contact { get; set; }
-    public Guid AddressId { get; set; }
+    public Guid? AddressId { get; set; }
     [Required]
     public Address? Address { get; set; }
 }

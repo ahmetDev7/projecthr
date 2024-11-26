@@ -2,7 +2,6 @@ using System.Data;
 using DTO.ItemGroup;
 using DTO.Order;
 using Microsoft.AspNetCore.Mvc;
-using Model;
 
 [Route("api/[controller]")]
 [ApiController]

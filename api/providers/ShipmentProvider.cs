@@ -1,5 +1,6 @@
 using DTO.Shipment;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class ShipmentProvider : BaseProvider<Shipment>
 {
@@ -10,9 +11,10 @@ public class ShipmentProvider : BaseProvider<Shipment>
         _shipmentValidator = validator;
     }
 
-    public override Shipment? GetById(Guid id) => _db.Shipments.FirstOrDefault(s => s.Id == id);
+    public override Shipment? GetById(Guid id) => 
+        _db.Shipments.Include(s => s.ShipmentItems).FirstOrDefault(s => s.Id == id);
 
-    public override List<Shipment>? GetAll() => _db.Shipments.ToList();
+    public override List<Shipment>? GetAll() => _db.Shipments.Include(s => s.ShipmentItems).ToList();
 
     public override Shipment? Create(BaseDTO createValues)
     {
@@ -44,6 +46,16 @@ public class ShipmentProvider : BaseProvider<Shipment>
         _db.Shipments.Add(newShipment);
         SaveToDBOrFail();
         return newShipment;
+    }
+
+    public override Shipment? Delete(Guid id)
+    {
+        Shipment? foundShipment = _db.Shipments.FirstOrDefault(s => s.Id == id);
+        if(foundShipment == null) return null;
+        
+        _db.Shipments.Remove(foundShipment);
+        SaveToDBOrFail();
+        return foundShipment;
     }
 
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);

@@ -22,4 +22,21 @@ Content-Type: application/json
     }
   ]
 }
+
 ###
+
+### DELETE SHIPMENT (change ID to the ID in your database)
+DELETE http://localhost:5000/api/shipments/91c4d824-9c93-48ee-a4b6-943c1421a0ee
+Content-Type: application/json
+
+###
+
+### GET ALL SHIPMENTS
+GET http://localhost:5000/api/shipments
+Content-Type: application/json
+
+###
+
+### GET SHIPMENT BY ID (change ID to existing ID in your database)
+GET http://localhost:5000/api/shipments/85e299a8-71e3-4c6b-baf5-d0112129a8c5
+Content-Type: application/json

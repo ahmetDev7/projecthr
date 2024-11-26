@@ -139,6 +139,9 @@ Content-Type: application/json
   },
   "address_id": "537540f2-94bf-494b-827c-6b977c2d0132"
 }
+
+###
+
 POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
 
@@ -153,3 +156,9 @@ Content-Type: application/json
   },
   "address_id": "96010731-e113-4b43-845e-acd8027dde76"
 }
+
+
+###
+
+GET http://localhost:5000/api/Suppliers/a69d21c7-29b6-4fb3-9bc6-3ce1fe693ca3
+Content-Type: application/json

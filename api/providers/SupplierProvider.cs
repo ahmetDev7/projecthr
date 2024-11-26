@@ -14,6 +14,7 @@ public class SupplierProvider : BaseProvider<Supplier>
         _addressProvider = addressProvider;
         _contactProvider = contactProvider;
     }
+    public override Supplier? GetById(Guid id) => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).FirstOrDefault(i => i.Id == id);
 
     public override Supplier? Update(Guid id, BaseDTO updatedValues)
     {
@@ -46,8 +47,6 @@ public class SupplierProvider : BaseProvider<Supplier>
 
         return foundSupplier;
     }
-
-    public override Supplier? GetById(Guid id) => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).FirstOrDefault(i => i.Id == id);
     
     public override Supplier? Create(BaseDTO createValues)
     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:api/Migrations/20241126120436_add_migration_supplier_update.cs
-    public partial class add_migration_supplier_update : Migration
-========
     public partial class init : Migration
->>>>>>>> origin/development:api/Migrations/20241126125157_init.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

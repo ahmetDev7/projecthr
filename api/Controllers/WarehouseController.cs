@@ -1,4 +1,4 @@
-using DTOs;
+using DTO;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -37,9 +37,9 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateWarehouse([FromBody] WarehouseDTO request)
+    public IActionResult CreateWarehouse([FromBody] WarehouseRequest request)
     {
-        Warehouse? createdWarehouse = _warehouseProvider.Create<WarehouseDTO>(request);
+        Warehouse? createdWarehouse = _warehouseProvider.Create<WarehouseRequest>(request);
         if (createdWarehouse == null) throw new ApiFlowException("An error occurred while creating the warehouse");
         return Ok(new { Message = "Warehouse created successfully!" });
     }
@@ -50,5 +50,41 @@ public class WarehousesController : ControllerBase
         Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
         if (deletedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
         return Ok(new { Message = "Warehouse deleted successfully!" });
+    }
+
+     [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] WarehouseRequest req){
+        Warehouse? updatedWarehouse = _warehouseProvider.Update(id,req);
+        if(updatedWarehouse == null) return NotFound(new {message = $"Warehouse not found for id '{id}'"});
+        
+        return Ok(new {
+            message = "Item group updated.", 
+            updated_warehouse = new WarehouseResponse {
+                Id = updatedWarehouse.Id,
+                Code = updatedWarehouse.Code,
+                Name = updatedWarehouse.Name,
+                Contact = new ContactDTO
+                {
+                    Name = updatedWarehouse.Contact.Name,
+                    Email = updatedWarehouse.Contact.Email,
+                    Phone = updatedWarehouse.Contact.Phone
+                },
+                Address = new AddressDTO
+                {
+                    Street = updatedWarehouse.Address.Street,
+                    HouseNumber = updatedWarehouse.Address.HouseNumber,
+                    HouseNumberExtension = updatedWarehouse.Address.HouseNumberExtension,
+                    HouseNumberExtensionExtra = updatedWarehouse.Address.HouseNumberExtensionExtra,
+                    ZipCode = updatedWarehouse.Address.ZipCode,
+                    City = updatedWarehouse.Address.City,
+                    Province = updatedWarehouse.Address.Province,
+                    CountryCode = updatedWarehouse.Address.CountryCode
+                    
+                },
+                CreatedAt = updatedWarehouse.CreatedAt,
+                UpdatedAt = updatedWarehouse.UpdatedAt
+                
+            }
+        });
     }
 }

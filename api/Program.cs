@@ -101,6 +101,7 @@ builder.Services.AddTransient<ItemGroupProvider>();
 builder.Services.AddTransient<OrderProvider>();
 builder.Services.AddTransient<ShipmentProvider>();
 
+builder.Services.AddScoped<IValidator<Warehouse>, WarehouseValidator>();
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
 builder.Services.AddScoped<IValidator<Item>, ItemValidator>();
 builder.Services.AddScoped<IValidator<ItemGroup>, ItemGroupValidator>();

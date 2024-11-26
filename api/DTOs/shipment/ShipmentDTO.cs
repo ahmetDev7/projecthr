@@ -7,6 +7,9 @@ namespace DTO.Shipment
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ShipmentRequest : BaseDTO
     {
+        [JsonPropertyName("order_id")]
+        public Guid? OrderId { get; set; }
+
         [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }
 
@@ -66,6 +69,9 @@ namespace DTO.Shipment
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
+
+        [JsonPropertyName("order_id")]
+        public Guid? OrderId { get; set; }
 
         [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }

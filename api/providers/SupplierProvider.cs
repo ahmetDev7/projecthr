@@ -75,6 +75,17 @@ public class SupplierProvider : BaseProvider<Supplier>
 
         return foundSupplier;
     }
+    
+    public override Supplier? Delete(Guid id)
+    {
+        Supplier? supplier = GetById(id);
+        if (supplier == null) return null;
+
+        _db.Suppliers.Remove(supplier);
+        SaveToDBOrFail();
+        
+        return supplier;
+    }
 
     public override Supplier? GetById(Guid id) => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).FirstOrDefault(i => i.Id == id);
 

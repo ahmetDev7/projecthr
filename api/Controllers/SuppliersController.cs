@@ -42,7 +42,7 @@ public class SuppliersController : ControllerBase
             },
             CreatedAt = deletedSupplier.CreatedAt,
             UpdatedAt = deletedSupplier.UpdatedAt
-        });
+        }});
     }
 
     [HttpPost]

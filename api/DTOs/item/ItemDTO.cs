@@ -59,6 +59,9 @@ namespace DTO.Item
 
         [JsonPropertyName("item_line_id")]
         public Guid? ItemLineId { get; set; }
+        
+        [JsonPropertyName("item_type_id")]
+        public Guid? ItemTypeId { get; set; }
     }
 
     public class ItemResponse : BaseDTO
@@ -105,5 +108,8 @@ namespace DTO.Item
         
         [JsonPropertyName("item_line_id")]
         public Guid? ItemLineId { get; set; }
+
+        [JsonPropertyName("item_type_id")]
+        public Guid? ItemTypeId { get; set; }
     }
 }

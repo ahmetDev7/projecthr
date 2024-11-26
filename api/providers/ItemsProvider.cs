@@ -33,7 +33,8 @@ public class ItemsProvider : BaseProvider<Item>
             SupplierReferenceCode = req.SupplierReferenceCode,
             SupplierPartNumber = req.SupplierPartNumber,
             ItemGroupId = req.ItemGroupId,
-            ItemLineId = req.ItemLineId
+            ItemLineId = req.ItemLineId,
+            ItemTypeId = req.ItemTypeId
         };
         
         ValidateModel(newItem);

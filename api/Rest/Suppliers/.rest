@@ -123,7 +123,7 @@ Content-Type: application/json
   }
 }
 
-###
+### 
 
 PUT http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
 Content-Type: application/json
@@ -157,6 +157,11 @@ Content-Type: application/json
   "address_id": "96010731-e113-4b43-845e-acd8027dde76"
 }
 
+###
+
+### GET ALL
+GET http://localhost:5000/api/Suppliers
+Content-Type: application/json
 
 ###
 

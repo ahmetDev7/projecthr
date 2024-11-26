@@ -4,6 +4,15 @@ public class ShipmentValidator : AbstractValidator<Shipment>
 {
     public ShipmentValidator(AppDbContext db)
     {
+        RuleFor(shipment => shipment.OrderId)
+            .NotNull().WithMessage("order_id is required.")
+            .NotEmpty().WithMessage("order_id cannot be empty.")
+            .Custom((orderId, context) => {
+                if (orderId != null && !db.Orders.Any(o => o.Id == orderId))
+                {
+                    context.AddFailure("order_id", "The provided order_id does not exist.");
+                }
+            });
         RuleFor(shipment => shipment.ShipmentType)
             .NotNull().WithMessage("shipment_type is required.")
             .NotEmpty().WithMessage("shipment_type cannot be empty.");

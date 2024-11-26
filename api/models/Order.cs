@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Utils.Number;
 
-namespace Model;
-
 public class Order : BaseModel
 {
     public Order() { }
@@ -50,8 +48,8 @@ public class Order : BaseModel
 
     public ICollection<OrderItem>? OrderItems { get; set; }
 
-    //TODO:
-    //  shipment_id uuid [ref: > shipments.id]
+    public ICollection<Shipment>? Shipments { get; set; }
+
     //TODO..
     //  ship_to_client uuid [ref: > clients.id]
     //[Required]

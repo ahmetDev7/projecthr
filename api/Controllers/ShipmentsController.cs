@@ -22,6 +22,7 @@ public class ShipmentsController : ControllerBase
         return Ok(new ShipmentResponse
         {
             Id = newShipment.Id,
+            OrderId = newShipment.OrderId,
             OrderDate = newShipment.OrderDate,
             RequestDate = newShipment.RequestDate,
             ShipmentDate = newShipment.ShipmentDate,
@@ -50,8 +51,11 @@ public class ShipmentsController : ControllerBase
         Shipment? deletedShipment = _shipmentProvider.Delete(id);
         if (deletedShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
 
-        return Ok(new {deleted_shipment = new ShipmentResponse{
+        return Ok(new {
+            message = "Shipment deleted!",
+            deleted_shipment = new ShipmentResponse{
             Id = deletedShipment.Id,
+            OrderId = deletedShipment.OrderId,
             OrderDate = deletedShipment.OrderDate,
             RequestDate = deletedShipment.RequestDate,
             ShipmentDate = deletedShipment.ShipmentDate,
@@ -78,6 +82,7 @@ public class ShipmentsController : ControllerBase
     public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
     {
         Id = s.Id,
+        OrderId = s.OrderId,
         OrderDate = s.OrderDate,
         RequestDate = s.RequestDate,
         ShipmentDate = s.ShipmentDate,
@@ -109,6 +114,7 @@ public class ShipmentsController : ControllerBase
             : Ok(new ShipmentResponse
             {        
                 Id = foundShipment.Id,
+                OrderId = foundShipment.OrderId,
                 OrderDate = foundShipment.OrderDate,
                 RequestDate = foundShipment.RequestDate,
                 ShipmentDate = foundShipment.ShipmentDate,

@@ -1,3 +1,25 @@
+PUT http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
+Content-Type: application/json
+
+{
+  "code": "DIT IS GETEST",
+  "name": "DIT IS GETEST",
+  "reference": "DIT IS GETEST",
+  "contact": {
+    "name": "DIT IS GETEST",
+    "phone": "DIT IS GETEST",
+    "email": "DIT IS GETEST"
+  },
+  "address": {
+    "street": "DIT IS GETEST",
+    "house_number": "DIT IS GETEST",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "DIT IS GETEST",
+  }
+}
+###
+
 POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
 
@@ -36,6 +58,31 @@ Content-Type: application/json
 }
 
 ###
+PUT http://localhost:5000/api/Suppliers/9dd95911-0571-49b7-be44-cd18171569fe
+Content-Type: application/json
+  
+{
+  "code": "Nog eentje omdat het leuk is",
+  "name": "string",
+  "reference": "string",
+  "contact": {
+    "name": "test",
+    "phone": "0612346799",
+    "email": "ghhdldk@mail.com"
+  },
+  "address": {
+    "street": "otto",
+    "house_number": "otto",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "string",
+    "city": "string",
+    "province": "string",
+    "country_code": "NL"
+  }
+}
+
+###
 
 PUT http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
 Content-Type: application/json
@@ -53,6 +100,7 @@ Content-Type: application/json
     "zipcode": "DIT IS GETEST",
    }
 }
+
 ###
 
 POST http://localhost:5000/api/Suppliers
@@ -88,7 +136,47 @@ Content-Type: application/json
   }
 }
 
+### 
+
+PUT http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
+Content-Type: application/json
+
+{
+  "code": "DIT IS GETEST",
+  "name": "DIT IS GETEST",
+  "reference": "DIT IS GETEST",
+  "contact": {
+    "name": "DIT IS GETEST",
+    "phone": "DIT IS GETEST",
+    "email": "DIT IS GETEST"
+  },
+  "address_id": "537540f2-94bf-494b-827c-6b977c2d0132"
+}
+
 ###
 
-DELETE http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "Otto is hier",
+  "name": "string",
+  "reference": "string",
+  "contact": {
+    "name": "123",
+    "phone": "123",
+    "email": "123"
+  },
+  "address_id": "96010731-e113-4b43-845e-acd8027dde76"
+}
+
+###
+
+### GET ALL
+GET http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+###
+
+GET http://localhost:5000/api/Suppliers/a69d21c7-29b6-4fb3-9bc6-3ce1fe693ca3
 Content-Type: application/json

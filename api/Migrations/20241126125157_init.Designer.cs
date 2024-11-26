@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241126120139_init")]
+    [Migration("20241126125157_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -218,7 +218,7 @@ namespace api.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("Model.Order", b =>
+            modelBuilder.Entity("Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -407,6 +407,46 @@ namespace api.Migrations
                     b.ToTable("ShipmentItems");
                 });
 
+            modelBuilder.Entity("Supplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AddressId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("ContactId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("ContactId");
+
+                    b.ToTable("Suppliers");
+                });
+
             modelBuilder.Entity("Warehouse", b =>
                 {
                     b.Property<Guid>("Id")
@@ -462,7 +502,7 @@ namespace api.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("Model.Order", b =>
+            modelBuilder.Entity("Order", b =>
                 {
                     b.HasOne("Warehouse", "Warehouse")
                         .WithMany()
@@ -481,7 +521,7 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Model.Order", null)
+                    b.HasOne("Order", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
@@ -490,7 +530,7 @@ namespace api.Migrations
 
             modelBuilder.Entity("Shipment", b =>
                 {
-                    b.HasOne("Model.Order", null)
+                    b.HasOne("Order", null)
                         .WithMany("Shipments")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -514,6 +554,25 @@ namespace api.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("Shipment");
+                });
+
+            modelBuilder.Entity("Supplier", b =>
+                {
+                    b.HasOne("Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Contact", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("Warehouse", b =>
@@ -557,7 +616,7 @@ namespace api.Migrations
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("Model.Order", b =>
+            modelBuilder.Entity("Order", b =>
                 {
                     b.Navigation("OrderItems");
 

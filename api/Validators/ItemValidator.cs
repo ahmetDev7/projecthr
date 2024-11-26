@@ -36,5 +36,13 @@ public class ItemValidator : AbstractValidator<Item>
                     context.AddFailure("item_group_id", "The provided item_group_id does not exist.");
                 }
             });
+
+        RuleFor(item => item.ItemLineId)
+            .Custom((ItemLineId, context) => {
+                if (ItemLineId != null && !db.ItemLines.Any(ig => ig.Id == ItemLineId))
+                {
+                    context.AddFailure("item_line_id", "The provided item_line_id does not exist.");
+                }
+            });
     }
 }

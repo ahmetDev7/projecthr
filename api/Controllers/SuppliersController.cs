@@ -44,6 +44,8 @@ public class SuppliersController : ControllerBase
             },
             CreatedAt = supplier.CreatedAt,
             UpdatedAt = supplier.UpdatedAt
+        });
+    }
             
     [HttpPost]
     public IActionResult Create(SupplierRequest request)

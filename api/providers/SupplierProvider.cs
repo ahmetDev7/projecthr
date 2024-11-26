@@ -15,13 +15,16 @@ public class SupplierProvider : BaseProvider<Supplier>
         _contactProvider = contactProvider;
     }
 
-    public List<Item> GetItemsByReferenceCode(string Reference)
+    public List<Item> GetItemsBySupplierId(Guid id)
     {
-        var itemsSpecificSupplier = _db.Items.Where(l => l.SupplierReferenceCode == Reference).ToList();
+        var itemsSpecificSupplier = _db.Items.Where(l => l.SupplierId == id).ToList();
         if (itemsSpecificSupplier.Count == 0)
             throw new ApiFlowException("No items found for this supplier");
 
         return itemsSpecificSupplier;
+    }
+    public override Supplier? Create(BaseDTO createValues)
+    {
         SupplierRequest? req = createValues as SupplierRequest;
         var allSuppliers = _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).ToList();
         if (req == null) throw new ApiFlowException("Could not process create supplier request. Save new supplier failed.");
@@ -35,16 +38,16 @@ public class SupplierProvider : BaseProvider<Supplier>
             Name = req.Name,
             Reference = req.Reference,
         };
-        if(relatedContact != null) newSupplier.ContactId = relatedContact.Id;
-        if(relatedAddress != null) newSupplier.AddressId = relatedAddress.Id;
-        
+        if (relatedContact != null) newSupplier.ContactId = relatedContact.Id;
+        if (relatedAddress != null) newSupplier.AddressId = relatedAddress.Id;
+
 
         ValidateModel(newSupplier);
         _db.Suppliers.Add(newSupplier);
         SaveToDBOrFail();
 
-        newSupplier.Contact =relatedContact;
-        newSupplier.Address =relatedAddress;
+        newSupplier.Contact = relatedContact;
+        newSupplier.Address = relatedAddress;
 
         return newSupplier;
     }

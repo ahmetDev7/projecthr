@@ -53,8 +53,12 @@ namespace DTO.Item
 
         [JsonPropertyName("supplier_part_number")]
         public string? SupplierPartNumber { get; set; }
+
         [JsonPropertyName("item_group_id")]
         public Guid? ItemGroupId { get; set; }
+
+        [JsonPropertyName("supplier_id")]
+        public Guid? SupplierId { get; set; }
     }
 
     public class ItemResponse : BaseDTO
@@ -96,5 +100,7 @@ namespace DTO.Item
         public string? SupplierPartNumber { get; set; }
         [JsonPropertyName("item_group_id")]
         public Guid? ItemGroupId { get; set; }
+        [JsonPropertyName("supplier_id")]
+        public Guid? SupplierId { get; set; }
     }
 }

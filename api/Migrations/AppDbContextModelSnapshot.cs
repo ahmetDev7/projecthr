@@ -129,6 +129,9 @@ namespace api.Migrations
                     b.Property<string>("ShortDescription")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("SupplierPartNumber")
                         .HasColumnType("text");
 
@@ -424,6 +427,7 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Reference")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")

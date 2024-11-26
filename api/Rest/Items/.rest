@@ -24,6 +24,7 @@ Content-Type: application/json
   "pack_order_quantity": 10,
   "supplier_reference_code": "123-ABCD",
   "supplier_part_number": "CH123-XL",
-  "item_group_id": "15196e64-e069-4460-9f68-5be8d647cec6"
+  "item_group_id": "75c1e1e2-23d7-4f4c-b30d-98416dbdac80",
+  "supplier_id": "385142f3-7e86-4914-9657-583dfcad49fd"
+  
 }
-###

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class add_migration_supplier : Migration
+    public partial class add_migration_supplier_update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -96,7 +96,7 @@ namespace api.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Code = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Reference = table.Column<string>(type: "text", nullable: true),
+                    Reference = table.Column<string>(type: "text", nullable: false),
                     ContactId = table.Column<Guid>(type: "uuid", nullable: false),
                     AddressId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -165,6 +165,7 @@ namespace api.Migrations
                     SupplierReferenceCode = table.Column<string>(type: "text", nullable: false),
                     SupplierPartNumber = table.Column<string>(type: "text", nullable: true),
                     ItemGroupId = table.Column<Guid>(type: "uuid", nullable: true),
+                    SupplierId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

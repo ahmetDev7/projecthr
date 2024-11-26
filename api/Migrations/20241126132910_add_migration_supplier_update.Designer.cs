@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241126104839_add_migration_supplier")]
-    partial class add_migration_supplier
+    [Migration("20241126132910_add_migration_supplier_update")]
+    partial class add_migration_supplier_update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,6 +131,9 @@ namespace api.Migrations
 
                     b.Property<string>("ShortDescription")
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("SupplierPartNumber")
                         .HasColumnType("text");
@@ -427,6 +430,7 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Reference")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")

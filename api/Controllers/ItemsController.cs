@@ -70,7 +70,8 @@ public class ItemsController : ControllerBase
                 PackOrderQuantity = foundItem.PackOrderQuantity,
                 SupplierReferenceCode = foundItem.SupplierReferenceCode,
                 SupplierPartNumber = foundItem.SupplierPartNumber,
-                ItemGroupId = foundItem.ItemGroupId
+                ItemGroupId = foundItem.ItemGroupId,
+                SupplierId = foundItem.SupplierId
             });
     }
 

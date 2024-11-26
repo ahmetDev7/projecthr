@@ -120,4 +120,18 @@ public class OrdersController : ControllerBase
                 }
             });
     }
+
+    [HttpGet("{id}/items")]
+    public IActionResult ShowOrderItems(Guid id)
+    {
+        List<OrderItem> orderItems = _orderProvider.GetRelatedOrderById(id);
+        if (!orderItems.Any()) throw new ApiFlowException($"No items found for order id '{id}'");
+
+        return Ok(orderItems.Select(oi => new OrderItemRequest
+        {
+            ItemId = oi.ItemId,
+            Amount = oi.Amount
+        }).ToList());
+    }
 }
+

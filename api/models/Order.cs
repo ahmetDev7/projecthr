@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Utils.Number;
 
-namespace Model;
-
 public class Order : BaseModel
 {
     public Order() { }

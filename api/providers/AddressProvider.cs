@@ -1,5 +1,3 @@
-using DTO.Supplier;
-
 public class AddressProvider : ICRUD<Address>
 {
     private readonly AppDbContext _db;
@@ -54,23 +52,15 @@ public class AddressProvider : ICRUD<Address>
     {
         throw new NotImplementedException();
     }
+    
+    public Address? GetOrCreateAddress(AddressDTO? addressDTO = null, Guid? addressId = null)  
+    {  
+        if (addressDTO == null && addressId == null) return null;  
 
-    public Address? GetOrCreateAddress(SupplierRequest request)
-    {
+        if (addressId != null) return GetById(addressId.Value);  
 
-        if (request.AddressId != null)
-        {
-            Address? existingAddress = GetById(request.AddressId.Value);
-            if (existingAddress == null) throw new ApiFlowException("address_id does not exist");
-            return existingAddress;
-        }
-        Address address = Create<AddressDTO>(request.Address);
+        if(addressDTO != null) return Create(addressDTO);  
 
-        if (request.Address != null)
-        {
-            return address;
-        }
-
-        throw new ApiFlowException("Both address_id and address data are missing. Unable to create supplier address.");
-    }
+        return null;  
+    } 
 }

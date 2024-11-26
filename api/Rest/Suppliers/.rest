@@ -16,6 +16,26 @@ Content-Type: application/json
     "house_number_extension": "string",
     "house_number_extension_extra": "string",
     "zipcode": "DIT IS GETEST",
+  }
+}
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "Nog eentje omdat het leuk is",
+  "name": "string",
+  "reference": "string",
+  "contact": {
+    "name": "123",
+    "phone": "123",
+    "email": "123"
+  },
+  "address": {
+    "street": "otto",
+    "house_number": "otto",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "string",
     "city": "string",
     "province": "string",
     "country_code": "string"
@@ -51,6 +71,37 @@ Content-Type: application/json
     "house_number_extension": "string",
     "house_number_extension_extra": "string",
     "zipcode": "DIT IS GETEST",
+    }
+ }
+###
+
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "Otto is hier",
+  "name": "string",
+  "reference": "string",
+  "contact_id": "8e360e36-5b71-40b0-9cd1-baaf0cca5455",
+  "address_id": "96010731-e113-4b43-845e-acd8027dde76"
+}
+
+###
+
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "Otto is hier",
+  "name": "string",
+  "reference": "string",
+  "contact_id": "8e360e36-5b71-40b0-9cd1-baaf0cca5455",
+  "address": {
+    "street": "otto",
+    "house_number": "otto",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "string",
     "city": "string",
     "province": "string",
     "country_code": "string"
@@ -72,4 +123,18 @@ Content-Type: application/json
     "email": "DIT IS GETEST"
   },
   "address_id": "537540f2-94bf-494b-827c-6b977c2d0132"
+}
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "Otto is hier",
+  "name": "string",
+  "reference": "string",
+  "contact": {
+    "name": "123",
+    "phone": "123",
+    "email": "123"
+  },
+  "address_id": "96010731-e113-4b43-845e-acd8027dde76"
 }

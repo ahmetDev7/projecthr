@@ -17,7 +17,7 @@ public class SuppliersController : ControllerBase
     {
         Supplier? supplier = _supplierProvider.GetById(id);
 
-        if (supplier == null) throw new ApiFlowException("Supplier not found.");
+        if (supplier == null) return NotFound(new { message = $"Supplier not found for id '{id}'" });
 
         return Ok(new SupplierResponse
         {
@@ -51,7 +51,7 @@ public class SuppliersController : ControllerBase
     public IActionResult Update(Guid id, SupplierRequest request)
     {
         Supplier? updatedSupplier = _supplierProvider.Update(id, request);
-        if(updatedSupplier == null) throw new ApiFlowException("Supplier not found.");
+        if(updatedSupplier == null) return NotFound(new { message = $"Supplier not found for id '{id}'" });
 
         return Ok(new
         {

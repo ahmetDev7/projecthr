@@ -48,6 +48,9 @@ public class Item : BaseModel
     public Guid? ItemLineId { get; set; } // Foreign Key Relationship with ItemLines
     public ItemLine? ItemLine { get; set; }
 
+    public Guid? ItemTypeId { get; set; } // Foreign Key Relationship with ItemLines
+    public ItemType? ItemType { get; set; }
+
     public ICollection<OrderItem>? OrderItems { get; set; }
 
     /*

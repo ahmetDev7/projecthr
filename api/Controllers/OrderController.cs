@@ -1,7 +1,6 @@
 using System.Data;
 using DTO.Order;
 using Microsoft.AspNetCore.Mvc;
-using Model;
 
 
 [Route("api/[controller]")]

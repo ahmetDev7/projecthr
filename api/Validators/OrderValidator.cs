@@ -1,57 +1,48 @@
-using System.Data;
-using DTO.ItemGroup;
-using DTO.Order;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Model;
-using Utils.Date;
 
-
-public class OrderProvider : BaseProvider<Order>
+public class OrderValidator : AbstractValidator<Order>
 {
-    private IValidator<Order> _orderValidator;
-
-    public OrderProvider(AppDbContext db, IValidator<Order> validator) : base(db)
+    public OrderValidator(AppDbContext db)
     {
-        _orderValidator = validator;
-    }
-    public override Order? GetById(Guid id)=>
-    _db.Orders.Include(o => o.OrderItems).FirstOrDefault(order => order.Id == id);
-    
-    public List<OrderItem> GetRelatedOrderById(Guid id)=> 
-     _db.Orders.Where(o => o.Id == id).SelectMany(o => o.OrderItems).ToList();
+        RuleFor(Order => Order.OrderDate)
+            .NotNull().WithMessage("order_date required")
+            .NotEmpty().WithMessage("order_date cannot be empty.");
+        RuleFor(Order => Order.OrderStatus)
+            .NotNull().WithMessage("order_status required")
+            .NotEmpty().WithMessage("order_status cannot be empty.");
+        RuleFor(Order => Order.WarehouseId)
+            .NotNull().WithMessage("warehouse_id required")
+            .NotEmpty().WithMessage("warehouse_id cannot be empty.")
+            .Custom((warehouseId, context ) => {
+                if (!db.Warehouses.Any(w => w.Id == warehouseId))
+                {
+                    context.AddFailure("warehouse_id", "The provided warehouse_id does not exist");
+                }
+            });
+        RuleFor(order => order.OrderItems)
+            .NotNull().WithMessage("order_items required")
+            .NotEmpty().WithMessage("order_items cannot be empty.")
+            .ForEach(orderItem => {
+                orderItem.ChildRules(item =>
+                {
+                    item.RuleFor(i => i.ItemId)
+                        .NotNull().WithMessage("The ItemId field is required.")
+                        .NotEmpty().WithMessage("The ItemId field cannot be empty.")
+                        .Custom((itemId, context) =>
+                        {
+                            if (!db.Items.Any(i => i.Id == itemId))
+                            {
+                                context.AddFailure("ItemId", $"The ItemId '{itemId}' does not exist in the database.");
+                            }
+                        });
+                    
+                    item.RuleFor(i => i.Amount)
+                        .GreaterThan(0).WithMessage("Amount must be greater than 0.");
+                });
+            });
+        //TODO:clientsId
 
-    public override Order? Create(BaseDTO createValues)
-    {
-        OrderRequest? req = createValues as OrderRequest;
-        if (req == null) throw new ApiFlowException("Could not process create order request. Save new order failed.");
-        Order newOrder = new Order(newInstance:true)
-        {
-            OrderDate = DateUtil.ToUtcOrNull(req.OrderDate),
-            RequestDate = DateUtil.ToUtcOrNull(req.RequestDate),
-            Reference = req.Reference,
-            ReferenceExtra = req.ReferenceExtra,
-            OrderStatus = req.OrderStatus,
-            Notes = req.Notes,
-            PickingNotes = req.PickingNotes,
-            TotalAmount =  req.TotalAmount,
-            TotalDiscount =  req.TotalDiscount,
-            TotalTax = req.TotalTax,
-            TotalSurcharge = req.TotalSurcharge,
-            WarehouseId = req.WarehouseId,
-            OrderItems = req.OrderItems?.Select(oi => new OrderItem
-            {
-                ItemId = oi.ItemId,
-                Amount = oi.Amount
-            }).ToList()
-        };
-        
-        ValidateModel(newOrder);
-        _db.Orders.Add(newOrder);
-        SaveToDBOrFail();
-        return newOrder;
     }
-
-    protected override void ValidateModel(Order model) => _orderValidator.ValidateAndThrow(model);
 }

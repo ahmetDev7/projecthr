@@ -2,7 +2,6 @@ using System.Data;
 using DTO.ItemGroup;
 using DTO.Order;
 using Microsoft.AspNetCore.Mvc;
-using Model;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -43,4 +42,47 @@ public class OrdersController : ControllerBase
             }).ToList()
         });
     }
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        Order? foundOrder = _orderProvider.GetById(id);
+        if(foundOrder == null) throw new ApiFlowException($"Order not found for id '{id}'");
+
+        return Ok(new OrderResponse{         
+            Id = foundOrder.Id,
+            OrderDate = foundOrder.OrderDate,
+            RequestDate = foundOrder.RequestDate,          
+            Reference = foundOrder.Reference,
+            ReferenceExtra = foundOrder.ReferenceExtra,
+            OrderStatus = foundOrder.OrderStatus,
+            Notes = foundOrder.Notes,
+            PickingNotes = foundOrder.PickingNotes,
+            TotalAmount = foundOrder.TotalAmount,
+            TotalDiscount = foundOrder.TotalDiscount,
+            TotalTax = foundOrder.TotalTax,
+            TotalSurcharge = foundOrder.TotalSurcharge,
+            WarehouseId = foundOrder.WarehouseId,
+            CreatedAt = foundOrder.CreatedAt,
+            UpdatedAt = foundOrder.UpdatedAt,
+            Items = foundOrder.OrderItems?.Select(oi => new OrderItemRequest
+            {
+                ItemId = oi.ItemId,
+                Amount = oi.Amount
+            }).ToList()
+        });
+    }
+
+    [HttpGet("{id}/items")]
+    public IActionResult ShowOrderItems(Guid id)
+    {
+        List<OrderItem> orderItems = _orderProvider.GetRelatedOrderById(id);
+        if (!orderItems.Any()) throw new ApiFlowException($"No items found for order id '{id}'");
+
+        return Ok(orderItems.Select(oi => new OrderItemRequest
+        {
+            ItemId = oi.ItemId,
+            Amount = oi.Amount
+        }).ToList());
+    }
+
 }

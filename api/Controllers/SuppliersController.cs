@@ -27,13 +27,13 @@ public class SuppliersController : ControllerBase
                 Code = updatedSupplier.Code,
                 Name = updatedSupplier.Name,
                 Reference = updatedSupplier.Reference,
-                Contact = updatedSupplier.Contact != null ? new ContactDTO
+                Contact = new ContactDTO
                 {
                     Name = updatedSupplier.Contact.Name,
                     Email = updatedSupplier.Contact.Email,
                     Phone = updatedSupplier.Contact.Phone
-                } : null,
-                Address = updatedSupplier.Address != null ? new AddressDTO
+                },
+                Address = new AddressDTO
                 {
                     Street = updatedSupplier.Address.Street,
                     HouseNumber = updatedSupplier.Address.HouseNumber,
@@ -43,7 +43,7 @@ public class SuppliersController : ControllerBase
                     City = updatedSupplier.Address.City,
                     Province = updatedSupplier.Address.Province,
                     CountryCode = updatedSupplier.Address.CountryCode
-                } : null,
+                },
                 CreatedAt = _supplierProvider.GetById(id).CreatedAt,
                 UpdatedAt = updatedSupplier.UpdatedAt
             }

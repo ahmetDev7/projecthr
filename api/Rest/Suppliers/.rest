@@ -2,7 +2,7 @@ POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
 
 {
-  "code": "Otto is hier",
+  "code": "Nog eentje omdat het leuk is",
   "name": "string",
   "reference": "string",
   "contact": {
@@ -26,3 +26,55 @@ Content-Type: application/json
 
 GET http://localhost:5000/api/Suppliers/3cbe9de4-df5b-49af-90c8-d5b614b359d7
 Content-Type: application/json
+
+###
+
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "Otto is hier",
+  "name": "string",
+  "reference": "string",
+  "contact_id": "8e360e36-5b71-40b0-9cd1-baaf0cca5455",
+  "address_id": "96010731-e113-4b43-845e-acd8027dde76"
+}
+
+###
+
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "Otto is hier",
+  "name": "string",
+  "reference": "string",
+  "contact_id": "8e360e36-5b71-40b0-9cd1-baaf0cca5455",
+  "address": {
+    "street": "otto",
+    "house_number": "otto",
+    "house_number_extension": "string",
+    "house_number_extension_extra": "string",
+    "zipcode": "string",
+    "city": "string",
+    "province": "string",
+    "country_code": "string"
+  }
+}
+
+###
+
+POST http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+{
+  "code": "Otto is hier",
+  "name": "string",
+  "reference": "string",
+  "contact": {
+    "name": "123",
+    "phone": "123",
+    "email": "123"
+  },
+  "address_id": "96010731-e113-4b43-845e-acd8027dde76"
+}

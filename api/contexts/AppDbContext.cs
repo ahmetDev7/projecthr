@@ -14,6 +14,6 @@ public class AppDbContext : DbContext
     public DbSet<ItemGroup> ItemGroups {get; set;}
     public DbSet<Order> Orders {get;set;}
     public DbSet<OrderItem> OrderItems {get;set;}
-    public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<Supplier> Suppliers {get;set;}
 } 
 

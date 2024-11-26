@@ -1,3 +1,4 @@
+### CREATE ORDER
 POST http://localhost:5000/api/orders
 Content-Type: application/json
 
@@ -20,6 +21,13 @@ Content-Type: application/json
                 "item_id": "ac3811c9-a02b-45a9-9ea7-4db7c3422843",
                 "amount": 23
             }
-] 
+        ] 
 }
 ###
+### GET ORDER BY ID (change ID to existing ID in your database)
+GET http://localhost:5000/api/orders/ce3c28e1-d246-4c2c-a0db-3a26a169d9fb
+Content-Type: application/json
+###
+# Get order items by order ID
+GET http://localhost:5000/api/orders/{ce3c28e1-d246-4c2c-a0db-3a26a169d9fb}/items
+Content-Type: application/json

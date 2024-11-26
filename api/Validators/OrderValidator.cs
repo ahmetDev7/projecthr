@@ -1,6 +1,5 @@
 using System.Data;
 using FluentValidation;
-using Model;
 
 public class OrderValidator : AbstractValidator<Order>
 {

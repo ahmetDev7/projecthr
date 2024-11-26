@@ -50,7 +50,9 @@ public class ShipmentsController : ControllerBase
         Shipment? deletedShipment = _shipmentProvider.Delete(id);
         if (deletedShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
 
-        return Ok(new {deleted_shipment = new ShipmentResponse{
+        return Ok(new {
+            message = "Shipment deleted!",
+            deleted_shipment = new ShipmentResponse{
             Id = deletedShipment.Id,
             OrderDate = deletedShipment.OrderDate,
             RequestDate = deletedShipment.RequestDate,

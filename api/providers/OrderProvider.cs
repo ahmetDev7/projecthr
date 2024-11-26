@@ -16,6 +16,11 @@ public class OrderProvider : BaseProvider<Order>
     {
         _orderValidator = validator;
     }
+    public override Order? GetById(Guid id)=>
+    _db.Orders.Include(o => o.OrderItems).FirstOrDefault(order => order.Id == id);
+    
+    public List<OrderItem> GetRelatedOrderById(Guid id)=> 
+     _db.Orders.Where(o => o.Id == id).SelectMany(o => o.OrderItems).ToList();
 
     public override Order? Create(BaseDTO createValues)
     {

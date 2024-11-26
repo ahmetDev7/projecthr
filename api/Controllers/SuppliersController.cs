@@ -33,7 +33,8 @@ public class SuppliersController : ControllerBase
             PackOrderQuantity = item.PackOrderQuantity,
             SupplierReferenceCode = item.SupplierReferenceCode,
             SupplierPartNumber = item.SupplierPartNumber,
-            ItemGroupId = item.ItemGroupId
+            ItemGroupId = item.ItemGroupId,
+            SupplierId = item.SupplierId,
         }).ToList();
 
         return Ok(itemsSupplier);

@@ -65,3 +65,6 @@ Content-Type: application/json
 GET http://localhost:5000/api/orders/{ce3c28e1-d246-4c2c-a0db-3a26a169d9fb}/items
 Content-Type: application/json
 ###
+GET http://localhost:5000/api/orders
+Content-Type: application/json
+###

@@ -7,7 +7,7 @@ public class SupplierValidator : AbstractValidator<Supplier>
         RuleFor(Supplier => Supplier.Name)
             .NotNull().WithMessage("name is required.")
             .NotEmpty().WithMessage("name cannot be empty.");
-
+            
         RuleFor(Supplier => Supplier.Code)
             .NotNull().WithMessage("code is required.")
             .NotEmpty().WithMessage("code cannot be empty.");
@@ -17,8 +17,8 @@ public class SupplierValidator : AbstractValidator<Supplier>
             .NotEmpty().WithMessage("reference cannot be empty.");
 
         RuleFor(Supplier => Supplier.ContactId)
-            .NotNull().WithMessage("address_id is required.")
-            .NotEmpty().WithMessage("address_id cannot be empty.")
+            .NotNull().WithMessage("contact_id is required.")
+            .NotEmpty().WithMessage("contact_id cannot be empty.")
             .Custom((ContactId, context) =>
             {
                 if (!db.Contacts.Any(ig => ig.Id == ContactId)) context.AddFailure("contact_id", "The provided contact_id does not exist.");

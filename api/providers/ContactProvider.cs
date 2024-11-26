@@ -21,6 +21,7 @@ public class ContactProvider : ICRUD<Contact>
             Name = request.Name,
             Email = request.Email,
             Phone = request.Phone,
+            CreatedAt = DateTime.UtcNow,
         };
 
         _db.Contacts.Add(newContact);
@@ -29,7 +30,6 @@ public class ContactProvider : ICRUD<Contact>
 
         return newContact; 
     }
-
 
     public Contact Delete(Guid id)
     {
@@ -56,5 +56,4 @@ public class ContactProvider : ICRUD<Contact>
 
         return null;  
     } 
-
 }

@@ -4,7 +4,6 @@ public class Supplier : BaseModel
 {
     public Supplier() { }
     public Supplier(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
-
     [Required]
     public string? Code { get; set; }
     [Required]

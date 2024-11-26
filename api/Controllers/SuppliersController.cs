@@ -16,7 +16,7 @@ public class SuppliersController : ControllerBase
     public IActionResult Update(Guid id, SupplierRequest request)
     {
         Supplier? updatedSupplier = _supplierProvider.Update(id, request);
-        if(updatedSupplier == null) return NotFound(new {message = $"Supplier not found for id '{id}'"});
+        if(updatedSupplier == null) return NotFound(new { message = $"Supplier not found for id '{id}'" });
 
         return Ok(new
         {
@@ -46,9 +46,9 @@ public class SuppliersController : ControllerBase
                 } : null,
                 CreatedAt = _supplierProvider.GetById(id).CreatedAt,
                 UpdatedAt = updatedSupplier.UpdatedAt
-             }
+            }
         });
-        
+    }
     [HttpPost]
     public IActionResult Create(SupplierRequest request)
     {

@@ -1,4 +1,3 @@
-
 public class ContactProvider : ICRUD<Contact>
 {
     private readonly AppDbContext _db;
@@ -46,4 +45,16 @@ public class ContactProvider : ICRUD<Contact>
     {
         throw new NotImplementedException();
     }
+
+    public Contact? GetOrCreateContact(ContactDTO? contact = null, Guid? contactId = null)  
+    {  
+        if (contact == null && contactId == null) return null;  
+
+        if (contactId != null) return GetById(contactId.Value);  
+
+        if(contact != null) return Create(contact);  
+
+        return null;  
+    } 
+
 }

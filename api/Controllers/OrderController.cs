@@ -120,6 +120,30 @@ public class OrdersController : ControllerBase
                 }
             });
     }
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_orderProvider.GetAll()?.Select(o => new OrderResponse
+    {
+        Id = o.Id,
+        OrderDate = o.OrderDate,
+        RequestDate = o.RequestDate,
+        Reference = o.Reference,
+        ReferenceExtra = o.ReferenceExtra,
+        OrderStatus = o.OrderStatus,
+        Notes = o.Notes,
+        PickingNotes = o.PickingNotes,
+        TotalAmount = o.TotalAmount,
+        TotalDiscount = o.TotalDiscount,
+        TotalTax = o.TotalTax,
+        TotalSurcharge = o.TotalSurcharge,
+        WarehouseId = o.WarehouseId,
+        CreatedAt = o.CreatedAt,
+        UpdatedAt = o.UpdatedAt,
+        Items = o.OrderItems?.Select(oi => new OrderItemRequest
+        {
+            ItemId = oi.ItemId,
+            Amount = oi.Amount
+        }).ToList()
+    }).ToList());
 
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
@@ -168,4 +192,5 @@ public class OrdersController : ControllerBase
             Amount = oi.Amount
         }).ToList());
     }
+
 }

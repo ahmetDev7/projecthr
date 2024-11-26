@@ -15,6 +15,8 @@ public class OrderProvider : BaseProvider<Order>
     {
         _orderValidator = validator;
     }
+
+    public override List<Order>? GetAll() => _db.Orders.Include(o => o.OrderItems).ToList();
     public override Order? GetById(Guid id)=>
     _db.Orders.Include(o => o.OrderItems).FirstOrDefault(order => order.Id == id);
     

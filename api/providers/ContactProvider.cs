@@ -1,5 +1,3 @@
-using DTO.Supplier;
-
 public class ContactProvider : ICRUD<Contact>
 {
     private readonly AppDbContext _db;
@@ -23,7 +21,6 @@ public class ContactProvider : ICRUD<Contact>
             Name = request.Name,
             Email = request.Email,
             Phone = request.Phone,
-            CreatedAt = DateTime.UtcNow,
         };
 
         _db.Contacts.Add(newContact);

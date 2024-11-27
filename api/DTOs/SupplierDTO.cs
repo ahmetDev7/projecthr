@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace DTO.Supplier;
 
 [ApiExplorerSettings(IgnoreApi = true)]
@@ -24,7 +23,7 @@ public class SupplierRequest : BaseDTO
 
     [JsonPropertyName("address_id")]
     public Guid? AddressId { get; set; }
-    
+
     [JsonPropertyName("address")]
     public AddressDTO? Address { get; set; }
 }

@@ -17,3 +17,4 @@ public class AppDbContext : DbContext
     public DbSet<OrderItem> OrderItems {get;set;}
     public DbSet<Supplier> Suppliers {get;set;}
 } 
+

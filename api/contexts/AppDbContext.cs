@@ -11,6 +11,8 @@ public class AppDbContext : DbContext
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<ShipmentItem> ShipmentItems { get; set; }
     public DbSet<ItemGroup> ItemGroups {get; set;}
+    public DbSet<ItemLine> ItemLines {get; set;}
+    public DbSet<ItemType> ItemTypes {get; set;}
     public DbSet<Order> Orders {get;set;}
     public DbSet<OrderItem> OrderItems {get;set;}
     public DbSet<Supplier> Suppliers {get;set;}

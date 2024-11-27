@@ -85,6 +85,7 @@ public class OrdersController : ControllerBase
                 }
             });
     }
+
     [HttpPut("{id}")]
     public IActionResult Update(Guid id, [FromBody] OrderRequest req)
     {
@@ -120,6 +121,25 @@ public class OrdersController : ControllerBase
                 }
             });
     }
+
+    [HttpPut("{id}/items")]
+    public IActionResult UpdateOrderItems(Guid id, [FromBody] List<OrderItemRequest> updatedItems)
+    {
+        Order? updatedOrder = _orderProvider.UpdateOrderItems(id, updatedItems);
+
+        return updatedOrder == null
+            ? NotFound(new { message = $"Order not found for id '{id}'" })
+            : Ok(new
+            {
+                message = "Order items updated!",
+                updatedOrderItems = updatedOrder.OrderItems?.Select(oi => new OrderItemRequest
+                {
+                    ItemId = oi.ItemId,
+                    Amount = oi.Amount
+                }).ToList()
+            });
+}
+
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_orderProvider.GetAll()?.Select(o => new OrderResponse
     {

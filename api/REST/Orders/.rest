@@ -23,11 +23,48 @@ Content-Type: application/json
             }
         ] 
 }
+### DELETE ORDER (change ID to the ID in your database)
+DELETE http://localhost:5000/api/orders/efd1f0dd-7030-46ea-809c-e7cd9c2a1d6a
+Content-Type: application/json
+
 ###
+
+=======
+### UPDATE ORDER
+PUT http://localhost:5000/api/orders/{593a5935-c506-4457-9c53-d93a08b1fc2d}
+Content-Type: application/json
+
+{
+    "order_date": "2025-11-17",
+    "request_date": "2025-11-16",
+    "reference": "123",
+    "reference_extra": "432",
+    "order_status": "ONDERWEG",
+    "notes": "0",
+    "ship_to_client": "sidi",
+    "picking_notes": "",
+    "total_amount": "1.3455",
+    "total_discount": "0",
+    "total_tax": "0",
+    "total_surcharge": "0",
+    "warehouse_id": "d323b35d-f6f2-41f7-99ee-b9a8eb366504",
+    "order_items": [
+        {
+            "item_id": "ac3811c9-a02b-45a9-9ea7-4db7c3422843",
+            "amount": 1
+        }
+    ]
+}
+
 ### GET ORDER BY ID (change ID to existing ID in your database)
-GET http://localhost:5000/api/orders/ce3c28e1-d246-4c2c-a0db-3a26a169d9fb
+GET http://localhost:5000/api/orders/efd1f0dd-7030-46ea-809c-e7cd9c2a1d6a
 Content-Type: application/json
 ###
+
 # Get order items by order ID
 GET http://localhost:5000/api/orders/{ce3c28e1-d246-4c2c-a0db-3a26a169d9fb}/items
 Content-Type: application/json
+###
+GET http://localhost:5000/api/orders
+Content-Type: application/json
+###

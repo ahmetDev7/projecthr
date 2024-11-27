@@ -17,7 +17,6 @@ public class SuppliersController : ControllerBase
     {
         var items = _supplierProvider.GetItemsBySupplierId(id);
         if(_supplierProvider.GetById(id) == null) throw new ApiFlowException("Supplier not found");
-        if (items == null) throw new ApiFlowException("this supplier does not have any items yet");
 
         List<ItemResponse> itemsSupplier = items.Select(item => new ItemResponse
         {

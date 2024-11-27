@@ -47,6 +47,7 @@ public class ItemsController : ControllerBase
                 ItemGroupId = newItem.ItemGroupId,
                 ItemLineId = newItem.ItemLineId,
                 ItemTypeId = newItem.ItemTypeId,
+                SupplierId = newItem.SupplierId,
             }
         });
     }
@@ -75,6 +76,7 @@ public class ItemsController : ControllerBase
                 ItemGroupId = foundItem.ItemGroupId,
                 ItemLineId = foundItem.ItemLineId,
                 ItemTypeId = foundItem.ItemTypeId,
+                SupplierId = foundItem.SupplierId,
             });
     }
 
@@ -96,5 +98,6 @@ public class ItemsController : ControllerBase
         ItemGroupId = i.ItemGroupId,
         ItemLineId = i.ItemLineId,
         ItemTypeId = i.ItemTypeId,
+        SupplierId = i.SupplierId,
     }).ToList());
 }

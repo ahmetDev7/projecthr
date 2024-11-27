@@ -51,9 +51,9 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
     public override Shipment? Delete(Guid id)
     {
-        Shipment? foundShipment = _db.Shipments.FirstOrDefault(s => s.Id == id);
+        Shipment? foundShipment = GetById(id);
         if(foundShipment == null) return null;
-        
+
         _db.Shipments.Remove(foundShipment);
         SaveToDBOrFail();
         return foundShipment;

@@ -12,7 +12,6 @@ public class SuppliersController : ControllerBase
     {
         _supplierProvider = supplierProvider;
     }
-
     [HttpGet("{id}/items")]
     public IActionResult GetItemsSupplier(Guid id)
     {

@@ -41,19 +41,20 @@ public class Item : BaseModel
     public string? SupplierReferenceCode { get; set; } // original name was supplier_part_number
     public string? SupplierPartNumber { get; set; }
 
-    // Foreign Key Relationship
-    public Guid? ItemGroupId { get; set; }
+    public Guid? ItemGroupId { get; set; } // Foreign Key Relationship with ItemGroups
     public ItemGroup? ItemGroup { get; set; }
 
-    public ICollection<OrderItem>? OrderItems { get; set; }
+    public Guid? ItemLineId { get; set; } // Foreign Key Relationship with ItemLines
+    public ItemLine? ItemLine { get; set; }
 
-    /*
-    TODO: 
-        item_line uuid [ref: > item_lines.id]
-        item_type uuid [ref: > item_types.id]
-        supplier_id uuid [ref: > suppliers.id] [Required]
-    */
+    public Guid? ItemTypeId { get; set; } // Foreign Key Relationship with ItemLines
+    public ItemType? ItemType { get; set; }
+
+    [Required]
+    public Guid? SupplierId { get; set; } // Foreign Key Relationship with Suppliers
     
-    // shipment_items table connection
-    public ICollection<ShipmentItem>? ShipmentItems { get; set; }
+    public Supplier? Supplier {get; set;}
+    
+    public ICollection<OrderItem>? OrderItems { get; set; }
+    public ICollection<ShipmentItem>? ShipmentItems { get; set; } // shipment_items table connection
 }

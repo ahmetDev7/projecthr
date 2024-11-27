@@ -16,4 +16,6 @@ public class Supplier : BaseModel
     [Required]
     public Guid? AddressId { get; set; }
     public Address? Address { get; set; }
+
+    public ICollection<Item>? Items { get; set; } // Navigation property for Items
 }

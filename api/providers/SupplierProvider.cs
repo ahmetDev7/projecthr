@@ -15,14 +15,8 @@ public class SupplierProvider : BaseProvider<Supplier>
         _contactProvider = contactProvider;
     }
 
-    public List<Item> GetItemsBySupplierId(Guid id)
-    {
-        var itemsSpecificSupplier = _db.Items.Where(l => l.SupplierId == id).ToList();
-        if (itemsSpecificSupplier.Count == 0)
-            throw new ApiFlowException("No items found for this supplier");
-
-        return itemsSpecificSupplier;
-    }
+    public List<Item> GetItemsBySupplierId(Guid id) => _db.Items.Where(l => l.SupplierId == id).ToList();
+    
     public override Supplier? Create(BaseDTO createValues)
     {
         SupplierRequest? req = createValues as SupplierRequest;

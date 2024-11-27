@@ -44,7 +44,9 @@ public class Item : BaseModel
     // Foreign Key Relationship
     public Guid? ItemGroupId { get; set; }
     public ItemGroup? ItemGroup { get; set; }
+    [Required]
     public Guid? SupplierId { get; set; }
+    public Supplier? Supplier{ get; set; }  
 
     public ICollection<OrderItem>? OrderItems { get; set; }
 

@@ -17,9 +17,10 @@ public class SuppliersController : ControllerBase
     public IActionResult GetItemsSupplier(Guid id)
     {
         var items = _supplierProvider.GetItemsBySupplierId(id);
+        if(_supplierProvider.GetById(id) == null) throw new ApiFlowException("Supplier not found");
         if (items == null) throw new ApiFlowException("this supplier does not have any items yet");
 
-        var itemsSupplier = items.Select(item => new ItemResponse
+        List<ItemResponse> itemsSupplier = items.Select(item => new ItemResponse
         {
             Id = item.Id,
             Code = item.Code,

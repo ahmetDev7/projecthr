@@ -6,6 +6,6 @@ public class ItemGroupValidator : AbstractValidator<ItemGroup>
     {
         RuleFor(itemGroup => itemGroup.Name)
             .NotNull().WithMessage("name is required.")
-            .NotEmpty().WithMessage("name name cannot be empty.");
+            .NotEmpty().WithMessage("name cannot be empty.");
     }
 }

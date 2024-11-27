@@ -1,4 +1,3 @@
-
 public class AddressProvider : ICRUD<Address>
 {
     private readonly AppDbContext _db;
@@ -22,6 +21,7 @@ public class AddressProvider : ICRUD<Address>
             City=request.City,
             Province=request.Province,
             CountryCode=request.CountryCode,
+            CreatedAt=DateTime.UtcNow
         };
 
         _db.Addresses.Add(newAddress);
@@ -53,4 +53,15 @@ public class AddressProvider : ICRUD<Address>
     {
         throw new NotImplementedException();
     }
+    
+    public Address? GetOrCreateAddress(AddressDTO? addressDTO = null, Guid? addressId = null)  
+    {  
+        if (addressDTO == null && addressId == null) return null;  
+
+        if (addressId != null) return GetById(addressId.Value);  
+
+        if(addressDTO != null) return Create(addressDTO);  
+
+        return null;  
+    } 
 }

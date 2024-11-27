@@ -52,11 +52,6 @@ public class Item : BaseModel
 
     public Guid? ItemTypeId { get; set; } // Foreign Key Relationship with ItemLines
     public ItemType? ItemType { get; set; }
-
-    [Required]
-    public Guid? SupplierId { get; set; } // Foreign Key Relationship with Suppliers
-    
-    public Supplier? Supplier {get; set;}
     
     public ICollection<OrderItem>? OrderItems { get; set; }
     public ICollection<ShipmentItem>? ShipmentItems { get; set; } // shipment_items table connection

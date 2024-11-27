@@ -27,5 +27,6 @@ Content-Type: application/json
   "item_group_id": null,
   "item_line_id": null,
   "item_type_id": null,
+  "supplier_id": null
 }
 ###

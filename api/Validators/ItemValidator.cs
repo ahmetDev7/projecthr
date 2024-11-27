@@ -55,5 +55,16 @@ public class ItemValidator : AbstractValidator<Item>
                     context.AddFailure("item_type_id", "The provided item_type_id does not exist.");
                 }
             });
+
+        RuleFor(item => item.SupplierId)
+            .NotNull().WithMessage("supplier_id is required.")
+            .NotEmpty().WithMessage("supplier_id cannot be empty.")
+            .Custom((SupplierId, context) =>
+            {
+                if (!db.Suppliers.Any(s => s.Id == SupplierId))
+                {
+                    context.AddFailure("supplier_id", "The provided supplier_id does not exist.");
+                }
+            });
     }
 }

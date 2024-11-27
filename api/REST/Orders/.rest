@@ -55,6 +55,22 @@ Content-Type: application/json
         }
     ]
 }
+###
+# Voeg een nieuw item toe aan de order
+put http://localhost:5000/api/orders/{3b4fea13-2f31-48d8-9432-84c9f4711e0a}/items
+Content-Type: application/json
+
+[
+    {
+        "item_id": "ac3811c9-a02b-45a9-9ea7-4db7c3422843",
+        "amount": 25
+      },
+      {
+        "item_id": "0f27d62f-63fd-4afe-acf6-6cf755879988",
+        "amount": 25
+      }
+]
+
 
 ### GET ORDER BY ID (change ID to existing ID in your database)
 GET http://localhost:5000/api/orders/efd1f0dd-7030-46ea-809c-e7cd9c2a1d6a
@@ -62,7 +78,7 @@ Content-Type: application/json
 ###
 
 # Get order items by order ID
-GET http://localhost:5000/api/orders/{ce3c28e1-d246-4c2c-a0db-3a26a169d9fb}/items
+GET http://localhost:5000/api/orders/{3b4fea13-2f31-48d8-9432-84c9f4711e0a}/items
 Content-Type: application/json
 ###
 GET http://localhost:5000/api/orders

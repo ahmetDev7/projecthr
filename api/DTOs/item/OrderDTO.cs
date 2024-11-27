@@ -97,7 +97,5 @@ namespace DTO.Order
         public Guid? ItemId { get; set; }
         [JsonPropertyName("amount")]
         public int? Amount { get; set; } // 10 fietsen besteld
-
-
     }
 }

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using DTO.Address;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DTO.Supplier;
@@ -25,7 +26,7 @@ public class SupplierRequest : BaseDTO
     public Guid? AddressId { get; set; }
 
     [JsonPropertyName("address")]
-    public AddressDTO? Address { get; set; }
+    public AddressRequest? Address { get; set; }
 }
 
 [ApiExplorerSettings(IgnoreApi = true)]
@@ -47,7 +48,7 @@ public class SupplierResponse : BaseDTO
     public ContactDTO? Contact { get; set; }
 
     [JsonPropertyName("address")]
-    public AddressDTO? Address { get; set; }
+    public AddressResponse? Address { get; set; }
 
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }

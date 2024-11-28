@@ -8,9 +8,11 @@ namespace DTO;
 public class WarehouseRequest : BaseDTO
 {
     [Required]
+    [JsonPropertyName("code")]
     public string Code { get; set; }
 
     [Required]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
     [JsonPropertyName("contact_id")]

@@ -108,6 +108,8 @@ builder.Services.AddScoped<IValidator<ItemGroup>, ItemGroupValidator>();
 builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
 builder.Services.AddScoped<IValidator<Shipment>, ShipmentValidator>();
 
+builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();

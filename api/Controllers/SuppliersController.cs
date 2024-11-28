@@ -156,6 +156,7 @@ public class SuppliersController : ControllerBase
             UpdatedAt = supplier.UpdatedAt
         });
     }
+    
     [HttpGet]
     public IActionResult ShowAll() => Ok(_supplierProvider.GetAll().Select(ig => new SupplierResponse
     {

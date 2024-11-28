@@ -22,12 +22,31 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpGet()]
-    public ActionResult<IEnumerable<Warehouse>> GetAll()
+    public ActionResult<IEnumerable<Warehouse>> GetAll() =>Ok(_warehouseProvider.GetAll().Select(ig => new WarehouseResponse
     {
-        List<Warehouse>? allWarehouses = _warehouseProvider.GetAll();
-        if (allWarehouses == null) return NotFound(new { message = $"No warehouses found" });
-        return Ok(allWarehouses);
-    }
+        Id = ig.Id,
+        Code = ig.Code,
+        Name = ig.Name,
+        Contact = new ContactDTO
+        {
+            Name = ig.Contact.Name,
+            Email = ig.Contact.Email,
+            Phone = ig.Contact.Phone
+        },
+        Address = new AddressDTO
+        {
+            Street = ig.Address.Street,
+            HouseNumber = ig.Address.HouseNumber,
+            HouseNumberExtension = ig.Address.HouseNumberExtension,
+            HouseNumberExtensionExtra = ig.Address.HouseNumberExtensionExtra,
+            ZipCode = ig.Address.ZipCode,
+            City = ig.Address.City,
+            Province = ig.Address.Province,
+            CountryCode = ig.Address.CountryCode,
+        },
+        CreatedAt = ig.CreatedAt,
+        UpdatedAt = ig.UpdatedAt
+    }));
 
     [HttpGet("{warehouseId}/locations")]
     public IActionResult GetLocations(Guid warehouseId)

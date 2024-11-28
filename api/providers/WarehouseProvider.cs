@@ -1,3 +1,4 @@
+using DTO.Contact;
 using DTOs;
 
 public class WarehouseProvider : ICRUD<Warehouse>
@@ -51,7 +52,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
                    ?? throw new ApiFlowException("contact_id does not exist");
 
         return request.Contact != null
-               ? _contactProvider.Create<ContactDTO>(request.Contact)
+               ? _contactProvider.Create(request.Contact)
                : throw new ApiFlowException("An error occurred while saving the warehouse contact");
     }
 

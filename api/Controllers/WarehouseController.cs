@@ -22,11 +22,12 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpGet()]
-    public ActionResult<IEnumerable<Warehouse>> GetAll() =>Ok(_warehouseProvider.GetAll().Select(ig => new WarehouseResponse
+    public ActionResult<IEnumerable<Warehouse>> GetAll() => Ok(_warehouseProvider.GetAll().Select(ig => new WarehouseResponse
     {
         Id = ig.Id,
         Code = ig.Code,
         Name = ig.Name,
+
         Contact = new ContactDTO
         {
             Name = ig.Contact.Name,

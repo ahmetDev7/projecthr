@@ -1,9 +1,9 @@
 using DTO;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class WarehouseProvider : BaseProvider<Warehouse>
 {
-    private readonly AppDbContext _db;
     private readonly AddressProvider _addressProvider;
     private readonly ContactProvider _contactProvider;
     private IValidator<Warehouse> _WarehouseValidator;
@@ -69,7 +69,7 @@ public class WarehouseProvider : BaseProvider<Warehouse>
                : throw new ApiFlowException("An error occurred while saving the warehouse address");
     }
 
-    public Warehouse? Delete(Guid id)
+    public override Warehouse? Delete(Guid id)
     {
         Warehouse? foundWarehouse = GetById(id);
         if(foundWarehouse == null) return null;
@@ -81,12 +81,9 @@ public class WarehouseProvider : BaseProvider<Warehouse>
         return foundWarehouse;
     }
 
-    public List<Warehouse> GetAll()
-    {
-        return _db.Warehouses.ToList();
-    }
+     public override List<Warehouse> GetAll() => _db.Warehouses.Include(c => c.Contact).Include(a => a.Address).ToList();
 
-    public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id);
+    public override Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id);
 
     public override Warehouse? Update(Guid id, BaseDTO updatedValues)
     {

@@ -94,8 +94,11 @@ public class WarehouseProvider : BaseProvider<Warehouse>
         WarehouseRequest? req = updatedValues as WarehouseRequest;
         if (req == null) throw new ApiFlowException("Could not process update warehouse request. Update new warehouse failed.");
 
-        Warehouse? foundWarehouse = _db.Warehouses.FirstOrDefault(ig => ig.Id == id);
+        Warehouse? foundWarehouse = GetById(id);
         if (foundWarehouse == null) return null;
+
+        var relatedAddress = GetOrCreateAddress(req);
+        var relatedContact = GetOrCreateContact(req);
 
         if (!string.IsNullOrEmpty(req.Code) && req.Code != foundWarehouse.Code)
         {
@@ -109,15 +112,11 @@ public class WarehouseProvider : BaseProvider<Warehouse>
         }
         if(req.Contact != null || req.ContactId != null)
         {
-            var relatedContact = GetOrCreateContact(req);
-
             foundWarehouse.ContactId = relatedContact.Id;
             hasChanges = true;
         }
         if(req.Address != null || req.AddressId != null)
         {
-            var relatedAddress = GetOrCreateAddress(req);
-
             foundWarehouse.AddressId = relatedAddress.Id;
             hasChanges = true;
         }

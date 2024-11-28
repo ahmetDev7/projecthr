@@ -2,17 +2,30 @@ using FluentValidation;
 
 public class WarehouseValidator : AbstractValidator<Warehouse>
 {
-    public WarehouseValidator()
+    public WarehouseValidator(AppDbContext db)
     {
         RuleFor(Warehouse => Warehouse.Name)
             .NotNull().WithMessage("name is required.")
             .NotEmpty().WithMessage("name cannot be empty.");
+
         RuleFor(Warehouse => Warehouse.Code)
             .NotNull().WithMessage("code is required.")
             .NotEmpty().WithMessage("code cannot be empty.");
+        
+        RuleFor(Warehouse => Warehouse.ContactId)
+            .NotNull().WithMessage("contact_id is required.")
+            .NotEmpty().WithMessage("contact_id cannot be empty.")
+            .Custom((ContactId, context) =>
+            {
+                if (!db.Contacts.Any(ig => ig.Id == ContactId)) context.AddFailure("contact_id", "The provided contact_id does not exist.");
+            });
 
-        // warehouse contactid and addressid can not be made required with the validator
-        // since it would make it impossible to create a warehouse without an existing contact or address
-        // I will delete these notes after the message has been relayed
+        RuleFor(Warehouse => Warehouse.AddressId)
+            .NotNull().WithMessage("address_id is required.")
+            .NotEmpty().WithMessage("address_id cannot be empty.")
+            .Custom((AddressId, context) =>
+             {
+                 if (!db.Addresses.Any(ig => ig.Id == AddressId)) context.AddFailure("address_id", "The provided address_id does not exist.");
+             });
     }
 }

@@ -100,3 +100,8 @@ Content-Type: application/json
 
 GET  http://localhost:5000/api/warehouses
 Content-Type: application/json
+
+###
+
+GET  http://localhost:5000/api/warehouses/7ef3414c-2bc5-4687-b551-b281e2781d4b
+Content-Type: application/json

@@ -83,7 +83,7 @@ public class WarehouseProvider : BaseProvider<Warehouse>
 
      public override List<Warehouse> GetAll() => _db.Warehouses.Include(c => c.Contact).Include(a => a.Address).ToList();
 
-    public override Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id);
+    public override Warehouse? GetById(Guid id) => _db.Warehouses.Include(c => c.Contact).Include(a => a.Address).FirstOrDefault(i => i.Id == id);
 
     public override Warehouse? Update(Guid id, BaseDTO updatedValues)
     {

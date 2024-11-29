@@ -14,15 +14,41 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Warehouse> GetById(Guid id)
+    public IActionResult ShowSingle(Guid id)
     {
-        Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
-        if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-        return Ok(foundWarehouse);
+        Warehouse? warehouse = _warehouseProvider.GetById(id);
+
+        if (warehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
+
+        return Ok(new WarehouseResponse
+        {
+            Id = warehouse.Id,
+            Name = warehouse.Name,
+            Code = warehouse.Code,
+            Contact = new ContactDTO
+            {
+                Name = warehouse.Contact.Name,
+                Email = warehouse.Contact.Email,
+                Phone = warehouse.Contact.Phone
+            },
+            Address = new AddressDTO
+            {
+                Street = warehouse.Address.Street,
+                HouseNumber = warehouse.Address.HouseNumber,
+                HouseNumberExtension = warehouse.Address.HouseNumberExtension,
+                HouseNumberExtensionExtra = warehouse.Address.HouseNumberExtensionExtra,
+                ZipCode = warehouse.Address.ZipCode,
+                City = warehouse.Address.City,
+                Province = warehouse.Address.Province,
+                CountryCode = warehouse.Address.CountryCode,
+            },
+            CreatedAt = warehouse.CreatedAt,
+            UpdatedAt = warehouse.UpdatedAt
+        });
     }
 
     [HttpGet()]
-    public ActionResult<IEnumerable<Warehouse>> GetAll() => Ok(_warehouseProvider.GetAll().Select(ig => new WarehouseResponse
+    public ActionResult<IEnumerable<Warehouse>> ShowAll() => Ok(_warehouseProvider.GetAll().Select(ig => new WarehouseResponse
     {
         Id = ig.Id,
         Code = ig.Code,

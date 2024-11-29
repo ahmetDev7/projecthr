@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-public class ContactDTO : IDTO
+public class ContactDTO : BaseDTO
 {
     [Required]
     [JsonPropertyName("name")]

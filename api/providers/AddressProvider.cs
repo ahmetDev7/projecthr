@@ -21,7 +21,8 @@ public class AddressProvider : ICRUD<Address>
             City=request.City,
             Province=request.Province,
             CountryCode=request.CountryCode,
-            CreatedAt=DateTime.UtcNow
+            CreatedAt=DateTime.UtcNow,
+            UpdatedAt=DateTime.UtcNow
         };
 
         _db.Addresses.Add(newAddress);

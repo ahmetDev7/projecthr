@@ -3,7 +3,7 @@ POST http://localhost:5000/api/warehouses/
 Content-Type: application/json
 
 {
-    "code": "AB123",
+    "code": "TEST",
     "name": "Test Company",
     "contact": {
       "name": "John Doe",

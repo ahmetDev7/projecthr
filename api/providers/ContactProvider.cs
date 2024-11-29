@@ -22,6 +22,7 @@ public class ContactProvider : ICRUD<Contact>
             Email = request.Email,
             Phone = request.Phone,
             CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         _db.Contacts.Add(newContact);

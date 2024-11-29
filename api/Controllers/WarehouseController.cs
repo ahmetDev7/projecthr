@@ -94,7 +94,31 @@ public class WarehousesController : ControllerBase
     {
         Warehouse? createdWarehouse = _warehouseProvider.Create<WarehouseRequest>(request);
         if (createdWarehouse == null) throw new ApiFlowException("An error occurred while creating the warehouse");
-        return Ok(new { Message = "Warehouse created successfully!" });
+        return Ok(new WarehouseResponse
+        {
+            Id = createdWarehouse.Id,
+            Code = createdWarehouse.Code,
+            Name = createdWarehouse.Name,
+            Contact = new ContactDTO
+            {
+                Name = createdWarehouse.Contact.Name,
+                Email = createdWarehouse.Contact.Email,
+                Phone = createdWarehouse.Contact.Phone
+            },
+            Address = new AddressDTO
+            {
+                Street = createdWarehouse.Address.Street,
+                HouseNumber = createdWarehouse.Address.HouseNumber,
+                HouseNumberExtension = createdWarehouse.Address.HouseNumberExtension,
+                HouseNumberExtensionExtra = createdWarehouse.Address.HouseNumberExtensionExtra,
+                ZipCode = createdWarehouse.Address.ZipCode,
+                City = createdWarehouse.Address.City,
+                Province = createdWarehouse.Address.Province,
+                CountryCode = createdWarehouse.Address.CountryCode
+            },
+            CreatedAt = createdWarehouse.CreatedAt,
+            UpdatedAt = createdWarehouse.UpdatedAt
+        });
     }
 
     [HttpDelete("{id}")]

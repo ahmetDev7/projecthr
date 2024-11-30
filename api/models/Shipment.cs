@@ -23,7 +23,7 @@ public class Shipment : BaseModel
     [Required]
     public string? ServiceCode { get; set; }
     [Required]
-    public string? PaymentType { get; set; } // Automatic, Manual
+    public PaymentType? PaymentType { get; set; } // Automatic, Manual
     [Required]
     public string? TransferMode { get; set; } // Air, Sea, Ground
 
@@ -44,26 +44,13 @@ public class Shipment : BaseModel
 
     public ICollection<ShipmentItem>? ShipmentItems { get; set; }
 
-    public void SetShipmentType(string? strShipmentType)
-    {
-        if (strShipmentType == null) return;
+    public void SetShipmentType(string? strShipmentType) => ShipmentType = EnumUtil.ParseOrIgnore<ShipmentType>(strShipmentType);
 
-        Enum.TryParse(typeof(ShipmentType), strShipmentType, true, out var result);
-        if (result is not ShipmentType shipmentType) return;
-        
-        this.ShipmentType = shipmentType;
-    }
-
-    public void SetShipmentStatus(string? strShipmentStatus)
-    {
-        if (strShipmentStatus == null){
-            this.ShipmentStatus = global::ShipmentStatus.Pending;
-            return;
-        }
-
-        Enum.TryParse(typeof(ShipmentStatus), strShipmentStatus, true, out var result);
-        if (result is not ShipmentStatus shipmentStatus) return;
-        
-        this.ShipmentStatus = shipmentStatus;
-    }
+    public void SetShipmentStatus(string? strShipmentStatus) => 
+        ShipmentStatus = strShipmentStatus == null 
+            ? global::ShipmentStatus.Pending  // on strShipmentStatus null set to default (Pending)
+            : EnumUtil.ParseOrIgnore<ShipmentStatus>(strShipmentStatus);
+    
+    public void SetPaymentType(string? strPaymentType) => PaymentType = EnumUtil.ParseOrIgnore<PaymentType>(strPaymentType);
+    
 }

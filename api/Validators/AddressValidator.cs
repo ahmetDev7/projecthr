@@ -5,19 +5,22 @@ public class AddressValidator : AbstractValidator<Address>
     public AddressValidator()
     {
         RuleFor(address => address.Street)
-            .NotNull().WithMessage("street is required.")
-            .NotEmpty().WithMessage("street cannot be empty.");
+            .NotEmpty().WithMessage("street is required.")
+            .NotNull().WithMessage("street cannot be null.");
         RuleFor(address => address.HouseNumber)
-            .NotNull().WithMessage("house_number is required.")
-            .NotEmpty().WithMessage("house_number cannot be empty.");
+            .NotEmpty().WithMessage("house_number is required.")
+            .NotNull().WithMessage("house_number cannot be null.");
         RuleFor(address => address.ZipCode)
-            .NotNull().WithMessage("zipcode is required.")
-            .NotEmpty().WithMessage("zipcode cannot be empty.");
+            .NotEmpty().WithMessage("zip_code is required.")
+            .NotNull().WithMessage("zip_code cannot be null.");
         RuleFor(address => address.City)
-            .NotNull().WithMessage("city is required.")
-            .NotEmpty().WithMessage("city cannot be empty.");
+            .NotEmpty().WithMessage("city is required.")
+            .NotNull().WithMessage("city cannot be null.");
+        RuleFor(address => address.Province)
+            .NotEmpty().WithMessage("province is required.")
+            .NotNull().WithMessage("province cannot be null.");
         RuleFor(address => address.CountryCode)
-            .NotNull().WithMessage("country_code is required.")
-            .NotEmpty().WithMessage("country_code cannot be empty.");
+            .NotEmpty().WithMessage("country_code is required.")
+            .NotNull().WithMessage("country_code cannot be null.");
     }
 }

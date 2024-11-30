@@ -1,4 +1,6 @@
 using DTO;
+using DTO.Address;
+using DTO.Contact;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -25,13 +27,13 @@ public class WarehousesController : ControllerBase
             Id = warehouse.Id,
             Name = warehouse.Name,
             Code = warehouse.Code,
-            Contact = new ContactDTO
+            Contact = new ContactResponse
             {
                 Name = warehouse.Contact.Name,
                 Email = warehouse.Contact.Email,
                 Phone = warehouse.Contact.Phone
             },
-            Address = new AddressDTO
+            Address = new AddressResponse
             {
                 Street = warehouse.Address.Street,
                 HouseNumber = warehouse.Address.HouseNumber,
@@ -54,13 +56,13 @@ public class WarehousesController : ControllerBase
         Code = ig.Code,
         Name = ig.Name,
 
-        Contact = new ContactDTO
+        Contact = new ContactResponse
         {
             Name = ig.Contact.Name,
             Email = ig.Contact.Email,
             Phone = ig.Contact.Phone
         },
-        Address = new AddressDTO
+        Address = new AddressResponse
         {
             Street = ig.Address.Street,
             HouseNumber = ig.Address.HouseNumber,
@@ -99,13 +101,13 @@ public class WarehousesController : ControllerBase
             Id = createdWarehouse.Id,
             Code = createdWarehouse.Code,
             Name = createdWarehouse.Name,
-            Contact = new ContactDTO
+            Contact = new ContactResponse
             {
                 Name = createdWarehouse.Contact.Name,
                 Email = createdWarehouse.Contact.Email,
                 Phone = createdWarehouse.Contact.Phone
             },
-            Address = new AddressDTO
+            Address = new AddressResponse
             {
                 Street = createdWarehouse.Address.Street,
                 HouseNumber = createdWarehouse.Address.HouseNumber,
@@ -126,7 +128,32 @@ public class WarehousesController : ControllerBase
     {
         Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
         if (deletedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-        return Ok(new { Message = "Warehouse deleted successfully!" });
+        
+        return Ok(new WarehouseResponse
+        {
+            Id = deletedWarehouse.Id,
+            Code = deletedWarehouse.Code,
+            Name = deletedWarehouse.Name,
+            Contact = new ContactResponse
+            {
+                Name = deletedWarehouse.Contact.Name,
+                Email = deletedWarehouse.Contact.Email,
+                Phone = deletedWarehouse.Contact.Phone
+            },
+            Address = new AddressResponse
+            {
+                Street = deletedWarehouse.Address.Street,
+                HouseNumber = deletedWarehouse.Address.HouseNumber,
+                HouseNumberExtension = deletedWarehouse.Address.HouseNumberExtension,
+                HouseNumberExtensionExtra = deletedWarehouse.Address.HouseNumberExtensionExtra,
+                ZipCode = deletedWarehouse.Address.ZipCode,
+                City = deletedWarehouse.Address.City,
+                Province = deletedWarehouse.Address.Province,
+                CountryCode = deletedWarehouse.Address.CountryCode
+            },
+            CreatedAt = deletedWarehouse.CreatedAt,
+            UpdatedAt = deletedWarehouse.UpdatedAt
+        });
     }
 
      [HttpPut("{id}")]
@@ -140,13 +167,13 @@ public class WarehousesController : ControllerBase
                 Id = updatedWarehouse.Id,
                 Code = updatedWarehouse.Code,
                 Name = updatedWarehouse.Name,
-                Contact = new ContactDTO
+                Contact = new ContactResponse
                 {
                     Name = updatedWarehouse.Contact.Name,
                     Email = updatedWarehouse.Contact.Email,
                     Phone = updatedWarehouse.Contact.Phone
                 },
-                Address = new AddressDTO
+                Address = new AddressResponse
                 {
                     Street = updatedWarehouse.Address.Street,
                     HouseNumber = updatedWarehouse.Address.HouseNumber,

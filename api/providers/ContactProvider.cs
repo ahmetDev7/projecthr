@@ -1,60 +1,84 @@
-public class ContactProvider : ICRUD<Contact>
+using DTO.Contact;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Utils.Date;
+
+public class ContactProvider : BaseProvider<Contact>
 {
-    private readonly AppDbContext _db;
+    private IValidator<Contact> _contactValidator;
 
-    public ContactProvider(AppDbContext db)
+    public ContactProvider(AppDbContext db, IValidator<Contact> validator) : base(db)
     {
-        _db = db;
-    }
-    public List<Contact> GetAll()
-    {
-        return _db.Contacts.ToList();
+        _contactValidator = validator;
     }
 
-    public Contact? Create<IDTO>(IDTO newElement)
-    {
-        ContactDTO? request = newElement as ContactDTO;
-        if(request == null) throw new Exception("Request invalid");
+    public override List<Contact> GetAll() => _db.Contacts.ToList();
 
-        Contact newContact = new()
+    public override Contact? GetById(Guid id) =>
+        _db.Contacts.FirstOrDefault(c => c.Id == id);
+
+    public override Contact? Create(BaseDTO createValues)
+    {
+        ContactRequest? req = createValues as ContactRequest;
+        if (req == null) throw new ApiFlowException("Invalid contact request. Could not create contact.");
+
+        Contact newContact = new Contact(newInstance: true)
         {
-            Name = request.Name,
-            Email = request.Email,
-            Phone = request.Phone,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            Name = req.Name,
+            Phone = req.Phone,
+            Email = req.Email
         };
 
+        ValidateModel(newContact);
+
         _db.Contacts.Add(newContact);
+        SaveToDBOrFail();
 
-        DBUtil.SaveChanges(_db, "Contact not stored");
-
-        return newContact; 
+        return newContact;
     }
 
-    public Contact Delete(Guid id)
+    public override Contact? Delete(Guid id)
     {
-        throw new NotImplementedException();
+        Contact? foundContact = _db.Contacts.FirstOrDefault(c => c.Id == id);
+        if (foundContact == null) return null;
+
+        _db.Contacts.Remove(foundContact);
+        SaveToDBOrFail();
+
+        return foundContact;
     }
 
-    public Contact? GetById(Guid id)
+    public override Contact? Update(Guid id, BaseDTO updateValues)
     {
-        return _db.Contacts.FirstOrDefault(c => c.Id == id);
+        ContactRequest? req = updateValues as ContactRequest;
+        if (req == null) throw new ApiFlowException("Invalid contact request. Could not update contact.");
+
+        Contact? existingContact = _db.Contacts.FirstOrDefault(c => c.Id == id);
+        if (existingContact == null) throw new ApiFlowException($"Contact not found for id '{id}'");
+
+        existingContact.Name = req.Name;
+        existingContact.Phone = req.Phone;
+        existingContact.Email = req.Email;
+
+        ValidateModel(existingContact);
+
+        _db.Contacts.Update(existingContact);
+        SaveToDBOrFail();
+
+        return existingContact;
     }
 
-    public Contact? Update<IDTO>(Guid id, IDTO dto)
+    protected override void ValidateModel(Contact model) => _contactValidator.ValidateAndThrow(model);
+
+    // Andere methoden zoals GetOrCreateContact blijven zoals ze zijn
+    public Contact? GetOrCreateContact(ContactRequest? contact = null, Guid? contactId = null)
     {
-        throw new NotImplementedException();
+        if (contact == null && contactId == null) return null;
+
+        if (contactId != null) return GetById(contactId.Value);
+
+        if (contact != null) return Create(contact);
+
+        return null;
     }
-
-    public Contact? GetOrCreateContact(ContactDTO? contact = null, Guid? contactId = null)  
-    {  
-        if (contact == null && contactId == null) return null;  
-
-        if (contactId != null) return GetById(contactId.Value);  
-
-        if(contact != null) return Create(contact);  
-
-        return null;  
-    } 
 }

@@ -15,7 +15,7 @@ public class ShipmentValidator : AbstractValidator<Shipment>
             });
         RuleFor(shipment => shipment.ShipmentType)
             .NotNull().WithMessage("shipment_type is required.")
-            .NotEmpty().WithMessage("shipment_type cannot be empty.");
+            .NotEmpty().WithMessage("shipment_type cannot be empty. Allowed values are I (Inbound) or O (Outbound).");
         RuleFor(shipment => shipment.CarrierCode)
             .NotNull().WithMessage("carrier_code is required.")
             .NotEmpty().WithMessage("carrier_code cannot be empty.");

@@ -27,7 +27,6 @@ public class ShipmentProvider : BaseProvider<Shipment>
             OrderDate = req.OrderDate,
             RequestDate = req.RequestDate,
             ShipmentDate = req.ShipmentDate,
-            ShipmentType = req.ShipmentType,
             Notes = req.Notes,
             CarrierCode = req.CarrierCode,
             CarrierDescription = req.CarrierDescription,
@@ -42,6 +41,8 @@ public class ShipmentProvider : BaseProvider<Shipment>
                 Amount = item.Amount ?? throw new ApiFlowException("Amount cannot be null.")
             }).ToList()
         };
+
+        newShipment.SetShipmentType(req.ShipmentType);
 
         ValidateModel(newShipment);
         _db.Shipments.Add(newShipment);

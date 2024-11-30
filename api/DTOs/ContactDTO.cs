@@ -1,17 +1,33 @@
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 
-public class ContactDTO : IDTO
+namespace DTO.Contact
 {
-    [Required]
-    [JsonPropertyName("name")]
-    public required string Name { get; set; }
-    
-    [Required]
-    [JsonPropertyName("phone")]
-    public required string Phone { get; set; }
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class ContactRequest : BaseDTO
+    {
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
 
-    [Required]
-    [JsonPropertyName("email")]
-    public required string Email { get; set; }
+        [JsonPropertyName("phone")]
+        public string? Phone { get; set; }
+
+        [JsonPropertyName("email")]
+        public string? Email { get; set; }
+    }
+
+    
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class ContactResponse : BaseDTO
+    {
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
+
+        [JsonPropertyName("phone")]
+        public string? Phone { get; set; }
+
+        [JsonPropertyName("email")]
+        public string? Email { get; set; }
+
+    }
 }

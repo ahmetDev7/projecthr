@@ -1,4 +1,6 @@
 using DTO;
+using DTO.Address;
+using DTO.Contact;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -25,13 +27,13 @@ public class WarehousesController : ControllerBase
             Id = warehouse.Id,
             Name = warehouse.Name,
             Code = warehouse.Code,
-            Contact = new ContactDTO
+            Contact = new ContactResponse
             {
                 Name = warehouse.Contact.Name,
                 Email = warehouse.Contact.Email,
                 Phone = warehouse.Contact.Phone
             },
-            Address = new AddressDTO
+            Address = new AddressResponse
             {
                 Street = warehouse.Address.Street,
                 HouseNumber = warehouse.Address.HouseNumber,
@@ -54,13 +56,13 @@ public class WarehousesController : ControllerBase
         Code = ig.Code,
         Name = ig.Name,
 
-        Contact = new ContactDTO
+        Contact = new ContactResponse
         {
             Name = ig.Contact.Name,
             Email = ig.Contact.Email,
             Phone = ig.Contact.Phone
         },
-        Address = new AddressDTO
+        Address = new AddressResponse
         {
             Street = ig.Address.Street,
             HouseNumber = ig.Address.HouseNumber,
@@ -87,7 +89,7 @@ public class WarehousesController : ControllerBase
         UpdatedAt = l.UpdatedAt
     }));
 
-    
+
 
     [HttpPost]
     public IActionResult CreateWarehouse([FromBody] WarehouseRequest request)
@@ -99,13 +101,13 @@ public class WarehousesController : ControllerBase
             Id = createdWarehouse.Id,
             Code = createdWarehouse.Code,
             Name = createdWarehouse.Name,
-            Contact = new ContactDTO
+            Contact = new ContactResponse
             {
                 Name = createdWarehouse.Contact.Name,
                 Email = createdWarehouse.Contact.Email,
                 Phone = createdWarehouse.Contact.Phone
             },
-            Address = new AddressDTO
+            Address = new AddressResponse
             {
                 Street = createdWarehouse.Address.Street,
                 HouseNumber = createdWarehouse.Address.HouseNumber,
@@ -129,24 +131,27 @@ public class WarehousesController : ControllerBase
         return Ok(new { Message = "Warehouse deleted successfully!" });
     }
 
-     [HttpPut("{id}")]
-    public IActionResult Update(Guid id, [FromBody] WarehouseRequest req){
-        Warehouse? updatedWarehouse = _warehouseProvider.Update(id,req);
-        if(updatedWarehouse == null) return NotFound(new {message = $"Warehouse not found for id '{id}'"});
-        
-        return Ok(new {
-            message = "Item group updated.", 
-            updated_warehouse = new WarehouseResponse {
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] WarehouseRequest req)
+    {
+        Warehouse? updatedWarehouse = _warehouseProvider.Update(id, req);
+        if (updatedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
+
+        return Ok(new
+        {
+            message = "Item group updated.",
+            updated_warehouse = new WarehouseResponse
+            {
                 Id = updatedWarehouse.Id,
                 Code = updatedWarehouse.Code,
                 Name = updatedWarehouse.Name,
-                Contact = new ContactDTO
+                Contact = new ContactResponse
                 {
                     Name = updatedWarehouse.Contact.Name,
                     Email = updatedWarehouse.Contact.Email,
                     Phone = updatedWarehouse.Contact.Phone
                 },
-                Address = new AddressDTO
+                Address = new AddressResponse
                 {
                     Street = updatedWarehouse.Address.Street,
                     HouseNumber = updatedWarehouse.Address.HouseNumber,
@@ -156,11 +161,11 @@ public class WarehousesController : ControllerBase
                     City = updatedWarehouse.Address.City,
                     Province = updatedWarehouse.Address.Province,
                     CountryCode = updatedWarehouse.Address.CountryCode
-                    
+
                 },
                 CreatedAt = updatedWarehouse.CreatedAt,
                 UpdatedAt = updatedWarehouse.UpdatedAt
-                
+
             }
         });
     }

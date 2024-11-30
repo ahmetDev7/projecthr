@@ -1,0 +1,20 @@
+// Create Client with Contact and Address
+POST http://localhost:5000/api/clients
+Content-Type: application/json
+
+{
+    "name": "Client A",
+    "contact": {        
+        "name": "John Doe",
+        "phone": "+31612345678",
+        "email": "john.doe@example.com"
+    },
+    "address": {        
+        "street": "Main Street",
+        "house_number": "123",
+        "zipcode": "1011AB",
+        "country_code": "NL",
+        "city": "Amsterdam"
+    }
+}
+###

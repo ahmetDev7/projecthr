@@ -27,13 +27,10 @@ public class ShipmentProvider : BaseProvider<Shipment>
             OrderDate = req.OrderDate,
             RequestDate = req.RequestDate,
             ShipmentDate = req.ShipmentDate,
-            ShipmentType = req.ShipmentType,
             Notes = req.Notes,
             CarrierCode = req.CarrierCode,
             CarrierDescription = req.CarrierDescription,
             ServiceCode = req.ServiceCode,
-            PaymentType = req.PaymentType,
-            TransferMode = req.TransferMode,
             TotalPackageCount = req.TotalPackageCount,
             TotalPackageWeight = req.TotalPackageWeight,
             ShipmentItems = req.Items?.Select(item => new ShipmentItem
@@ -42,6 +39,11 @@ public class ShipmentProvider : BaseProvider<Shipment>
                 Amount = item.Amount ?? throw new ApiFlowException("Amount cannot be null.")
             }).ToList()
         };
+
+        newShipment.SetShipmentType(req.ShipmentType);
+        newShipment.SetShipmentStatus(req.ShipmentStatus);
+        newShipment.SetPaymentType(req.PaymentType);
+        newShipment.SetTransferMode(req.TransferMode);
 
         ValidateModel(newShipment);
         _db.Shipments.Add(newShipment);

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO.Supplier;
 using DTO.Address;
+using DTO.Contact;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -29,7 +30,7 @@ public class SuppliersController : ControllerBase
                 Code = supplier.Code,
                 Name = supplier.Name,
                 Reference = supplier.Reference,
-                Contact = new ContactDTO
+                Contact = new ContactResponse
                 {
                     Name = supplier.Contact.Name,
                     Email = supplier.Contact.Email,
@@ -67,7 +68,7 @@ public class SuppliersController : ControllerBase
                 Code = updatedSupplier.Code,
                 Name = updatedSupplier.Name,
                 Reference = updatedSupplier.Reference,
-                Contact = new ContactDTO
+                Contact = new ContactResponse
                 {
                     Name = updatedSupplier.Contact.Name,
                     Email = updatedSupplier.Contact.Email,
@@ -101,7 +102,7 @@ public class SuppliersController : ControllerBase
             Code = deletedSupplier.Code,
             Name = deletedSupplier.Name,
             Reference = deletedSupplier.Reference,
-            Contact = new ContactDTO
+            Contact = new ContactResponse
             {
                 Name = deletedSupplier.Contact.Name,
                 Email = deletedSupplier.Contact.Email,
@@ -136,7 +137,7 @@ public class SuppliersController : ControllerBase
             Name = supplier.Name,
             Code = supplier.Code,
             Reference = supplier.Reference,
-            Contact = new ContactDTO
+            Contact = new ContactResponse
             {
                 Name = supplier.Contact.Name,
                 Email = supplier.Contact.Email,
@@ -164,7 +165,7 @@ public class SuppliersController : ControllerBase
         Code = ig.Code,
         Name = ig.Name,
         Reference = ig.Reference,
-        Contact = new ContactDTO
+        Contact = new ContactResponse
         {
             Name = ig.Contact.Name,
             Email = ig.Contact.Email,

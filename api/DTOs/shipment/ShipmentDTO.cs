@@ -15,16 +15,19 @@ namespace DTO.Shipment
 
         [JsonPropertyName("request_date")]
         public DateTime? RequestDate { get; set; }
-        
+
         [JsonPropertyName("shipment_date")]
         public DateTime? ShipmentDate { get; set; }
-        
-        [JsonPropertyName("shipment_status")]
+
+        [JsonPropertyName("shipment_type")]
         public string? ShipmentType { get; set; }
+
+        [JsonPropertyName("shipment_status")]
+        public string? ShipmentStatus { get; set; }
 
         [JsonPropertyName("notes")]
         public string? Notes { get; set; }
-        
+
         [JsonPropertyName("carrier_code")]
         public string? CarrierCode { get; set; }
 
@@ -41,7 +44,7 @@ namespace DTO.Shipment
         public string? TransferMode { get; set; }
 
         private int _totalPackageCount = 0;
-        
+
         [JsonPropertyName("total_package_count")]
         public int? TotalPackageCount
         {
@@ -78,16 +81,19 @@ namespace DTO.Shipment
 
         [JsonPropertyName("request_date")]
         public DateTime? RequestDate { get; set; }
-        
+
         [JsonPropertyName("shipment_date")]
         public DateTime? ShipmentDate { get; set; }
-        
-        [JsonPropertyName("shipment_status")]
+
+        [JsonPropertyName("shipment_type")]
         public string? ShipmentType { get; set; }
+
+        [JsonPropertyName("shipment_status")]
+        public string? ShipmentStatus { get; set; }
 
         [JsonPropertyName("notes")]
         public string? Notes { get; set; }
-        
+
         [JsonPropertyName("carrier_code")]
         public string? CarrierCode { get; set; }
 
@@ -111,14 +117,14 @@ namespace DTO.Shipment
 
         [JsonPropertyName("created_at")]
         public DateTime? CreatedAt { get; set; }
-        
+
         [JsonPropertyName("updated_at")]
         public DateTime? UpdatedAt { get; set; }
 
         [JsonPropertyName("items")]
         public List<ShipmentItemRR>? Items { get; set; }
     }
-    
+
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ShipmentItemRR : BaseDTO
     {

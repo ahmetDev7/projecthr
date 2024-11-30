@@ -33,27 +33,17 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
 
     public override ItemGroup? Update(Guid id, BaseDTO updatedValues)
     {
-        bool hasChanges = false;
         ItemGroupRequest? req = updatedValues as ItemGroupRequest;
         if (req == null) throw new ApiFlowException("Could not process update item group request. Update new item group failed.");
 
         ItemGroup? foundItemGroup = _db.ItemGroups.FirstOrDefault(ig => ig.Id == id);
         if (foundItemGroup == null) return null;
 
-        if (!string.IsNullOrEmpty(req.Name) && req.Name != foundItemGroup.Name)
-        {
-            foundItemGroup.Name = req.Name;
-            hasChanges = true;
-        }
+        foundItemGroup.Name = req.Name;
+        foundItemGroup.Description = req.Description;
+        foundItemGroup.SetUpdatedAt();
 
-        if (req.Description != foundItemGroup.Description)
-        {
-            foundItemGroup.Description = req.Description;
-            hasChanges = true;
-        }
-
-        if (hasChanges) foundItemGroup.SetUpdatedAt();
-
+        ValidateModel(foundItemGroup);
         SaveToDBOrFail();
 
         return foundItemGroup;
@@ -64,10 +54,10 @@ public class ItemGroupProvider : BaseProvider<ItemGroup>
     public override ItemGroup? Delete(Guid id)
     {
         ItemGroup? foundItemGroup = _db.ItemGroups.FirstOrDefault(i => i.Id == id);
-        if(foundItemGroup == null) return null;
+        if (foundItemGroup == null) return null;
 
-        if(_db.Items.Any(i => i.ItemGroupId == id)) throw new ApiFlowException("The item group has associated items. Please remove these associations before deleting the group.");
-        
+        if (_db.Items.Any(i => i.ItemGroupId == id)) throw new ApiFlowException("The item group has associated items. Please remove these associations before deleting the group.");
+
         _db.ItemGroups.Remove(foundItemGroup);
         SaveToDBOrFail();
         return foundItemGroup;

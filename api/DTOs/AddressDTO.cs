@@ -30,12 +30,10 @@ namespace DTO.Address
         [JsonPropertyName("country_code")]
         public string? CountryCode { get; set; }
     }
+
     [ApiExplorerSettings(IgnoreApi = true)]
     public class AddressResponse : BaseDTO
-    {
-        [JsonPropertyName("id")]
-        public Guid Id { get; set; }
-        
+    {        
         [JsonPropertyName("street")]
         public string? Street { get; set; }
         
@@ -59,11 +57,5 @@ namespace DTO.Address
         
         [JsonPropertyName("country_code")]
         public string? CountryCode { get; set; }
-        
-        [JsonPropertyName("created_at")]
-        public DateTime? CreatedAt { get; set; }
-        
-        [JsonPropertyName("updated_at")]
-        public DateTime? UpdatedAt { get; set; }
     }
 }

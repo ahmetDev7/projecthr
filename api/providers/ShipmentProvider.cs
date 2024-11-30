@@ -43,6 +43,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
         };
 
         newShipment.SetShipmentType(req.ShipmentType);
+        newShipment.SetShipmentStatus(req.ShipmentStatus);
 
         ValidateModel(newShipment);
         _db.Shipments.Add(newShipment);

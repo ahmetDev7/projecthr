@@ -14,7 +14,7 @@ public class Shipment : BaseModel
 
     [Required]
     public ShipmentType? ShipmentType { get; set; } // I or O
-    public string? ShipmentStatus { get; set; } // Pending, Deliverd, Transit
+    public ShipmentStatus? ShipmentStatus { get; set; } // Pending, Deliverd, Transit
     public string? Notes { get; set; }
 
     [Required]
@@ -46,10 +46,24 @@ public class Shipment : BaseModel
 
     public void SetShipmentType(string? strShipmentType)
     {
-        if(strShipmentType == null) return;
+        if (strShipmentType == null) return;
 
         Enum.TryParse(typeof(ShipmentType), strShipmentType, true, out var result);
-        if(result is not ShipmentType shipmentType) return;            
+        if (result is not ShipmentType shipmentType) return;
+        
         this.ShipmentType = shipmentType;
+    }
+
+    public void SetShipmentStatus(string? strShipmentStatus)
+    {
+        if (strShipmentStatus == null){
+            this.ShipmentStatus = global::ShipmentStatus.Pending;
+            return;
+        }
+
+        Enum.TryParse(typeof(ShipmentStatus), strShipmentStatus, true, out var result);
+        if (result is not ShipmentStatus shipmentStatus) return;
+        
+        this.ShipmentStatus = shipmentStatus;
     }
 }

@@ -20,9 +20,8 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Shipment>()
-            .Property(s => s.ShipmentType)
-            .HasConversion<string>();
+        modelBuilder.Entity<Shipment>().Property(s => s.ShipmentType).HasConversion<string>();
+        modelBuilder.Entity<Shipment>().Property(s => s.ShipmentStatus).HasConversion<string>();
     }
 }
 

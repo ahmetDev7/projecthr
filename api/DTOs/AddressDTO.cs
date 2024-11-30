@@ -1,33 +1,61 @@
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
-public class AddressDTO : IDTO
+
+namespace DTO.Address
 {
-    [Required]
-    [JsonPropertyName("street")]
-    public required string Street { get; set; }
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class AddressRequest : BaseDTO
+    {
+        [JsonPropertyName("street")]
+        public string? Street { get; set; }
+        
+        [JsonPropertyName("house_number")]
+        public string? HouseNumber { get; set; }
+        
+        [JsonPropertyName("house_number_extension")]
+        public string? HouseNumberExtension { get; set; }
+        
+        [JsonPropertyName("house_number_extension_extra")]
+        public string? HouseNumberExtensionExtra { get; set; }
+        
+        [JsonPropertyName("zipcode")]
+        public string? ZipCode { get; set; }
+        
+        [JsonPropertyName("city")]
+        public string? City { get; set; }
+        
+        [JsonPropertyName("province")]
+        public string? Province { get; set; }
+        
+        [JsonPropertyName("country_code")]
+        public string? CountryCode { get; set; }
+    }
 
-    [Required]
-    [JsonPropertyName("house_number")]
-    public required string HouseNumber { get; set; }
-    
-    [JsonPropertyName("house_number_extension")]
-    public string? HouseNumberExtension { get; set; }
-
-    [JsonPropertyName("house_number_extension_extra")]
-    public string? HouseNumberExtensionExtra { get; set; }
-
-    [Required]
-    [JsonPropertyName("zipcode")]
-    public required string ZipCode { get; set; }
-    
-    [Required]
-    [JsonPropertyName("city")]
-    public required string City { get; set; }
-    
-    [JsonPropertyName("province")]
-    public string? Province { get; set; }
-
-    [Required]
-    [JsonPropertyName("country_code")]
-    public required string CountryCode { get; set; }
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class AddressResponse : BaseDTO
+    {        
+        [JsonPropertyName("street")]
+        public string? Street { get; set; }
+        
+        [JsonPropertyName("house_number")]
+        public string? HouseNumber { get; set; }
+        
+        [JsonPropertyName("house_number_extension")]
+        public string? HouseNumberExtension { get; set; }
+        
+        [JsonPropertyName("house_number_extension_extra")]
+        public string? HouseNumberExtensionExtra { get; set; }
+        
+        [JsonPropertyName("zipcode")]
+        public string? ZipCode { get; set; }
+        
+        [JsonPropertyName("city")]
+        public string? City { get; set; }
+        
+        [JsonPropertyName("province")]
+        public string? Province { get; set; }
+        
+        [JsonPropertyName("country_code")]
+        public string? CountryCode { get; set; }
+    }
 }

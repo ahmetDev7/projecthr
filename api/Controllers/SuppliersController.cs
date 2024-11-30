@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO.Supplier;
+using DTO.Address;
 using DTO.Contact;
 
 [ApiController]
@@ -35,7 +36,7 @@ public class SuppliersController : ControllerBase
                     Email = supplier.Contact.Email,
                     Phone = supplier.Contact.Phone
                 },
-                Address = new AddressDTO
+                Address = new AddressResponse
                 {
                     Street = supplier.Address.Street,
                     HouseNumber = supplier.Address.HouseNumber,
@@ -73,7 +74,7 @@ public class SuppliersController : ControllerBase
                     Email = updatedSupplier.Contact.Email,
                     Phone = updatedSupplier.Contact.Phone
                 },
-                Address = new AddressDTO
+                Address = new AddressResponse
                 {
                     Street = updatedSupplier.Address.Street,
                     HouseNumber = updatedSupplier.Address.HouseNumber,
@@ -107,7 +108,7 @@ public class SuppliersController : ControllerBase
                 Email = deletedSupplier.Contact.Email,
                 Phone = deletedSupplier.Contact.Phone
             },
-            Address = new AddressDTO
+            Address = new AddressResponse
             {
                 Street = deletedSupplier.Address.Street,
                 HouseNumber = deletedSupplier.Address.HouseNumber,
@@ -142,7 +143,7 @@ public class SuppliersController : ControllerBase
                 Email = supplier.Contact.Email,
                 Phone = supplier.Contact.Phone
             },
-            Address = new AddressDTO
+            Address = new AddressResponse
             {
                 Street = supplier.Address.Street,
                 HouseNumber = supplier.Address.HouseNumber,
@@ -170,7 +171,7 @@ public class SuppliersController : ControllerBase
             Email = ig.Contact.Email,
             Phone = ig.Contact.Phone
         },
-        Address = new AddressDTO
+        Address = new AddressResponse
         {
             Street = ig.Address.Street,
             HouseNumber = ig.Address.HouseNumber,

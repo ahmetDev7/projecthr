@@ -63,7 +63,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
                    ?? throw new ApiFlowException("address_id does not exist");
 
         return request.Address != null
-               ? _addressProvider.Create<AddressDTO>(request.Address)
+               ? _addressProvider.Create(request.Address)
                : throw new ApiFlowException("An error occurred while saving the warehouse address");
     }
 

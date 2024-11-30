@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using DTO.Address;
 using DTO.Contact;
 
 namespace DTOs;
@@ -21,7 +22,7 @@ public class WarehouseDTO : IDTO
     public Guid? AddressId { get; set; }
 
     [JsonPropertyName("address")]
-    public AddressDTO? Address { get; set; }
+    public AddressRequest? Address { get; set; }
 }
 
 

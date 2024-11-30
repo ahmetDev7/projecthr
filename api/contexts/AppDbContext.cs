@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Shipment>().Property(s => s.ShipmentType).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.ShipmentStatus).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.PaymentType).HasConversion<string>();
+        modelBuilder.Entity<Shipment>().Property(s => s.TransferMode).HasConversion<string>();
     }
 }
 

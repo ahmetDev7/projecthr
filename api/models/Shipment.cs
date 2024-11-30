@@ -25,7 +25,7 @@ public class Shipment : BaseModel
     [Required]
     public PaymentType? PaymentType { get; set; } // Automatic, Manual
     [Required]
-    public string? TransferMode { get; set; } // Air, Sea, Ground
+    public TransferMode? TransferMode { get; set; } // Air, Sea, Ground
 
     private int _totalPackageCount = 0;
     public int? TotalPackageCount
@@ -52,5 +52,6 @@ public class Shipment : BaseModel
             : EnumUtil.ParseOrIgnore<ShipmentStatus>(strShipmentStatus);
     
     public void SetPaymentType(string? strPaymentType) => PaymentType = EnumUtil.ParseOrIgnore<PaymentType>(strPaymentType);
+    public void SetTransferMode(string? strTransferMode) => TransferMode = EnumUtil.ParseOrIgnore<TransferMode>(strTransferMode);
     
 }

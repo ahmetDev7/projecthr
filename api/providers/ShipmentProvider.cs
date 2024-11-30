@@ -31,7 +31,6 @@ public class ShipmentProvider : BaseProvider<Shipment>
             CarrierCode = req.CarrierCode,
             CarrierDescription = req.CarrierDescription,
             ServiceCode = req.ServiceCode,
-            TransferMode = req.TransferMode,
             TotalPackageCount = req.TotalPackageCount,
             TotalPackageWeight = req.TotalPackageWeight,
             ShipmentItems = req.Items?.Select(item => new ShipmentItem
@@ -44,6 +43,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
         newShipment.SetShipmentType(req.ShipmentType);
         newShipment.SetShipmentStatus(req.ShipmentStatus);
         newShipment.SetPaymentType(req.PaymentType);
+        newShipment.SetTransferMode(req.TransferMode);
 
         ValidateModel(newShipment);
         _db.Shipments.Add(newShipment);

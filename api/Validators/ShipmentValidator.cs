@@ -36,7 +36,7 @@ public class ShipmentValidator : AbstractValidator<Shipment>
             .NotEmpty().WithMessage($"Invalid payment_type. Allowed values are ({EnumUtil.EnumsToString<PaymentType>()})");
         RuleFor(shipment => shipment.TransferMode)
             .NotNull().WithMessage("transfer_mode is required.")
-            .NotEmpty().WithMessage("transfer_mode cannot be empty.");
+            .NotEmpty().WithMessage($"Invalid transfer_mode. Allowed values are ({EnumUtil.EnumsToString<TransferMode>()})");
         RuleForEach(shipment => shipment.ShipmentItems).ChildRules(items =>
         {
             items.RuleFor(item => item.ItemId)

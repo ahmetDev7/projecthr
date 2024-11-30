@@ -1,68 +1,94 @@
-public class AddressProvider : ICRUD<Address>
-{
-    private readonly AppDbContext _db;
+using DTO.Address;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
-    public AddressProvider(AppDbContext db)
+public class AddressProvider : BaseProvider<Address>
+{
+    private readonly IValidator<Address> _addressValidator;
+
+    public AddressProvider(AppDbContext db, IValidator<Address> validator) : base(db)
     {
-        _db = db;
+        _addressValidator = validator;
     }
 
-    public Address? Create<IDTO>(IDTO newElement)
-    {
-        AddressDTO? request = newElement as AddressDTO;
-        if(request == null) throw new Exception("Request invalid");
+    public override List<Address> GetAll() => _db.Addresses.ToList();
 
-        Address newAddress = new(){
-            Street=request.Street,
-            HouseNumber=request.HouseNumber,
-            HouseNumberExtension=request.HouseNumberExtension,
-            HouseNumberExtensionExtra=request.HouseNumberExtensionExtra,
-            ZipCode=request.ZipCode,
-            City=request.City,
-            Province=request.Province,
-            CountryCode=request.CountryCode,
-            CreatedAt=DateTime.UtcNow,
-            UpdatedAt=DateTime.UtcNow
+    public override Address? GetById(Guid id) =>
+        _db.Addresses.FirstOrDefault(a => a.Id == id);
+
+    public override Address? Create(BaseDTO createValues)
+    {
+        AddressRequest? req = createValues as AddressRequest;
+        if (req == null) throw new ApiFlowException("Invalid address request. Could not create address.");
+
+        Address newAddress = new Address(newInstance: true)
+        {
+            Street = req.Street,
+            HouseNumber = req.HouseNumber,
+            HouseNumberExtension = req.HouseNumberExtension,
+            HouseNumberExtensionExtra = req.HouseNumberExtensionExtra,
+            ZipCode = req.ZipCode,
+            City = req.City,
+            Province = req.Province,
+            CountryCode = req.CountryCode,
+            CreatedAt = DateTime.UtcNow
         };
 
+        ValidateModel(newAddress);
+
         _db.Addresses.Add(newAddress);
-
-        DBUtil.SaveChanges(_db, "Address not stored");
-
+        SaveToDBOrFail();
 
         return newAddress;
-
     }
 
-    public Address Delete(Guid id)
+    public override Address? Delete(Guid id)
     {
-        throw new NotImplementedException();
+        Address? foundAddress = _db.Addresses.FirstOrDefault(a => a.Id == id);
+        if (foundAddress == null) return null;
+
+        _db.Addresses.Remove(foundAddress);
+        SaveToDBOrFail();
+
+        return foundAddress;
     }
 
-    public List<Address> GetAll()
+    public override Address? Update(Guid id, BaseDTO updateValues)
     {
-        throw new NotImplementedException();
-    }
-    
+        AddressRequest? req = updateValues as AddressRequest;
+        if (req == null) throw new ApiFlowException("Invalid address request. Could not update address.");
 
-    public Address? GetById(Guid id)
+        Address? existingAddress = _db.Addresses.FirstOrDefault(a => a.Id == id);
+        if (existingAddress == null) throw new ApiFlowException($"Address not found for id '{id}'");
+
+        existingAddress.Street = req.Street;
+        existingAddress.HouseNumber = req.HouseNumber;
+        existingAddress.HouseNumberExtension = req.HouseNumberExtension;
+        existingAddress.HouseNumberExtensionExtra = req.HouseNumberExtensionExtra;
+        existingAddress.ZipCode = req.ZipCode;
+        existingAddress.City = req.City;
+        existingAddress.Province = req.Province;
+        existingAddress.CountryCode = req.CountryCode;
+        existingAddress.UpdatedAt = DateTime.UtcNow;
+
+        ValidateModel(existingAddress);
+
+        _db.Addresses.Update(existingAddress);
+        SaveToDBOrFail();
+
+        return existingAddress;
+    }
+
+    protected override void ValidateModel(Address model) => _addressValidator.ValidateAndThrow(model);
+
+    public Address? GetOrCreateAddress(AddressRequest? address = null, Guid? addressId = null)
     {
-        return _db.Addresses.FirstOrDefault(a => a.Id == id);
+        if (address == null && addressId == null) return null;
+
+        if (addressId != null) return GetById(addressId.Value);
+
+        if (address != null) return Create(address);
+
+        return null;
     }
-
-    public Address? Update<IDTO>(Guid id, IDTO dto)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public Address? GetOrCreateAddress(AddressDTO? addressDTO = null, Guid? addressId = null)  
-    {  
-        if (addressDTO == null && addressId == null) return null;  
-
-        if (addressId != null) return GetById(addressId.Value);  
-
-        if(addressDTO != null) return Create(addressDTO);  
-
-        return null;  
-    } 
 }

@@ -10,16 +10,18 @@ public class Transfer : BaseModel
 
     [Required]
     public Guid? TransferFromId { get; set; }
-    public Location? TransferFrom {get; set;}
 
     [Required]
     public Guid? TransferToId { get; set; }
-    public Location? TransferTo {get; set;}
 
     [Required]
     public TransferStatus? TransferStatus { get; set; }
 
     public ICollection<TransferItem>? TransferItems { get; set; }
+
+    public Location? TransferTo {get; set;}
+
+    public Location? TransferFrom {get; set;}
 
     public void SetTransferStatus(string? strTransferStatus) =>
     this.TransferStatus = strTransferStatus == null

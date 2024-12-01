@@ -17,8 +17,6 @@ public class AppDbContext : DbContext
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Client> Clients { get; set; }
-    public DbSet<Transfer> Transfers { get; set; }
-    public DbSet<TransferItem> TransferItems { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,21 +25,5 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Shipment>().Property(s => s.ShipmentStatus).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.PaymentType).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.TransferMode).HasConversion<string>();
-        modelBuilder.Entity<Transfer>().Property(t => t.TransferStatus).HasConversion<string>();
-
-
-        modelBuilder.Entity<Location>()
-            .HasMany(e => e.TransfersFrom)
-            .WithOne(e => e.TransferFrom)
-            .HasForeignKey(e => e.TransferFromId)
-            .OnDelete(DeleteBehavior.Restrict)
-            .IsRequired();
-
-        modelBuilder.Entity<Location>()
-            .HasMany(e => e.TransfersTo)
-            .WithOne(e => e.TransferTo)
-            .HasForeignKey(e => e.TransferToId)
-            .OnDelete(DeleteBehavior.Restrict)
-            .IsRequired();
     }
 }

@@ -12,6 +12,12 @@ public class TransferItem : BaseModel
 
     public Item? Item { get; set; }
 
+    private int _amount = 1;
+
     [Required]
-    public int? Amount { get; set; }
+    public int? Amount
+    {
+        get { return _amount; }
+        set { _amount = value.HasValue ? value.Value : 1; }
+    }
 }

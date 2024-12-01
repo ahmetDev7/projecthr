@@ -178,7 +178,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5000/api/Suppliers/9dd95911-0571-49b7-be44-cd18171569fe/Locations
+GET http://localhost:5000/api/Suppliers/9dd95911-0571-49b7-be44-cd18171569fe/Items
 Content-Type: application/json
 
 ###

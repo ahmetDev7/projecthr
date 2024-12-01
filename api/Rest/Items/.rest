@@ -22,11 +22,11 @@ Content-Type: application/json
   "unit_purchase_quantity": -1,
   "unit_order_quantity": 1,
   "pack_order_quantity": 10,
-  "supplier_reference_code": "SUP12345",
+  "supplier_reference_code": "123-ABCD",
   "supplier_part_number": "CH123-XL",
-  "item_group_id": null,
+  "item_group_id": "32a049f0-34ad-467e-a341-3989ca866020",
   "item_line_id": null,
   "item_type_id": null,
-  "supplier_id": "7c87aff5-973d-4a73-836e-11a49c260b98"
+  "supplier_id": "894709ac-76ff-47f4-afd3-55bccde3ee8c"
 }
 ###

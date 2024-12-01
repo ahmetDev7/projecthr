@@ -26,7 +26,7 @@ Content-Type: application/json
 {
   "code": "Nog eentje omdat het leuk is",
   "name": "string",
-  "reference": "string",
+  "reference": "123-ABCD",
   "contact": {
     "name": "123",
     "phone": "123",
@@ -107,9 +107,9 @@ POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
 
 {
-  "code": "Otto is hier",
+  "code": "dit is een get item test",
   "name": "string",
-  "reference": "string",
+  "reference": "123-ABCD",
   "contact_id": "8e360e36-5b71-40b0-9cd1-baaf0cca5455",
   "address_id": "96010731-e113-4b43-845e-acd8027dde76"
 }
@@ -174,6 +174,11 @@ Content-Type: application/json
 
 ### GET ALL
 GET http://localhost:5000/api/Suppliers
+Content-Type: application/json
+
+###
+
+GET http://localhost:5000/api/Suppliers/9dd95911-0571-49b7-be44-cd18171569fe/Items
 Content-Type: application/json
 
 ###

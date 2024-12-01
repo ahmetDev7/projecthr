@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO.Supplier;
+using DTO.Item;
 using DTO.Address;
 using DTO.Contact;
 
@@ -12,6 +13,34 @@ public class SuppliersController : ControllerBase
     public SuppliersController(SupplierProvider supplierProvider)
     {
         _supplierProvider = supplierProvider;
+    }
+    [HttpGet("{id}/items")]
+    public IActionResult GetItemsSupplier(Guid id)
+    {
+        List<Item> items = _supplierProvider.GetItemsBySupplierId(id);
+        if(_supplierProvider.GetById(id) == null) throw new ApiFlowException("Supplier not found");
+
+        List<ItemResponse> itemsSupplier = items.Select(item => new ItemResponse
+        {
+            Id = item.Id,
+            Code = item.Code,
+            Description = item.Description,
+            ShortDescription = item.ShortDescription,
+            UpcCode = item.UpcCode,
+            ModelNumber = item.ModelNumber,
+            CommodityCode = item.CommodityCode,
+            UnitPurchaseQuantity = item.UnitPurchaseQuantity,
+            UnitOrderQuantity = item.UnitOrderQuantity,
+            PackOrderQuantity = item.PackOrderQuantity,
+            SupplierReferenceCode = item.SupplierReferenceCode,
+            SupplierPartNumber = item.SupplierPartNumber,
+            ItemGroupId = item.ItemGroupId,
+            ItemLineId = item.ItemLineId,
+            ItemTypeId = item.ItemTypeId,
+            SupplierId = item.SupplierId,
+        }).ToList();
+
+        return Ok(itemsSupplier);
     }
 
     [HttpPost]

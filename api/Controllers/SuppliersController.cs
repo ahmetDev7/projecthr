@@ -17,7 +17,7 @@ public class SuppliersController : ControllerBase
     [HttpGet("{id}/items")]
     public IActionResult GetItemsSupplier(Guid id)
     {
-        var items = _supplierProvider.GetItemsBySupplierId(id);
+        List<Item> items = _supplierProvider.GetItemsBySupplierId(id);
         if(_supplierProvider.GetById(id) == null) throw new ApiFlowException("Supplier not found");
 
         List<ItemResponse> itemsSupplier = items.Select(item => new ItemResponse

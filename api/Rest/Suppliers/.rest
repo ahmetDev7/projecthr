@@ -178,6 +178,11 @@ Content-Type: application/json
 
 ###
 
+GET http://localhost:5000/api/Suppliers/9dd95911-0571-49b7-be44-cd18171569fe/Locations
+Content-Type: application/json
+
+###
+
 GET http://localhost:5000/api/Suppliers/a69d21c7-29b6-4fb3-9bc6-3ce1fe693ca3
 Content-Type: application/json
 

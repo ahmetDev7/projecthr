@@ -3,8 +3,8 @@ using Utils.Number;
 
 public class Shipment : BaseModel
 {
-    public Shipment(){}
-    public Shipment(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate){}
+    public Shipment() { }
+    public Shipment(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
 
     [Required]
     public Guid? OrderId { get; set; }
@@ -13,19 +13,19 @@ public class Shipment : BaseModel
     public DateTime? ShipmentDate { get; set; }
 
     [Required]
-    public string? ShipmentType { get; set; }
-    public string? ShipmentStatus { get; set; }
+    public ShipmentType? ShipmentType { get; set; } // I or O
+    public ShipmentStatus? ShipmentStatus { get; set; } // Pending, Deliverd, Transit
     public string? Notes { get; set; }
-    
+
     [Required]
     public string? CarrierCode { get; set; }
     public string? CarrierDescription { get; set; }
     [Required]
     public string? ServiceCode { get; set; }
     [Required]
-    public string? PaymentType { get; set; }
+    public PaymentType? PaymentType { get; set; } // Automatic, Manual
     [Required]
-    public string? TransferMode { get; set; }
+    public TransferMode? TransferMode { get; set; } // Air, Sea, Ground
 
     private int _totalPackageCount = 0;
     public int? TotalPackageCount
@@ -43,4 +43,15 @@ public class Shipment : BaseModel
     }
 
     public ICollection<ShipmentItem>? ShipmentItems { get; set; }
+
+    public void SetShipmentType(string? strShipmentType) => ShipmentType = EnumUtil.ParseOrIgnore<ShipmentType>(strShipmentType);
+
+    public void SetShipmentStatus(string? strShipmentStatus) => 
+        ShipmentStatus = strShipmentStatus == null 
+            ? global::ShipmentStatus.Pending  // on strShipmentStatus null set to default (Pending)
+            : EnumUtil.ParseOrIgnore<ShipmentStatus>(strShipmentStatus);
+    
+    public void SetPaymentType(string? strPaymentType) => PaymentType = EnumUtil.ParseOrIgnore<PaymentType>(strPaymentType);
+    public void SetTransferMode(string? strTransferMode) => TransferMode = EnumUtil.ParseOrIgnore<TransferMode>(strTransferMode);
+    
 }

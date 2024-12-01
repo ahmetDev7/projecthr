@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO.Supplier;
 using DTO.Item;
+using DTO.Address;
+using DTO.Contact;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -55,13 +57,13 @@ public class SuppliersController : ControllerBase
                 Code = supplier.Code,
                 Name = supplier.Name,
                 Reference = supplier.Reference,
-                Contact = new ContactDTO
+                Contact = new ContactResponse
                 {
                     Name = supplier.Contact.Name,
                     Email = supplier.Contact.Email,
                     Phone = supplier.Contact.Phone
                 },
-                Address = new AddressDTO
+                Address = new AddressResponse
                 {
                     Street = supplier.Address.Street,
                     HouseNumber = supplier.Address.HouseNumber,
@@ -93,13 +95,13 @@ public class SuppliersController : ControllerBase
                 Code = updatedSupplier.Code,
                 Name = updatedSupplier.Name,
                 Reference = updatedSupplier.Reference,
-                Contact = new ContactDTO
+                Contact = new ContactResponse
                 {
                     Name = updatedSupplier.Contact.Name,
                     Email = updatedSupplier.Contact.Email,
                     Phone = updatedSupplier.Contact.Phone
                 },
-                Address = new AddressDTO
+                Address = new AddressResponse
                 {
                     Street = updatedSupplier.Address.Street,
                     HouseNumber = updatedSupplier.Address.HouseNumber,
@@ -127,13 +129,13 @@ public class SuppliersController : ControllerBase
             Code = deletedSupplier.Code,
             Name = deletedSupplier.Name,
             Reference = deletedSupplier.Reference,
-            Contact = new ContactDTO
+            Contact = new ContactResponse
             {
                 Name = deletedSupplier.Contact.Name,
                 Email = deletedSupplier.Contact.Email,
                 Phone = deletedSupplier.Contact.Phone
             },
-            Address = new AddressDTO
+            Address = new AddressResponse
             {
                 Street = deletedSupplier.Address.Street,
                 HouseNumber = deletedSupplier.Address.HouseNumber,
@@ -162,13 +164,13 @@ public class SuppliersController : ControllerBase
             Name = supplier.Name,
             Code = supplier.Code,
             Reference = supplier.Reference,
-            Contact = new ContactDTO
+            Contact = new ContactResponse
             {
                 Name = supplier.Contact.Name,
                 Email = supplier.Contact.Email,
                 Phone = supplier.Contact.Phone
             },
-            Address = new AddressDTO
+            Address = new AddressResponse
             {
                 Street = supplier.Address.Street,
                 HouseNumber = supplier.Address.HouseNumber,
@@ -190,13 +192,13 @@ public class SuppliersController : ControllerBase
         Code = ig.Code,
         Name = ig.Name,
         Reference = ig.Reference,
-        Contact = new ContactDTO
+        Contact = new ContactResponse
         {
             Name = ig.Contact.Name,
             Email = ig.Contact.Email,
             Phone = ig.Contact.Phone
         },
-        Address = new AddressDTO
+        Address = new AddressResponse
         {
             Street = ig.Address.Street,
             HouseNumber = ig.Address.HouseNumber,

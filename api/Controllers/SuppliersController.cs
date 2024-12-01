@@ -35,6 +35,8 @@ public class SuppliersController : ControllerBase
             SupplierReferenceCode = item.SupplierReferenceCode,
             SupplierPartNumber = item.SupplierPartNumber,
             ItemGroupId = item.ItemGroupId,
+            ItemLineId = item.ItemLineId,
+            ItemTypeId = item.ItemTypeId,
             SupplierId = item.SupplierId,
         }).ToList();
 

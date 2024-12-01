@@ -180,19 +180,19 @@ Table shipment_items {
 
 // transfers is in de zelfde warehouse van locatie a naar locatie b
 Table transfers {
-  id uuid [pk]
+  id uuid [pk, not null]
   reference varchar
-  transfer_from uuid [ref: > locations.id]
-  transfer_to uuid [ref: > locations.id]
-  transfer_status varchar
-  created_at datetime
-  updated_at datetime
+  transfer_from uuid [ref: > locations.id, not null]
+  transfer_to uuid [ref: > locations.id , not null]
+  transfer_status varchar [default: 'Pending']
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
 Table transfer_items {
-  transfer_id uuid [ref: > transfers.id]
-  item_id uuid [ref: > items.id]
-  amount int
+  transfer_id uuid [ref: > transfers.id, not null]
+  item_id uuid [ref: > items.id, not null]
+  amount int [not null]
 }
 
 Table employees {

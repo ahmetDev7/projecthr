@@ -12,6 +12,11 @@ public class TransferItem : BaseModel
 
     public Item? Item { get; set; }
 
+    [Required]
+    public Guid? TransferId { get; set; }
+
+    public Transfer? Transfer { get; set; }
+
     private int _amount = 1;
 
     [Required]

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241201200248_create_tbl_transfers_and_transfer_items")]
+    [Migration("20241201230238_create_tbl_transfers_and_transfer_items")]
     partial class create_tbl_transfers_and_transfer_items
     {
         /// <inheritdoc />
@@ -69,39 +69,6 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("Client", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("AddressId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ContactId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Contact", b =>
@@ -582,8 +549,10 @@ namespace api.Migrations
 
             modelBuilder.Entity("TransferItem", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid?>("ItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("TransferId")
                         .HasColumnType("uuid");
 
                     b.Property<int?>("Amount")
@@ -593,19 +562,13 @@ namespace api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("ItemId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("TransferId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
+                    b.HasKey("ItemId", "TransferId");
 
                     b.HasIndex("TransferId");
 
@@ -645,25 +608,6 @@ namespace api.Migrations
                     b.HasIndex("ContactId");
 
                     b.ToTable("Warehouses");
-                });
-
-            modelBuilder.Entity("Client", b =>
-                {
-                    b.HasOne("Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-
-                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("Item", b =>
@@ -803,14 +747,18 @@ namespace api.Migrations
                     b.HasOne("Item", "Item")
                         .WithMany("TransferItems")
                         .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Transfer", "Transfer")
+                        .WithMany("TransferItems")
+                        .HasForeignKey("TransferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Transfer", null)
-                        .WithMany("TransferItems")
-                        .HasForeignKey("TransferId");
-
                     b.Navigation("Item");
+
+                    b.Navigation("Transfer");
                 });
 
             modelBuilder.Entity("Warehouse", b =>

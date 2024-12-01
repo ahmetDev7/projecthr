@@ -546,8 +546,10 @@ namespace api.Migrations
 
             modelBuilder.Entity("TransferItem", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid?>("ItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("TransferId")
                         .HasColumnType("uuid");
 
                     b.Property<int?>("Amount")
@@ -557,19 +559,13 @@ namespace api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("ItemId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("TransferId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
+                    b.HasKey("ItemId", "TransferId");
 
                     b.HasIndex("TransferId");
 
@@ -748,14 +744,18 @@ namespace api.Migrations
                     b.HasOne("Item", "Item")
                         .WithMany("TransferItems")
                         .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Transfer", "Transfer")
+                        .WithMany("TransferItems")
+                        .HasForeignKey("TransferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Transfer", null)
-                        .WithMany("TransferItems")
-                        .HasForeignKey("TransferId");
-
                     b.Navigation("Item");
+
+                    b.Navigation("Transfer");
                 });
 
             modelBuilder.Entity("Warehouse", b =>

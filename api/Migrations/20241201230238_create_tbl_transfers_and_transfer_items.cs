@@ -44,33 +44,29 @@ namespace api.Migrations
                 name: "TransferItems",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TransferId = table.Column<Guid>(type: "uuid", nullable: false),
                     Amount = table.Column<int>(type: "integer", nullable: false),
-                    TransferId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TransferItems", x => x.Id);
+                    table.PrimaryKey("PK_TransferItems", x => new { x.ItemId, x.TransferId });
                     table.ForeignKey(
                         name: "FK_TransferItems_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TransferItems_Transfers_TransferId",
                         column: x => x.TransferId,
                         principalTable: "Transfers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TransferItems_ItemId",
-                table: "TransferItems",
-                column: "ItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransferItems_TransferId",

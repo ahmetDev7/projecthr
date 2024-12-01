@@ -24,7 +24,7 @@ public class Transfer : BaseModel
     public Location? TransferFrom {get; set;}
 
     public void SetTransferStatus(string? strTransferStatus) =>
-    this.TransferStatus = strTransferStatus == null
+    this.TransferStatus = string.IsNullOrEmpty(strTransferStatus) 
         ? global::TransferStatus.Pending  // on strTransferStatus null set to default (Pending)
         : EnumUtil.ParseOrIgnore<TransferStatus>(strTransferStatus);
 

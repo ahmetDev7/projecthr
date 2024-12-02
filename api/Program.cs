@@ -100,7 +100,7 @@ builder.Services.AddTransient<ItemGroupProvider>();
 builder.Services.AddTransient<OrderProvider>();
 builder.Services.AddTransient<ShipmentProvider>();
 builder.Services.AddTransient<SupplierProvider>();
-builder.Services.AddTransient<ClientProvider>();
+builder.Services.AddTransient<ClientsProvider>();
 
 builder.Services.AddScoped<IValidator<Supplier>, SupplierValidator>();
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();

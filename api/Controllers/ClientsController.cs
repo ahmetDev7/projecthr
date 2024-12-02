@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class ClientsController : ControllerBase
 {
-    private readonly ClientProvider _clientProvider;
+    private readonly ClientsProvider _clientProvider;
 
-    public ClientsController(ClientProvider clientProvider)
+    public ClientsController(ClientsProvider clientProvider)
     {
         _clientProvider = clientProvider;
     }

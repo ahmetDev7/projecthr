@@ -50,6 +50,24 @@ public class ItemLinesController : ControllerBase
         );
     }
 
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        ItemLine? deletedItemLine = _itemLinesProvider.Delete(id);
+        if (deletedItemLine == null) throw new ApiFlowException($"Item line not found for id '{id}'");
+
+        return Ok(new {
+            message = "Item Line deleted!",
+            deleted_item_line = new ItemLineResponse{
+            Id = deletedItemLine.Id,
+            Name = deletedItemLine.Name,
+            Description = deletedItemLine.Description,
+            CreatedAt = deletedItemLine.CreatedAt,
+            UpdatedAt = deletedItemLine.UpdatedAt
+            }
+        });
+    }
+
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_itemLinesProvider.GetAll().Select(il => new ItemLineResponse
     {

@@ -16,6 +16,9 @@ public class AddressValidator : AbstractValidator<Address>
         RuleFor(address => address.City)
             .NotNull().WithMessage("city is required.")
             .NotEmpty().WithMessage("city cannot be empty.");
+        RuleFor(address => address.Province)
+            .NotNull().WithMessage("province is required.")
+            .NotEmpty().WithMessage("province cannot be empty.");
         RuleFor(address => address.CountryCode)
             .NotNull().WithMessage("country_code is required.")
             .NotEmpty().WithMessage("country_code cannot be empty.");

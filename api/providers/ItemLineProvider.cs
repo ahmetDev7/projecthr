@@ -22,7 +22,7 @@ public class ItemLineProvider : BaseProvider<ItemLine>
         };
 
         ValidateModel(newItemLine);
-        _db.ItemGroups.Add(newItemLine);
+        _db.ItemLines.Add(newItemLine);
         SaveToDBOrFail();
         return newItemLine;
     }

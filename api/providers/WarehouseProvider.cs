@@ -91,7 +91,6 @@ public class WarehouseProvider : BaseProvider<Warehouse>
 
     public override Warehouse? Update(Guid id, BaseDTO updatedValues)
     {
-        bool hasChanges = false;
         WarehouseRequest? req = updatedValues as WarehouseRequest;
         if (req == null) throw new ApiFlowException("Could not process update warehouse request. Update new warehouse failed.");
 
@@ -101,28 +100,12 @@ public class WarehouseProvider : BaseProvider<Warehouse>
         var relatedAddress = GetOrCreateAddress(req);
         var relatedContact = GetOrCreateContact(req);
 
-        if (!string.IsNullOrEmpty(req.Code) && req.Code != foundWarehouse.Code)
-        {
-            foundWarehouse.Code = req.Code;
-            hasChanges = true;
-        }
-        if(req.Name != foundWarehouse.Name)
-        {
-            foundWarehouse.Name = req.Name;
-            hasChanges = true;
-        }
-        if(req.Contact != null || req.ContactId != null)
-        {
-            foundWarehouse.ContactId = relatedContact.Id;
-            hasChanges = true;
-        }
-        if(req.Address != null || req.AddressId != null)
-        {
-            foundWarehouse.AddressId = relatedAddress.Id;
-            hasChanges = true;
-        }
-
-        if (hasChanges) foundWarehouse.SetUpdatedAt();
+        foundWarehouse.Code = req.Code;
+        foundWarehouse.Name = req.Name;
+        foundWarehouse.ContactId = relatedContact.Id;
+        foundWarehouse.AddressId = relatedAddress.Id;
+       
+        foundWarehouse.SetUpdatedAt();
 
         SaveToDBOrFail();
 

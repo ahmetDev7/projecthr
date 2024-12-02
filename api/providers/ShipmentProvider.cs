@@ -63,7 +63,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
     public List<Order>? GetOrdersForShipment(Guid shipmentId)
     {
-        var shipment = _db.Shipments.Include(s => s.OrderIds).FirstOrDefault(s => s.Id == shipmentId);
+        var shipment = _db.Shipments.FirstOrDefault(s => s.Id == shipmentId);
 
         if (shipment == null || shipment.OrderIds == null || !shipment.OrderIds.Any())
             return new List<Order>();

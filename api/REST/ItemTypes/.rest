@@ -1,0 +1,9 @@
+### CREATE ITEM TYPE
+POST http://localhost:5000/api/ItemTypes
+Content-Type: application/json
+
+{
+    "name" : "1",
+    "description": "1"
+}
+###

@@ -1,4 +1,6 @@
 using DTO;
+using DTO.Address;
+using DTO.Contact;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -63,13 +65,13 @@ public class WarehousesController : ControllerBase
                 Id = updatedWarehouse.Id,
                 Code = updatedWarehouse.Code,
                 Name = updatedWarehouse.Name,
-                Contact = new ContactDTO
+                Contact = new ContactResponse
                 {
                     Name = updatedWarehouse.Contact.Name,
                     Email = updatedWarehouse.Contact.Email,
                     Phone = updatedWarehouse.Contact.Phone
                 },
-                Address = new AddressDTO
+                Address = new AddressResponse
                 {
                     Street = updatedWarehouse.Address.Street,
                     HouseNumber = updatedWarehouse.Address.HouseNumber,

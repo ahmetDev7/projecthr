@@ -42,10 +42,10 @@ public class WarehouseResponse : BaseDTO
     public string Name { get; set; }
 
     [JsonPropertyName("contact")]
-    public ContactDTO? Contact { get; set; }
+    public ContactResponse? Contact { get; set; }
 
     [JsonPropertyName("address")]
-    public AddressDTO? Address { get; set; }
+    public AddressResponse? Address { get; set; }
 
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; set; }

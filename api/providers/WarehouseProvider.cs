@@ -1,7 +1,6 @@
 using DTO;
 using FluentValidation;
 using DTO.Contact;
-using DTOs;
 
 public class WarehouseProvider : BaseProvider<Warehouse>
 {

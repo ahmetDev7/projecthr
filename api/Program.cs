@@ -103,6 +103,7 @@ builder.Services.AddTransient<SupplierProvider>();
 builder.Services.AddTransient<ClientsProvider>();
 builder.Services.AddTransient<InventoriesProvider>();
 builder.Services.AddTransient<ItemLinesProvider>();
+builder.Services.AddTransient<ItemTypesProvider>();
 
 
 builder.Services.AddScoped<IValidator<Supplier>, SupplierValidator>();
@@ -114,6 +115,8 @@ builder.Services.AddScoped<IValidator<Shipment>, ShipmentValidator>();
 builder.Services.AddScoped<IValidator<Contact>, ContactValidator>();
 builder.Services.AddScoped<IValidator<Inventory>, InventoryValidator>();
 builder.Services.AddScoped<IValidator<ItemLine>, ItemLineValidator>();
+builder.Services.AddScoped<IValidator<ItemType>, ItemTypeValidator>();
+
 builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
 builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
 builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();

@@ -17,3 +17,13 @@ Content-Type: application/json
     "description": "1"
 }
 ###
+
+### GET ITEM TYPE BY ID
+GET http://localhost:5000/api/itemtypes/caf0c9e3-0266-4ece-800d-cf4a101f0f69
+Content-Type: application/json
+###
+
+### GET ALL ITEM TYPES
+GET http://localhost:5000/api/itemtypes
+Content-Type: application/json
+###

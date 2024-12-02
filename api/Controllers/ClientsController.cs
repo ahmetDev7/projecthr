@@ -9,12 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 public class ClientsController : ControllerBase
 {
     private readonly ClientsProvider _clientProvider;
-
-    public ClientsController(ClientsProvider clientProvider)
+    private readonly ContactProvider _contactProvider;
+    private readonly AddressProvider _addressProvider;
+    public ClientsController(ClientsProvider clientProvider, ContactProvider contactProvider, AddressProvider addressProvider)
     {
         _clientProvider = clientProvider;
+        _contactProvider = contactProvider;
+        _addressProvider = addressProvider;
     }
-
     [HttpPost()]
     public IActionResult Create([FromBody] ClientRequest req)
     {
@@ -50,4 +52,46 @@ public class ClientsController : ControllerBase
             }
         });
     }
+    
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        Client? client = _clientProvider.GetById(id);
+
+        if (client == null)
+        {
+            return NotFound(new { message = $"Client not found for id '{id}'" });
+        }
+
+        ClientResponse clientResponse = new ClientResponse
+        {
+            Id = client.Id,
+            Name = client.Name,
+            CreatedAt = client.CreatedAt,
+            UpdatedAt = client.UpdatedAt,
+            Contact = client.ContactId.HasValue ? new ContactResponse
+            {
+                Name = _contactProvider.GetById(client.ContactId.Value)?.Name,
+                Phone = _contactProvider.GetById(client.ContactId.Value)?.Phone,
+                Email = _contactProvider.GetById(client.ContactId.Value)?.Email
+            } : null,
+            Address = client.AddressId.HasValue ? new AddressResponse
+            {
+                Street = _addressProvider.GetById(client.AddressId.Value)?.Street,
+                HouseNumber = _addressProvider.GetById(client.AddressId.Value)?.HouseNumber,
+                HouseNumberExtension = _addressProvider.GetById(client.AddressId.Value)?.HouseNumberExtension,
+                ZipCode = _addressProvider.GetById(client.AddressId.Value)?.ZipCode,
+                City = _addressProvider.GetById(client.AddressId.Value)?.City,
+                Province = _addressProvider.GetById(client.AddressId.Value)?.Province,
+                CountryCode = _addressProvider.GetById(client.AddressId.Value)?.CountryCode
+            } : null
+        };
+
+        return Ok(new
+        {
+            message = "Client found!",
+            client = clientResponse
+        });
+    }
+
 }

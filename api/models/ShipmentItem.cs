@@ -11,6 +11,6 @@ public class ShipmentItem : BaseModel
     public Item? Item { get; set; }
 
     [Required]
-    public int Amount { get; set; }
+    public int? Amount { get; set; }
     
 }

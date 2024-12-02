@@ -1,4 +1,5 @@
 using DTO;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -22,31 +23,31 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpGet()]
-    public ActionResult<IEnumerable<Warehouse>> GetAll() => Ok(_warehouseProvider.GetAll().Select(ig => new WarehouseResponse
+    public ActionResult<IEnumerable<Warehouse>> GetAll() => Ok(_warehouseProvider.GetAll().Select(wh => new WarehouseResponse
     {
-        Id = ig.Id,
-        Code = ig.Code,
-        Name = ig.Name,
+        Id = wh.Id,
+        Code = wh.Code,
+        Name = wh.Name,
 
         Contact = new ContactDTO
         {
-            Name = ig.Contact.Name,
-            Email = ig.Contact.Email,
-            Phone = ig.Contact.Phone
+            Name = wh.Contact.Name,
+            Email = wh.Contact.Email,
+            Phone = wh.Contact.Phone
         },
         Address = new AddressDTO
         {
-            Street = ig.Address.Street,
-            HouseNumber = ig.Address.HouseNumber,
-            HouseNumberExtension = ig.Address.HouseNumberExtension,
-            HouseNumberExtensionExtra = ig.Address.HouseNumberExtensionExtra,
-            ZipCode = ig.Address.ZipCode,
-            City = ig.Address.City,
-            Province = ig.Address.Province,
-            CountryCode = ig.Address.CountryCode,
+            Street = wh.Address.Street,
+            HouseNumber = wh.Address.HouseNumber,
+            HouseNumberExtension = wh.Address.HouseNumberExtension,
+            HouseNumberExtensionExtra = wh.Address.HouseNumberExtensionExtra,
+            ZipCode = wh.Address.ZipCode,
+            City = wh.Address.City,
+            Province = wh.Address.Province,
+            CountryCode = wh.Address.CountryCode,
         },
-        CreatedAt = ig.CreatedAt,
-        UpdatedAt = ig.UpdatedAt
+        CreatedAt = wh.CreatedAt,
+        UpdatedAt = wh.UpdatedAt
     }));
 
     [HttpGet("{warehouseId}/locations")]
@@ -78,7 +79,7 @@ public class WarehousesController : ControllerBase
         if(updatedWarehouse == null) return NotFound(new {message = $"Warehouse not found for id '{id}'"});
         
         return Ok(new {
-            message = "Item group updated.", 
+            message = "Warehouse updated.", 
             updated_warehouse = new WarehouseResponse {
                 Id = updatedWarehouse.Id,
                 Code = updatedWarehouse.Code,

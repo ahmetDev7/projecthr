@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 public class ClientsController : ControllerBase
 {
     private readonly ClientsProvider _clientProvider;
-
-    public ClientsController(ClientsProvider clientProvider)
+    private readonly ContactProvider _contactProvider;
+    private readonly AddressProvider _addressProvider;
+    public ClientsController(ClientsProvider clientProvider, ContactProvider contactProvider, AddressProvider addressProvider)
     {
         _clientProvider = clientProvider;
+        _contactProvider = contactProvider;
+        _addressProvider = addressProvider;
     }
 
     [HttpPost()]
@@ -50,4 +53,45 @@ public class ClientsController : ControllerBase
             }
         });
     }
+
+    [HttpDelete("{id}")]
+public IActionResult Delete(Guid id)
+{
+    Client? deletedClient = _clientProvider.Delete(id);
+
+    if (deletedClient == null) BadRequest(new { message = $"Client not found for id '{id}'" });
+    
+
+    ClientResponse deletedClientResponse = new ClientResponse
+    {
+        Id = deletedClient.Id,
+        Name = deletedClient.Name,
+        CreatedAt = deletedClient.CreatedAt,
+        UpdatedAt = deletedClient.UpdatedAt,
+        Contact = deletedClient.ContactId.HasValue ? new ContactResponse
+        {
+            Name = _contactProvider.GetById(deletedClient.ContactId.Value)?.Name,
+            Phone = _contactProvider.GetById(deletedClient.ContactId.Value)?.Phone,
+            Email = _contactProvider.GetById(deletedClient.ContactId.Value)?.Email
+        } : null,
+        Address = deletedClient.AddressId.HasValue ? new AddressResponse
+        {
+            Street = _addressProvider.GetById(deletedClient.AddressId.Value)?.Street,
+            HouseNumber = _addressProvider.GetById(deletedClient.AddressId.Value)?.HouseNumber,
+            HouseNumberExtension = _addressProvider.GetById(deletedClient.AddressId.Value)?.HouseNumberExtension,
+            ZipCode = _addressProvider.GetById(deletedClient.AddressId.Value)?.ZipCode,
+            City = _addressProvider.GetById(deletedClient.AddressId.Value)?.City,
+            Province = _addressProvider.GetById(deletedClient.AddressId.Value)?.Province,
+            CountryCode = _addressProvider.GetById(deletedClient.AddressId.Value)?.CountryCode
+        } : null
+    };
+
+    return Ok(new
+    {
+        message = "Client deleted successfully!",
+        deleted_client = deletedClientResponse
+    });
+}
+
+
 }

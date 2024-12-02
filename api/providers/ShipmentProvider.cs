@@ -23,7 +23,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
         Shipment newShipment = new Shipment(newInstance: true)
         {
-            OrderId = req.OrderId,
+            OrderIds = req.OrderIds,
             OrderDate = req.OrderDate,
             RequestDate = req.RequestDate,
             ShipmentDate = req.ShipmentDate,

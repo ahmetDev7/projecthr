@@ -22,7 +22,7 @@ public class ShipmentsController : ControllerBase
         return Ok(new ShipmentResponse
         {
             Id = newShipment.Id,
-            OrderId = newShipment.OrderId,
+            OrderIds = newShipment.OrderIds,
             OrderDate = newShipment.OrderDate,
             RequestDate = newShipment.RequestDate,
             ShipmentDate = newShipment.ShipmentDate,
@@ -56,7 +56,7 @@ public class ShipmentsController : ControllerBase
             message = "Shipment deleted!",
             deleted_shipment = new ShipmentResponse{
             Id = deletedShipment.Id,
-            OrderId = deletedShipment.OrderId,
+            OrderIds = deletedShipment.OrderIds,
             OrderDate = deletedShipment.OrderDate,
             RequestDate = deletedShipment.RequestDate,
             ShipmentDate = deletedShipment.ShipmentDate,
@@ -84,7 +84,7 @@ public class ShipmentsController : ControllerBase
     public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
     {
         Id = s.Id,
-        OrderId = s.OrderId,
+        OrderIds = s.OrderIds,
         OrderDate = s.OrderDate,
         RequestDate = s.RequestDate,
         ShipmentDate = s.ShipmentDate,
@@ -117,7 +117,7 @@ public class ShipmentsController : ControllerBase
             : Ok(new ShipmentResponse
             {        
                 Id = foundShipment.Id,
-                OrderId = foundShipment.OrderId,
+                OrderIds = foundShipment.OrderIds,
                 OrderDate = foundShipment.OrderDate,
                 RequestDate = foundShipment.RequestDate,
                 ShipmentDate = foundShipment.ShipmentDate,
@@ -139,5 +139,11 @@ public class ShipmentsController : ControllerBase
                     Amount = item.Amount
                 }).ToList()
         });
+    }
+
+    [HttpGet("{id}/orders")]
+    public IActionResult ShowOrders(Guid id)
+    {
+        return null;
     }
 }

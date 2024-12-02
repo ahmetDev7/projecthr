@@ -7,7 +7,7 @@ public class Shipment : BaseModel
     public Shipment(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
 
     [Required]
-    public Guid? OrderId { get; set; }
+    public Guid? OrderIds { get; set; }
     public DateTime? OrderDate { get; set; }
     public DateTime? RequestDate { get; set; }
     public DateTime? ShipmentDate { get; set; }

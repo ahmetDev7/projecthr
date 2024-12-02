@@ -37,7 +37,8 @@ public class InventoriesController : ControllerBase
                 Description = newInventory.Description,
                 ItemReference = newInventory.ItemReference,
                 ItemId = newInventory.ItemId,
-                Locations = locations.Select(l => new InventoryLocation() {
+                Locations = locations.Select(l => new InventoryLocation()
+                {
                     LocationId = l.Id,
                     OnHand = l.OnHand
                 }).ToList(),
@@ -52,24 +53,56 @@ public class InventoriesController : ControllerBase
         });
     }
 
-    [HttpGet]
-    public IActionResult ShowAll() => Ok(_inventoriesProvider.GetAll().Select(i => new InventoryResponse()
+
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        Inventory? foundInventory = _inventoriesProvider.GetById(id);
+        if (foundInventory == null) return NotFound(new { message = $"Inventory not found for id '{id}'" });
+
+        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
+        List<Location> locations = _locationsProvider.GetLocationsByInventoryId(foundInventory.Id);
+
+        return Ok(new InventoryResponse
         {
-            Id = i.Id,
-            Description = i.Description,
-            ItemReference = i.ItemReference,
-            ItemId = i.ItemId,
-            Locations = _locationsProvider.GetLocationsByInventoryId(i.Id).Select(l => new InventoryLocation()
+            Id = foundInventory.Id,
+            Description = foundInventory.Description,
+            ItemReference = foundInventory.ItemReference,
+            ItemId = foundInventory.ItemId,
+            Locations = locations.Select(l => new InventoryLocation()
             {
                 LocationId = l.Id,
                 OnHand = l.OnHand
             }).ToList(),
-            TotalOnHand = _inventoriesProvider.CalculateTotalOnHand(i.Id),
-            TotalExpected = _inventoriesProvider.CalculateTotalExpected(),
-            TotalOrdered = _inventoriesProvider.CalculateTotalOrdered(),
-            TotalAllocated = _inventoriesProvider.CalculateTotalAllocated(),
-            TotalAvailable = _inventoriesProvider.CalculateTotalAvailable(),
-            CreatedAt = i.CreatedAt,
-            UpdatedAt = i.UpdatedAt,
-        }).ToList());
+            TotalOnHand = calculatedValues["TotalOnHand"],
+            TotalExpected = calculatedValues["TotalExpected"],
+            TotalOrdered = calculatedValues["TotalOrdered"],
+            TotalAllocated = calculatedValues["TotalAllocated"],
+            TotalAvailable = calculatedValues["TotalAvailable"],
+            CreatedAt = foundInventory.CreatedAt,
+            UpdatedAt = foundInventory.UpdatedAt,
+        });
+    }
+
+
+    [HttpGet]
+    public IActionResult ShowAll() => Ok(_inventoriesProvider.GetAll().Select(i => new InventoryResponse()
+    {
+        Id = i.Id,
+        Description = i.Description,
+        ItemReference = i.ItemReference,
+        ItemId = i.ItemId,
+        Locations = _locationsProvider.GetLocationsByInventoryId(i.Id).Select(l => new InventoryLocation()
+        {
+            LocationId = l.Id,
+            OnHand = l.OnHand
+        }).ToList(),
+        TotalOnHand = _inventoriesProvider.CalculateTotalOnHand(i.Id),
+        TotalExpected = _inventoriesProvider.CalculateTotalExpected(),
+        TotalOrdered = _inventoriesProvider.CalculateTotalOrdered(),
+        TotalAllocated = _inventoriesProvider.CalculateTotalAllocated(),
+        TotalAvailable = _inventoriesProvider.CalculateTotalAvailable(),
+        CreatedAt = i.CreatedAt,
+        UpdatedAt = i.UpdatedAt,
+    }).ToList());
 }

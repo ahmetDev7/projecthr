@@ -7,3 +7,10 @@ Content-Type: application/json
     "description": "1"
 }
 ###
+
+### GET ALL ITEM LINES
+GET http://localhost:5000/api/itemlines
+Content-Type: application/json
+
+###
+

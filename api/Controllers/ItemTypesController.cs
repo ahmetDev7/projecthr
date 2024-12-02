@@ -31,4 +31,21 @@ public class ItemTypesController : ControllerBase
             }
         });
     }
+
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        ItemType? foundItemType = _itemTypesProvider.GetById(id);
+
+        return (foundItemType == null)
+            ? NotFound(new { message = $"Item Type not found for id '{id}'" })
+            : Ok(new ItemTypeResponse
+            {
+                Id = foundItemType.Id,
+                Name = foundItemType.Name,
+                Description = foundItemType.Description,
+                CreatedAt = foundItemType.CreatedAt,
+                UpdatedAt = foundItemType.UpdatedAt
+            });
+    }
 }

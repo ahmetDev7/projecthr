@@ -63,3 +63,6 @@ Content-Type: application/json
   "address_id": "21903d3a-3d0f-4949-bf0d-e2a84cd1a450"
 }
 ###
+# Delete Clients
+DELETE http://localhost:5000/api/clients/4a07f327-2ce1-499a-b2ab-692ce2a471be
+###

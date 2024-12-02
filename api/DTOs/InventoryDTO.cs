@@ -39,11 +39,20 @@ public class InventoryResponse : BaseDTO
 
     [JsonPropertyName("updated_at")]
     public DateTime? UpdatedAt { get; set; }
-    
+
+    [JsonPropertyName("total_on_hand")]
     public int? TotalOnHand { get; set; }
+
+    [JsonPropertyName("total_expected")]
     public int? TotalExpected { get; set; }
+
+    [JsonPropertyName("total_ordered")]
     public int? TotalOrdered { get; set; }
+
+    [JsonPropertyName("total_allocated")]
     public int? TotalAllocated { get; set; }
+
+    [JsonPropertyName("total_available")]
     public int? TotalAvailable { get; set; }
 }
 

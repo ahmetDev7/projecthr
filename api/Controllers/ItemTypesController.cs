@@ -1,3 +1,4 @@
+using DTO.Item;
 using DTO.ItemType;
 using Microsoft.AspNetCore.Mvc;
 
@@ -94,4 +95,27 @@ public class ItemTypesController : ControllerBase
         CreatedAt = it.CreatedAt,
         UpdatedAt = it.UpdatedAt
     }).ToList());
+
+    [HttpGet("{itemTypeId}/items")]
+    public IActionResult ShowRelatedItems(Guid itemTypeId) =>
+        Ok(_itemTypesProvider.GetRelatedItemsById(itemTypeId)
+        .Select(i => new ItemResponse
+        {
+            Id = i.Id,
+            Code = i.Code,
+            Description = i.Description,
+            ShortDescription = i.ShortDescription,
+            UpcCode = i.UpcCode,
+            ModelNumber = i.ModelNumber,
+            CommodityCode = i.CommodityCode,
+            UnitPurchaseQuantity = i.UnitPurchaseQuantity,
+            UnitOrderQuantity = i.UnitOrderQuantity,
+            PackOrderQuantity = i.PackOrderQuantity,
+            SupplierReferenceCode = i.SupplierReferenceCode,
+            SupplierPartNumber = i.SupplierPartNumber,
+            ItemGroupId = i.ItemGroupId,
+            ItemLineId = i.ItemLineId,
+            ItemTypeId = i.ItemTypeId,
+            SupplierId = i.SupplierId
+        }).ToList());
 }

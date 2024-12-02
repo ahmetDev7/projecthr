@@ -31,3 +31,8 @@ Content-Type: application/json
 GET http://localhost:5000/api/itemtypes
 Content-Type: application/json
 ###
+
+### GET ALL ITEMS FROM ITEM TYPES
+GET http://localhost:5000/api/itemtypes/db359ddb-1d7c-415c-bd26-a7386f319d4b/items
+Content-Type: application/json
+###

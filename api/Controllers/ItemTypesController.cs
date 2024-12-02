@@ -32,6 +32,24 @@ public class ItemTypesController : ControllerBase
         });
     }
 
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        ItemType? deletedItemType = _itemTypesProvider.Delete(id);
+        if (deletedItemType == null) throw new ApiFlowException($"Item Type not found for id '{id}'");
+
+        return Ok(new {
+            message = "Item Type deleted!",
+            deleted_item_type = new ItemTypeResponse{
+            Id = deletedItemType.Id,
+            Name = deletedItemType.Name,
+            Description = deletedItemType.Description,
+            CreatedAt = deletedItemType.CreatedAt,
+            UpdatedAt = deletedItemType.UpdatedAt
+            }
+        });
+    }
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

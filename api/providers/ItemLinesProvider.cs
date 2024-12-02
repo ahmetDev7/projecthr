@@ -10,6 +10,8 @@ public class ItemLinesProvider : BaseProvider<ItemLine>
         _itemLineValidator = validator;
     }
 
+    public override ItemLine? GetById(Guid id) => _db.ItemLines.FirstOrDefault(il => il.Id == id);
+
     public override ItemLine? Create(BaseDTO createValues)
     {
         ItemLineRequest? req = createValues as ItemLineRequest;

@@ -42,6 +42,15 @@ public class InventoriesProvider : BaseProvider<Inventory>
         return newInventory;
     }
 
+    public override Inventory? Delete(Guid id){
+        Inventory? foundInventory = GetById(id);
+        if (foundInventory == null) return null;
+
+        _db.Inventories.Remove(foundInventory);
+        SaveToDBOrFail();
+        return foundInventory;
+    }
+
     public Inventory? GetInventoryByItemId(Guid? itemId) => _db.Inventories.Where(i => i.ItemId == itemId).FirstOrDefault();
 
     /*

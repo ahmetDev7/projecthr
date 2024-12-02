@@ -110,6 +110,7 @@ builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
 builder.Services.AddScoped<IValidator<Shipment>, ShipmentValidator>();
 builder.Services.AddScoped<IValidator<Contact>, ContactValidator>();
 builder.Services.AddScoped<IValidator<ItemLine>, ItemLineValidator>();
+builder.Services.AddScoped<IValidator<Warehouse>, WarehouseValidator>();
 
 
 builder.Services.AddScoped<IValidator<Address>, AddressValidator>();

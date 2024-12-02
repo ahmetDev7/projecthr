@@ -1,22 +1,25 @@
+using DTO;
+using FluentValidation;
 using DTO.Contact;
-using DTOs;
 
-public class WarehouseProvider : ICRUD<Warehouse>
+public class WarehouseProvider : BaseProvider<Warehouse>
 {
     private readonly AppDbContext _db;
     private readonly AddressProvider _addressProvider;
     private readonly ContactProvider _contactProvider;
+    private IValidator<Warehouse> _WarehouseValidator;
 
-    public WarehouseProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider)
+    public WarehouseProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, IValidator<Warehouse> validator) : base(db)
     {
         _db = db;
         _addressProvider = addressProvider;
         _contactProvider = contactProvider;
+        _WarehouseValidator = validator;
     }
 
     public Warehouse? Create<IDTO>(IDTO newElement)
     {
-        var request = newElement as WarehouseDTO ?? throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
+        var request = newElement as WarehouseRequest ?? throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
 
         if (request.ContactId == null && request.Contact == null)
             throw new ApiFlowException("Either contact_id or contact fields must be filled");
@@ -45,7 +48,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
         return newWarehouse;
     }
 
-    private Contact? GetOrCreateContact(WarehouseDTO request)
+    private Contact? GetOrCreateContact(WarehouseRequest request)
     {
         if (request.ContactId != null)
             return _contactProvider.GetById(request.ContactId.Value)
@@ -56,7 +59,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
                : throw new ApiFlowException("An error occurred while saving the warehouse contact");
     }
 
-    private Address? GetOrCreateAddress(WarehouseDTO request)
+    private Address? GetOrCreateAddress(WarehouseRequest request)
     {
         if (request.AddressId != null)
             return _addressProvider.GetById(request.AddressId.Value)
@@ -86,9 +89,44 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id);
 
-    public Warehouse? Update<IDTO>(Guid id, IDTO dto)
+    public override Warehouse? Update(Guid id, BaseDTO updatedValues)
     {
-        throw new NotImplementedException();
+        bool hasChanges = false;
+        WarehouseRequest? req = updatedValues as WarehouseRequest;
+        if (req == null) throw new ApiFlowException("Could not process update warehouse request. Update new warehouse failed.");
+
+        Warehouse? foundWarehouse = GetById(id);
+        if (foundWarehouse == null) return null;
+
+        var relatedAddress = GetOrCreateAddress(req);
+        var relatedContact = GetOrCreateContact(req);
+
+        if (!string.IsNullOrEmpty(req.Code) && req.Code != foundWarehouse.Code)
+        {
+            foundWarehouse.Code = req.Code;
+            hasChanges = true;
+        }
+        if(req.Name != foundWarehouse.Name)
+        {
+            foundWarehouse.Name = req.Name;
+            hasChanges = true;
+        }
+        if(req.Contact != null || req.ContactId != null)
+        {
+            foundWarehouse.ContactId = relatedContact.Id;
+            hasChanges = true;
+        }
+        if(req.Address != null || req.AddressId != null)
+        {
+            foundWarehouse.AddressId = relatedAddress.Id;
+            hasChanges = true;
+        }
+
+        if (hasChanges) foundWarehouse.SetUpdatedAt();
+
+        SaveToDBOrFail();
+
+        return foundWarehouse;
     }
 
     public List<Location> GetLocationsByWarehouseId(Guid warehouseId)
@@ -100,4 +138,5 @@ public class WarehouseProvider : ICRUD<Warehouse>
         return locationsOfspecificWarehouse;
     }
 
+    protected override void ValidateModel(Warehouse model) => _WarehouseValidator.ValidateAndThrow(model);
 }

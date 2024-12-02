@@ -14,4 +14,14 @@ public class Location : BaseModel
     [Required]
     public Guid? WarehouseId { get; set; } // Foreign Key Relationship
     public Warehouse? Warehouse { get; set; }
+
+    private int? _onHand = 0;
+    public int? OnHand {
+        get => _onHand;
+        set => _onHand = value.HasValue && value > 0 ? value : 0;
+    }
+
+    public Guid? InventoryId {get; set;}
+
+    public Inventory? Inventory{ get; set; }
 }

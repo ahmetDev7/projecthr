@@ -17,6 +17,7 @@ public class AppDbContext : DbContext
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Client> Clients { get; set; }
+    public DbSet<Inventory> Inventories { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

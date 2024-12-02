@@ -1,0 +1,24 @@
+
+POST http://localhost:5000/api/inventories
+Content-Type: application/json
+
+{
+  "description": "INVENTORY DESCRIPTION",
+  "item_reference": "INVENTORY ITEM REFERENCE",
+  "item_id": "94902552-0fdb-4e06-baff-ffea729b27d0",
+  "locations": [
+    {
+      "location_id": "4c83c87f-abe2-47fb-a580-d45078f6177f",
+      "on_hand": 80
+    },
+    {
+      "location_id": "825095f2-5c28-4bef-addb-f5b5eca98143",
+      "on_hand": 60
+    },
+    {
+      "location_id": "c9ce2121-1692-4d1e-a9c3-861d33ffe7da",
+      "on_hand": 20
+    }
+  ]
+}
+###

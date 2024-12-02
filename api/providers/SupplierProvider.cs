@@ -15,6 +15,8 @@ public class SupplierProvider : BaseProvider<Supplier>
         _contactProvider = contactProvider;
     }
 
+    public List<Item> GetItemsBySupplierId(Guid id) => _db.Items.Where(l => l.SupplierId == id).ToList();
+    
     public override Supplier? Create(BaseDTO createValues)
     {
         SupplierRequest? req = createValues as SupplierRequest;

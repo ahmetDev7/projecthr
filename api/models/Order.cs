@@ -39,19 +39,17 @@ public class Order : BaseModel
         get => _totalSurcharge;
         set => _totalSurcharge = value.HasValue ? NumberUtil.EnsureNonNegativeWithTwoDecimals(value.Value) : (decimal?)null;
     }
-
     [Required]
     public Guid? WarehouseId { get; set; }
 
     public Warehouse? Warehouse { get; set; }
     [Required]
-
     public ICollection<OrderItem>? OrderItems { get; set; }
-
     public ICollection<Shipment>? Shipments { get; set; }
+    public Guid? ShipToClientId { get; set; }
+    public Client? ShipToClient { get; set; }
+    [Required]
+    public Guid? BillToClientId { get; set; } 
+    public Client? BillToClient { get; set; } 
 
-    //TODO..
-    //  ship_to_client uuid [ref: > clients.id]
-    //[Required]
-    //bill_to_client uuid [ref: > clients.id]
 }

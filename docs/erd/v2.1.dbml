@@ -36,9 +36,11 @@ Table locations {
   row varchar
   rack varchar
   shelf varchar
+  on_hand int [null]
   created_at datetime
   updated_at datetime
   warehouse_id uuid [ref: > warehouses.id]
+  inventory_id uuid [ref: > inventories.id, not null]
 }
 
 Table clients {
@@ -63,10 +65,9 @@ Table items {
   pack_order_quantity int
   supplier_reference_code varchar
   supplier_part_number varchar
-  item_line uuid [ref: > item_lines.id] //zijn niet verplicht
-  item_group uuid [ref: > item_groups.id] //zijn niet verplicht
-  item_type uuid [ref: > item_types.id] //zijn niet verplicht
-  supplier_id uuid [ref: > suppliers.id] 
+  item_line uuid [ref: > item_lines.id, null] //zijn niet verplicht
+  item_group uuid [ref: > item_groups.id, null] //zijn niet verplicht
+  item_type uuid [ref: > item_types.id, null] //zijn niet verplicht
   created_at datetime
   updated_at datetime
 }
@@ -106,22 +107,17 @@ Table suppliers {
 }
 
 Table inventories {
-  id uuid [pk]
+  id uuid [pk, not null]
   description varchar
   item_reference varchar
-  total_on_hand int
-  total_expected int
+  total_on_hand int //calculated value from location_inventory
+  total_expected int //calculated value 
   total_ordered int //calculated value op basis van order
-  total_allocated int
-  total_available int
-  created_at datetime
-  updated_at datetime
-  item_id uuid [ref: > items.id]
-}
-
-Table location_inventory {
-  inventory_id uuid [ref: > inventories.id]
-  location_id uuid [ref: > locations.id]
+  total_allocated int //calculated value
+  total_available int //calculated value
+  created_at datetime [not null]
+  updated_at datetime [not null]
+  item_id uuid [ref: - items.id] // Foreign Key to items
 }
 
 Table orders {

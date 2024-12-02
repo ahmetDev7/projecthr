@@ -43,19 +43,19 @@ public class Item : BaseModel
 
     public Guid? ItemGroupId { get; set; } // Foreign Key Relationship with ItemGroups
     public ItemGroup? ItemGroup { get; set; }
+    [Required]
+    public Guid? SupplierId { get; set; }
+    public Supplier? Supplier{ get; set; }  
 
     public Guid? ItemLineId { get; set; } // Foreign Key Relationship with ItemLines
     public ItemLine? ItemLine { get; set; }
 
     public Guid? ItemTypeId { get; set; } // Foreign Key Relationship with ItemLines
     public ItemType? ItemType { get; set; }
-
-    [Required]
-    public Guid? SupplierId { get; set; } // Foreign Key Relationship with Suppliers
-    
-    public Supplier? Supplier {get; set;}
     
     public ICollection<OrderItem>? OrderItems { get; set; }
     public ICollection<ShipmentItem>? ShipmentItems { get; set; } // shipment_items table connection
+    
     public ICollection<TransferItem>? TransferItems { get; set; } // transfer_items table connection
+    public Inventory? Inventory{ get; set; } // inventory table connection
 }

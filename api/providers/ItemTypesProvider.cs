@@ -10,6 +10,8 @@ public class ItemTypesProvider : BaseProvider<ItemType>
         _itemTypeValidator = validator;
     }
 
+    public override List<ItemType>? GetAll() => _db.ItemTypes.ToList();
+
     public override ItemType? Create(BaseDTO createValues)
     {
         ItemTypeRequest? req = createValues as ItemTypeRequest;

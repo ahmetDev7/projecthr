@@ -63,3 +63,7 @@ Content-Type: application/json
   "address_id": "21903d3a-3d0f-4949-bf0d-e2a84cd1a450"
 }
 ###
+
+### GetAll Clients
+GET http://localhost:5000/api/clients
+###

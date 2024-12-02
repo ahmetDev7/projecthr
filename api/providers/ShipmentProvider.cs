@@ -61,5 +61,18 @@ public class ShipmentProvider : BaseProvider<Shipment>
         return foundShipment;
     }
 
+    public List<Order>? GetOrdersForShipment(Guid shipmentId)
+    {
+        var shipment = _db.Shipments.Include(s => s.OrderIds).FirstOrDefault(s => s.Id == shipmentId);
+
+        if (shipment == null || shipment.OrderIds == null || !shipment.OrderIds.Any())
+            return new List<Order>();
+
+        return _db.Orders
+            .Include(o => o.OrderItems)
+            .Where(o => shipment.OrderIds.Contains(o.Id))
+            .ToList();
+    }
+
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);
 }

@@ -25,7 +25,9 @@ public class ItemLinesController : ControllerBase
             {
                 Id = newItemLine.Id,
                 Name = newItemLine.Name,
-                Description = newItemLine.Description
+                Description = newItemLine.Description,
+                CreatedAt = newItemLine.CreatedAt,
+                UpdatedAt = newItemLine.UpdatedAt
             }
         });
     }

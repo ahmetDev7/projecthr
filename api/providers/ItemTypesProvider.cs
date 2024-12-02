@@ -48,6 +48,7 @@ public class ItemTypesProvider : BaseProvider<ItemType>
         ValidateModel(foundItemType);
         _db.ItemTypes.Update(foundItemType);
         SaveToDBOrFail();
+        return foundItemType;
     }
 
     public override ItemType? Delete(Guid id)

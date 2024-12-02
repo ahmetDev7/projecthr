@@ -1,4 +1,5 @@
 using DTO.Shipment;
+using DTO.Order;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -142,8 +143,37 @@ public class ShipmentsController : ControllerBase
     }
 
     [HttpGet("{id}/orders")]
-    public IActionResult ShowOrders(Guid id)
+    public IActionResult GetOrdersForShipment(Guid id)
     {
-        return null;
+        var orders = _shipmentProvider.GetOrdersForShipment(id);
+
+        if (orders == null || !orders.Any())
+            return NotFound(new { Message = "No orders found for the specified shipment." });
+
+        var response = orders.Select(o => new OrderResponse
+        {
+            Id = o.Id,
+            OrderDate = o.OrderDate,
+            RequestDate = o.RequestDate,
+            Reference = o.Reference,
+            ReferenceExtra = o.ReferenceExtra,
+            OrderStatus = o.OrderStatus,
+            Notes = o.Notes,
+            PickingNotes = o.PickingNotes,
+            TotalAmount = o.TotalAmount,
+            TotalDiscount = o.TotalDiscount,
+            TotalTax = o.TotalTax,
+            TotalSurcharge = o.TotalSurcharge,
+            WarehouseId = o.WarehouseId,
+            CreatedAt = o.CreatedAt,
+            UpdatedAt = o.UpdatedAt,
+            Items = o.OrderItems?.Select(oi => new OrderItemRequest
+            {
+                ItemId = oi.ItemId,
+                Amount = oi.Amount
+            }).ToList()
+        }).ToList();
+
+        return Ok(response);
     }
 }

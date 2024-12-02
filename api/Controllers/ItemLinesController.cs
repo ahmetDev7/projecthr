@@ -32,6 +32,23 @@ public class ItemLinesController : ControllerBase
         });
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ItemLineRequest req){
+        ItemLine? updatedItemLine = _itemLinesProvider.Update(id,req);
+        if(updatedItemLine == null) return NotFound(new {message = $"Item line not found for id '{id}'"});
+        
+        return Ok(new {
+            message = "Item Line updated!", 
+            updated_item_line = new ItemLineResponse {
+                Id = updatedItemLine.Id, 
+                Name = updatedItemLine.Name, 
+                Description = updatedItemLine.Description,
+                CreatedAt = updatedItemLine.CreatedAt,
+                UpdatedAt = updatedItemLine.UpdatedAt
+                }
+            }
+        );
+    }
 
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_itemLinesProvider.GetAll().Select(il => new ItemLineResponse

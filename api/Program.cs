@@ -112,6 +112,7 @@ builder.Services.AddScoped<IValidator<Inventory>, InventoryValidator>();
 
 
 builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
+builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();
 
 builder.Services.AddControllers();
 

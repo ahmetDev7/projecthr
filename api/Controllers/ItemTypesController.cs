@@ -31,4 +31,22 @@ public class ItemTypesController : ControllerBase
             }
         });
     }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ItemTypeRequest req){
+        ItemType? updatedItemType = _itemTypesProvider.Update(id,req);
+        if(updatedItemType == null) return NotFound(new {message = $"Item Type not found for id '{id}'"});
+        
+        return Ok(new {
+            message = "Item Type updated!", 
+            updated_item_type = new ItemTypeResponse {
+                Id = updatedItemType.Id, 
+                Name = updatedItemType.Name, 
+                Description = updatedItemType.Description,
+                CreatedAt = updatedItemType.CreatedAt,
+                UpdatedAt = updatedItemType.UpdatedAt
+                }
+            }
+        );
+    }
 }

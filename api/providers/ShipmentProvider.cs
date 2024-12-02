@@ -1,6 +1,7 @@
 using DTO.Shipment;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Utils.Date;
 
 public class ShipmentProvider : BaseProvider<Shipment>
 {
@@ -49,6 +50,46 @@ public class ShipmentProvider : BaseProvider<Shipment>
         _db.Shipments.Add(newShipment);
         SaveToDBOrFail();
         return newShipment;
+    }
+
+    public override Shipment? Update(Guid id, BaseDTO updateValues)
+    {
+        ShipmentRequest? req = updateValues as ShipmentRequest;
+        if (req == null) throw new ApiFlowException("Could not process update shipment request. Update failed.");
+
+        Shipment? existingShipment = _db.Shipments.Include(o => o.ShipmentItems).FirstOrDefault(o => o.Id == id);
+        if (existingShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
+
+        existingShipment.OrderId = req.OrderId;
+        existingShipment.OrderDate = DateUtil.ToUtcOrNull(req.OrderDate);
+        existingShipment.RequestDate = DateUtil.ToUtcOrNull(req.RequestDate);
+        existingShipment.ShipmentDate = DateUtil.ToUtcOrNull(req.ShipmentDate);
+        existingShipment.SetShipmentType(req.ShipmentType);
+        existingShipment.SetShipmentStatus(req.ShipmentStatus);
+        existingShipment.Notes = req.Notes;
+        existingShipment.CarrierCode = req.CarrierCode;
+        existingShipment.CarrierDescription = req.CarrierDescription;
+        existingShipment.ServiceCode = req.ServiceCode;
+        existingShipment.SetPaymentType(req.PaymentType);
+        existingShipment.SetTransferMode(req.TransferMode);
+        existingShipment.TotalPackageCount = req.TotalPackageCount;
+        existingShipment.TotalPackageWeight = req.TotalPackageWeight;
+        if (req.Items != null)
+        {
+            _db.ShipmentItems.RemoveRange(existingShipment.ShipmentItems);
+
+            existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem(newInstance:true){
+                ItemId = si.ItemId,
+                Amount = si.Amount
+            }).ToList();
+        }
+        
+        ValidateModel(existingShipment);
+
+        _db.Shipments.Update(existingShipment);
+        SaveToDBOrFail();
+
+        return existingShipment;
     }
 
     public override Shipment? Delete(Guid id)

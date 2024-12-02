@@ -1,5 +1,7 @@
 using DTO;
 using FluentValidation;
+using DTO.Contact;
+using DTOs;
 
 public class WarehouseProvider : BaseProvider<Warehouse>
 {
@@ -54,7 +56,7 @@ public class WarehouseProvider : BaseProvider<Warehouse>
                    ?? throw new ApiFlowException("contact_id does not exist");
 
         return request.Contact != null
-               ? _contactProvider.Create<ContactDTO>(request.Contact)
+               ? _contactProvider.Create(request.Contact)
                : throw new ApiFlowException("An error occurred while saving the warehouse contact");
     }
 
@@ -65,7 +67,7 @@ public class WarehouseProvider : BaseProvider<Warehouse>
                    ?? throw new ApiFlowException("address_id does not exist");
 
         return request.Address != null
-               ? _addressProvider.Create<AddressDTO>(request.Address)
+               ? _addressProvider.Create(request.Address)
                : throw new ApiFlowException("An error occurred while saving the warehouse address");
     }
 

@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using DTO.Address;
+using DTO.Contact;
 
 namespace DTO;
 
@@ -19,13 +21,13 @@ public class WarehouseRequest : BaseDTO
     public Guid? ContactId { get; set; }
 
     [JsonPropertyName("contact")]
-    public ContactDTO? Contact { get; set; }
+    public ContactRequest? Contact { get; set; }
 
     [JsonPropertyName("address_id")]
     public Guid? AddressId { get; set; }
 
     [JsonPropertyName("address")]
-    public AddressDTO? Address { get; set; }
+    public AddressRequest? Address { get; set; }
 }
 
 public class WarehouseResponse : BaseDTO

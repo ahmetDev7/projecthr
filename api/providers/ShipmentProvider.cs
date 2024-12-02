@@ -78,8 +78,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
         {
             _db.ShipmentItems.RemoveRange(existingShipment.ShipmentItems);
 
-            existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem
-            {
+            existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem(newInstance:true){
                 ItemId = si.ItemId,
                 Amount = si.Amount
             }).ToList();

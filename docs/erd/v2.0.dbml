@@ -136,7 +136,7 @@ Table orders {
   request_date datetime
   reference varchar
   reference_extra varchar
-  order_status varchar // Zijn dit enums die bestaan uit ["deliverd", "in_transit", "processing", "cancled"]?
+  order_status varchar // Zijn dit enums die bestaan uit ["delivered", "in_transit", "processing", "cancled"]?
   notes varchar
   shipping_notes varchar
   picking_notes varchar

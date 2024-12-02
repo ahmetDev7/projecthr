@@ -1,0 +1,30 @@
+### CREATE ITEM LINE
+POST http://localhost:5000/api/ItemLines
+Content-Type: application/json
+
+{
+    "name" : "1",
+    "description": "1"
+}
+###
+
+
+### UPDATE ITEM LINE
+PUT http://localhost:5000/api/ItemLines/488d6d27-80d4-4187-968e-e28b468c1b14
+Content-Type: application/json
+
+{
+    "name" : "1",
+    "description": "1"
+}
+###
+
+### GET ALL ITEM LINES
+GET http://localhost:5000/api/itemlines
+Content-Type: application/json
+###
+
+### GET ITEM LINE BY ID
+GET http://localhost:5000/api/itemlines/04ccd936-c43b-4568-aa5a-b23093c0b8d8
+Content-Type: application/json
+###

@@ -2,6 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 public class ShipmentItem : BaseModel
 {
+    public ShipmentItem()
+    {
+    }
+    public ShipmentItem(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate)
+    {
+    }
+
     [Required]
     public Guid? ShipmentId { get; set; }
     public Shipment? Shipment { get; set; }
@@ -11,6 +18,6 @@ public class ShipmentItem : BaseModel
     public Item? Item { get; set; }
 
     [Required]
-    public int Amount { get; set; }
+    public int? Amount { get; set; }
     
 }

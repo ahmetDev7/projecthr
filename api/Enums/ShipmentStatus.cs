@@ -1,6 +1,6 @@
 public enum ShipmentStatus
 {
     Pending,
-    Deliverd,
+    Delivered,
     Transit
 }

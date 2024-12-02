@@ -3,27 +3,57 @@ POST http://localhost:5000/api/shipments
 Content-Type: application/json
 
 {
+  "order_id": "af05b644-16e7-4dee-97f0-b9dda23e7f92",
   "order_date": "2023-11-19T14:12:33.807Z",
   "request_date": "2024-11-19T14:12:33.807Z",
   "shipment_date": "2024-11-19T14:12:33.807Z",
+  "shipment_type": "I",
   "shipment_status": "Delivered",
   "notes": "geen notities",
   "carrier_code": "123",
   "carrier_description": "description",
   "service_code": "321",
-  "payment_type": "IDeal",
-  "transfer_mode": "I",
+  "payment_type": "Automatic",
+  "transfer_mode": "Air",
   "total_package_count": 3,
   "total_package_weight": 3.4,
   "items": [
     {
-      "item_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "item_id": "3a1cc49a-09b0-4413-b0d8-0d6391026209",
       "amount": 2
     }
   ]
 }
 
 ###
+
+### UPDATE SHIPMENT
+
+PUT http://localhost:5000/api/shipments/ba62a851-630c-43aa-b8c9-300d65cc207f
+Content-Type: application/json
+
+{
+  "order_id": "af05b644-16e7-4dee-97f0-b9dda23e7f92",
+  "order_date": "2023-11-19T14:12:33.807Z",
+  "request_date": "2024-11-19T14:12:33.807Z",
+  "shipment_date": "2024-11-19T14:12:33.807Z",
+  "shipment_type": "I",
+  "shipment_status": "Delivered",
+  "notes": "geen notities",
+  "carrier_code": "123",
+  "carrier_description": "description",
+  "service_code": "321",
+  "payment_type": "Automatic",
+  "transfer_mode": "Sea",
+  "total_package_count": 3,
+  "total_package_weight": 3.4,
+  "items": [
+    {
+      "item_id": "3a1cc49a-09b0-4413-b0d8-0d6391026209",
+      "amount": 5
+    }
+  ]
+}
 
 ### DELETE SHIPMENT (change ID to the ID in your database)
 DELETE http://localhost:5000/api/shipments/91c4d824-9c93-48ee-a4b6-943c1421a0ee

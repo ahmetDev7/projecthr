@@ -46,6 +46,44 @@ public class ShipmentsController : ControllerBase
         });
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ShipmentRequest req)
+    {
+        Shipment? updatedShipment = _shipmentProvider.Update(id, req);
+
+        return updatedShipment == null
+            ? NotFound(new { message = $"Shipment not found for id '{id}'" })
+            : Ok(new
+            {
+                message = "Shipment updated!",
+                updated_shipment = new ShipmentResponse
+                {
+                    Id = updatedShipment.Id,
+                    OrderId = updatedShipment.OrderId,
+                    OrderDate = updatedShipment.OrderDate,
+                    RequestDate = updatedShipment.RequestDate,
+                    ShipmentDate = updatedShipment.ShipmentDate,
+                    ShipmentType = updatedShipment.ShipmentType.ToString(),
+                    ShipmentStatus = updatedShipment.ShipmentStatus.ToString(),
+                    Notes = updatedShipment.Notes,
+                    CarrierCode = updatedShipment.CarrierCode,
+                    CarrierDescription = updatedShipment.CarrierDescription,
+                    ServiceCode = updatedShipment.ServiceCode,
+                    PaymentType = updatedShipment.PaymentType.ToString(),
+                    TransferMode = updatedShipment.TransferMode.ToString(),
+                    TotalPackageCount = updatedShipment.TotalPackageCount,
+                    TotalPackageWeight = updatedShipment.TotalPackageWeight,
+                    CreatedAt = updatedShipment.CreatedAt,
+                    UpdatedAt = updatedShipment.UpdatedAt,
+                    Items = updatedShipment.ShipmentItems?.Select(item => new ShipmentItemRR
+                    {
+                        ItemId = item.ItemId,
+                        Amount = item.Amount
+                    }).ToList()
+                }
+            });
+    }
+
     [HttpDelete("{id}")]
     public IActionResult Delete(Guid id)
     {

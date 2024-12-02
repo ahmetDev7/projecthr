@@ -14,7 +14,7 @@ public class Shipment : BaseModel
 
     [Required]
     public ShipmentType? ShipmentType { get; set; } // I or O
-    public ShipmentStatus? ShipmentStatus { get; set; } // Pending, Deliverd, Transit
+    public ShipmentStatus? ShipmentStatus { get; set; } // Pending, Delivered, Transit
     public string? Notes { get; set; }
 
     [Required]

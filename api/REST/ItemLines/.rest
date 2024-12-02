@@ -7,3 +7,8 @@ Content-Type: application/json
     "description": "1"
 }
 ###
+
+### GET ITEM LINE BY ID
+GET http://localhost:5000/api/itemlines/04ccd936-c43b-4568-aa5a-b23093c0b8d8
+Content-Type: application/json
+###

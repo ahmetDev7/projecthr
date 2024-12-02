@@ -31,4 +31,14 @@ public class ItemTypesController : ControllerBase
             }
         });
     }
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_itemTypesProvider.GetAll().Select(it => new ItemTypeResponse
+    {
+        Id = it.Id,
+        Name = it.Name,
+        Description = it.Description,
+        CreatedAt = it.CreatedAt,
+        UpdatedAt = it.UpdatedAt
+    }).ToList());
 }

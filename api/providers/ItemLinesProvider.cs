@@ -1,11 +1,11 @@
 using DTO.ItemLine;
 using FluentValidation;
 
-public class ItemLineProvider : BaseProvider<ItemLine>
+public class ItemLinesProvider : BaseProvider<ItemLine>
 {
     private IValidator<ItemLine> _itemLineValidator;
 
-    public ItemLineProvider(AppDbContext db, IValidator<ItemLine> validator) : base(db)
+    public ItemLinesProvider(AppDbContext db, IValidator<ItemLine> validator) : base(db)
     {
         _itemLineValidator = validator;
     }

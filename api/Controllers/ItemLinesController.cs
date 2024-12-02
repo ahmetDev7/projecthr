@@ -3,19 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ItemLineController : ControllerBase
+public class ItemLinesController : ControllerBase
 {
-    private ItemLineProvider _itemLineProvider;
+    private ItemLinesProvider _itemLinesProvider;
 
-    public ItemLineController(ItemLineProvider itemLineProvider)
+    public ItemLinesController(ItemLinesProvider itemLinesProvider)
     {
-        _itemLineProvider = itemLineProvider;
+        _itemLinesProvider = itemLinesProvider;
     }
 
     [HttpPost()]
     public IActionResult Create([FromBody] ItemLineRequest req)
     {
-        ItemLine? newItemLine = _itemLineProvider.Create(req);
+        ItemLine? newItemLine = _itemLinesProvider.Create(req);
         if (newItemLine == null) throw new ApiFlowException("Saving new Item Line failed.");
 
         return Ok(new

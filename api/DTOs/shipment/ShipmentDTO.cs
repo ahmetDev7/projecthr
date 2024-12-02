@@ -8,7 +8,7 @@ namespace DTO.Shipment
     public class ShipmentRequest : BaseDTO
     {
         [JsonPropertyName("order_ids")]
-        public Guid? OrderIds { get; set; }
+        public List<Guid?> OrderIds { get; set; }
 
         [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }
@@ -74,7 +74,7 @@ namespace DTO.Shipment
         public Guid Id { get; set; }
 
         [JsonPropertyName("order_ids")]
-        public Guid? OrderIds { get; set; }
+        public List<Guid?> OrderIds { get; set; }
 
         [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }

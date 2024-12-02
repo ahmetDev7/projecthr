@@ -10,6 +10,8 @@ public class ItemTypesProvider : BaseProvider<ItemType>
         _itemTypeValidator = validator;
     }
 
+    public override ItemType? GetById(Guid id) => _db.ItemTypes.FirstOrDefault(it => it.Id == id);
+
     public override ItemType? Create(BaseDTO createValues)
     {
         ItemTypeRequest? req = createValues as ItemTypeRequest;

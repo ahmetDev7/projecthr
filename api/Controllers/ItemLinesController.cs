@@ -32,6 +32,17 @@ public class ItemLinesController : ControllerBase
         });
     }
 
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_itemLinesProvider.GetAll().Select(il => new ItemLineResponse
+    {
+        Id = il.Id,
+        Name = il.Name,
+        Description = il.Description,
+        CreatedAt = il.CreatedAt,
+        UpdatedAt = il.UpdatedAt
+    }).ToList());
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

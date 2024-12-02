@@ -8,6 +8,12 @@ Content-Type: application/json
 }
 ###
 
+### GET ALL ITEM LINES
+GET http://localhost:5000/api/itemlines
+Content-Type: application/json
+
+###
+
 ### GET ITEM LINE BY ID
 GET http://localhost:5000/api/itemlines/04ccd936-c43b-4568-aa5a-b23093c0b8d8
 Content-Type: application/json

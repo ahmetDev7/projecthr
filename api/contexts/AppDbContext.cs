@@ -25,5 +25,18 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Shipment>().Property(s => s.ShipmentStatus).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.PaymentType).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.TransferMode).HasConversion<string>();
+        // Relatie ShipToClient
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.ShipToClient)
+            .WithMany(c => c.ShipToOrders)
+            .HasForeignKey(o => o.ShipToClientId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relatie BillToClient
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.BillToClient)
+            .WithMany(c => c.BillToOrders)
+            .HasForeignKey(o => o.BillToClientId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

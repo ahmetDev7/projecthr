@@ -14,4 +14,7 @@ public class Client : BaseModel
     [Required]
     public Guid? AddressId { get; set; }
     public Address? Address { get; set; }
+    public ICollection<Order>? ShipToOrders { get; set; }
+    public ICollection<Order>? BillToOrders { get; set; }
+
 }

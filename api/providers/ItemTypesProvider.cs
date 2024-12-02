@@ -46,7 +46,17 @@ public class ItemTypesProvider : BaseProvider<ItemType>
         ValidateModel(foundItemType);
         _db.ItemTypes.Update(foundItemType);
         SaveToDBOrFail();
+    }
 
+    public override ItemType? Delete(Guid id)
+    {
+        ItemType? foundItemType = _db.ItemTypes.FirstOrDefault(it => it.Id == id);
+        if (foundItemType == null) return null;
+
+        if (_db.Items.Any(i => i.ItemTypeId == id)) throw new ApiFlowException("The item type has associated items. Please remove these associations before deleting the item type.");
+
+        _db.ItemTypes.Remove(foundItemType);
+        SaveToDBOrFail();
         return foundItemType;
     }
 

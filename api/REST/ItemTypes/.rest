@@ -16,6 +16,10 @@ Content-Type: application/json
     "name" : "1",
     "description": "1"
 }
+
+### DELETE ITEM TYPE
+DELETE http://localhost:5000/api/ItemTypes/cc3329d0-6414-45c7-b4d9-a1b9c2c4ba6e
+Content-Type: application/json
 ###
 
 ### GET ITEM TYPE BY ID

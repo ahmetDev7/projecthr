@@ -51,5 +51,17 @@ public class ItemLinesProvider : BaseProvider<ItemLine>
         return foundItemLine;
     }
 
+    public override ItemLine? Delete(Guid id)
+    {
+        ItemLine? foundItemLine = _db.ItemLines.FirstOrDefault(il => il.Id == id);
+        if (foundItemLine == null) return null;
+
+        if (_db.Items.Any(i => i.ItemLineId == id)) throw new ApiFlowException("The item line has associated items. Please remove these associations before deleting the item line.");
+
+        _db.ItemLines.Remove(foundItemLine);
+        SaveToDBOrFail();
+        return foundItemLine;
+    }
+
     protected override void ValidateModel(ItemLine model) => _itemLineValidator.ValidateAndThrow(model);
 }

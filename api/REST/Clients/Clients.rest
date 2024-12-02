@@ -63,3 +63,7 @@ Content-Type: application/json
   "address_id": "21903d3a-3d0f-4949-bf0d-e2a84cd1a450"
 }
 ###
+
+### GetById Clients
+GET http://localhost:5000/api/clients/63fdf277-26e9-451d-a898-3b0876c5b2e2
+###

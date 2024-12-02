@@ -48,6 +48,7 @@ public class Order : BaseModel
     public ICollection<Shipment>? Shipments { get; set; }
     public Guid? ShipToClientId { get; set; }
     public Client? ShipToClient { get; set; }
+    [Required]
     public Guid? BillToClientId { get; set; } 
     public Client? BillToClient { get; set; } 
 

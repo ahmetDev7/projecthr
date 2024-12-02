@@ -27,5 +27,24 @@ public class ItemLinesProvider : BaseProvider<ItemLine>
         return newItemLine;
     }
 
+    public override ItemLine? Update(Guid id, BaseDTO updatedValues)
+    {
+        ItemLineRequest? req = updatedValues as ItemLineRequest;
+        if (req == null) throw new ApiFlowException("Could not process update item line request. Update new item group failed.");
+
+        ItemLine? foundItemLine = _db.ItemLines.FirstOrDefault(il => il.Id == id);
+        if (foundItemLine == null) return null;
+
+        foundItemLine.Name = req.Name;
+        foundItemLine.Description = req.Description;
+        foundItemLine.SetUpdatedAt();
+
+        ValidateModel(foundItemLine);
+        _db.ItemLines.Update(foundItemLine);
+        SaveToDBOrFail();
+
+        return foundItemLine;
+    }
+
     protected override void ValidateModel(ItemLine model) => _itemLineValidator.ValidateAndThrow(model);
 }

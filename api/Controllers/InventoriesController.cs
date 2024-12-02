@@ -16,8 +16,9 @@ public class InventoriesController : ControllerBase
     [HttpPost()]
     public IActionResult Create([FromBody] InventoryRequest req)
     {
-        if(req.ItemId.HasValue && _inventoriesProvider.GetInventoryByItemId(req.ItemId.Value) != null){
-            return BadRequest(new {message = $"Inventory already exists for ItemId '{req.ItemId.Value}'"});
+        if (req.ItemId.HasValue && _inventoriesProvider.GetInventoryByItemId(req.ItemId.Value) != null)
+        {
+            return BadRequest(new { message = $"Inventory already exists for ItemId '{req.ItemId.Value}'" });
         }
 
         Inventory? newInventory = _inventoriesProvider.Create(req);
@@ -32,6 +33,7 @@ public class InventoriesController : ControllerBase
             message = "Inventory created!",
             created_inventory = new InventoryResponse
             {
+                Id = newInventory.Id,
                 Description = newInventory.Description,
                 ItemReference = newInventory.ItemReference,
                 ItemId = newInventory.ItemId,
@@ -49,4 +51,25 @@ public class InventoriesController : ControllerBase
             }
         });
     }
+
+    [HttpGet]
+    public IActionResult ShowAll() => Ok(_inventoriesProvider.GetAll().Select(i => new InventoryResponse()
+        {
+            Id = i.Id,
+            Description = i.Description,
+            ItemReference = i.ItemReference,
+            ItemId = i.ItemId,
+            Locations = _locationsProvider.GetLocationsByInventoryId(i.Id).Select(l => new InventoryLocation()
+            {
+                LocationId = l.Id,
+                OnHand = l.OnHand
+            }).ToList(),
+            TotalOnHand = _inventoriesProvider.CalculateTotalOnHand(i.Id),
+            TotalExpected = _inventoriesProvider.CalculateTotalExpected(),
+            TotalOrdered = _inventoriesProvider.CalculateTotalOrdered(),
+            TotalAllocated = _inventoriesProvider.CalculateTotalAllocated(),
+            TotalAvailable = _inventoriesProvider.CalculateTotalAvailable(),
+            CreatedAt = i.CreatedAt,
+            UpdatedAt = i.UpdatedAt,
+        }).ToList());
 }

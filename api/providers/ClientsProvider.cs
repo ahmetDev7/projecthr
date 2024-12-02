@@ -38,6 +38,19 @@ public class ClientsProvider : BaseProvider<Client>
 
         return newClient;
     }
+    public override Client? Delete(Guid id)
+    {
+        Client? foundClient = _db.Clients.FirstOrDefault(c => c.Id == id);
+
+        if (foundClient == null) return null;
+
+        _db.Clients.Remove(foundClient);
+
+        SaveToDBOrFail();
+
+        return foundClient;
+    }
+
 
     protected override void ValidateModel(Client model) => _clientValidator.ValidateAndThrow(model);
 }

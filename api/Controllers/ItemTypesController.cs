@@ -33,6 +33,42 @@ public class ItemTypesController : ControllerBase
         });
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ItemTypeRequest req){
+        ItemType? updatedItemType = _itemTypesProvider.Update(id,req);
+        if(updatedItemType == null) return NotFound(new {message = $"Item Type not found for id '{id}'"});
+        
+        return Ok(new {
+            message = "Item Type updated!", 
+            updated_item_type = new ItemTypeResponse {
+                Id = updatedItemType.Id, 
+                Name = updatedItemType.Name, 
+                Description = updatedItemType.Description,
+                CreatedAt = updatedItemType.CreatedAt,
+                UpdatedAt = updatedItemType.UpdatedAt
+                }
+            }
+        );
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        ItemType? deletedItemType = _itemTypesProvider.Delete(id);
+        if (deletedItemType == null) throw new ApiFlowException($"Item Type not found for id '{id}'");
+
+        return Ok(new {
+            message = "Item Type deleted!",
+            deleted_item_type = new ItemTypeResponse{
+            Id = deletedItemType.Id,
+            Name = deletedItemType.Name,
+            Description = deletedItemType.Description,
+            CreatedAt = deletedItemType.CreatedAt,
+            UpdatedAt = deletedItemType.UpdatedAt
+            }
+        });
+    }
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

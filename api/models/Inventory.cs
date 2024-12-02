@@ -12,4 +12,6 @@ public class Inventory : BaseModel
     public Guid? ItemId { get; set; }
 
     public Item? Item { get; set; }
+
+    public ICollection<Location>? Locations { get; set; } // Navigation property for Items
 }

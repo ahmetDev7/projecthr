@@ -3,21 +3,22 @@ POST http://localhost:5000/api/shipments
 Content-Type: application/json
 
 {
-  "order_date": "2023-11-19T14:12:33.807Z",
+  "order_ids": ["4f82da38-7048-4c70-b7d6-e89c3752e094", "6a04d058-d3cf-4174-9663-7a5e8413d57d"],
   "request_date": "2024-11-19T14:12:33.807Z",
   "shipment_date": "2024-11-19T14:12:33.807Z",
-  "shipment_status": "Delivered",
+  "shipment_type": "I",
+  "shipment_status": "Deliverd",
   "notes": "geen notities",
   "carrier_code": "123",
   "carrier_description": "description",
   "service_code": "321",
-  "payment_type": "IDeal",
-  "transfer_mode": "I",
+  "payment_type": "Automatic",
+  "transfer_mode": "Air",
   "total_package_count": 3,
   "total_package_weight": 3.4,
   "items": [
     {
-      "item_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "item_id": "389a0b1a-c7da-4ad8-8aeb-972af2829c9d",
       "amount": 2
     }
   ]
@@ -39,4 +40,8 @@ Content-Type: application/json
 
 ### GET SHIPMENT BY ID (change ID to existing ID in your database)
 GET http://localhost:5000/api/shipments/85e299a8-71e3-4c6b-baf5-d0112129a8c5
+Content-Type: application/json
+
+### GET ALL ORDERS FOR SHIPMENT (change ID to existing ID in your database)
+GET http://localhost:5000/api/shipments/a92e175c-b8be-4582-8600-6d8af394c90a/orders
 Content-Type: application/json

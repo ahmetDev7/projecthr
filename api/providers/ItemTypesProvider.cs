@@ -31,6 +31,23 @@ public class ItemTypesProvider : BaseProvider<ItemType>
         return newItemType;
     }
 
+    public override ItemType? Update(Guid id, BaseDTO updatedValues)
+    {
+        ItemTypeRequest? req = updatedValues as ItemTypeRequest;
+        if (req == null) throw new ApiFlowException("Could not process update item type request. Update new item group failed.");
+
+        ItemType? foundItemType = _db.ItemTypes.FirstOrDefault(it => it.Id == id);
+        if (foundItemType == null) return null;
+
+        foundItemType.Name = req.Name;
+        foundItemType.Description = req.Description;
+        foundItemType.SetUpdatedAt();
+
+        ValidateModel(foundItemType);
+        _db.ItemTypes.Update(foundItemType);
+        SaveToDBOrFail();
+    }
+
     public override ItemType? Delete(Guid id)
     {
         ItemType? foundItemType = _db.ItemTypes.FirstOrDefault(it => it.Id == id);

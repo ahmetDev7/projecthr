@@ -8,6 +8,15 @@ Content-Type: application/json
 }
 ###
 
+### UPDATE ITEM TYPE
+PUT http://localhost:5000/api/ItemTypes/488d6d27-80d4-4187-968e-e28b468c1b14
+Content-Type: application/json
+
+{
+    "name" : "1",
+    "description": "1"
+}
+
 ### DELETE ITEM TYPE
 DELETE http://localhost:5000/api/ItemTypes/cc3329d0-6414-45c7-b4d9-a1b9c2c4ba6e
 Content-Type: application/json
@@ -22,4 +31,3 @@ Content-Type: application/json
 GET http://localhost:5000/api/itemtypes
 Content-Type: application/json
 ###
-

@@ -31,5 +31,7 @@ public class ItemTypesProvider : BaseProvider<ItemType>
         return newItemType;
     }
 
+    public List<Item> GetRelatedItemsById(Guid itemTypeId) => _db.Items.Where(i => i.ItemTypeId == itemTypeId).ToList();
+
     protected override void ValidateModel(ItemType model) => _itemTypeValidator.ValidateAndThrow(model);
 }

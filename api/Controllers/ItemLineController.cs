@@ -18,12 +18,15 @@ public class ItemLineController : ControllerBase
         ItemLine? newItemLine = _itemLineProvider.Create(req);
         if (newItemLine == null) throw new ApiFlowException("Saving new Item Line failed.");
 
-
-        return Ok(new ItemLineResponse
+        return Ok(new
         {
-            Id = newItemLine.Id,
-            Name = newItemLine.Name,
-            Description = newItemLine.Description
+            message = "Item Line created!",
+            new_item_line = new ItemLineResponse
+            {
+                Id = newItemLine.Id,
+                Name = newItemLine.Name,
+                Description = newItemLine.Description
+            }
         });
     }
 }

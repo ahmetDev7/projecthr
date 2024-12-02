@@ -100,6 +100,7 @@ builder.Services.AddTransient<ItemGroupProvider>();
 builder.Services.AddTransient<OrderProvider>();
 builder.Services.AddTransient<ShipmentProvider>();
 builder.Services.AddTransient<SupplierProvider>();
+builder.Services.AddTransient<InventoriesProvider>();
 builder.Services.AddTransient<ItemLinesProvider>();
 
 builder.Services.AddScoped<IValidator<Supplier>, SupplierValidator>();
@@ -109,10 +110,12 @@ builder.Services.AddScoped<IValidator<ItemGroup>, ItemGroupValidator>();
 builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
 builder.Services.AddScoped<IValidator<Shipment>, ShipmentValidator>();
 builder.Services.AddScoped<IValidator<Contact>, ContactValidator>();
+builder.Services.AddScoped<IValidator<Inventory>, InventoryValidator>();
 builder.Services.AddScoped<IValidator<ItemLine>, ItemLineValidator>();
 
 
 builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
+builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();
 
 builder.Services.AddControllers();
 

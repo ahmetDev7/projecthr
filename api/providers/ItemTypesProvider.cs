@@ -12,6 +12,8 @@ public class ItemTypesProvider : BaseProvider<ItemType>
 
     public override ItemType? GetById(Guid id) => _db.ItemTypes.FirstOrDefault(it => it.Id == id);
 
+    public override List<ItemType>? GetAll() => _db.ItemTypes.ToList();
+
     public override ItemType? Create(BaseDTO createValues)
     {
         ItemTypeRequest? req = createValues as ItemTypeRequest;

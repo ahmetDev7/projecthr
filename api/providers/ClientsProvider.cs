@@ -15,7 +15,8 @@ public class ClientsProvider : BaseProvider<Client>
         _contactProvider = contactProvider;
         _addressProvider = addressProvider;
     }
-
+    public override List<Client>? GetAll() => _db.Clients.ToList();
+    
     public override Client? Create(BaseDTO createValues)
     {
         ClientRequest request = createValues as ClientRequest ?? throw new ApiFlowException("Could not process create client request. Save new client failed.");

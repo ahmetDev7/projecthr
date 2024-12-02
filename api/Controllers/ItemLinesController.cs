@@ -31,4 +31,21 @@ public class ItemLinesController : ControllerBase
             }
         });
     }
+
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        ItemLine? foundItemLine = _itemLinesProvider.GetById(id);
+
+        return (foundItemLine == null)
+            ? NotFound(new { message = $"Item Line not found for id '{id}'" })
+            : Ok(new ItemLineResponse
+            {
+                Id = foundItemLine.Id,
+                Name = foundItemLine.Name,
+                Description = foundItemLine.Description,
+                CreatedAt = foundItemLine.CreatedAt,
+                UpdatedAt = foundItemLine.UpdatedAt
+            });
+    }
 }

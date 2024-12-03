@@ -67,3 +67,13 @@ Content-Type: application/json
 ### GetAll Clients
 GET http://localhost:5000/api/clients
 ###
+# Update Client with Contact ID and Address ID
+PUT http://localhost:5000/api/clients/fa5946ab-2ab8-4274-a2eb-b717855f8dca
+Content-Type: application/json
+
+{
+  "name": "Updated Client D",
+  "contact_id": "6d1ba448-0a30-4f75-b10d-1f2cac3a9b9d",
+  "address_id": "0624bfef-1f6a-4a15-a0f6-930c7aa46c30"
+}
+###

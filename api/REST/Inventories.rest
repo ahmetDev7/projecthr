@@ -5,20 +5,32 @@ Content-Type: application/json
 {
   "description": "INVENTORY DESCRIPTION",
   "item_reference": "INVENTORY ITEM REFERENCE",
-  "item_id": "94902552-0fdb-4e06-baff-ffea729b27d0",
+  "item_id": "17baad4b-7c6e-41df-b3fd-79294cbd9f76",
   "locations": [
     {
-      "location_id": "4c83c87f-abe2-47fb-a580-d45078f6177f",
+      "location_id": "fa2dc5a5-c1cd-4d47-822a-ee6d6dea2524",
       "on_hand": 80
     },
     {
-      "location_id": "825095f2-5c28-4bef-addb-f5b5eca98143",
+      "location_id": "151c7da5-6ade-42cf-a810-0e3f6b4977d3",
       "on_hand": 60
     },
     {
-      "location_id": "c9ce2121-1692-4d1e-a9c3-861d33ffe7da",
+      "location_id": "4cd61b27-ed9d-42f4-b3f8-9355dde79119",
       "on_hand": 20
     }
   ]
 }
+###
+
+GET http://localhost:5000/api/inventories
+Content-Type: application/json
+###
+
+GET http://localhost:5000/api/inventories/be06eec8-ed7f-4596-80f2-838050a09882
+Content-Type: application/json
+###
+
+DELETE http://localhost:5000/api/inventories/9eb5298d-a6ee-41dd-a46c-2e6e60212df3
+Content-Type: application/json
 ###

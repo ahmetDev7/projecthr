@@ -52,6 +52,38 @@ public class ItemsController : ControllerBase
         });
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ItemRequest req)
+    {
+        Item? updatedItem = _itemsProvider.Update(id, req);
+
+        return updatedItem == null
+            ? NotFound(new { message = $"Item not found for id '{id}'" })
+            : Ok(new
+            {
+                message = "Item updated!",
+                updated_item = new ItemResponse
+                {
+                    Id = updatedItem.Id,
+                    Code = updatedItem.Code,
+                    Description = updatedItem.Description,
+                    ShortDescription = updatedItem.ShortDescription,
+                    UpcCode = updatedItem.UpcCode,
+                    ModelNumber = updatedItem.ModelNumber,
+                    CommodityCode = updatedItem.CommodityCode,
+                    UnitPurchaseQuantity = updatedItem.UnitPurchaseQuantity,
+                    UnitOrderQuantity = updatedItem.UnitOrderQuantity,
+                    PackOrderQuantity = updatedItem.PackOrderQuantity,
+                    SupplierReferenceCode = updatedItem.SupplierReferenceCode,
+                    SupplierPartNumber = updatedItem.SupplierPartNumber,
+                    ItemGroupId = updatedItem.ItemGroupId,
+                    ItemLineId = updatedItem.ItemLineId,
+                    ItemTypeId = updatedItem.ItemTypeId,
+                    SupplierId = updatedItem.SupplierId,
+                }
+            });
+    }
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

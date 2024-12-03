@@ -169,4 +169,27 @@ public class ItemsController : ControllerBase
             UpdatedAt = foundInventory.UpdatedAt,
         });
     }
+
+    [HttpGet("{id}/inventories/totals")]
+    public IActionResult GetInventoriesTotals(Guid id)
+    {
+        Inventory? foundInventory = _itemsProvider.GetInventory(id);
+        if (foundInventory == null)
+        {
+            return NotFound(new { message = "The specified item is not currently associated with any inventory." });
+        }
+
+        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
+
+        return Ok(
+            new
+            {
+                total_on_hand = calculatedValues["TotalOnHand"],
+                total_expected = calculatedValues["TotalExpected"],
+                total_orderd = calculatedValues["TotalOrdered"],
+                total_allocated = calculatedValues["TotalAllocated"],
+                total_available = calculatedValues["TotalAvailable"],
+            }
+        );
+    }
 }

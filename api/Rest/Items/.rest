@@ -3,8 +3,13 @@ GET http://localhost:5000/api/items/8aa1448f-9672-4a19-84d6-37bd5224e6d7
 Content-Type: application/json
 ###
 
-### GET INVENTORIES BASED ON SPECIFIC ITME ID
+### GET INVENTORIES BASED ON SPECIFIC ITEM ID
 GET http://localhost:5000/api/items/d5c91d5f-3a91-4baf-8505-07401913b734/inventories
+Content-Type: application/json
+###
+
+### GET INVENTORIES TOTALS BASED ON SPECIFIC ITEM ID 
+GET http://localhost:5000/api/items/d5c91d5f-3a91-4baf-8505-07401913b734/inventories/totals
 Content-Type: application/json
 ###
 

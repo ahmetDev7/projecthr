@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241202115645_create_inventory_tbl_relating_to_location_and_item")]
+    partial class create_inventory_tbl_relating_to_location_and_item
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,39 +69,6 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("Client", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("AddressId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ContactId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Contact", b =>
@@ -356,10 +326,6 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("BillToClientId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -386,9 +352,6 @@ namespace api.Migrations
                     b.Property<DateTime?>("RequestDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("ShipToClientId")
-                        .HasColumnType("uuid");
-
                     b.Property<decimal?>("TotalAmount")
                         .HasColumnType("numeric");
 
@@ -409,10 +372,6 @@ namespace api.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BillToClientId");
-
-                    b.HasIndex("ShipToClientId");
 
                     b.HasIndex("WarehouseId");
 
@@ -524,8 +483,7 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("Amount")
-                        .IsRequired()
+                    b.Property<int>("Amount")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -626,25 +584,6 @@ namespace api.Migrations
                     b.ToTable("Warehouses");
                 });
 
-            modelBuilder.Entity("Client", b =>
-                {
-                    b.HasOne("Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-
-                    b.Navigation("Contact");
-                });
-
             modelBuilder.Entity("Inventory", b =>
                 {
                     b.HasOne("Item", "Item")
@@ -688,9 +627,8 @@ namespace api.Migrations
             modelBuilder.Entity("Location", b =>
                 {
                     b.HasOne("Inventory", "Inventory")
-                        .WithMany("Locations")
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("InventoryId");
 
                     b.HasOne("Warehouse", "Warehouse")
                         .WithMany("Locations")
@@ -705,26 +643,11 @@ namespace api.Migrations
 
             modelBuilder.Entity("Order", b =>
                 {
-                    b.HasOne("Client", "BillToClient")
-                        .WithMany("BillToOrders")
-                        .HasForeignKey("BillToClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Client", "ShipToClient")
-                        .WithMany("ShipToOrders")
-                        .HasForeignKey("ShipToClientId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("BillToClient");
-
-                    b.Navigation("ShipToClient");
 
                     b.Navigation("Warehouse");
                 });
@@ -815,21 +738,9 @@ namespace api.Migrations
                     b.Navigation("Warehouses");
                 });
 
-            modelBuilder.Entity("Client", b =>
-                {
-                    b.Navigation("BillToOrders");
-
-                    b.Navigation("ShipToOrders");
-                });
-
             modelBuilder.Entity("Contact", b =>
                 {
                     b.Navigation("Warehouses");
-                });
-
-            modelBuilder.Entity("Inventory", b =>
-                {
-                    b.Navigation("Locations");
                 });
 
             modelBuilder.Entity("Item", b =>

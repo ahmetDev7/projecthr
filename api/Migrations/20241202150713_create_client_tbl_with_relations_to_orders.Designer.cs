@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241202150713_create_client_tbl_with_relations_to_orders")]
+    partial class create_client_tbl_with_relations_to_orders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -688,9 +691,8 @@ namespace api.Migrations
             modelBuilder.Entity("Location", b =>
                 {
                     b.HasOne("Inventory", "Inventory")
-                        .WithMany("Locations")
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("InventoryId");
 
                     b.HasOne("Warehouse", "Warehouse")
                         .WithMany("Locations")
@@ -825,11 +827,6 @@ namespace api.Migrations
             modelBuilder.Entity("Contact", b =>
                 {
                     b.Navigation("Warehouses");
-                });
-
-            modelBuilder.Entity("Inventory", b =>
-                {
-                    b.Navigation("Locations");
                 });
 
             modelBuilder.Entity("Item", b =>

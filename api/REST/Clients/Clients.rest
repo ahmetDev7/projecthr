@@ -1,0 +1,69 @@
+# Create Client with Contact Body and Address Body
+POST http://localhost:5000/api/clients
+Content-Type: application/json
+
+{
+  "name": "Client A",
+  "contact": {
+    "name": "John Doe",
+    "phone": "+1234567890",
+    "email": "johndoe@example.com"
+  },
+  "address": {
+    "street": "Main Street",
+    "house_number": "10",
+    "zipcode": "12345",
+    "city": "Metropolis",
+    "province": "Central",
+    "country_code": "US"
+  }
+}
+###
+
+# Create Client with Address ID and Contact Body
+POST http://localhost:5000/api/clients
+Content-Type: application/json
+
+{
+  "name": "Client B",
+  "contact": {
+    "name": "Jane Doe",
+    "phone": "+9876543210",
+    "email": "janedoe@example.com"
+  },
+  "address_id": "b20a737d-b577-4dc9-a7ea-b0bf93d45eda"
+}
+###
+
+# Create Client with Contact ID and Address Body
+POST http://localhost:5000/api/clients
+Content-Type: application/json
+
+{
+  "name": "Client C",
+  "contact_id": "a2a2bb62-0398-4b76-a80e-0f509154906f",
+  "address": {
+    "street": "Second Street",
+    "house_number": "42",
+    "zipcode": "54321",
+    "city": "Smallville",
+    "province": "East",
+    "country_code": "US"
+  }
+}
+###
+
+# Create Client with Contact ID and Address ID
+POST http://localhost:5000/api/clients
+Content-Type: application/json
+
+{
+  "name": "Client D",
+  "contact_id": "a2a2bb62-0398-4b76-a80e-0f509154906f",
+  "address_id": "21903d3a-3d0f-4949-bf0d-e2a84cd1a450"
+}
+###
+
+### GetAll Clients
+GET http://localhost:5000/api/clients
+###

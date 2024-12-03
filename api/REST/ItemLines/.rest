@@ -19,6 +19,11 @@ Content-Type: application/json
 }
 ###
 
+### DELETE ITEM LINE
+DELETE http://localhost:5000/api/ItemLines/42bca5a7-1bda-48cb-8008-8884b4a208ab
+Content-Type: application/json
+###
+
 ### GET ALL ITEM LINES
 GET http://localhost:5000/api/itemlines
 Content-Type: application/json

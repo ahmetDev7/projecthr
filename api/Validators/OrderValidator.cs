@@ -14,16 +14,29 @@ public class OrderValidator : AbstractValidator<Order>
         RuleFor(Order => Order.WarehouseId)
             .NotNull().WithMessage("warehouse_id required")
             .NotEmpty().WithMessage("warehouse_id cannot be empty.")
-            .Custom((warehouseId, context ) => {
+            .Custom((warehouseId, context) =>
+            {
                 if (!db.Warehouses.Any(w => w.Id == warehouseId))
                 {
                     context.AddFailure("warehouse_id", "The provided warehouse_id does not exist");
                 }
             });
+        RuleFor(Order => Order.BillToClientId)
+            .NotNull().WithMessage("bill_to_client required")
+            .NotEmpty().WithMessage("bill_to_client cannot be empty.")
+            .Custom((billToClientId, context) =>
+            {
+                if (billToClientId.HasValue && !db.Clients.Any(c => c.Id == billToClientId.Value))
+                {
+                    context.AddFailure("bill_to_client", "The provided bill_to_client does not exist");
+                }
+            });
+
         RuleFor(order => order.OrderItems)
             .NotNull().WithMessage("order_items required")
             .NotEmpty().WithMessage("order_items cannot be empty.")
-            .ForEach(orderItem => {
+            .ForEach(orderItem =>
+            {
                 orderItem.ChildRules(item =>
                 {
                     item.RuleFor(i => i.ItemId)
@@ -36,12 +49,22 @@ public class OrderValidator : AbstractValidator<Order>
                                 context.AddFailure("ItemId", $"The ItemId '{itemId}' does not exist in the database.");
                             }
                         });
-                    
+
                     item.RuleFor(i => i.Amount)
                         .GreaterThan(0).WithMessage("Amount must be greater than 0.");
                 });
             });
+
         //TODO:clientsId
+
+        RuleFor(Order => Order.ShipToClientId)
+            .Custom((shipToClientId, context) =>
+            {
+                if (shipToClientId.HasValue && shipToClientId != null && !db.Clients.Any(c => c.Id == shipToClientId.Value))
+                {
+                    context.AddFailure("ship_to_client", "The provided ship_to_client does not exist");
+                }
+            });
 
     }
 }

@@ -16,6 +16,8 @@ public class AppDbContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<Client> Clients { get; set; }
+    public DbSet<Inventory> Inventories { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,6 +26,27 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Shipment>().Property(s => s.ShipmentStatus).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.PaymentType).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.TransferMode).HasConversion<string>();
-    }
-}
 
+        // Relation to ShipToClient
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.ShipToClient)
+            .WithMany(c => c.ShipToOrders)
+            .HasForeignKey(o => o.ShipToClientId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relation to BillToClient
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.BillToClient)
+            .WithMany(c => c.BillToOrders)
+            .HasForeignKey(o => o.BillToClientId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relation to Locations | On delete set in Locations tbl InventoryId to null
+        modelBuilder.Entity<Inventory>()
+            .HasMany(i => i.Locations)
+            .WithOne(l => l.Inventory)
+            .HasForeignKey(l => l.InventoryId)
+            .OnDelete(DeleteBehavior.SetNull);
+    }
+
+}

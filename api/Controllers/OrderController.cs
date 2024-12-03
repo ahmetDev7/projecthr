@@ -38,6 +38,8 @@ public class OrdersController : ControllerBase
                 TotalTax = newOrder.TotalTax,
                 TotalSurcharge = newOrder.TotalSurcharge,
                 WarehouseId = newOrder.WarehouseId,
+                ShipToClientId = newOrder.ShipToClientId,
+                BillToClientId = newOrder.BillToClientId,
                 CreatedAt = newOrder.CreatedAt,
                 UpdatedAt = newOrder.UpdatedAt,
                 Items = newOrder.OrderItems?.Select(oi => new OrderItemRequest
@@ -54,7 +56,7 @@ public class OrdersController : ControllerBase
     public IActionResult Delete(Guid id)
     {
         Order? deletedOrder = _orderProvider.Delete(id);
-        
+
         return deletedOrder == null
             ? NotFound(new { message = $"Order not found for id '{id}'" })
             : Ok(new
@@ -75,6 +77,8 @@ public class OrdersController : ControllerBase
                     TotalTax = deletedOrder.TotalTax,
                     TotalSurcharge = deletedOrder.TotalSurcharge,
                     WarehouseId = deletedOrder.WarehouseId,
+                    ShipToClientId = deletedOrder.ShipToClientId,
+                    BillToClientId = deletedOrder.BillToClientId,
                     CreatedAt = deletedOrder.CreatedAt,
                     UpdatedAt = deletedOrder.UpdatedAt,
                     Items = deletedOrder.OrderItems?.Select(oi => new OrderItemRequest
@@ -110,6 +114,8 @@ public class OrdersController : ControllerBase
                     TotalTax = updatedOrder.TotalTax,
                     TotalSurcharge = updatedOrder.TotalSurcharge,
                     WarehouseId = updatedOrder.WarehouseId,
+                    ShipToClientId = updatedOrder.ShipToClientId,
+                    BillToClientId = updatedOrder.BillToClientId,
                     CreatedAt = updatedOrder.CreatedAt,
                     UpdatedAt = updatedOrder.UpdatedAt,
                     Items = updatedOrder.OrderItems?.Select(oi => new OrderItemRequest
@@ -136,6 +142,8 @@ public class OrdersController : ControllerBase
         TotalTax = o.TotalTax,
         TotalSurcharge = o.TotalSurcharge,
         WarehouseId = o.WarehouseId,
+        ShipToClientId = o.ShipToClientId,
+        BillToClientId = o.BillToClientId,
         CreatedAt = o.CreatedAt,
         UpdatedAt = o.UpdatedAt,
         Items = o.OrderItems?.Select(oi => new OrderItemRequest
@@ -169,6 +177,8 @@ public class OrdersController : ControllerBase
                     TotalTax = foundOrder.TotalTax,
                     TotalSurcharge = foundOrder.TotalSurcharge,
                     WarehouseId = foundOrder.WarehouseId,
+                    ShipToClientId = foundOrder.ShipToClientId,
+                    BillToClientId = foundOrder.BillToClientId,
                     CreatedAt = foundOrder.CreatedAt,
                     UpdatedAt = foundOrder.UpdatedAt,
                     Items = foundOrder.OrderItems?.Select(oi => new OrderItemRequest

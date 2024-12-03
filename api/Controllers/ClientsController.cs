@@ -54,6 +54,48 @@ public class ClientsController : ControllerBase
             }
         });
     }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ClientRequest req)
+    {
+        Client? updatedClient = _clientProvider.Update(id, req);
+
+        if (updatedClient == null) BadRequest(new { message = "Client update failed." });
+
+        ClientResponse updatedClientResponse = new ClientResponse
+        {
+            Id = updatedClient.Id,
+            Name = updatedClient.Name,
+            CreatedAt = updatedClient.CreatedAt,
+            UpdatedAt = updatedClient.UpdatedAt,
+
+            Contact = updatedClient.ContactId.HasValue ? new ContactResponse
+            {
+                Name = _contactProvider.GetById(updatedClient.ContactId.Value)?.Name,
+                Phone = _contactProvider.GetById(updatedClient.ContactId.Value)?.Phone,
+                Email = _contactProvider.GetById(updatedClient.ContactId.Value)?.Email
+            } : null,
+
+            Address = updatedClient.AddressId.HasValue ? new AddressResponse
+            {
+                Street = _addressProvider.GetById(updatedClient.AddressId.Value)?.Street,
+                HouseNumber = _addressProvider.GetById(updatedClient.AddressId.Value)?.HouseNumber,
+                HouseNumberExtension = _addressProvider.GetById(updatedClient.AddressId.Value)?.HouseNumberExtension,
+                ZipCode = _addressProvider.GetById(updatedClient.AddressId.Value)?.ZipCode,
+                City = _addressProvider.GetById(updatedClient.AddressId.Value)?.City,
+                Province = _addressProvider.GetById(updatedClient.AddressId.Value)?.Province,
+                CountryCode = _addressProvider.GetById(updatedClient.AddressId.Value)?.CountryCode
+            } : null
+        };
+
+        return Ok(new
+        {
+            message = "Client updated successfully!",
+            updated_client = updatedClientResponse
+        });
+    }
+
+    
     [HttpGet]
     public IActionResult ShowAll()
     {
@@ -85,4 +127,8 @@ public class ClientsController : ControllerBase
 
         return Ok(clientResponses);
     }
+}
+
+public class UpdateRequest
+{
 }

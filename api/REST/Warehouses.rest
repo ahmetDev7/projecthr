@@ -21,4 +21,20 @@ Content-Type: application/json
       "country_code": "US"
     }
   }
-  
+###
+
+
+### GET WAREHOUSES
+GET http://localhost:5000/api/warehouses
+Content-Type: application/json
+###
+
+### GET WAREHOUSE BY ID
+GET http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+Content-Type: application/json
+###
+
+### DELETE WAREHOUSE BY ID
+DELETE http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+Content-Type: application/json
+###

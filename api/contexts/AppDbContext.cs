@@ -53,17 +53,13 @@ public class AppDbContext : DbContext
             .HasMany(e => e.TransfersFrom)
             .WithOne(e => e.TransferFrom)
             .HasForeignKey(e => e.TransferFromId)
-            .OnDelete(DeleteBehavior.Restrict)  // Restrict deletion of Location if there are related Transfers
-            .IsRequired();
-
+            .OnDelete(DeleteBehavior.Restrict);  // Restrict deletion of Location if there are related Transfers
 
         modelBuilder.Entity<Location>()
             .HasMany(e => e.TransfersTo)
             .WithOne(e => e.TransferTo)
             .HasForeignKey(e => e.TransferToId)
-            .OnDelete(DeleteBehavior.Restrict) // Restrict deletion of Location if there are related Transfers
-            .IsRequired();
-
+            .OnDelete(DeleteBehavior.Restrict); // Restrict deletion of Location if there are related Transfers
 
 
         // Relation to ShipToClient

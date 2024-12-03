@@ -8,10 +8,8 @@ public class Transfer : BaseModel
 
     public string? Reference { get; set; }
 
-    [Required]
     public Guid? TransferFromId { get; set; }
 
-    [Required]
     public Guid? TransferToId { get; set; }
 
     [Required]

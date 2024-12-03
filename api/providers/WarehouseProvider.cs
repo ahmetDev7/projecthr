@@ -1,5 +1,4 @@
-using DTO.Contact;
-using DTOs;
+using Microsoft.EntityFrameworkCore;
 
 public class WarehouseProvider : ICRUD<Warehouse>
 {
@@ -14,9 +13,9 @@ public class WarehouseProvider : ICRUD<Warehouse>
         _contactProvider = contactProvider;
     }
 
-    public Warehouse? Create<IDTO>(IDTO newElement)
+    public Warehouse? Create<BaseDTO>(BaseDTO newElement)
     {
-        var request = newElement as WarehouseDTO ?? throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
+        var request = newElement as WarehouseRequest ?? throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
 
         if (request.ContactId == null && request.Contact == null)
             throw new ApiFlowException("Either contact_id or contact fields must be filled");
@@ -42,10 +41,13 @@ public class WarehouseProvider : ICRUD<Warehouse>
         _db.Warehouses.Add(newWarehouse);
         DBUtil.SaveChanges(_db, "Location not stored");
 
+        newWarehouse.Contact = relatedContact;
+        newWarehouse.Address = relatedAddress;
+
         return newWarehouse;
     }
 
-    private Contact? GetOrCreateContact(WarehouseDTO request)
+    private Contact? GetOrCreateContact(WarehouseRequest request)
     {
         if (request.ContactId != null)
             return _contactProvider.GetById(request.ContactId.Value)
@@ -56,7 +58,7 @@ public class WarehouseProvider : ICRUD<Warehouse>
                : throw new ApiFlowException("An error occurred while saving the warehouse contact");
     }
 
-    private Address? GetOrCreateAddress(WarehouseDTO request)
+    private Address? GetOrCreateAddress(WarehouseRequest request)
     {
         if (request.AddressId != null)
             return _addressProvider.GetById(request.AddressId.Value)
@@ -70,21 +72,17 @@ public class WarehouseProvider : ICRUD<Warehouse>
     public Warehouse? Delete(Guid id)
     {
         Warehouse? foundWarehouse = GetById(id);
-        if(foundWarehouse == null) return null;
+        if (foundWarehouse == null) return null;
 
         _db.Warehouses.Remove(foundWarehouse);
-        
         DBUtil.SaveChanges(_db, "Warehouse not deleted");
 
         return foundWarehouse;
     }
 
-    public List<Warehouse> GetAll()
-    {
-        return _db.Warehouses.ToList();
-    }
+    public List<Warehouse> GetAll() => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).ToList();
 
-    public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id);
+    public Warehouse? GetById(Guid id) => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).FirstOrDefault(l => l.Id == id);
 
     public Warehouse? Update<IDTO>(Guid id, IDTO dto)
     {

@@ -76,5 +76,8 @@ public class ItemsProvider : BaseProvider<Item>
         return existingItem;
     }
 
+
+    public Inventory? GetInventory(Guid itemId) => _db.Inventories.FirstOrDefault(i => i.ItemId == itemId);
+
     protected override void ValidateModel(Item model) => _itemValidator.ValidateAndThrow(model);
 }

@@ -76,11 +76,16 @@ public class WarehousesController : ControllerBase
     }).ToList());
 
     [HttpGet("{warehouseId}/locations")]
-    public IActionResult GetLocations(Guid warehouseId)
+    public IActionResult GetLocations(Guid warehouseId) => Ok(_warehouseProvider.GetLocationsByWarehouseId(warehouseId).Select(l => new LocationResponse
     {
-        var locations = _warehouseProvider.GetLocationsByWarehouseId(warehouseId);
-        return Ok(locations);
-    }
+        Id = l.Id,
+        Row = l.Row,
+        Rack = l.Rack,
+        Shelf = l.Shelf,
+        WarehouseId = l.WarehouseId,
+        CreatedAt = l.CreatedAt,
+        UpdatedAt = l.UpdatedAt
+    }));
 
     [HttpPost]
     public IActionResult CreateWarehouse([FromBody] WarehouseRequest request)

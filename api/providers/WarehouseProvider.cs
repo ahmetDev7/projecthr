@@ -89,13 +89,6 @@ public class WarehouseProvider : ICRUD<Warehouse>
         throw new NotImplementedException();
     }
 
-    public List<Location> GetLocationsByWarehouseId(Guid warehouseId)
-    {
-        var locationsOfspecificWarehouse = _db.Locations.Where(l => l.WarehouseId == warehouseId).ToList();
-        if (locationsOfspecificWarehouse.Count == 0)
-            throw new ApiFlowException("No locations found for this warehouse");
-
-        return locationsOfspecificWarehouse;
-    }
+    public List<Location> GetLocationsByWarehouseId(Guid warehouseId) => _db.Locations.Where(l => l.WarehouseId == warehouseId).ToList();
 
 }

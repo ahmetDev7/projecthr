@@ -12,15 +12,21 @@ public class TransferValidator : AbstractValidator<Transfer>
                 return;
             }
 
-            // check if transfer_from the locations exists
-            bool fromLocationExists = db.Locations.Any(l => l.Id == transfer.TransferFromId);
-            if (fromLocationExists == false)
-            {
-                context.AddFailure("items", "The specified transfer source location (transfer_from_id) does not exist, and as a result, the location for the provided items cannot be found.");
+            bool fromDock = transfer.TransferFromId == null;
+            bool toDock = transfer.TransferToId == null;
+            
+            if(fromDock == false){
+                // check if transfer_from the locations exists
+                bool fromLocationExists = db.Locations.Any(l => l.Id == transfer.TransferFromId);
+                if (fromLocationExists == false)
+                {
+                    context.AddFailure("items", "The specified transfer source location (transfer_from_id) does not exist, and as a result, the location for the provided items cannot be found.");
+                    return;
+                }
             }
 
             if(transfer.TransferItems == null || transfer.TransferItems.Count == 0) return;
-
+            
             foreach (TransferItem transferItem in transfer.TransferItems)
             {
                 Guid? itemId = transferItem.ItemId;
@@ -31,26 +37,29 @@ public class TransferValidator : AbstractValidator<Transfer>
                     context.AddFailure("items", $"The specified item (ID: '{itemId}') has no inventory, and therefore, no allocated location exists for this item.");
                     return;
                 }
-                
-                 // check if the inventory_id is on the location (from_transfer_id)
-                Location? locationOfTransferFrom = db.Locations.FirstOrDefault(l => l.InventoryId == foundInventory.Id && l.Id == transfer.TransferFromId);
-                if (locationOfTransferFrom == null) {
-                    context.AddFailure("items", $"The specified item (ID: '{itemId}') is not available at the transfer source location (Location ID: '{transfer.TransferFromId}').");
-                    return;
+
+                if(fromDock == false){
+                    // check if the inventory_id is on the location (from_transfer_id)
+                    Location? locationOfTransferFrom = db.Locations.FirstOrDefault(l => l.InventoryId == foundInventory.Id && l.Id == transfer.TransferFromId);
+                    if (locationOfTransferFrom == null) {
+                        context.AddFailure("items", $"The specified item (ID: '{itemId}') is not available at the transfer source location (Location ID: '{transfer.TransferFromId}').");
+                        return;
+                    }
+
+                    // check if the selected on_hand amount is lower or equal to the selected amount
+                    int? toTransferAmount = transferItem.Amount;  
+                    if(toTransferAmount > locationOfTransferFrom.OnHand){
+                        context.AddFailure("items", "The transfer amount exceeds the available inventory at the source location. Please adjust the amount to match the on-hand quantity.");
+                    }
                 }
 
-                // check if the inventory_id is null on the location (transfer_to_id)
-                bool locationToIsEmpty = db.Locations.Any(l => l.Id == transfer.TransferToId && l.InventoryId == null);
-                if (locationToIsEmpty == false){
-                    context.AddFailure("items", "The destination location (transfer_to_id) already contains an inventory item and cannot be used for this transfer.");
-                }      
-
-                // check if the selected on_hand amount is lower or equal to the selected amount
-                int? toTransferAmount = transferItem.Amount;  
-                if(toTransferAmount > locationOfTransferFrom.OnHand){
-                    context.AddFailure("items", "The transfer amount exceeds the available inventory at the source location. Please adjust the amount to match the on-hand quantity.");
+                if(toDock == false){
+                    // check if the inventory_id is null on the location (transfer_to_id)
+                    bool locationToIsEmpty = db.Locations.Any(l => l.Id == transfer.TransferToId && l.InventoryId == null);
+                    if (locationToIsEmpty == false){
+                        context.AddFailure("items", "The destination location (transfer_to_id) already contains an inventory item and cannot be used for this transfer.");
+                    }  
                 }
-
             }
         });
 

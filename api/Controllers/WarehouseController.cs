@@ -21,7 +21,7 @@ public class WarehousesController : ControllerBase
         return Ok(foundWarehouse);
     }
 
-    [HttpGet("all")]
+    [HttpGet()]
     public ActionResult<IEnumerable<Warehouse>> GetAll()
     {
         List<Warehouse>? allWarehouses = _warehouseProvider.GetAll();

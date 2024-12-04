@@ -22,6 +22,9 @@ public class InventoryRequest : BaseDTO
 [ApiExplorerSettings(IgnoreApi = true)]
 public class InventoryResponse : BaseDTO
 {
+    [JsonPropertyName("id")]
+    public Guid? Id { get; set; }
+
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 

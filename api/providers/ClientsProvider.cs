@@ -18,6 +18,8 @@ public class ClientsProvider : BaseProvider<Client>
 
     public override Client? GetById(Guid id)=>
     _db.Clients.FirstOrDefault(c => c.Id == id);
+
+    public override List<Client>? GetAll() => _db.Clients.ToList();
     
     public override Client? Create(BaseDTO createValues)
     {

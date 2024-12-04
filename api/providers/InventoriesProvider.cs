@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class InventoriesProvider : BaseProvider<Inventory>
 {
@@ -13,6 +14,10 @@ public class InventoriesProvider : BaseProvider<Inventory>
         _inventoryValidator = inventoryValidator;
         _inventoryRequestValidator = inventoryRequestValidator;
     }
+
+    public override Inventory? GetById(Guid id) => _db.Inventories.Include(i => i.Item).FirstOrDefault(i => i.Id == id);
+
+    public override List<Inventory>? GetAll() => _db.Inventories.Include(i => i.Item).ToList();
 
     public override Inventory? Create(BaseDTO createValues)
     {
@@ -35,6 +40,15 @@ public class InventoriesProvider : BaseProvider<Inventory>
         SaveToDBOrFail();
 
         return newInventory;
+    }
+
+    public override Inventory? Delete(Guid id){
+        Inventory? foundInventory = GetById(id);
+        if (foundInventory == null) return null;
+
+        _db.Inventories.Remove(foundInventory);
+        SaveToDBOrFail();
+        return foundInventory;
     }
 
     public Inventory? GetInventoryByItemId(Guid? itemId) => _db.Inventories.Where(i => i.ItemId == itemId).FirstOrDefault();

@@ -17,6 +17,7 @@ public class ClientsController : ControllerBase
         _contactProvider = contactProvider;
         _addressProvider = addressProvider;
     }
+
     [HttpPost()]
     public IActionResult Create([FromBody] ClientRequest req)
     {
@@ -94,4 +95,35 @@ public class ClientsController : ControllerBase
         });
     }
 
+    [HttpGet]
+    public IActionResult ShowAll()
+    {
+        List<Client>? clients = _clientProvider.GetAll();
+
+        List<ClientResponse>? clientResponses = clients?.Select(c => new ClientResponse
+        {
+            Id = c.Id,
+            Name = c.Name,
+            CreatedAt = c.CreatedAt,
+            UpdatedAt = c.UpdatedAt,
+            Contact = c.ContactId.HasValue ? new ContactResponse
+            {
+                Name = _contactProvider.GetById(c.ContactId.Value)?.Name,
+                Phone = _contactProvider.GetById(c.ContactId.Value)?.Phone,
+                Email = _contactProvider.GetById(c.ContactId.Value)?.Email
+            } : null,
+            Address = c.AddressId.HasValue ? new AddressResponse
+            {
+                Street = _addressProvider.GetById(c.AddressId.Value)?.Street,
+                HouseNumber = _addressProvider.GetById(c.AddressId.Value)?.HouseNumber,
+                HouseNumberExtension = _addressProvider.GetById(c.AddressId.Value)?.HouseNumberExtension,
+                ZipCode = _addressProvider.GetById(c.AddressId.Value)?.ZipCode,
+                City = _addressProvider.GetById(c.AddressId.Value)?.City,
+                Province = _addressProvider.GetById(c.AddressId.Value)?.Province,
+                CountryCode = _addressProvider.GetById(c.AddressId.Value)?.CountryCode
+            } : null
+        }).ToList();
+
+        return Ok(clientResponses);
+    }
 }

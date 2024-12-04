@@ -1,6 +1,5 @@
 using DTO.Client;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 public class ClientsProvider : BaseProvider<Client>
 {
@@ -38,6 +37,27 @@ public class ClientsProvider : BaseProvider<Client>
         SaveToDBOrFail();
 
         return newClient;
+    }
+
+    public override Client? Update(Guid id, BaseDTO updateValues)
+    {
+        ClientRequest request = updateValues as ClientRequest 
+            ?? throw new ApiFlowException("Could not process update client request. Update failed.");
+
+        Client? existingClient = _db.Clients.FirstOrDefault(c => c.Id == id);
+
+        existingClient.Name = request.Name;
+        existingClient.ContactId = request.ContactId;
+        existingClient.AddressId =  request.AddressId;
+
+
+        existingClient.SetUpdatedAt();
+        ValidateModel(existingClient);
+
+        _db.Clients.Update(existingClient);
+        SaveToDBOrFail();
+
+        return existingClient;
     }
 
     protected override void ValidateModel(Client model) => _clientValidator.ValidateAndThrow(model);

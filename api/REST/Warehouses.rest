@@ -159,3 +159,27 @@ Content-Type: application/json
 
 GET http://localhost:5000/api/Warehouses/7ef3414c-2bc5-4687-b551-b281e2781d4b/locations
 Content-Type: application/json
+
+###
+
+
+### GET WAREHOUSES
+GET http://localhost:5000/api/warehouses
+Content-Type: application/json
+###
+
+### GET WAREHOUSE BY ID
+GET http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+Content-Type: application/json
+###
+
+### GET LOCATIONS FROM WAREHOUSE
+GET http://localhost:5000/api/warehouses/0f3f0eb5-7671-4a20-b9ef-340a6aa37fa2/locations
+Content-Type: application/json
+###
+
+### DELETE WAREHOUSE BY ID
+DELETE http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+Content-Type: application/json
+
+###

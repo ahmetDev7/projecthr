@@ -1,6 +1,5 @@
-using DTO;
 using FluentValidation;
-using DTO.Contact;
+using Microsoft.EntityFrameworkCore;
 
 public class WarehouseProvider : BaseProvider<Warehouse>
 {
@@ -17,7 +16,7 @@ public class WarehouseProvider : BaseProvider<Warehouse>
         _WarehouseValidator = validator;
     }
 
-    public Warehouse? Create<IDTO>(IDTO newElement)
+    public Warehouse? Create<BaseDTO>(BaseDTO newElement)
     {
         var request = newElement as WarehouseRequest ?? throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
 
@@ -44,6 +43,9 @@ public class WarehouseProvider : BaseProvider<Warehouse>
 
         _db.Warehouses.Add(newWarehouse);
         DBUtil.SaveChanges(_db, "Location not stored");
+
+        newWarehouse.Contact = relatedContact;
+        newWarehouse.Address = relatedAddress;
 
         return newWarehouse;
     }
@@ -73,21 +75,17 @@ public class WarehouseProvider : BaseProvider<Warehouse>
     public Warehouse? Delete(Guid id)
     {
         Warehouse? foundWarehouse = GetById(id);
-        if(foundWarehouse == null) return null;
+        if (foundWarehouse == null) return null;
 
         _db.Warehouses.Remove(foundWarehouse);
-        
         DBUtil.SaveChanges(_db, "Warehouse not deleted");
 
         return foundWarehouse;
     }
 
-    public List<Warehouse> GetAll()
-    {
-        return _db.Warehouses.ToList();
-    }
+    public List<Warehouse> GetAll() => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).ToList();
 
-    public Warehouse? GetById(Guid id) => _db.Warehouses.FirstOrDefault(l => l.Id == id);
+    public Warehouse? GetById(Guid id) => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).FirstOrDefault(l => l.Id == id);
 
     public override Warehouse? Update(Guid id, BaseDTO updatedValues)
     {
@@ -112,14 +110,7 @@ public class WarehouseProvider : BaseProvider<Warehouse>
         return foundWarehouse;
     }
 
-    public List<Location> GetLocationsByWarehouseId(Guid warehouseId)
-    {
-        var locationsOfspecificWarehouse = _db.Locations.Where(l => l.WarehouseId == warehouseId).ToList();
-        if (locationsOfspecificWarehouse.Count == 0)
-            throw new ApiFlowException("No locations found for this warehouse");
-
-        return locationsOfspecificWarehouse;
-    }
+    public List<Location> GetLocationsByWarehouseId(Guid warehouseId) => _db.Locations.Where(l => l.WarehouseId == warehouseId).ToList();
 
     protected override void ValidateModel(Warehouse model) => _WarehouseValidator.ValidateAndThrow(model);
 }

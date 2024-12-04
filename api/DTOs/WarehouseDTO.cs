@@ -1,21 +1,18 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using DTO.Address;
 using DTO.Contact;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DTO;
 
 [ApiExplorerSettings(IgnoreApi = true)]
 public class WarehouseRequest : BaseDTO
 {
-    [Required]
     [JsonPropertyName("code")]
-    public string Code { get; set; }
+    public string? Code { get; set; }
 
-    [Required]
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("contact_id")]
     public Guid? ContactId { get; set; }
@@ -30,26 +27,33 @@ public class WarehouseRequest : BaseDTO
     public AddressRequest? Address { get; set; }
 }
 
+[ApiExplorerSettings(IgnoreApi = true)]
 public class WarehouseResponse : BaseDTO
 {
     [JsonPropertyName("id")]
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 
     [JsonPropertyName("code")]
-    public string Code { get; set; }
+    public string? Code { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
+
+    [JsonPropertyName("contact_id")]
+    public Guid? ContactId { get; set; }
 
     [JsonPropertyName("contact")]
-    public ContactResponse? Contact { get; set; }
+    public ContactRequest? Contact { get; set; }
+
+    [JsonPropertyName("address_id")]
+    public Guid? AddressId { get; set; }
 
     [JsonPropertyName("address")]
-    public AddressResponse? Address { get; set; }
+    public AddressRequest? Address { get; set; }
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 }

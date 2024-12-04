@@ -65,7 +65,7 @@ Content-Type: application/json
 ###
 
 ### GetById Clients
-GET http://localhost:5000/api/clients/63fdf277-26e9-451d-a898-3b0876c5b2e2
+GET http://localhost:5000/api/clients/17187ac9-34b3-4a94-b4c9-922c06606116
 ###
 
 ### GetAll Clients

@@ -34,12 +34,14 @@ public class ClientsController : ControllerBase
                 Name = newClient.Name,
                 Contact = new ContactResponse
                 {
+                    Id = newClient.ContactId,
                     Name = newClient.Contact?.Name,
                     Phone = newClient.Contact?.Phone,
                     Email = newClient.Contact?.Email
                 },
                 Address = new AddressResponse
                 {
+                    Id = newClient.AddressId,
                     Street = newClient.Address?.Street,
                     HouseNumber = newClient.Address?.HouseNumber,
                     HouseNumberExtension = newClient.Address?.HouseNumberExtension,
@@ -53,47 +55,41 @@ public class ClientsController : ControllerBase
             }
         });
     }
-    
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {
-        Client? client = _clientProvider.GetById(id);
+        Client? createdClient = _clientProvider.GetById(id);
 
-        if (client == null)
-        {
-            return NotFound(new { message = $"Client not found for id '{id}'" });
-        }
+        if (createdClient == null) return NotFound(new { message = "Client not found." });
 
-        ClientResponse clientResponse = new ClientResponse
+        return Ok(new ClientResponse
         {
-            Id = client.Id,
-            Name = client.Name,
-            CreatedAt = client.CreatedAt,
-            UpdatedAt = client.UpdatedAt,
-            Contact = client.ContactId.HasValue ? new ContactResponse
+            Id = createdClient.Id,
+            Name = createdClient.Name,
+            Contact = new ContactResponse
             {
-                Name = _contactProvider.GetById(client.ContactId.Value)?.Name,
-                Phone = _contactProvider.GetById(client.ContactId.Value)?.Phone,
-                Email = _contactProvider.GetById(client.ContactId.Value)?.Email
-            } : null,
-            Address = client.AddressId.HasValue ? new AddressResponse
+                Id = createdClient.AddressId,
+                Name = createdClient.Contact?.Name,
+                Phone = createdClient.Contact?.Phone,
+                Email = createdClient.Contact?.Email
+            },
+            Address = new AddressResponse
             {
-                Street = _addressProvider.GetById(client.AddressId.Value)?.Street,
-                HouseNumber = _addressProvider.GetById(client.AddressId.Value)?.HouseNumber,
-                HouseNumberExtension = _addressProvider.GetById(client.AddressId.Value)?.HouseNumberExtension,
-                ZipCode = _addressProvider.GetById(client.AddressId.Value)?.ZipCode,
-                City = _addressProvider.GetById(client.AddressId.Value)?.City,
-                Province = _addressProvider.GetById(client.AddressId.Value)?.Province,
-                CountryCode = _addressProvider.GetById(client.AddressId.Value)?.CountryCode
-            } : null
-        };
-
-        return Ok(new
-        {
-            message = "Client found!",
-            client = clientResponse
+                Id = createdClient.ContactId,
+                Street = createdClient.Address?.Street,
+                HouseNumber = createdClient.Address?.HouseNumber,
+                HouseNumberExtension = createdClient.Address?.HouseNumberExtension,
+                ZipCode = createdClient.Address?.ZipCode,
+                City = createdClient.Address?.City,
+                Province = createdClient.Address?.Province,
+                CountryCode = createdClient.Address?.CountryCode
+            },
+            CreatedAt = createdClient.CreatedAt,
+            UpdatedAt = createdClient.UpdatedAt
         });
     }
+
 
     [HttpGet]
     public IActionResult ShowAll()
@@ -104,24 +100,26 @@ public class ClientsController : ControllerBase
         {
             Id = c.Id,
             Name = c.Name,
+            Contact = new ContactResponse
+            {
+                Id = c.AddressId,
+                Name = c.Contact?.Name,
+                Phone = c.Contact?.Phone,
+                Email = c.Contact?.Email
+            },
+            Address = new AddressResponse
+            {
+                Id = c.ContactId,
+                Street = c.Address?.Street,
+                HouseNumber = c.Address?.HouseNumber,
+                HouseNumberExtension = c.Address?.HouseNumberExtension,
+                ZipCode = c.Address?.ZipCode,
+                City = c.Address?.City,
+                Province = c.Address?.Province,
+                CountryCode = c.Address?.CountryCode
+            },
             CreatedAt = c.CreatedAt,
-            UpdatedAt = c.UpdatedAt,
-            Contact = c.ContactId.HasValue ? new ContactResponse
-            {
-                Name = _contactProvider.GetById(c.ContactId.Value)?.Name,
-                Phone = _contactProvider.GetById(c.ContactId.Value)?.Phone,
-                Email = _contactProvider.GetById(c.ContactId.Value)?.Email
-            } : null,
-            Address = c.AddressId.HasValue ? new AddressResponse
-            {
-                Street = _addressProvider.GetById(c.AddressId.Value)?.Street,
-                HouseNumber = _addressProvider.GetById(c.AddressId.Value)?.HouseNumber,
-                HouseNumberExtension = _addressProvider.GetById(c.AddressId.Value)?.HouseNumberExtension,
-                ZipCode = _addressProvider.GetById(c.AddressId.Value)?.ZipCode,
-                City = _addressProvider.GetById(c.AddressId.Value)?.City,
-                Province = _addressProvider.GetById(c.AddressId.Value)?.Province,
-                CountryCode = _addressProvider.GetById(c.AddressId.Value)?.CountryCode
-            } : null
+            UpdatedAt = c.UpdatedAt
         }).ToList();
 
         return Ok(clientResponses);

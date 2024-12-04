@@ -44,5 +44,7 @@ public class ClientsProvider : BaseProvider<Client>
         return newClient;
     }
 
+    public List<Order> GetRelatedOrdersById(Guid clientId) => _db.Orders.Where(o => o.BillToClientId == clientId).ToList();
+
     protected override void ValidateModel(Client model) => _clientValidator.ValidateAndThrow(model);
 }

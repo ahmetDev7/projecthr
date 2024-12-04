@@ -15,7 +15,11 @@ public class ClientsProvider : BaseProvider<Client>
         _contactProvider = contactProvider;
         _addressProvider = addressProvider;
     }
-    public override List<Client>? GetAll() => _db.Clients.ToList();
+
+    public override Client? GetById(Guid id)=>
+    _db.Clients.Include(c => c.Contact).Include(c => c.Address).FirstOrDefault(c => c.Id == id);
+
+    public override List<Client>? GetAll() => _db.Clients.Include(c => c.Contact).Include(c => c.Address).ToList();
     
     public override Client? Create(BaseDTO createValues)
     {

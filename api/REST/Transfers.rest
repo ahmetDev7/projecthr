@@ -1,0 +1,21 @@
+### CREATE TRANSFER
+POST http://localhost:5000/api/transfers
+Content-Type: application/json
+
+{
+  "transfer_from_id": "286aea70-ee02-4894-8267-02bd924bdcf0",
+  "transfer_to_id": "bb9e031d-f518-44c8-b123-600fa3fe2bb9",
+  "reference": "TST-0273",
+  "transfer_status": "Pending",
+  "items": [
+    {
+      "itemId": "f48417dd-96e5-47d8-ba20-3ef8a4acc332",
+      "amount": 2
+    },
+    {
+      "itemId": "ac46b255-f4bf-4d23-a78d-3121bd2f0a81",
+      "amount":52
+    }
+  ]
+}
+###

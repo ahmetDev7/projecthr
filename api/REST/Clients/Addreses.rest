@@ -1,0 +1,13 @@
+POST http://localhost:5000/api/addresses
+Content-Type: application/json
+
+{
+  "street": "Main Street",
+  "house_number": "123",
+  "house_number_extension": "A",
+  "house_number_extension_extra": "Extra",
+  "zipcode": "12345",
+  "city": "Example City",
+  "province": "Example Province",
+  "country_code": "NL"
+}

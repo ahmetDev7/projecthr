@@ -87,6 +87,7 @@ Table items {
   item_line uuid [ref: > item_lines.id, null]
   item_group uuid [ref: > item_groups.id, null] 
   item_type uuid [ref: > item_types.id, null] 
+  created_by uuid [ref: > users.id, not null] // readonly after first insert
   created_at datetime [not null]
   updated_at datetime [not null]
 }
@@ -157,7 +158,7 @@ Table orders {
   ship_to_client uuid [ref: > clients.id, null]
   bill_to_client uuid [ref: > clients.id , not null]
   warehouse_id uuid [ref: > warehouses.id]
-  user_id uuid [ref: > users.id, not null]
+  created_by uuid [ref: > users.id, not null] // readonly after first insert
   created_at datetime [not null]
   updated_at datetime [not null]
 }
@@ -178,7 +179,7 @@ Table shipments {
   service_code varchar [not null]
   total_package_count int //NOTE calculated value
   total_package_weight decimal(10, 4) //NOTE calculated value // alles in KG en 4 cijfers achter de komma
-  user_id uuid [ref: > users.id, not null]
+  created_by uuid [ref: > users.id, not null] // readonly after first insert
   created_at datetime [not null]
   updated_at datetime [not null]
 }

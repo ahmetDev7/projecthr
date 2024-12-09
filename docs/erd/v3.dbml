@@ -1,0 +1,324 @@
+// Dit is de aangepaste versie van de ERD na overleg met de PO
+
+Table warehouses {
+  id uuid [pk]
+  code varchar [not null]
+  name varchar [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+  contact_id uuid [ref: > contacts.id, not null] 
+  address_id uuid [ref: > addresses.id , not null]
+}
+
+Table docks{
+  id uuid [pk]
+  warehouse_id uuid [ref: - warehouses.id, not null] // Foreign Key to warehouse
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+// max dock amount of items is 50
+Table dock_items {
+  id uuid [pk]
+  item_id uuid [ref: > items.id, not null]
+  dock_id uuid [ref: > docks.id, not null]
+  amount int [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table addresses {
+  id uuid [pk]
+  street varchar [not null]
+  house_number varchar [not null]
+  house_number_extension varchar
+  house_number_extension_extra varchar
+  zipcode varchar [not null]
+  city varchar [not null]
+  province varchar [not null]
+  country_code varchar [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table contacts {
+  id uuid [pk]
+  name varchar [not null]
+  phone varchar [not null]
+  email varchar [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table locations {
+  id uuid [pk]
+  row varchar [not null]
+  rack varchar [not null]
+  shelf varchar [not null]
+  on_hand int [null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+  warehouse_id uuid [ref: > warehouses.id, not null]
+  inventory_id uuid [ref: > inventories.id, null]
+}
+
+Table clients {
+  id uuid [pk]
+  name varchar [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+  contact_id uuid [ref: > contacts.id , not null]
+  address_id uuid [ref: > addresses.id , not null]
+}
+
+Table items {
+  id uuid [pk]
+  code varchar [not null]
+  description varchar
+  short_description varchar
+  upc_code varchar [not null]
+  model_number varchar [not null]
+  commodity_code varchar 
+  unit_purchase_quantity int [default : 1, not null]
+  unit_order_quantity int [default : 1, not null]
+  pack_order_quantity int [default : 1, not null]
+  supplier_reference_code varchar
+  supplier_part_number varchar [not null]
+  item_line uuid [ref: > item_lines.id, null]
+  item_group uuid [ref: > item_groups.id, null] 
+  item_type uuid [ref: > item_types.id, null] 
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table item_groups {
+  id uuid [pk]
+  name varchar [not null]
+  description varchar
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table item_lines {
+  id uuid [pk]
+  name varchar [not null]
+  description varchar
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table item_types {
+  id uuid [pk]
+  name varchar [not null]
+  description varchar
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table suppliers {
+  id uuid [pk]
+  code varchar [not null]
+  name varchar [not null]
+  reference varchar
+  contact_id uuid [ref: > contacts.id, not null]
+  address_id uuid [ref: > addresses.id, not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table inventories {
+  id uuid [pk, not null]
+  description varchar
+  item_reference varchar
+  //NOTE calculated value (from location_inventory): total_on_hand int
+  //NOTE calculated value: total_expected int
+  //NOTE calculated value: total_ordered int
+  //NOTE calculated value: total_allocated int
+  //NOTE calculated value: total_available int
+  created_at datetime [not null]
+  updated_at datetime [not null]
+  item_id uuid [ref: - items.id, null] // Foreign Key to item
+}
+
+Table orders {
+  id uuid [pk]
+  order_date datetime [not null] // if null is created_at 
+  request_date datetime [not null] // if null is order_date
+  reference varchar
+  reference_extra varchar
+  order_status order_status [not null] // default: order_status.pending
+  notes varchar
+  shipping_notes varchar
+  picking_notes varchar
+  total_amount decimal(10, 2) //NOTE calculated value
+  total_discount decimal(10, 2) //NOTE calculated value
+  total_tax decimal(10, 2) //NOTE calculated value
+  total_surcharge decimal(10, 2) //NOTE calculated value
+  ship_to_client uuid [ref: > clients.id, null]
+  bill_to_client uuid [ref: > clients.id , not null]
+  warehouse_id uuid [ref: > warehouses.id]
+  user_id uuid [ref: > users.id, not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+
+Table shipments {
+  id uuid [pk]
+  order_date datetime [not null] // if null is created_at 
+  request_date datetime [not null] // if null is order_date
+  shipment_date datetime [null]
+  shipment_type shipment_type [not null]
+  shipment_status shipment_status [not null] // default is pending
+  payment_type payment_type [not null]
+  transfer_mode transfer_mode [not null]
+  notes varchar
+  carrier_code varchar [not null]
+  carrier_description varchar
+  service_code varchar [not null]
+  total_package_count int //NOTE calculated value
+  total_package_weight decimal(10, 4) //NOTE calculated value // alles in KG en 4 cijfers achter de komma
+  user_id uuid [ref: > users.id, not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table order_shipments {
+  id uuid [pk]
+  order_id uuid [ref: > orders.id, not null]
+  shipment_id uuid [ref: > shipments.id, not null]
+  created_at datetime [not null]
+}
+
+Table order_items {
+  id uuid [pk]
+  order_id uuid [ref: > orders.id, not null]
+  item_id uuid [ref: > items.id , not null]
+  amount int [not null] // De aantal orderd items optellen en bij de juiste inventory total_ordered zetten
+  created_at datetime [not null]
+  // location_id plaatsen anders is het niet bekend van waar deze item vandaan is
+}
+
+Table shipment_items {
+  id uuid [pk]
+  shipment_id uuid [ref: > shipments.id , not null]
+  item_id uuid [ref: > items.id , not null]
+  amount int [not null]
+  created_at datetime [not null]
+  // location_id plaatsen anders is het niet bekend van waar deze item vandaan is
+}
+
+// transfers is in de zelfde warehouse van locatie a naar locatie b
+Table transfers {
+  id uuid [pk]
+  reference varchar
+  transfer_from_id uuid [ref: > locations.id, null] // NOTE: if null to dock both cannot be null at the same time
+  transfer_to_id uuid [ref: > locations.id , null] // NOTE: if null to dock both cannot be null at the same timedock
+  transfer_status transfer_status [not null] // default is transfer_status.Pending
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table transfer_items {
+  transfer_id uuid [ref: > transfers.id]
+  item_id uuid [ref: > items.id]
+  amount int
+  created_at datetime [not null]
+}
+
+Table users {
+  id uuid [pk, not null]
+  name varchar [not null]
+  role role [not null]
+  created_at datetime
+  updated_at datetime
+}
+
+
+Table warehouse_logs {
+  id uuid [pk]
+  user_id uuid [not null] 
+  role role [not null]
+  action log_action [not null]
+  action_id uuid [not null] 
+  type action_type [not null]
+  old_value varchar [not null] 
+  new_value varchar [not null]
+  created_at datetime [not null]
+}
+
+Table app_logs {
+  id uuid [pk]
+  level error_level [not null]
+  message text [not null]
+  context json [null]
+  user_id uuid [null] 
+  created_at datetime [not null]
+}
+
+// Enums
+
+Enum transfer_status {
+  Pending
+  Processing
+  Cancelled
+  Completed
+}
+
+Enum error_level {
+  info
+  warning
+  error
+}
+
+Enum shipment_type {
+  I
+  O
+}
+
+Enum shipment_status {
+  Pending
+  Transit
+  Delivered
+}
+
+Enum transfer_mode {
+  Air
+  Sea
+  Ground
+}
+
+Enum payment_type {
+  Automatic
+  Manual
+}
+
+Enum order_status {
+  Pending
+  Packed
+  Delivered
+}
+
+Enum log_action {
+  Create
+  Update
+  Delete
+}
+
+Enum action_type{
+  item
+  order
+  shipment
+}
+
+Enum role {
+  admin
+  warehouse_manager
+  inventory_manager
+  floor_manager
+  operative
+  supervisor
+  analyst
+  logistics
+  sales
+}

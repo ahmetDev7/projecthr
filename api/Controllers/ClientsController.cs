@@ -57,6 +57,43 @@ public class ClientsController : ControllerBase
         });
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ClientRequest req)
+    {
+        Client? updatedClient = _clientProvider.Update(id, req);
+
+        if (updatedClient == null) BadRequest(new { message = "Client update failed." });
+
+        Client? foundClient = _clientProvider.GetById(updatedClient.Id);
+        return Ok(new ClientResponse
+        {
+            Id = foundClient.Id,
+            Name = foundClient.Name,
+            Contact = new ContactResponse
+            {
+                Id = foundClient.AddressId,
+                Name = foundClient.Contact?.Name,
+                Phone = foundClient.Contact?.Phone,
+                Email = foundClient.Contact?.Email
+            },
+            Address = new AddressResponse
+            {
+                Id = foundClient.ContactId,
+                Street = foundClient.Address?.Street,
+                HouseNumber = foundClient.Address?.HouseNumber,
+                HouseNumberExtension = foundClient.Address?.HouseNumberExtension,
+                ZipCode = foundClient.Address?.ZipCode,
+                City = foundClient.Address?.City,
+                Province = foundClient.Address?.Province,
+                CountryCode = foundClient.Address?.CountryCode
+            },
+            CreatedAt = foundClient.CreatedAt,
+            UpdatedAt = foundClient.UpdatedAt
+        });
+
+    }
+
+    
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

@@ -34,6 +34,9 @@ namespace DTO.Address
     [ApiExplorerSettings(IgnoreApi = true)]
     public class AddressResponse : BaseDTO
     {        
+        [JsonPropertyName("id")]
+        public Guid? Id { get; set; }
+ 
         [JsonPropertyName("street")]
         public string? Street { get; set; }
         

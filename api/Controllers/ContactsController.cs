@@ -17,7 +17,7 @@ public class ContactsController : ControllerBase
     {
         Contact? newContact = _contactProvider.Create(req);
 
-        if (newContact == null) BadRequest(new{message = "Contact creation failed"});
+        if (newContact == null) NotFound(new{message = "Contact creation failed"});
 
         return Ok(new
         { 

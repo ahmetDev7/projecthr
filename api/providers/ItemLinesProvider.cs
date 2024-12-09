@@ -32,6 +32,8 @@ public class ItemLinesProvider : BaseProvider<ItemLine>
         return newItemLine;
     }
 
+    public List<Item> GetRelatedItemsById(Guid itemLineId) => _db.Items.Where(i => i.ItemLineId == itemLineId).ToList();
+
     public override ItemLine? Update(Guid id, BaseDTO updatedValues)
     {
         ItemLineRequest? req = updatedValues as ItemLineRequest;

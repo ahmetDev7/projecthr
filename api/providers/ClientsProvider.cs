@@ -1,5 +1,6 @@
 using DTO.Client;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class ClientsProvider : BaseProvider<Client>
 {
@@ -14,7 +15,11 @@ public class ClientsProvider : BaseProvider<Client>
         _contactProvider = contactProvider;
         _addressProvider = addressProvider;
     }
-    public override List<Client>? GetAll() => _db.Clients.ToList();
+
+    public override Client? GetById(Guid id)=>
+    _db.Clients.Include(c => c.Contact).Include(c => c.Address).FirstOrDefault(c => c.Id == id);
+
+    public override List<Client>? GetAll() => _db.Clients.Include(c => c.Contact).Include(c => c.Address).ToList();
     
     public override Client? Create(BaseDTO createValues)
     {
@@ -59,6 +64,7 @@ public class ClientsProvider : BaseProvider<Client>
 
         return existingClient;
     }
+    public List<Order> GetRelatedOrdersById(Guid clientId) => _db.Orders.Where(o => o.BillToClientId == clientId).ToList();
 
     protected override void ValidateModel(Client model) => _clientValidator.ValidateAndThrow(model);
 }

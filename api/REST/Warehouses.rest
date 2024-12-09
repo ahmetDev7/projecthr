@@ -73,19 +73,19 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:5000/api/warehouses/aa9190a3-ae85-45bd-9d9e-4c4eb78995a8
+PUT http://localhost:5000/api/warehouses/10cf92a8-92c8-43e6-aecc-4568cac8b7ad
 Content-Type: application/json
 
 {
-    "code": "Test update warehouse",
+    "code": "Test update warehouse ",
     "name": "Test Company",
     "contact": {
-      "name": "John Doe",
+      "name": "Alperen Baytimur",
       "phone": "+1234567890",
       "email": "john.doe@testcompany.com"
     },
     "address": {
-      "street": "Main Street",
+      "street": "third street",
       "house_number": "123",
       "house_number_extension": "A",
       "house_number_extension_extra": "Suite 2",
@@ -98,41 +98,41 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:5000/api/warehouses/aa9190a3-ae85-45bd-9d9e-4c4eb78995a8
+PUT http://localhost:5000/api/warehouses/10cf92a8-92c8-43e6-aecc-4568cac8b7ad
 Content-Type: application/json
 
 {
     "code": "Test update warehouse with id's",
     "name": "Test Company",
-    "contact_id": "9f1498d4-2b23-4519-ad50-a2adb2464a60",
-    "address_id": "289f02b2-96ef-4aeb-bdaa-716fc02d6919"
+    "contact_id": "59fbc89f-3107-4962-8f4b-6bdeb7920f99",
+    "address_id": "eb74f2ae-8000-45b7-8071-6302622a2af8"
 }
 
 ###
 
-PUT http://localhost:5000/api/warehouses/aa9190a3-ae85-45bd-9d9e-4c4eb78995a8
+PUT http://localhost:5000/api/warehouses/10cf92a8-92c8-43e6-aecc-4568cac8b7ad
 Content-Type: application/json
 
 {
     "code": "Test update warehouse",
     "name": "Test Company",
     "contact": {
-      "name": "John Doe",
+      "name": "Sharif doe",
       "phone": "+1234567890",
       "email": "john.doe@testcompany.com"
     },
-    "address_id": "289f02b2-96ef-4aeb-bdaa-716fc02d6919"
+    "address_id": "eb74f2ae-8000-45b7-8071-6302622a2af8"
 }
 
 ###
 
-PUT http://localhost:5000/api/warehouses/aa9190a3-ae85-45bd-9d9e-4c4eb78995a8
+PUT http://localhost:5000/api/warehouses/10cf92a8-92c8-43e6-aecc-4568cac8b7ad
 Content-Type: application/json
 
 {
     "code": "Test update warehouse",
     "name": "Test Company",
-    "contact_id":"9f1498d4-2b23-4519-ad50-a2adb2464a60",
+    "contact_id":"59fbc89f-3107-4962-8f4b-6bdeb7920f99",
     "address": {
       "street": "Main Street",
       "house_number": "123",

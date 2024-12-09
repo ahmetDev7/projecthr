@@ -126,6 +126,46 @@ public class WarehousesController : ControllerBase
             }
         );
     }
+    
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] WarehouseRequest req)
+    {
+        Warehouse? updatedWarehouse = _warehouseProvider.Update(id, req);
+
+        return updatedWarehouse == null
+            ? NotFound(new { message = $"Warehouse not found for id '{id}'" })
+            : Ok(new
+            {
+                message = "Warehouse updated!",
+                updated_warehouse = new WarehouseResponse
+                {
+                    Id = id,
+                    Code = updatedWarehouse.Code,
+                    Name = updatedWarehouse.Name,
+                    ContactId = updatedWarehouse.ContactId,
+                    Contact = new DTO.Contact.ContactRequest
+                    {
+                        Name = updatedWarehouse.Contact.Name,
+                        Phone = updatedWarehouse.Contact.Phone,
+                        Email = updatedWarehouse.Contact.Email
+                    },
+                    AddressId = updatedWarehouse.AddressId,
+                    Address = new DTO.Address.AddressRequest
+                    {
+                        Street= updatedWarehouse.Address.Street,
+                        HouseNumber = updatedWarehouse.Address.HouseNumber,
+                        HouseNumberExtension = updatedWarehouse.Address.HouseNumberExtension,
+                        HouseNumberExtensionExtra = updatedWarehouse.Address.HouseNumberExtensionExtra,
+                        ZipCode = updatedWarehouse.Address.ZipCode,
+                        City = updatedWarehouse.Address.City,
+                        Province = updatedWarehouse.Address.Province,
+                        CountryCode = updatedWarehouse.Address.CountryCode
+                    },
+                    CreatedAt = updatedWarehouse.CreatedAt,
+                    UpdatedAt = updatedWarehouse.UpdatedAt
+                }
+            });
+    }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteWarehouse(Guid id)

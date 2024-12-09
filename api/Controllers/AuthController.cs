@@ -12,31 +12,28 @@ public class AuthController : ControllerBase
         _tokenService = tokenService;
     }
 
-    [HttpGet("generate-admin-token")]
-    public async Task<IActionResult> GenerateAdminToken()
+    [HttpGet("generate-token")]
+    public async Task<IActionResult> GenerateToken([FromQuery] string role)
     {
-        var token = await _tokenService.GenerateAdminToken();
+        if (string.IsNullOrWhiteSpace(role))
+        {
+            return BadRequest(new { Error = "Role must be specified." });
+        }
+
+        var validRoles = new[] { "admin", "warehousemanager", "inventorymanager", "floormanager", "operative", "supervisor", "analyst", "logistics", "sales" };
+        if (!validRoles.Contains(role.ToLower()))
+        {
+            return BadRequest(new { Error = $"Role '{role}' is not recognized." });
+        }
+
+        var token = await _tokenService.GenerateToken(role.ToLower());
         return Ok(new { Token = token });
     }
-
-    [HttpGet("generate-reader-token")]
-    public async Task<IActionResult> GenerateReaderToken()
-    {
-        var token = await _tokenService.GenerateReaderToken();
-        return Ok(new { Token = token });
-    }
-
+    
     [HttpGet("admin-only")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin,operative")]
     public IActionResult AdminOnly()
     {
         return Ok(new{message = "Admin Only Authorized."});
-    }
-
-    [HttpGet("reader")]
-    [Authorize]
-    public IActionResult Reader()
-    {
-        return Ok(new{message = "Reader / Admin Authorized."});
     }
 }

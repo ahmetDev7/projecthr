@@ -1,0 +1,10 @@
+## Create Contact
+POST http://localhost:5000/api/contacts
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "phone": "+123456789",
+    "email": "john.doe@example.com"
+}
+###

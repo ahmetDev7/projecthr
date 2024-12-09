@@ -1,16 +1,19 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-public class WarehouseProvider : ICRUD<Warehouse>
+public class WarehouseProvider : BaseProvider<Warehouse>
 {
     private readonly AppDbContext _db;
     private readonly AddressProvider _addressProvider;
     private readonly ContactProvider _contactProvider;
+    private IValidator<Warehouse> _WarehouseValidator;
 
-    public WarehouseProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider)
+    public WarehouseProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, IValidator<Warehouse> validator) : base(db)
     {
         _db = db;
         _addressProvider = addressProvider;
         _contactProvider = contactProvider;
+        _WarehouseValidator = validator;
     }
 
     public Warehouse? Create<BaseDTO>(BaseDTO newElement)
@@ -84,11 +87,36 @@ public class WarehouseProvider : ICRUD<Warehouse>
 
     public Warehouse? GetById(Guid id) => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).FirstOrDefault(l => l.Id == id);
 
-    public Warehouse? Update<IDTO>(Guid id, IDTO dto)
+    public override Warehouse? Update(Guid id, BaseDTO updatedValues)
     {
-        throw new NotImplementedException();
+        WarehouseRequest? req = updatedValues as WarehouseRequest;
+        if (req == null)
+            throw new ApiFlowException("Could not process update warehouse request. Update failed.");
+
+        Warehouse? foundWarehouse = GetById(id);
+        if (foundWarehouse == null)
+            throw new ApiFlowException($"Warehouse with ID '{id}' does not exist.");
+
+        if (req.ContactId != null && req.Contact != null) _contactProvider.Update(req.ContactId.Value, req.Contact);
+        
+        else if (req.Contact != null) _contactProvider.Update(foundWarehouse.ContactId, req.Contact);
+
+        if (req.AddressId != null && req.Address != null) _addressProvider.Update(req.AddressId.Value, req.Address);
+        
+        else if (req.Address != null) _addressProvider.Update(foundWarehouse.AddressId, req.Address);
+        
+        foundWarehouse.Code = req.Code;
+        foundWarehouse.Name = req.Name;
+
+        foundWarehouse.SetUpdatedAt();
+
+        ValidateModel(foundWarehouse);
+        SaveToDBOrFail();
+
+        return foundWarehouse;
     }
 
     public List<Location> GetLocationsByWarehouseId(Guid warehouseId) => _db.Locations.Where(l => l.WarehouseId == warehouseId).ToList();
 
+    protected override void ValidateModel(Warehouse model) => _WarehouseValidator.ValidateAndThrow(model);
 }

@@ -8,3 +8,7 @@ Content-Type: application/json
     "email": "john.doe@example.com"
 }
 ###
+### Get Contact by ID
+GET http://localhost:5000/api/contacts/e9fde123-affa-478e-b900-7800d34e5f05
+Content-Type: application/json
+###

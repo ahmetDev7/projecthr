@@ -55,7 +55,6 @@ public class ClientsProvider : BaseProvider<Client>
         existingClient.ContactId = request.ContactId;
         existingClient.AddressId =  request.AddressId;
 
-
         existingClient.SetUpdatedAt();
         ValidateModel(existingClient);
 

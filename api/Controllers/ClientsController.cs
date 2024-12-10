@@ -10,13 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 public class ClientsController : ControllerBase
 {
     private readonly ClientsProvider _clientProvider;
-    private readonly ContactProvider _contactProvider;
-    private readonly AddressProvider _addressProvider;
+
     public ClientsController(ClientsProvider clientProvider, ContactProvider contactProvider, AddressProvider addressProvider)
     {
         _clientProvider = clientProvider;
-        _contactProvider = contactProvider;
-        _addressProvider = addressProvider;
     }
 
     [HttpPost()]
@@ -46,6 +43,7 @@ public class ClientsController : ControllerBase
                     Street = newClient.Address?.Street,
                     HouseNumber = newClient.Address?.HouseNumber,
                     HouseNumberExtension = newClient.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = newClient.Address?.HouseNumberExtensionExtra,
                     ZipCode = newClient.Address?.ZipCode,
                     City = newClient.Address?.City,
                     Province = newClient.Address?.Province,
@@ -71,17 +69,18 @@ public class ClientsController : ControllerBase
             Name = foundClient.Name,
             Contact = new ContactResponse
             {
-                Id = foundClient.AddressId,
+                Id = foundClient.ContactId,
                 Name = foundClient.Contact?.Name,
                 Phone = foundClient.Contact?.Phone,
                 Email = foundClient.Contact?.Email
             },
             Address = new AddressResponse
             {
-                Id = foundClient.ContactId,
+                Id = foundClient.AddressId,
                 Street = foundClient.Address?.Street,
                 HouseNumber = foundClient.Address?.HouseNumber,
                 HouseNumberExtension = foundClient.Address?.HouseNumberExtension,
+                HouseNumberExtensionExtra = foundClient.Address?.HouseNumberExtensionExtra,
                 ZipCode = foundClient.Address?.ZipCode,
                 City = foundClient.Address?.City,
                 Province = foundClient.Address?.Province,
@@ -107,17 +106,18 @@ public class ClientsController : ControllerBase
             Name = createdClient.Name,
             Contact = new ContactResponse
             {
-                Id = createdClient.AddressId,
+                Id = createdClient.ContactId,
                 Name = createdClient.Contact?.Name,
                 Phone = createdClient.Contact?.Phone,
                 Email = createdClient.Contact?.Email
             },
             Address = new AddressResponse
             {
-                Id = createdClient.ContactId,
+                Id = createdClient.AddressId,
                 Street = createdClient.Address?.Street,
                 HouseNumber = createdClient.Address?.HouseNumber,
                 HouseNumberExtension = createdClient.Address?.HouseNumberExtension,
+                HouseNumberExtensionExtra = createdClient.Address?.HouseNumberExtensionExtra,
                 ZipCode = createdClient.Address?.ZipCode,
                 City = createdClient.Address?.City,
                 Province = createdClient.Address?.Province,
@@ -140,17 +140,18 @@ public class ClientsController : ControllerBase
             Name = c.Name,
             Contact = new ContactResponse
             {
-                Id = c.AddressId,
+                Id = c.ContactId,
                 Name = c.Contact?.Name,
                 Phone = c.Contact?.Phone,
                 Email = c.Contact?.Email
             },
             Address = new AddressResponse
             {
-                Id = c.ContactId,
+                Id = c.AddressId,
                 Street = c.Address?.Street,
                 HouseNumber = c.Address?.HouseNumber,
                 HouseNumberExtension = c.Address?.HouseNumberExtension,
+                HouseNumberExtensionExtra = c.Address?.HouseNumberExtensionExtra,
                 ZipCode = c.Address?.ZipCode,
                 City = c.Address?.City,
                 Province = c.Address?.Province,

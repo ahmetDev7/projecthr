@@ -20,13 +20,6 @@ Content-Type: application/json
 }
 ###
 
-# Create Client with Address ID and Contact Body
-POST http://localhost:5000/api/clients
-Content-Type: application/json
-
-{
-  "name": "Client B",
-  "contact": {
 # Create Client with Contact Body and Address Body
 POST http://localhost:5000/api/clients
 Content-Type: application/json

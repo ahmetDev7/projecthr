@@ -87,7 +87,7 @@ Table items {
   item_line uuid [ref: > item_lines.id, null]
   item_group uuid [ref: > item_groups.id, null] 
   item_type uuid [ref: > item_types.id, null] 
-  created_by uuid [ref: > users.id, not null] // readonly after first insert
+  created_by varchar [not null] //readonly after insert
   created_at datetime [not null]
   updated_at datetime [not null]
 }
@@ -151,14 +151,14 @@ Table orders {
   notes varchar
   shipping_notes varchar
   picking_notes varchar
-  total_amount decimal(10, 2) //NOTE calculated value
-  total_discount decimal(10, 2) //NOTE calculated value
-  total_tax decimal(10, 2) //NOTE calculated value
-  total_surcharge decimal(10, 2) //NOTE calculated value
+  total_amount decimal(10, 2) //NOTE calculated value (External API)
+  total_discount decimal(10, 2) //NOTE calculated value (External API)
+  total_tax decimal(10, 2) //NOTE calculated value (External API)
+  total_surcharge decimal(10, 2) //NOTE calculated value (External API)
   ship_to_client uuid [ref: > clients.id, null]
   bill_to_client uuid [ref: > clients.id , not null]
   warehouse_id uuid [ref: > warehouses.id]
-  created_by uuid [ref: > users.id, not null] // readonly after first insert
+  created_by varchar [not null]
   created_at datetime [not null]
   updated_at datetime [not null]
 }
@@ -177,9 +177,9 @@ Table shipments {
   carrier_code varchar [not null]
   carrier_description varchar
   service_code varchar [not null]
-  total_package_count int //NOTE calculated value
-  total_package_weight decimal(10, 4) //NOTE calculated value // alles in KG en 4 cijfers achter de komma
-  created_by uuid [ref: > users.id, not null] // readonly after first insert
+  total_package_count int //NOTE calculated value (External API)
+  total_package_weight decimal(10, 4) //NOTE calculated value (External API) // alles in KG en 4 cijfers achter de komma
+  created_by varchar [not null]
   created_at datetime [not null]
   updated_at datetime [not null]
 }
@@ -227,22 +227,15 @@ Table transfer_items {
   created_at datetime [not null]
 }
 
-Table users {
-  id uuid [pk, not null]
-  name varchar [not null]
-  role role [not null]
-  created_at datetime
-  updated_at datetime
-}
-
 
 Table warehouse_logs {
   id uuid [pk]
-  user_id uuid [not null] 
+  employee_name varchar [not null]
   role role [not null]
   action log_action [not null]
-  action_id uuid [not null] 
-  type action_type [not null]
+  entity_id uuid [not null] 
+  entity entity_type [not null]
+  attribute varchar [not null]
   old_value varchar [not null] 
   new_value varchar [not null]
   created_at datetime [not null]
@@ -253,7 +246,6 @@ Table app_logs {
   level error_level [not null]
   message text [not null]
   context json [null]
-  user_id uuid [null] 
   created_at datetime [not null]
 }
 
@@ -306,7 +298,7 @@ Enum log_action {
   Delete
 }
 
-Enum action_type{
+Enum entity_type{
   item
   order
   shipment

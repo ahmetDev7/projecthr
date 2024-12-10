@@ -8,3 +8,13 @@ Content-Type: application/json
     "email": "john.doe@example.com"
 }
 ###
+## Update Contact
+PUT http://localhost:5000/api/contacts/af5cc9d0-6b2e-4122-a2ef-dbf095892d88
+Content-Type: application/json
+
+{
+    "name": "Jane Doe",
+    "phone": "+977654321",
+    "email": "jane.doe@example.com"
+}
+###

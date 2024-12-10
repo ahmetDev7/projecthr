@@ -27,14 +27,14 @@ public class AddressesController : ControllerBase
             new_address = new AddressResponse
             {
                 Id = newAdress.Id,
-            Street = newAdress.Street,
-            HouseNumber = newAdress.HouseNumber,
-            HouseNumberExtension = newAdress.HouseNumberExtension,
-            HouseNumberExtensionExtra = newAdress.HouseNumberExtensionExtra,
-            ZipCode = newAdress.ZipCode,
-            City = newAdress.City,
-            Province = newAdress.Province,
-            CountryCode = newAdress.CountryCode
+                Street = newAdress.Street,
+                HouseNumber = newAdress.HouseNumber,
+                HouseNumberExtension = newAdress.HouseNumberExtension,
+                HouseNumberExtensionExtra = newAdress.HouseNumberExtensionExtra,
+                ZipCode = newAdress.ZipCode,
+                City = newAdress.City,
+                Province = newAdress.Province,
+                CountryCode = newAdress.CountryCode
             }
         });
     }

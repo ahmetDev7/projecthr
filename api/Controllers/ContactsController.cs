@@ -31,4 +31,14 @@ public class ContactsController : ControllerBase
             }
         });
     }
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_contactProvider.GetAll()?.Select(c => new ContactResponse
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Phone = c.Phone,
+            Email = c.Email
+        }).ToList());
+
 }

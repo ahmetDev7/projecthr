@@ -1,7 +1,6 @@
 using DTO.Contact;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using Utils.Date;
+
 
 public class ContactProvider : BaseProvider<Contact>
 {

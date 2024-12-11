@@ -31,7 +31,28 @@ public class ContactsController : ControllerBase
             }
         });
     }
+    
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] ContactRequest req)
+    {
+        Contact? updateContact = _contactProvider.Update(id, req);
 
+        if (updateContact == null)
+            return NotFound(new { message = $"Contact not found for id {id}" });
+
+        return Ok(new
+        {
+            message = "Contact updated!",
+            Contact = new ContactResponse
+            {
+                Id = updateContact.Id,
+                Name = updateContact.Name,
+                Phone = updateContact.Phone,
+                Email = updateContact.Email
+            }
+        });
+    }
+    
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {
@@ -39,7 +60,7 @@ public class ContactsController : ControllerBase
 
         if (foundContact == null)
             return NotFound(new { message = $"Contact not found for id {id}" });
-
+        
         return Ok(new
         {
             message = "Contact found!",
@@ -52,4 +73,14 @@ public class ContactsController : ControllerBase
             }
         });
     }
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_contactProvider.GetAll()?.Select(c => new ContactResponse
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Phone = c.Phone,
+            Email = c.Email
+        }).ToList());
+    
 }

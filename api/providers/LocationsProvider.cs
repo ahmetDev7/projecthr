@@ -78,7 +78,7 @@ public class LocationsProvider : BaseProvider<Location>
 
             foundLocation.OnHand = inventoryLocation.OnHand.Value;
             foundLocation.InventoryId = InventoryId;
-
+            foundLocation.SetUpdatedAt();
             ValidateModel(foundLocation);
             _db.Locations.Update(foundLocation);
         }

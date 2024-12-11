@@ -53,6 +53,27 @@ public class ContactsController : ControllerBase
         });
     }
     
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        Contact? foundContact = _contactProvider.GetById(id);
+
+        if (foundContact == null)
+            return NotFound(new { message = $"Contact not found for id {id}" });
+        
+        return Ok(new
+        {
+            message = "Contact found!",
+            Contact = new ContactResponse
+            {
+                Id = foundContact.Id,
+                Name = foundContact.Name,
+                Phone = foundContact.Phone,
+                Email = foundContact.Email
+            }
+        });
+    }
+
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_contactProvider.GetAll()?.Select(c => new ContactResponse
         {
@@ -61,5 +82,5 @@ public class ContactsController : ControllerBase
             Phone = c.Phone,
             Email = c.Email
         }).ToList());
-
+    
 }

@@ -1,5 +1,6 @@
 using DTO.Item;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class ItemsProvider : BaseProvider<Item>
 {
@@ -10,7 +11,19 @@ public class ItemsProvider : BaseProvider<Item>
         _itemValidator = validator;
     }
 
-    public override Item? GetById(Guid id) => _db.Items.FirstOrDefault(i => i.Id == id);
+    private IQueryable<Item> GetItemByIdQuery(bool includeInventory = false){
+        IQueryable<Item> query = _db.Items.AsQueryable();
+
+        if (includeInventory) query = query.Include(i => i.Inventory);
+
+        return query;
+    }
+
+    public override Item? GetById(Guid id) => GetItemByIdQuery().FirstOrDefault(i => i.Id == id);
+    
+    public Item? GetById(Guid id, bool includeInventory = false) => GetItemByIdQuery(includeInventory).FirstOrDefault(i => i.Id == id);
+
+    
 
     public override List<Item>? GetAll() => _db.Items.ToList();
 
@@ -75,6 +88,9 @@ public class ItemsProvider : BaseProvider<Item>
 
         return existingItem;
     }
+
+
+    public Inventory? GetInventory(Guid itemId) => _db.Inventories.FirstOrDefault(i => i.ItemId == itemId);
 
     protected override void ValidateModel(Item model) => _itemValidator.ValidateAndThrow(model);
 }

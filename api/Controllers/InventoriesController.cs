@@ -52,6 +52,40 @@ public class InventoriesController : ControllerBase
         });
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] InventoryRequest req)
+    {   
+        Inventory? updatedInventory = _inventoriesProvider.Update(id, req);
+        if(updatedInventory == null) return NotFound(new {message = $"Inventory not found for id '{id}'"});
+
+        List<Location> locations = _locationsProvider.GetLocationsByInventoryId(updatedInventory.Id);
+        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(updatedInventory.Id);
+
+        return Ok(new
+        {
+            message = "Inventory updated!",
+            updated_inventory = new InventoryResponse
+            {
+                Id = updatedInventory.Id,
+                Description = updatedInventory.Description,
+                ItemReference = updatedInventory.ItemReference,
+                ItemId = updatedInventory.ItemId,
+                Locations = locations.Select(l => new InventoryLocation()
+                {
+                    LocationId = l.Id,
+                    OnHand = l.OnHand
+                }).ToList(),
+                TotalOnHand = calculatedValues["TotalOnHand"],
+                TotalExpected = calculatedValues["TotalExpected"],
+                TotalOrdered = calculatedValues["TotalOrdered"],
+                TotalAllocated = calculatedValues["TotalAllocated"],
+                TotalAvailable = calculatedValues["TotalAvailable"],
+                CreatedAt = updatedInventory.CreatedAt,
+                UpdatedAt = updatedInventory.UpdatedAt,
+            }
+        });
+    }
+
     [HttpDelete("{id}")]
     public IActionResult Delete(Guid id)
     {

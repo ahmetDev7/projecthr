@@ -6,10 +6,14 @@ using DTO.Item;
 public class ItemsController : ControllerBase
 {
     private readonly ItemsProvider _itemsProvider;
+    private readonly InventoriesProvider _inventoriesProvider;
+    private readonly LocationsProvider _locationsProvider;
 
-    public ItemsController(ItemsProvider itemsProvider)
+    public ItemsController(ItemsProvider itemsProvider, InventoriesProvider inventoriesProvider, LocationsProvider locationsProvider)
     {
         _itemsProvider = itemsProvider;
+        _inventoriesProvider = inventoriesProvider;
+        _locationsProvider = locationsProvider;
     }
 
     /*
@@ -132,4 +136,60 @@ public class ItemsController : ControllerBase
         ItemTypeId = i.ItemTypeId,
         SupplierId = i.SupplierId,
     }).ToList());
+
+    [HttpGet("{id}/inventories")]
+    public IActionResult GetInventories(Guid id)
+    {
+        Inventory? foundInventory = _itemsProvider.GetInventory(id);
+        if (foundInventory == null)
+        {
+            return NotFound(new { message = "The specified item is not currently associated with any inventory." });
+        }
+
+        List<Location> locations = _locationsProvider.GetLocationsByInventoryId(foundInventory.Id);
+        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
+
+        return Ok(new InventoryResponse
+        {
+            Id = foundInventory.Id,
+            Description = foundInventory.Description,
+            ItemReference = foundInventory.ItemReference,
+            ItemId = foundInventory.ItemId,
+            Locations = locations.Select(l => new InventoryLocation()
+            {
+                LocationId = l.Id,
+                OnHand = l.OnHand
+            }).ToList(),
+            TotalOnHand = calculatedValues["TotalOnHand"],
+            TotalExpected = calculatedValues["TotalExpected"],
+            TotalOrdered = calculatedValues["TotalOrdered"],
+            TotalAllocated = calculatedValues["TotalAllocated"],
+            TotalAvailable = calculatedValues["TotalAvailable"],
+            CreatedAt = foundInventory.CreatedAt,
+            UpdatedAt = foundInventory.UpdatedAt,
+        });
+    }
+
+    [HttpGet("{id}/inventories/totals")]
+    public IActionResult GetInventoriesTotals(Guid id)
+    {
+        Inventory? foundInventory = _itemsProvider.GetInventory(id);
+        if (foundInventory == null)
+        {
+            return NotFound(new { message = "The specified item is not currently associated with any inventory." });
+        }
+
+        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
+
+        return Ok(
+            new
+            {
+                total_on_hand = calculatedValues["TotalOnHand"],
+                total_expected = calculatedValues["TotalExpected"],
+                total_orderd = calculatedValues["TotalOrdered"],
+                total_allocated = calculatedValues["TotalAllocated"],
+                total_available = calculatedValues["TotalAvailable"],
+            }
+        );
+    }
 }

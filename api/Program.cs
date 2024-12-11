@@ -10,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Load Env vars
 DotNetEnv.Env.Load();
 string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+string? securityKey = Environment.GetEnvironmentVariable("SECURITY_KEY");
 if(connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
+if(securityKey == null) throw new InvalidOperationException("The required environment variable 'SECURITY_KEY' is not set.");
+
+builder.Services.AddSingleton(securityKey);
 
 // Add services to the container.
 builder.Services.AddControllers();

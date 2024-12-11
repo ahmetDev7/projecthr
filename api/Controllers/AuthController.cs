@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 public class AuthController : ControllerBase
 {
     private readonly TokenService _tokenService;
+    private readonly string? _securityKey;
 
-    public AuthController(TokenService tokenService)
+    public AuthController(TokenService tokenService, string? securityKey)
     {
         _tokenService = tokenService;
+        _securityKey = securityKey;
     }
 
     [HttpGet("generate-token")]

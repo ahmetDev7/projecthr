@@ -68,7 +68,7 @@ public class AddressProvider : BaseProvider<Address>
         existingAddress.City = req.City;
         existingAddress.Province = req.Province;
         existingAddress.CountryCode = req.CountryCode;
-        existingAddress.UpdatedAt = DateTime.UtcNow;
+        existingAddress.SetUpdatedAt();
 
         ValidateModel(existingAddress);
 

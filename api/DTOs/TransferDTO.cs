@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 
 [ApiExplorerSettings(IgnoreApi = true)]
-public class TransferRequest : BaseDTO
+public class TransferRequestCreate : BaseDTO
 {
     [JsonPropertyName("reference")]
     public string? Reference { get; set; }
@@ -12,9 +12,6 @@ public class TransferRequest : BaseDTO
     [JsonPropertyName("transfer_to_id")]
 
     public Guid? TransferToId { get; set; }
-    [JsonPropertyName("transfer_status")]
-
-    public string? TransferStatus { get; set; }
 
     [JsonPropertyName("items")]
     public List<TransferItemDTO>? Items { get; set; }
@@ -34,14 +31,14 @@ public class TransferResponse : BaseDTO
 
     [JsonPropertyName("reference")]
     public string? Reference { get; set; }
+    
     [JsonPropertyName("transfer_from_id")]
-
     public Guid? TransferFromId { get; set; }
+
     [JsonPropertyName("transfer_to_id")]
-
     public Guid? TransferToId { get; set; }
-    [JsonPropertyName("transfer_status")]
 
+    [JsonPropertyName("transfer_status")]
     public string? TransferStatus { get; set; }
 
     [JsonPropertyName("items")]

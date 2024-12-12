@@ -14,6 +14,11 @@ namespace DTO.Contact
 
         [JsonPropertyName("email")]
         public string? Email { get; set; }
+
+        public static implicit operator ContactRequest(ContactResponse v)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     

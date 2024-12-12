@@ -53,7 +53,7 @@ public class ContactProvider : BaseProvider<Contact>
         if (req == null) throw new ApiFlowException("Invalid contact request. Could not update contact.");
 
         Contact? existingContact = _db.Contacts.FirstOrDefault(c => c.Id == id);
-        if (existingContact == null) throw new ApiFlowException($"Contact not found for id '{id}'");
+        if (existingContact == null) throw new ApiFlowException($"Contact not found for id '{id}'", StatusCodes.Status404NotFound);
 
         existingContact.Name = req.Name;
         existingContact.Phone = req.Phone;

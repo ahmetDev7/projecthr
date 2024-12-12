@@ -41,6 +41,8 @@ public class ContactProvider : BaseProvider<Contact>
         Contact? foundContact = _db.Contacts.FirstOrDefault(c => c.Id == id);
         if (foundContact == null) return null;
 
+        ValidateModel(foundContact);
+
         _db.Contacts.Remove(foundContact);
         SaveToDBOrFail();
 

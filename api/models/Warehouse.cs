@@ -11,10 +11,10 @@ public class Warehouse : BaseModel
     [Required]
     public string? Name { get; set; }    
     [Required]
-    public Guid ContactId { get; set; } // Foreign Key Relationships
+    public Guid? ContactId { get; set; } // Foreign Key Relationships
     public Contact? Contact { get; set; }
     [Required]
-    public Guid AddressId { get; set; } // Foreign Key Relationships
+    public Guid? AddressId { get; set; } // Foreign Key Relationships
     public Address? Address { get; set; }
 
     // Navigation property for locations

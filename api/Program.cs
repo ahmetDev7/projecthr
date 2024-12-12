@@ -110,6 +110,7 @@ builder.Services.AddTransient<ClientsProvider>();
 builder.Services.AddTransient<InventoriesProvider>();
 builder.Services.AddTransient<ItemLinesProvider>();
 builder.Services.AddTransient<ItemTypesProvider>();
+builder.Services.AddTransient<DocksProvider>();
 
 builder.Services.AddScoped<IValidator<Supplier>, SupplierValidator>();
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
@@ -128,6 +129,7 @@ builder.Services.AddScoped<IValidator<ItemType>, ItemTypeValidator>();
 builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
 builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
 builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();
+builder.Services.AddScoped<IValidator<Dock>, DockValidator>();
 
 
 
@@ -139,7 +141,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapGet("/", () => "Hello world 🚀");
+app.MapGet("/", () => "CargoHub API 🚚📦");
 
 
 app.MapControllers();

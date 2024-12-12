@@ -21,6 +21,8 @@ public class AppDbContext : DbContext
     public DbSet<TransferItem> TransferItems { get; set; }
     public DbSet<Client> Clients { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<Dock> Docks { get; set; }
+    public DbSet<DockItem> DockItems { get; set; }
 
 
 
@@ -30,7 +32,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Shipment>().Property(s => s.ShipmentType).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.ShipmentStatus).HasConversion<string>();
         modelBuilder.Entity<Shipment>().Property(s => s.PaymentType).HasConversion<string>();
-        modelBuilder.Entity<Shipment>().Property(s => s.TransferMode).HasConversion<string>();        
+        modelBuilder.Entity<Shipment>().Property(s => s.TransferMode).HasConversion<string>();
 
         modelBuilder.Entity<Transfer>().Property(t => t.TransferStatus).HasConversion<string>();
 
@@ -82,6 +84,13 @@ public class AppDbContext : DbContext
             .WithOne(l => l.Inventory)
             .HasForeignKey(l => l.InventoryId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        // Relation one to one with Dock | On delete Warehouse delete Dock
+        modelBuilder.Entity<Warehouse>()
+            .HasOne(w => w.Dock)
+            .WithOne(d => d.Warehouse)
+            .HasForeignKey<Dock>(d => d.WarehouseId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
 }

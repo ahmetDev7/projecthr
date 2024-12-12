@@ -37,9 +37,13 @@ public class ShipmentValidator : AbstractValidator<Shipment>
         RuleFor(shipment => shipment.TransferMode)
             .NotNull().WithMessage("transfer_mode is required.")
             .NotEmpty().WithMessage($"Invalid transfer_mode. Allowed values are ({EnumUtil.EnumsToString<TransferMode>()})");
-        RuleForEach(shipment => shipment.ShipmentItems).ChildRules(items =>
+        RuleForEach(shipment => shipment.ShipmentItems).ChildRules(item =>
         {
-            items.RuleFor(item => item.ItemId)
+            item.RuleFor(item => item.Amount)
+                .GreaterThanOrEqualTo(1)
+                .WithMessage("amount must be at least 1.");
+
+            item.RuleFor(item => item.ItemId)
                 .Custom((itemId, context) =>
                 {
                     if (itemId != null && !db.Items.Any(i => i.Id == itemId))

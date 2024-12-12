@@ -55,43 +55,38 @@ public class ClientsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-public IActionResult Delete(Guid id)
-{
-    Client? deletedClient = _clientProvider.Delete(id);
-
-    if (deletedClient == null) BadRequest(new { message = $"Client not found for id '{id}'" });
-    
-
-    ClientResponse deletedClientResponse = new ClientResponse
+    public IActionResult Delete(Guid id)
     {
-        Id = deletedClient.Id,
-        Name = deletedClient.Name,
-        CreatedAt = deletedClient.CreatedAt,
-        UpdatedAt = deletedClient.UpdatedAt,
-        Contact = deletedClient.ContactId.HasValue ? new ContactResponse
-        {
-            Name = _contactProvider.GetById(deletedClient.ContactId.Value)?.Name,
-            Phone = _contactProvider.GetById(deletedClient.ContactId.Value)?.Phone,
-            Email = _contactProvider.GetById(deletedClient.ContactId.Value)?.Email
-        } : null,
-        Address = deletedClient.AddressId.HasValue ? new AddressResponse
-        {
-            Street = _addressProvider.GetById(deletedClient.AddressId.Value)?.Street,
-            HouseNumber = _addressProvider.GetById(deletedClient.AddressId.Value)?.HouseNumber,
-            HouseNumberExtension = _addressProvider.GetById(deletedClient.AddressId.Value)?.HouseNumberExtension,
-            ZipCode = _addressProvider.GetById(deletedClient.AddressId.Value)?.ZipCode,
-            City = _addressProvider.GetById(deletedClient.AddressId.Value)?.City,
-            Province = _addressProvider.GetById(deletedClient.AddressId.Value)?.Province,
-            CountryCode = _addressProvider.GetById(deletedClient.AddressId.Value)?.CountryCode
-        } : null
-    };
+        Client? foundclient = _clientProvider.Delete(id);
 
-    return Ok(new
-    {
-        message = "Client deleted successfully!",
-        deleted_client = deletedClientResponse
-    });
-}
+        if (foundclient == null) return NotFound(new { message = "Client not found." });
+
+        return Ok(new ClientResponse
+        {
+            Id = foundclient.Id,
+            Name = foundclient.Name,
+            Contact = new ContactResponse
+            {
+                Id = foundclient.ContactId,
+                Name = foundclient.Contact?.Name,
+                Phone = foundclient.Contact?.Phone,
+                Email = foundclient.Contact?.Email
+            },
+            Address = new AddressResponse
+            {
+                Id = foundclient.AddressId,
+                Street = foundclient.Address?.Street,
+                HouseNumber = foundclient.Address?.HouseNumber,
+                HouseNumberExtension = foundclient.Address?.HouseNumberExtension,
+                ZipCode = foundclient.Address?.ZipCode,
+                City = foundclient.Address?.City,
+                Province = foundclient.Address?.Province,
+                CountryCode = foundclient.Address?.CountryCode
+            },
+            CreatedAt = foundclient.CreatedAt,
+            UpdatedAt = foundclient.UpdatedAt
+        });
+    }
 
 
 }

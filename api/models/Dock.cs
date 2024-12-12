@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 public class Dock : BaseModel
 {
+    public const int CAPCITY = 50;
+
     public Dock() { }
 
     public Dock(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }

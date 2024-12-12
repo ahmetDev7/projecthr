@@ -63,4 +63,18 @@ public class AddressesController : ControllerBase
             }
         });
     }
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_addressProvider.GetAll().Select(a => new AddressResponse
+            {
+                Id = a.Id,
+                Street = a.Street,
+                HouseNumber = a.HouseNumber,
+                HouseNumberExtension = a.HouseNumberExtension,
+                HouseNumberExtensionExtra = a.HouseNumberExtensionExtra,
+                ZipCode = a.ZipCode,
+                City = a.City,
+                Province = a.Province,
+                CountryCode = a.CountryCode
+        }));
 }

@@ -91,6 +91,10 @@ public class AppDbContext : DbContext
             .WithOne(d => d.Warehouse)
             .HasForeignKey<Dock>(d => d.WarehouseId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Warehouse>()
+            .Navigation(w => w.Dock)
+            .AutoInclude();
     }
 
 }

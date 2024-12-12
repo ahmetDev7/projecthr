@@ -11,3 +11,7 @@ Content-Type: application/json
   "province": "Example Province",
   "country_code": "NL"
 }
+###
+### Show Single Id Address
+GET  http://localhost:5000/api/addresses/b372cf41-44f1-4823-a97c-316fef12ba27
+###

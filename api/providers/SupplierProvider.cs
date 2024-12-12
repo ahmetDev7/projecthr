@@ -31,19 +31,16 @@ public class SupplierProvider : BaseProvider<Supplier>
             Code = req.Code,
             Name = req.Name,
             Reference = req.Reference,
+            ContactId = req.ContactId,
+            AddressId = req.AddressId
         };
-        if (relatedContact != null) newSupplier.ContactId = relatedContact.Id;
-        if (relatedAddress != null) newSupplier.AddressId = relatedAddress.Id;
 
 
         ValidateModel(newSupplier);
         _db.Suppliers.Add(newSupplier);
         SaveToDBOrFail();
 
-        newSupplier.Contact = relatedContact;
-        newSupplier.Address = relatedAddress;
-
-        return newSupplier;
+        return GetById(newSupplier.Id);
     }
 
     public override Supplier? Update(Guid id, BaseDTO updatedValues)
@@ -57,25 +54,15 @@ public class SupplierProvider : BaseProvider<Supplier>
         foundSupplier.Name = req.Name;
         foundSupplier.Code = req.Code;
         foundSupplier.Reference = req.Reference;
+        foundSupplier.ContactId = req.ContactId;
+        foundSupplier.AddressId = req.AddressId;
 
-        foundSupplier.Contact.Name = req.Contact.Name;
-        foundSupplier.Contact.Email = req.Contact.Email;
-        foundSupplier.Contact.Phone = req.Contact.Phone;
-
-        foundSupplier.Address.Street = req.Address.Street;
-        foundSupplier.Address.HouseNumber = req.Address.HouseNumber;
-        foundSupplier.Address.HouseNumberExtension = req.Address.HouseNumberExtension;
-        foundSupplier.Address.HouseNumberExtensionExtra = req.Address.HouseNumberExtensionExtra;
-        foundSupplier.Address.ZipCode = req.Address.ZipCode;
-        foundSupplier.Address.City = req.Address.City;
-        foundSupplier.Address.Province = req.Address.Province;
-        foundSupplier.Address.CountryCode = req.Address.CountryCode;
-
+        ValidateModel(foundSupplier);
         foundSupplier.SetUpdatedAt();
 
         SaveToDBOrFail();
 
-        return foundSupplier;
+        return GetById(foundSupplier.Id);
     }
     
     public override Supplier? Delete(Guid id)

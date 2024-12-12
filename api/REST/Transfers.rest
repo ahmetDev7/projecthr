@@ -1,21 +1,27 @@
+### GET TRANSFER BY ID
+GET http://localhost:5000/api/transfers/6fbda629-3837-4cb7-a7ae-91002f651e82
+Content-Type: application/json
+###
+
 ### CREATE TRANSFER
 POST http://localhost:5000/api/transfers
 Content-Type: application/json
 
 {
-  "transfer_from_id": "286aea70-ee02-4894-8267-02bd924bdcf0",
-  "transfer_to_id": "bb9e031d-f518-44c8-b123-600fa3fe2bb9",
+  "transfer_from_id": null,
+  "transfer_to_id": "2cf61353-da5e-4937-9365-a82fd4c598b0",
   "reference": "TST-0273",
   "transfer_status": "Pending",
   "items": [
     {
-      "itemId": "f48417dd-96e5-47d8-ba20-3ef8a4acc332",
-      "amount": 2
-    },
-    {
-      "itemId": "ac46b255-f4bf-4d23-a78d-3121bd2f0a81",
-      "amount":52
+      "itemId": "c0e0ffab-84a7-493a-b425-2298e45bc5a6",
+      "amount": 50
     }
   ]
 }
+###
+
+### COMMIT TRANSFER
+PUT http://localhost:5000/api/transfers/3739590e-4d66-42b5-945f-4d0df2ad5b20
+Content-Type: application/json
 ###

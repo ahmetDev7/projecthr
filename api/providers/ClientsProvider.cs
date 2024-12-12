@@ -43,6 +43,19 @@ public class ClientsProvider : BaseProvider<Client>
 
         return newClient;
     }
+    public override Client? Delete(Guid id)
+    {
+        Client? foundClient = _db.Clients.FirstOrDefault(c => c.Id == id);
+
+        if (foundClient == null) return null;
+
+        _db.Clients.Remove(foundClient);
+
+        SaveToDBOrFail();
+
+        return foundClient;
+    }
+
 
     public override Client? Update(Guid id, BaseDTO updateValues)
     {

@@ -27,3 +27,6 @@ Content-Type: application/json
   "country_code": "NL"
 }
 ###
+### Show all Addresses
+GET  http://localhost:5000/api/addresses
+###

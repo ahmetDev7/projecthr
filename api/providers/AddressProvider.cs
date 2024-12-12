@@ -79,15 +79,4 @@ public class AddressProvider : BaseProvider<Address>
     }
 
     protected override void ValidateModel(Address model) => _addressValidator.ValidateAndThrow(model);
-
-    public Address? GetOrCreateAddress(AddressRequest? address = null, Guid? addressId = null)
-    {
-        if (address == null && addressId == null) return null;
-
-        if (addressId != null) return GetById(addressId.Value);
-
-        if (address != null) return Create(address);
-
-        return null;
-    }
 }

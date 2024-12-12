@@ -1,108 +1,3 @@
-PUT http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
-Content-Type: application/json
-
-{
-  "code": "DIT IS GETEST",
-  "name": "DIT IS GETEST",
-  "reference": "DIT IS GETEST",
-  "contact": {
-    "name": "DIT IS GETEST",
-    "phone": "DIT IS GETEST",
-    "email": "DIT IS GETEST"
-  },
-  "address": {
-    "street": "DIT IS GETEST",
-    "house_number": "DIT IS GETEST",
-    "house_number_extension": "string",
-    "house_number_extension_extra": "string",
-    "zipcode": "DIT IS GETEST",
-  }
-}
-###
-
-POST http://localhost:5000/api/Suppliers
-Content-Type: application/json
-
-{
-  "code": "Nog eentje omdat het leuk is",
-  "name": "string",
-  "reference": "123-ABCD",
-  "contact": {
-    "name": "123",
-    "phone": "123",
-    "email": "123"
-  },
-  "address": {
-    "street": "otto",
-    "house_number": "otto",
-    "house_number_extension": "string",
-    "house_number_extension_extra": "string",
-    "zipcode": "string",
-    "city": "string",
-    "province": "string",
-    "country_code": "string"
-  }
-}
-
-###
-
-PUT http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
-Content-Type: application/json
-  
- {
-  "code": "VANAF NU IS HET EEN UPDATE TEST",
-  "name": "string",
-  "reference": "string",
-  "contact_id": "3e41504d-341c-4be9-964e-03720ffaf8a7",
-  "address_id": "537540f2-94bf-494b-827c-6b977c2d0132"
-}
-
-###
-PUT http://localhost:5000/api/Suppliers/9dd95911-0571-49b7-be44-cd18171569fe
-Content-Type: application/json
-  
-{
-  "code": "Nog eentje omdat het leuk is",
-  "name": "string",
-  "reference": "string",
-  "contact": {
-    "name": "test",
-    "phone": "0612346799",
-    "email": "ghhdldk@mail.com"
-  },
-  "address": {
-    "street": "otto",
-    "house_number": "otto",
-    "house_number_extension": "string",
-    "house_number_extension_extra": "string",
-    "zipcode": "string",
-    "city": "string",
-    "province": "string",
-    "country_code": "NL"
-  }
-}
-
-###
-
-PUT http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
-Content-Type: application/json
-
-{
-  "code": "DIT IS GETEST",
-  "name": "DIT IS GETEST",
-  "reference": "DIT IS GETEST",
-  "contact_id": "3e41504d-341c-4be9-964e-03720ffaf8a7",
-  "address": {
-    "street": "DIT IS GETEST",
-    "house_number": "DIT IS GETEST",
-    "house_number_extension": "string",
-    "house_number_extension_extra": "string",
-    "zipcode": "DIT IS GETEST",
-   }
-}
-
-###
-
 POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
 
@@ -110,64 +5,20 @@ Content-Type: application/json
   "code": "dit is een get item test",
   "name": "string",
   "reference": "123-ABCD",
-  "contact_id": "8e360e36-5b71-40b0-9cd1-baaf0cca5455",
-  "address_id": "96010731-e113-4b43-845e-acd8027dde76"
+  "contact_id": "936e76a5-37d5-4514-86b0-1caa13da5ac4",
+  "address_id": "0ba16va7-0c7a-45de-9fe6-9054fb6df6a8"
 }
 
 ###
-
-POST http://localhost:5000/api/Suppliers
+PUT http://localhost:5000/api/Suppliers/3fe4cab3-3308-471e-8820-a8a126379ea4
 Content-Type: application/json
-
-{
-  "code": "Otto is hier",
+  
+ {
+  "code": "VANAF NU IS HET EEN UPDATE TEST",
   "name": "string",
   "reference": "string",
-  "contact_id": "8e360e36-5b71-40b0-9cd1-baaf0cca5455",
-  "address": {
-    "street": "otto",
-    "house_number": "otto",
-    "house_number_extension": "string",
-    "house_number_extension_extra": "string",
-    "zipcode": "string",
-    "city": "string",
-    "province": "string",
-    "country_code": "string"
-  }
-}
-
-### 
-
-PUT http://localhost:5000/api/Suppliers/fd979fc5-609f-43ad-9337-c1fe49f1a15d
-Content-Type: application/json
-
-{
-  "code": "DIT IS GETEST",
-  "name": "DIT IS GETEST",
-  "reference": "DIT IS GETEST",
-  "contact": {
-    "name": "DIT IS GETEST",
-    "phone": "DIT IS GETEST",
-    "email": "DIT IS GETEST"
-  },
-  "address_id": "537540f2-94bf-494b-827c-6b977c2d0132"
-}
-
-###
-
-POST http://localhost:5000/api/Suppliers
-Content-Type: application/json
-
-{
-  "code": "Otto is hier",
-  "name": "string",
-  "reference": "string",
-  "contact": {
-    "name": "123",
-    "phone": "123",
-    "email": "123"
-  },
-  "address_id": "96010731-e113-4b43-845e-acd8027dde76"
+  "contact_id": "f012a7c7-dfb0-4e54-9516-57bd51f9a7f8",
+  "address_id": "016d60c2-a192-497a-b72c-49a1dedc3dab"
 }
 
 ###

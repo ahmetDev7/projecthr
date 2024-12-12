@@ -25,23 +25,19 @@ public class ClientsProvider : BaseProvider<Client>
     {
         ClientRequest request = createValues as ClientRequest ?? throw new ApiFlowException("Could not process create client request. Save new client failed.");
 
-        Contact? relatedContact = _contactProvider.GetOrCreateContact(request.Contact, request.ContactId);
-        Address? relatedAddress = _addressProvider.GetOrCreateAddress(request.Address, request.AddressId);
-
         Client newClient = new Client(newInstance: true)
         {
             Name = request.Name,
+            AddressId = request.AddressId,
+            ContactId = request.ContactId
         };
-
-        if (relatedContact != null) newClient.ContactId = relatedContact.Id;
-        if (relatedAddress != null) newClient.AddressId = relatedAddress.Id;
 
         ValidateModel(newClient);
 
         _db.Clients.Add(newClient);
         SaveToDBOrFail();
 
-        return newClient;
+        return GetById(newClient.Id);
     }
 
     public override Client? Update(Guid id, BaseDTO updateValues)
@@ -55,13 +51,13 @@ public class ClientsProvider : BaseProvider<Client>
         existingClient.ContactId = request.ContactId;
         existingClient.AddressId =  request.AddressId;
 
-        existingClient.SetUpdatedAt();
         ValidateModel(existingClient);
+        existingClient.SetUpdatedAt();
 
         _db.Clients.Update(existingClient);
         SaveToDBOrFail();
 
-        return existingClient;
+        return GetById(existingClient.Id);
     }
     public List<Order> GetRelatedOrdersById(Guid clientId) => _db.Orders.Where(o => o.BillToClientId == clientId).ToList();
 

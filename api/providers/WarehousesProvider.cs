@@ -39,8 +39,8 @@ public class WarehousesProvider : BaseProvider<Warehouse>
             };
 
             _db.Warehouses.Add(newWarehouse);
-            _docksProvider.InternalCreate(newWarehouse.Id); // Creates an specific dock inside warehouse (only for create)
             SaveToDBOrFail();
+            _docksProvider.InternalCreate(newWarehouse.Id); // Creates an specific dock inside warehouse (only for create)
             transaction.Commit();
 
             newWarehouse.Contact = relatedContact;

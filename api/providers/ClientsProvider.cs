@@ -44,6 +44,25 @@ public class ClientsProvider : BaseProvider<Client>
         return newClient;
     }
 
+    public override Client? Update(Guid id, BaseDTO updateValues)
+    {
+        ClientRequest request = updateValues as ClientRequest 
+            ?? throw new ApiFlowException("Could not process update client request. Update failed.");
+
+        Client? existingClient = _db.Clients.FirstOrDefault(c => c.Id == id);
+
+        existingClient.Name = request.Name;
+        existingClient.ContactId = request.ContactId;
+        existingClient.AddressId =  request.AddressId;
+
+        existingClient.SetUpdatedAt();
+        ValidateModel(existingClient);
+
+        _db.Clients.Update(existingClient);
+        SaveToDBOrFail();
+
+        return existingClient;
+    }
     public List<Order> GetRelatedOrdersById(Guid clientId) => _db.Orders.Where(o => o.BillToClientId == clientId).ToList();
 
     protected override void ValidateModel(Client model) => _clientValidator.ValidateAndThrow(model);

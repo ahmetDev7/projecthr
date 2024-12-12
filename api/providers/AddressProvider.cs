@@ -31,7 +31,6 @@ public class AddressProvider : BaseProvider<Address>
             City = req.City,
             Province = req.Province,
             CountryCode = req.CountryCode,
-            CreatedAt = DateTime.UtcNow
         };
 
         ValidateModel(newAddress);
@@ -69,7 +68,7 @@ public class AddressProvider : BaseProvider<Address>
         existingAddress.City = req.City;
         existingAddress.Province = req.Province;
         existingAddress.CountryCode = req.CountryCode;
-        existingAddress.UpdatedAt = DateTime.UtcNow;
+        existingAddress.SetUpdatedAt();
 
         ValidateModel(existingAddress);
 

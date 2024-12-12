@@ -69,16 +69,4 @@ public class ContactProvider : BaseProvider<Contact>
     }
 
     protected override void ValidateModel(Contact model) => _contactValidator.ValidateAndThrow(model);
-
-    // Andere methoden zoals GetOrCreateContact blijven zoals ze zijn
-    public Contact? GetOrCreateContact(ContactRequest? contact = null, Guid? contactId = null)
-    {
-        if (contact == null && contactId == null) return null;
-
-        if (contactId != null) return GetById(contactId.Value);
-
-        if (contact != null) return Create(contact);
-
-        return null;
-    }
 }

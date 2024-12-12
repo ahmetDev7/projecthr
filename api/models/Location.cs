@@ -15,6 +15,9 @@ public class Location : BaseModel
     public Guid? WarehouseId { get; set; } // Foreign Key Relationship
     public Warehouse? Warehouse { get; set; }
 
+    public ICollection<Transfer>? TransfersTo {get; set;}
+    public ICollection<Transfer>? TransfersFrom {get; set;}
+
     private int? _onHand = 0;
     public int? OnHand {
         get => _onHand;
@@ -22,6 +25,6 @@ public class Location : BaseModel
     }
 
     public Guid? InventoryId {get; set;}
-
     public Inventory? Inventory{ get; set; }
+
 }

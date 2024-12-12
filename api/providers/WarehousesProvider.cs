@@ -6,12 +6,14 @@ public class WarehousesProvider : BaseProvider<Warehouse>
 {
     private readonly AddressProvider _addressProvider;
     private readonly ContactProvider _contactProvider;
+    private readonly DocksProvider _docksProvider;
     private IValidator<Warehouse> _WarehouseValidator;
 
-    public WarehousesProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, IValidator<Warehouse> validator) : base(db)
+    public WarehousesProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, DocksProvider docksProvider, IValidator<Warehouse> validator) : base(db)
     {
         _addressProvider = addressProvider;
         _contactProvider = contactProvider;
+        _docksProvider = docksProvider;
         _WarehouseValidator = validator;
     }
     public override Warehouse? GetById(Guid id) => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).FirstOrDefault(l => l.Id == id);
@@ -37,6 +39,7 @@ public class WarehousesProvider : BaseProvider<Warehouse>
             };
 
             _db.Warehouses.Add(newWarehouse);
+            _docksProvider.InternalCreate(newWarehouse.Id); // Creates an specific dock inside warehouse (only for create)
             SaveToDBOrFail();
             transaction.Commit();
 

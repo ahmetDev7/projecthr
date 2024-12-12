@@ -19,4 +19,7 @@ public class Warehouse : BaseModel
 
     // Navigation property for locations
     public ICollection<Location>? Locations { get; set; }
+
+    public Dock? Dock { get; set; }
+
 }

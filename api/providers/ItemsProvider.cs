@@ -1,5 +1,6 @@
 using DTO.Item;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class ItemsProvider : BaseProvider<Item>
 {
@@ -10,7 +11,19 @@ public class ItemsProvider : BaseProvider<Item>
         _itemValidator = validator;
     }
 
-    public override Item? GetById(Guid id) => _db.Items.FirstOrDefault(i => i.Id == id);
+    private IQueryable<Item> GetItemByIdQuery(bool includeInventory = false){
+        IQueryable<Item> query = _db.Items.AsQueryable();
+
+        if (includeInventory) query = query.Include(i => i.Inventory);
+
+        return query;
+    }
+
+    public override Item? GetById(Guid id) => GetItemByIdQuery().FirstOrDefault(i => i.Id == id);
+    
+    public Item? GetById(Guid id, bool includeInventory = false) => GetItemByIdQuery(includeInventory).FirstOrDefault(i => i.Id == id);
+
+    
 
     public override List<Item>? GetAll() => _db.Items.ToList();
 
@@ -43,6 +56,41 @@ public class ItemsProvider : BaseProvider<Item>
         SaveToDBOrFail();
         return newItem;
     }
+
+    public override Item? Update(Guid id, BaseDTO updateValues)
+    {
+        ItemRequest? req = updateValues as ItemRequest;
+        if (req == null) throw new ApiFlowException("Could not process update item request. Update failed.");
+
+        Item? existingItem = _db.Items.FirstOrDefault(i => i.Id == id);
+        if (existingItem == null) throw new ApiFlowException($"Item not found for id '{id}'");
+
+        existingItem.Code = req.Code;
+        existingItem.Description = req.Description;
+        existingItem.ShortDescription = req.ShortDescription;
+        existingItem.UpcCode = req.UpcCode;
+        existingItem.ModelNumber = req.ModelNumber;
+        existingItem.CommodityCode = req.CommodityCode;
+        existingItem.UnitPurchaseQuantity = req.UnitPurchaseQuantity;
+        existingItem.UnitOrderQuantity = req.UnitOrderQuantity;
+        existingItem.PackOrderQuantity = req.PackOrderQuantity;
+        existingItem.SupplierReferenceCode = req.SupplierReferenceCode;
+        existingItem.SupplierPartNumber = req.SupplierPartNumber;
+        existingItem.ItemGroupId = req.ItemGroupId;
+        existingItem.ItemLineId = req.ItemLineId;
+        existingItem.ItemTypeId = req.ItemTypeId;
+        existingItem.SupplierId = req.SupplierId;
+        
+        ValidateModel(existingItem);
+
+        _db.Items.Update(existingItem);
+        SaveToDBOrFail();
+
+        return existingItem;
+    }
+
+
+    public Inventory? GetInventory(Guid itemId) => _db.Inventories.FirstOrDefault(i => i.ItemId == itemId);
 
     protected override void ValidateModel(Item model) => _itemValidator.ValidateAndThrow(model);
 }

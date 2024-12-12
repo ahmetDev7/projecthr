@@ -16,7 +16,7 @@ Content-Type: application/json
     "row" : "11",
     "rack" : "567",
     "shelf" : "124",
-    "warehouse_id" : "c3d5c81b-a4cb-4877-969f-b0643fef401e"
+    "warehouse_id" : "0f3f0eb5-7671-4a20-b9ef-340a6aa37fa2"
 }
 ###
 

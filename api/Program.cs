@@ -98,7 +98,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddTransient<AddressProvider>();
 builder.Services.AddTransient<ContactProvider>();
-builder.Services.AddTransient<WarehouseProvider>();
+builder.Services.AddTransient<WarehousesProvider>();
 builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
 builder.Services.AddTransient<ItemGroupProvider>();

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class WarehousesController : ControllerBase
 {
-    private readonly WarehouseProvider _warehouseProvider;
+    private readonly WarehousesProvider _warehouseProvider;
 
-    public WarehousesController(WarehouseProvider warehouseProvider)
+    public WarehousesController(WarehousesProvider warehouseProvider)
     {
         _warehouseProvider = warehouseProvider;
     }

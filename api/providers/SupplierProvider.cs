@@ -23,8 +23,6 @@ public class SupplierProvider : BaseProvider<Supplier>
         var allSuppliers = _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).ToList();
         if (req == null) throw new ApiFlowException("Could not process create supplier request. Save new supplier failed.");
 
-        Contact? relatedContact = _contactProvider.GetOrCreateContact(req.Contact, req.ContactId);
-        Address? relatedAddress = _addressProvider.GetOrCreateAddress(req.Address, req.AddressId);
 
         Supplier newSupplier = new Supplier(newInstance: true)
         {

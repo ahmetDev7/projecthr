@@ -63,4 +63,29 @@ public class AddressesController : ControllerBase
             }
         });
     }
+
+    [HttpGet("{id}")]
+    public IActionResult ShowSingle(Guid id)
+    {
+        Address? foundAddress = _addressProvider.GetById(id);
+
+        if (foundAddress == null) throw new ApiFlowException($"Address not found for id '{id}'");
+
+        return Ok(new 
+        {
+            message = "Address found",
+            new_address = new AddressResponse
+            {
+                Id = foundAddress.Id,
+                Street = foundAddress.Street,
+                HouseNumber = foundAddress.HouseNumber,
+                HouseNumberExtension = foundAddress.HouseNumberExtension,
+                HouseNumberExtensionExtra = foundAddress.HouseNumberExtensionExtra,
+                ZipCode = foundAddress.ZipCode,
+                City = foundAddress.City,
+                Province = foundAddress.Province,
+                CountryCode = foundAddress.CountryCode
+            }
+        });
+    }
 }

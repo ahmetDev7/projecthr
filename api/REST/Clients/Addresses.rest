@@ -33,3 +33,6 @@ GET  http://localhost:5000/api/addresses
 ### Show Single Id Address
 GET  http://localhost:5000/api/addresses/b372cf41-44f1-4823-a97c-316fef12ba27
 ###
+### Delete Single Address
+DELETE http://localhost:5000/api/addresses/4b758ac2-5b59-4524-9d9c-d200b6da2543
+###

@@ -236,8 +236,8 @@ Table warehouse_logs {
   entity_id uuid [not null] 
   entity entity_type [not null]
   attribute varchar [not null]
-  old_value varchar [not null] 
-  new_value varchar [not null]
+  old_value varchar [null] 
+  new_value varchar [null]
   created_at datetime [not null]
 }
 

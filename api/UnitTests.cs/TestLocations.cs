@@ -5,10 +5,10 @@ using FluentAssertions;
 
 namespace projecthr
 {
-    public class LocationUnitTests
+    public class LocationsControllerTests
     {
         [Fact]
-        public void Create_test_location()
+        public void Create_Should_Return_Created_Location()
         {
             Mock<LocationsProvider> mockLocationsProvider = new Mock<LocationsProvider>(null, null);
 
@@ -32,7 +32,7 @@ namespace projecthr
             };
 
             mockLocationsProvider
-                .Setup(provider => provider.Create(It.Is<LocationRequest>(lc => 
+                .Setup(provider => provider.Create(It.Is<LocationRequest>(lc =>
                     lc.Row == locationRequest.Row &&
                     lc.Rack == locationRequest.Rack &&
                     lc.Shelf == locationRequest.Shelf &&
@@ -44,7 +44,7 @@ namespace projecthr
 
             IActionResult result = controller.Create(locationRequest);
 
-            OkObjectResult? okResult = result as OkObjectResult;
+            var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult!.StatusCode.Should().Be(200);
 

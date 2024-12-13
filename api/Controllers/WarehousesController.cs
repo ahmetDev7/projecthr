@@ -4,94 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class WarehousesController : ControllerBase
 {
-    private readonly WarehouseProvider _warehouseProvider;
+    private readonly WarehousesProvider _warehouseProvider;
 
-    public WarehousesController(WarehouseProvider warehouseProvider)
+    public WarehousesController(WarehousesProvider warehouseProvider)
     {
         _warehouseProvider = warehouseProvider;
-
     }
-
-    [HttpGet("{id}")]
-    public ActionResult<Warehouse> GetById(Guid id)
-    {
-        Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
-        if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-        return Ok(new WarehouseResponse
-        {
-            Id = foundWarehouse.Id,
-            Code = foundWarehouse.Code,
-            Name = foundWarehouse.Name,
-            ContactId = foundWarehouse.ContactId,
-            Contact = new DTO.Contact.ContactRequest
-            {
-                Name = foundWarehouse.Contact.Name,
-                Email = foundWarehouse.Contact.Email,
-                Phone = foundWarehouse.Contact.Phone,
-            },
-            AddressId = foundWarehouse.AddressId,
-            Address = new DTO.Address.AddressRequest
-            {
-                Street = foundWarehouse.Address.Street,
-                HouseNumber = foundWarehouse.Address.HouseNumber,
-                HouseNumberExtension = foundWarehouse.Address.HouseNumberExtension,
-                HouseNumberExtensionExtra = foundWarehouse.Address.HouseNumberExtensionExtra,
-                ZipCode = foundWarehouse.Address.ZipCode,
-                City = foundWarehouse.Address.City,
-                Province = foundWarehouse.Address.Province,
-                CountryCode = foundWarehouse.Address.CountryCode,
-            },
-            CreatedAt = foundWarehouse.CreatedAt,
-            UpdatedAt = foundWarehouse.UpdatedAt,
-        });
-    }
-
-    [HttpGet()]
-    public IActionResult GetAll() => Ok(_warehouseProvider.GetAll().Select(w => new WarehouseResponse
-    {
-        Id = w.Id,
-        Code = w.Code,
-        Name = w.Name,
-        ContactId = w.ContactId,
-        Contact = new DTO.Contact.ContactRequest
-        {
-            Name = w.Contact.Name,
-            Email = w.Contact.Email,
-            Phone = w.Contact.Phone,
-        },
-        AddressId = w.AddressId,
-        Address = new DTO.Address.AddressRequest
-        {
-            Street = w.Address.Street,
-            HouseNumber = w.Address.HouseNumber,
-            HouseNumberExtension = w.Address.HouseNumberExtension,
-            HouseNumberExtensionExtra = w.Address.HouseNumberExtensionExtra,
-            ZipCode = w.Address.ZipCode,
-            City = w.Address.City,
-            Province = w.Address.Province,
-            CountryCode = w.Address.CountryCode,
-        },
-        CreatedAt = w.CreatedAt,
-        UpdatedAt = w.UpdatedAt,
-    }).ToList());
-
-    [HttpGet("{warehouseId}/locations")]
-    public IActionResult GetLocations(Guid warehouseId) => Ok(_warehouseProvider.GetLocationsByWarehouseId(warehouseId).Select(l => new LocationResponse
-    {
-        Id = l.Id,
-        Row = l.Row,
-        Rack = l.Rack,
-        Shelf = l.Shelf,
-        WarehouseId = l.WarehouseId,
-        CreatedAt = l.CreatedAt,
-        UpdatedAt = l.UpdatedAt
-    }));
 
     [HttpPost]
-    public IActionResult CreateWarehouse([FromBody] WarehouseRequest request)
+    public IActionResult Create([FromBody] WarehouseRequest req)
     {
-        Warehouse? createdWarehouse = _warehouseProvider.Create<WarehouseRequest>(request);
+        Warehouse? createdWarehouse = _warehouseProvider.Create(req);
         if (createdWarehouse == null) throw new ApiFlowException("Saving new warehouse failed");
+
         return Ok(
             new
             {
@@ -127,8 +52,48 @@ public class WarehousesController : ControllerBase
         );
     }
 
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, [FromBody] WarehouseRequest req)
+    {
+        Warehouse? updatedWarehouse = _warehouseProvider.Update(id, req);
+
+        return updatedWarehouse == null
+            ? NotFound(new { message = $"Warehouse not found for id '{id}'" })
+            : Ok(new
+            {
+                message = "Warehouse updated!",
+                updated_warehouse = new WarehouseResponse
+                {
+                    Id = id,
+                    Code = updatedWarehouse.Code,
+                    Name = updatedWarehouse.Name,
+                    ContactId = updatedWarehouse.ContactId,
+                    Contact = new DTO.Contact.ContactRequest
+                    {
+                        Name = updatedWarehouse.Contact.Name,
+                        Phone = updatedWarehouse.Contact.Phone,
+                        Email = updatedWarehouse.Contact.Email
+                    },
+                    AddressId = updatedWarehouse.AddressId,
+                    Address = new DTO.Address.AddressRequest
+                    {
+                        Street = updatedWarehouse.Address.Street,
+                        HouseNumber = updatedWarehouse.Address.HouseNumber,
+                        HouseNumberExtension = updatedWarehouse.Address.HouseNumberExtension,
+                        HouseNumberExtensionExtra = updatedWarehouse.Address.HouseNumberExtensionExtra,
+                        ZipCode = updatedWarehouse.Address.ZipCode,
+                        City = updatedWarehouse.Address.City,
+                        Province = updatedWarehouse.Address.Province,
+                        CountryCode = updatedWarehouse.Address.CountryCode
+                    },
+                    CreatedAt = updatedWarehouse.CreatedAt,
+                    UpdatedAt = updatedWarehouse.UpdatedAt
+                }
+            });
+    }
+
     [HttpDelete("{id}")]
-    public IActionResult DeleteWarehouse(Guid id)
+    public IActionResult Delete(Guid id)
     {
         Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
         if (deletedWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
@@ -164,4 +129,79 @@ public class WarehousesController : ControllerBase
             }
         });
     }
+
+    [HttpGet("{id}")]
+    public ActionResult<Warehouse> ShowSingle(Guid id)
+    {
+        Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
+        if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
+        return Ok(new WarehouseResponse
+        {
+            Id = foundWarehouse.Id,
+            Code = foundWarehouse.Code,
+            Name = foundWarehouse.Name,
+            ContactId = foundWarehouse.ContactId,
+            Contact = new DTO.Contact.ContactRequest
+            {
+                Name = foundWarehouse.Contact.Name,
+                Email = foundWarehouse.Contact.Email,
+                Phone = foundWarehouse.Contact.Phone,
+            },
+            AddressId = foundWarehouse.AddressId,
+            Address = new DTO.Address.AddressRequest
+            {
+                Street = foundWarehouse.Address.Street,
+                HouseNumber = foundWarehouse.Address.HouseNumber,
+                HouseNumberExtension = foundWarehouse.Address.HouseNumberExtension,
+                HouseNumberExtensionExtra = foundWarehouse.Address.HouseNumberExtensionExtra,
+                ZipCode = foundWarehouse.Address.ZipCode,
+                City = foundWarehouse.Address.City,
+                Province = foundWarehouse.Address.Province,
+                CountryCode = foundWarehouse.Address.CountryCode,
+            },
+            CreatedAt = foundWarehouse.CreatedAt,
+            UpdatedAt = foundWarehouse.UpdatedAt,
+        });
+    }
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_warehouseProvider.GetAll().Select(w => new WarehouseResponse
+    {
+        Id = w.Id,
+        Code = w.Code,
+        Name = w.Name,
+        ContactId = w.ContactId,
+        Contact = new DTO.Contact.ContactRequest
+        {
+            Name = w.Contact.Name,
+            Email = w.Contact.Email,
+            Phone = w.Contact.Phone,
+        },
+        AddressId = w.AddressId,
+        Address = new DTO.Address.AddressRequest
+        {
+            Street = w.Address.Street,
+            HouseNumber = w.Address.HouseNumber,
+            HouseNumberExtension = w.Address.HouseNumberExtension,
+            HouseNumberExtensionExtra = w.Address.HouseNumberExtensionExtra,
+            ZipCode = w.Address.ZipCode,
+            City = w.Address.City,
+            Province = w.Address.Province,
+            CountryCode = w.Address.CountryCode,
+        },
+        CreatedAt = w.CreatedAt,
+        UpdatedAt = w.UpdatedAt,
+    }).ToList());
+
+    [HttpGet("{warehouseId}/locations")]
+    public IActionResult GetLocationsByWarehouse(Guid warehouseId) => Ok(_warehouseProvider.GetLocationsByWarehouseId(warehouseId).Select(l => new LocationResponse
+    {
+        Id = l.Id,
+        Row = l.Row,
+        Rack = l.Rack,
+        Shelf = l.Shelf,
+        WarehouseId = l.WarehouseId,
+        CreatedAt = l.CreatedAt,
+        UpdatedAt = l.UpdatedAt
+    }));
 }

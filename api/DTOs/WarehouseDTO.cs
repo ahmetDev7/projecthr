@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using DTO.Address;
 using DTO.Contact;
-using Microsoft.AspNetCore.Mvc;
 
 
 [ApiExplorerSettings(IgnoreApi = true)]
@@ -49,6 +49,9 @@ public class WarehouseResponse : BaseDTO
 
     [JsonPropertyName("address")]
     public AddressRequest? Address { get; set; }
+
+    [JsonPropertyName("dock")]
+    public DockResponse? Dock { get; set; }
 
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }

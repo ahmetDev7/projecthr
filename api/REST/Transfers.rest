@@ -1,4 +1,9 @@
 ### GET TRANSFER BY ID
+GET http://localhost:5000/api/transfers
+Content-Type: application/json
+###
+
+### GET TRANSFER BY ID
 GET http://localhost:5000/api/transfers/6fbda629-3837-4cb7-a7ae-91002f651e82
 Content-Type: application/json
 ###

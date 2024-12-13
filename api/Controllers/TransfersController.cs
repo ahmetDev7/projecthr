@@ -1,3 +1,4 @@
+using DTO.Item;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -87,5 +88,33 @@ public class TransfersController : ControllerBase
                 CreatedAt = foundTransfer.CreatedAt,
                 UpdatedAt = foundTransfer.UpdatedAt,
             });
+    }
+
+    [HttpGet("{transferId}/items")]
+    public IActionResult GetItemsFromTransfer(Guid transferId)
+    {
+        Transfer? foundTransfer = _transferProvider.GetById(transferId);
+        if (foundTransfer == null) return NotFound(new { message = $"Transfer not found for id '{transferId}'" });
+
+        Item? item = _transferProvider.GetItemsFromTransfer(foundTransfer);
+        return Ok(new ItemResponse
+        {
+            Id = item.Id,
+            Code = item.Code,
+            Description = item.Description,
+            ShortDescription = item.ShortDescription,
+            UpcCode = item.UpcCode,
+            ModelNumber = item.ModelNumber,
+            CommodityCode = item.CommodityCode,
+            UnitPurchaseQuantity = item.UnitPurchaseQuantity,
+            UnitOrderQuantity = item.UnitOrderQuantity,
+            PackOrderQuantity = item.PackOrderQuantity,
+            SupplierReferenceCode = item.SupplierReferenceCode,
+            SupplierPartNumber = item.SupplierPartNumber,
+            ItemGroupId = item.ItemGroupId,
+            ItemLineId = item.ItemLineId,
+            ItemTypeId = item.ItemTypeId,
+            SupplierId = item.SupplierId,
+        });
     }
 }

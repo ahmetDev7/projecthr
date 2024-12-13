@@ -20,6 +20,7 @@ public class TransferProvider : BaseProvider<Transfer>
         return _db.Transfers.Include(t => t.TransferItems).FirstOrDefault(t => t.Id == id);
     }
 
+    public override List<Transfer>? GetAll() => _db.Transfers.Include(t => t.TransferItems).ToList();
 
     public override Transfer? Create(BaseDTO createValues)
     {

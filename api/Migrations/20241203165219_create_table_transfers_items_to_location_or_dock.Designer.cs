@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241203165219_create_table_transfers_items_to_location_or_dock")]
+    partial class create_table_transfers_items_to_location_or_dock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,63 +131,6 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("Dock", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("WarehouseId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WarehouseId")
-                        .IsUnique();
-
-                    b.ToTable("Docks");
-                });
-
-            modelBuilder.Entity("DockItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int?>("Amount")
-                        .IsRequired()
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("DockId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ItemId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DockId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("DockItems");
                 });
 
             modelBuilder.Entity("Inventory", b =>
@@ -716,16 +662,14 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AddressId")
-                        .IsRequired()
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ContactId")
-                        .IsRequired()
+                    b.Property<Guid>("ContactId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -764,36 +708,6 @@ namespace api.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Contact");
-                });
-
-            modelBuilder.Entity("Dock", b =>
-                {
-                    b.HasOne("Warehouse", "Warehouse")
-                        .WithOne("Dock")
-                        .HasForeignKey("Dock", "WarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Warehouse");
-                });
-
-            modelBuilder.Entity("DockItem", b =>
-                {
-                    b.HasOne("Dock", "Dock")
-                        .WithMany()
-                        .HasForeignKey("DockId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dock");
-
-                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Inventory", b =>
@@ -1076,8 +990,6 @@ namespace api.Migrations
 
             modelBuilder.Entity("Warehouse", b =>
                 {
-                    b.Navigation("Dock");
-
                     b.Navigation("Locations");
                 });
 #pragma warning restore 612, 618

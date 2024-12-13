@@ -84,10 +84,15 @@ public class InventoriesProvider : BaseProvider<Inventory>
             
             return foundInventory;
         }
-        catch(Exception ex)
+        catch(Exception)
         {
             transaction.Rollback();
-            throw ex; //NOTE: Intentional throw so that GlobalExceptionMiddleware will handle the response        
+            throw; 
+            /*
+                NOTE: 
+                    - Intentional throw so that GlobalExceptionMiddleware will handle the response     
+                    - https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2200#example  
+            */ 
         }
     }
 

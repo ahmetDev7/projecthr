@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace projecthr
 {
@@ -43,7 +44,7 @@ namespace projecthr
 
             IActionResult result = controller.Create(locationRequest);
 
-            var okResult = result as OkObjectResult;
+            OkObjectResult? okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult!.StatusCode.Should().Be(200);
 

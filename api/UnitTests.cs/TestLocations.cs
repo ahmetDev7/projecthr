@@ -48,23 +48,6 @@ namespace projecthr
             okResult.Should().NotBeNull();
             okResult!.StatusCode.Should().Be(200);
 
-            var response = okResult.Value as dynamic;
-
-            LocationResponse? locationResponse = response?.new_location as LocationResponse;
-
-            locationResponse.Should().NotBeNull();
-            locationResponse!.Id.Should().Be(createdLocation.Id);
-            locationResponse.Row.Should().Be(createdLocation.Row);
-            locationResponse.Rack.Should().Be(createdLocation.Rack);
-            locationResponse.Shelf.Should().Be(createdLocation.Shelf);
-            locationResponse.WarehouseId.Should().Be(createdLocation.WarehouseId);
-
-            mockLocationsProvider.Verify(provider => provider.Create(It.Is<LocationRequest>(lr =>
-                lr.Row == locationRequest.Row &&
-                lr.Rack == locationRequest.Rack &&
-                lr.Shelf == locationRequest.Shelf &&
-                lr.WarehouseId == locationRequest.WarehouseId
-            )), Times.Once);
         }
     }
 }

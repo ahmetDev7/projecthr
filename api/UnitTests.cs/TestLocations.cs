@@ -11,6 +11,7 @@ namespace projecthr
         public void Create_Should_Return_Created_Location()
         {
             Mock<LocationsProvider> mockLocationsProvider = new Mock<LocationsProvider>(null, null);
+            LocationsController controller = new LocationsController(mockLocationsProvider.Object);
 
             LocationRequest locationRequest = new LocationRequest
             {
@@ -39,8 +40,6 @@ namespace projecthr
                     lc.WarehouseId == locationRequest.WarehouseId
                 )))
                 .Returns(createdLocation);
-
-            LocationsController controller = new LocationsController(mockLocationsProvider.Object);
 
             IActionResult result = controller.Create(locationRequest);
 

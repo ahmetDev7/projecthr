@@ -46,6 +46,8 @@ public class AddressProvider : BaseProvider<Address>
         Address? foundAddress = _db.Addresses.FirstOrDefault(a => a.Id == id);
         if (foundAddress == null) return null;
 
+        ValidateModel(foundAddress);
+        
         _db.Addresses.Remove(foundAddress);
         SaveToDBOrFail();
 

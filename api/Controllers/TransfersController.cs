@@ -88,4 +88,21 @@ public class TransfersController : ControllerBase
                 UpdatedAt = foundTransfer.UpdatedAt,
             });
     }
+
+    [HttpGet()]
+    public IActionResult ShowAll() => Ok(_transferProvider.GetAll().Select(t => new TransferResponse
+    {
+        Id = t.Id,
+        Reference = t.Reference,
+        TransferFromId = t.TransferFromId,
+        TransferToId = t.TransferToId,
+        TransferStatus = t.TransferStatus.ToString(),
+        Items = t.TransferItems?.Select(ti => new TransferItemDTO()
+        {
+            ItemId = ti.ItemId,
+            Amount = ti.Amount,
+        }).ToList(),
+        CreatedAt = t.CreatedAt,
+        UpdatedAt = t.UpdatedAt,
+    }));
 }

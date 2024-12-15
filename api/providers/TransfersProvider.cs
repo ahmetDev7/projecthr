@@ -7,12 +7,14 @@ public class TransferProvider : BaseProvider<Transfer>
     private IValidator<Transfer> _transferValidator;
     private readonly LocationsProvider _locationsProvider;
     private readonly InventoriesProvider _inventoriesProvider;
+    private readonly ItemsProvider _itemsProvider;
 
-    public TransferProvider(AppDbContext db, IValidator<Transfer> validator, LocationsProvider locationsProvider, InventoriesProvider inventoriesProvider) : base(db)
+    public TransferProvider(AppDbContext db, IValidator<Transfer> validator, LocationsProvider locationsProvider, InventoriesProvider inventoriesProvider, ItemsProvider itemsProvider) : base(db)
     {
         _transferValidator = validator;
         _locationsProvider = locationsProvider;
         _inventoriesProvider = inventoriesProvider;
+        _itemsProvider = itemsProvider;
     }
 
     public override Transfer? GetById(Guid id)
@@ -157,6 +159,11 @@ public class TransferProvider : BaseProvider<Transfer>
             transaction.Rollback();
             throw;
         }
+    }
+
+    public Item? GetItemsFromTransfer(Transfer transfer){
+        Guid? itemId = transfer.TransferItems.First().ItemId;
+        return _itemsProvider.GetById((Guid)itemId);
     }
 
     protected override void ValidateModel(Transfer model) => _transferValidator.ValidateAndThrow(model);

@@ -4,7 +4,12 @@ Content-Type: application/json
 ###
 
 ### GET TRANSFER BY ID
-GET http://localhost:5000/api/transfers/6fbda629-3837-4cb7-a7ae-91002f651e82
+GET http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
+Content-Type: application/json
+###
+
+### GET ITEMS FROM TRANSFER
+GET http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b/items
 Content-Type: application/json
 ###
 

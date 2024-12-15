@@ -25,6 +25,10 @@ Content-Type: application/json
 }
 ###
 
+### DELETE TRANSFER
+DELETE http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
+Content-Type: application/json
+
 ### COMMIT TRANSFER
 PUT http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
 Content-Type: application/json

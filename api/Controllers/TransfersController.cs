@@ -38,6 +38,33 @@ public class TransfersController : ControllerBase
         });
     }
 
+    [HttpDelete("{transferId}")]
+    public IActionResult Delete(Guid transferId)
+    {
+        Transfer? newTransfer = _transferProvider.Delete(transferId);
+        if (newTransfer == null) return NotFound(new { message = $"Transfer not found for id {transferId}" });
+
+        return Ok(new
+        {
+            message = "Transfer deleted!",
+            created_transfer = new TransferResponse
+            {
+                Id = newTransfer.Id,
+                Reference = newTransfer.Reference,
+                TransferFromId = newTransfer.TransferFromId,
+                TransferToId = newTransfer.TransferToId,
+                TransferStatus = newTransfer.TransferStatus.ToString(),
+                Items = newTransfer.TransferItems?.Select(ti => new TransferItemDTO()
+                {
+                    ItemId = ti.ItemId,
+                    Amount = ti.Amount,
+                }).ToList(),
+                CreatedAt = newTransfer.CreatedAt,
+                UpdatedAt = newTransfer.UpdatedAt,
+            }
+        });
+    }
+
     [HttpPut("{transferId}")]
     public IActionResult CommitTransfer(Guid transferId)
     {

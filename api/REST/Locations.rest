@@ -13,10 +13,10 @@ POST http://localhost:5000/api/locations
 Content-Type: application/json
 
 {
-    "row" : "11",
+    "row" : "5",
     "rack" : "567",
     "shelf" : "124",
-    "warehouse_id" : "0f3f0eb5-7671-4a20-b9ef-340a6aa37fa2"
+    "warehouse_id" : "efe777c1-cbb6-47b0-87ad-1e60a7cdc373"
 }
 ###
 

@@ -1,3 +1,8 @@
+### GET TRANSFERS
+GET http://localhost:5000/api/transfers
+Content-Type: application/json
+###
+
 ### GET TRANSFER BY ID
 GET http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
 Content-Type: application/json
@@ -13,13 +18,12 @@ POST http://localhost:5000/api/transfers
 Content-Type: application/json
 
 {
-  "transfer_from_id": null,
-  "transfer_to_id": "2cf61353-da5e-4937-9365-a82fd4c598b0",
+  "transfer_from_id": "fc4825d7-40ae-49c9-9d7a-28fea72ca300",
+  "transfer_to_id": "8be858aa-f305-4262-82a4-b56fa2d756f2",
   "reference": "TST-0273",
-  "transfer_status": "Pending",
   "items": [
     {
-      "itemId": "c0e0ffab-84a7-493a-b425-2298e45bc5a6",
+      "itemId": "ad2e16aa-6d7c-4687-aa96-b11cc297ff50",
       "amount": 50
     }
   ]
@@ -27,6 +31,6 @@ Content-Type: application/json
 ###
 
 ### COMMIT TRANSFER
-PUT http://localhost:5000/api/transfers/3739590e-4d66-42b5-945f-4d0df2ad5b20
+PUT http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
 Content-Type: application/json
 ###

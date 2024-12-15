@@ -47,6 +47,17 @@ public class TransferProvider : BaseProvider<Transfer>
         return newTransfer;
     }
 
+    public override Transfer? Delete(Guid id)
+    {
+        Transfer? foundTransfer = GetById(id);
+        if(foundTransfer == null) return null;
+
+        _db.Transfers.Remove(foundTransfer);
+        SaveToDBOrFail();
+
+        return foundTransfer;
+    }
+
     public Transfer? CommitTransfer(Guid transferId)
     {
         Transfer? foundTransfer = GetById(transferId) ?? throw new ApiFlowException($"Transfer with ID {transferId} does not exist.", StatusCodes.Status404NotFound);

@@ -23,7 +23,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Run Code Formatter Verify No Changes
-        run: dotnet format --verify-no-changes > lint-results.txt 2>&1
+        run: dotnet format --verify-no-changes > /api/lint-results.txt 2>&1
 
   build:
     name: Build Application

@@ -3,8 +3,10 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-public class TokenService {
-    public async Task<string> GenerateAdminToken(){
+public class TokenService
+{
+    public async Task<string> GenerateAdminToken()
+    {
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenKey = Encoding.UTF8.GetBytes("SuperSecretKeyThatIs32BytesLongX");
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -17,14 +19,15 @@ public class TokenService {
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var jwtToken = tokenHandler.WriteToken(token);
-        
+
         // Log the generated token for debugging
         Console.WriteLine($"Generated Token: {jwtToken}");
-        
+
         return jwtToken;
     }
 
-    public async Task<string> GenerateReaderToken(){
+    public async Task<string> GenerateReaderToken()
+    {
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenKey = Encoding.UTF8.GetBytes("SuperSecretKeyThatIs32BytesLongX");
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -34,11 +37,11 @@ public class TokenService {
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var jwtToken = tokenHandler.WriteToken(token);
-        
+
         // Log the generated token for debugging
         Console.WriteLine($"Generated Token: {jwtToken}");
-        
+
         return jwtToken;
     }
-    
+
 }

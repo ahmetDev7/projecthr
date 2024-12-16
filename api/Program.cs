@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Load Env vars
 DotNetEnv.Env.Load();
 string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-if(connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
+if (connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -60,7 +60,7 @@ builder.Services.AddSwaggerGen(c =>
         Title = "CargoHub API",
         Version = "v1"
     });
-    
+
     // Add security definition for Bearer token
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {

@@ -70,10 +70,10 @@ public class WarehouseProvider : ICRUD<Warehouse>
     public Warehouse? Delete(Guid id)
     {
         Warehouse? foundWarehouse = GetById(id);
-        if(foundWarehouse == null) return null;
+        if (foundWarehouse == null) return null;
 
         _db.Warehouses.Remove(foundWarehouse);
-        
+
         DBUtil.SaveChanges(_db, "Warehouse not deleted");
 
         return foundWarehouse;

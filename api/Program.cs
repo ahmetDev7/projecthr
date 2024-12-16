@@ -122,7 +122,7 @@ builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
 builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
 
 var app = builder.Build();
 

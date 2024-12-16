@@ -44,7 +44,14 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build Project
-        run: dotnet build --no-restore
+        run:  dotnet build > build-results.txt 2>&1 --no-restore -nowarn:8602  
+      - name: Upload build logs 
+        uses: actions/upload-artifact@v4     
+        with:
+          name: Build results
+          path: build-results.txt
+          retention-days: 5
+        if: ${{ failure() }}
 
   test:
     name: Run Tests

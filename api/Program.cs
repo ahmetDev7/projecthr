@@ -135,7 +135,7 @@ app.MapGet("/", () => "Hello world 🚀");
 
 app.MapControllers();
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
-app.UseSwagger()
+app.UseSwagger();
 
 app.UseSwaggerUI(c =>
 {

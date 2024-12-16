@@ -62,7 +62,7 @@ jobs:
         uses: alsi-lawr/dotnet-test-coverlet@v1
         with:
           threshold: 80
-          dotnet-version: 8.0.x
+          dotnet-version: '8.0'
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v4

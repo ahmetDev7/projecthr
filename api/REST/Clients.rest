@@ -20,6 +20,28 @@ Content-Type: application/json
 }
 ###
 
+# Create Client with Contact Body and Address Body
+POST http://localhost:5000/api/clients
+Content-Type: application/json
+
+{
+  "name": "Client A",
+  "contact": {
+    "name": "John Doe",
+    "phone": "+1234567890",
+    "email": "johndoe@example.com"
+  },
+  "address": {
+    "street": "Main Street",
+    "house_number": "10",
+    "zipcode": "12345",
+    "city": "Metropolis",
+    "province": "Central",
+    "country_code": "US"
+  }
+}
+###
+
 # Create Client with Address ID and Contact Body
 POST http://localhost:5000/api/clients
 Content-Type: application/json
@@ -61,5 +83,23 @@ Content-Type: application/json
   "name": "Client D",
   "contact_id": "a2a2bb62-0398-4b76-a80e-0f509154906f",
   "address_id": "21903d3a-3d0f-4949-bf0d-e2a84cd1a450"
+}
+###
+
+### GetById Clients
+GET http://localhost:5000/api/clients/17187ac9-34b3-4a94-b4c9-922c06606117
+###
+
+### GetAll Clients
+GET http://localhost:5000/api/clients
+###
+# Update Client with Contact ID and Address ID
+PUT http://localhost:5000/api/clients/fa5946ab-2ab8-4274-a2eb-b717855f8dca
+Content-Type: application/json
+
+{
+  "name": "Updated Client D",
+  "contact_id": "8d2e7d61-e596-46e4-acd8-e85ef8805110",
+  "address_id": "0ba16ba7-0c7a-45de-9fe6-9054fb6df6a8"
 }
 ###

@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class LocationsProvider : BaseProvider<Location>
 {
@@ -8,7 +9,17 @@ public class LocationsProvider : BaseProvider<Location>
         _locationValidator = locationValidator;
     }
 
-    public override Location? GetById(Guid id) => _db.Locations.FirstOrDefault(l => l.Id == id);
+    private IQueryable<Location> GetLocationByIdQuery(bool includeWarehouse = false, bool includeInventory = false){
+        IQueryable<Location> query = _db.Locations.AsQueryable();
+        if (includeWarehouse) query = query.Include(l => l.Warehouse);
+        if (includeInventory) query = query.Include(l => l.Inventory);
+        return query;
+    }
+
+    public override Location? GetById(Guid id) => GetLocationByIdQuery().FirstOrDefault(l => l.Id == id);
+
+    public Location? GetById(Guid id, bool includeWarehouse = false, bool includeInventory = false) => GetLocationByIdQuery(includeWarehouse, includeInventory).FirstOrDefault(l => l.Id == id);
+    
     public override List<Location>? GetAll() => _db.Locations.ToList();
 
     public override Location? Create(BaseDTO createValues)
@@ -78,7 +89,7 @@ public class LocationsProvider : BaseProvider<Location>
 
             foundLocation.OnHand = inventoryLocation.OnHand.Value;
             foundLocation.InventoryId = InventoryId;
-
+            foundLocation.SetUpdatedAt();
             ValidateModel(foundLocation);
             _db.Locations.Update(foundLocation);
         }

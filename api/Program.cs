@@ -10,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Load Env vars
 DotNetEnv.Env.Load();
 string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+string? securityKey = Environment.GetEnvironmentVariable("SECURITY_KEY");
 if(connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
+if(securityKey == null) throw new InvalidOperationException("The required environment variable 'SECURITY_KEY' is not set.");
+
+builder.Services.AddSingleton(securityKey);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -32,7 +36,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecretKeyThatIs32BytesLongX")),
         ValidateIssuer = false,
-        ValidateAudience = false
+        ValidateAudience = false,
+        ValidateLifetime = false
     };
 
     options.Events = new JwtBearerEvents
@@ -93,18 +98,19 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddTransient<AddressProvider>();
 builder.Services.AddTransient<ContactProvider>();
-builder.Services.AddTransient<WarehouseProvider>();
+builder.Services.AddTransient<WarehousesProvider>();
 builder.Services.AddTransient<ItemsProvider>();
 builder.Services.AddTransient<LocationsProvider>();
 builder.Services.AddTransient<ItemGroupProvider>();
 builder.Services.AddTransient<OrderProvider>();
 builder.Services.AddTransient<ShipmentProvider>();
 builder.Services.AddTransient<SupplierProvider>();
+builder.Services.AddTransient<TransferProvider>();
 builder.Services.AddTransient<ClientsProvider>();
 builder.Services.AddTransient<InventoriesProvider>();
 builder.Services.AddTransient<ItemLinesProvider>();
 builder.Services.AddTransient<ItemTypesProvider>();
-
+builder.Services.AddTransient<DocksProvider>();
 
 builder.Services.AddScoped<IValidator<Supplier>, SupplierValidator>();
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
@@ -113,13 +119,18 @@ builder.Services.AddScoped<IValidator<ItemGroup>, ItemGroupValidator>();
 builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
 builder.Services.AddScoped<IValidator<Shipment>, ShipmentValidator>();
 builder.Services.AddScoped<IValidator<Contact>, ContactValidator>();
+
+builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
+builder.Services.AddScoped<IValidator<Transfer>, TransferValidator>();
 builder.Services.AddScoped<IValidator<Inventory>, InventoryValidator>();
 builder.Services.AddScoped<IValidator<ItemLine>, ItemLineValidator>();
+builder.Services.AddScoped<IValidator<Warehouse>, WarehouseValidator>();
 builder.Services.AddScoped<IValidator<ItemType>, ItemTypeValidator>();
-
 builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
 builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
 builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();
+builder.Services.AddScoped<IValidator<Dock>, DockValidator>();
+
 
 
 builder.Services.AddControllers();
@@ -130,7 +141,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapGet("/", () => "Hello world 🚀");
+app.MapGet("/", () => "CargoHub API 🚚📦");
 
 
 app.MapControllers();

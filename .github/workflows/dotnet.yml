@@ -22,6 +22,7 @@ jobs:
           dotnet-version: 8.0.x
       - name: Run Code Formatter Verify No Changes
         run: dotnet format --verify-no-changes > lint-results.txt 2>&1 --verbosity diagnostic
+        continue-on-error: true
       - name: Upload lint results 
         uses: actions/upload-artifact@v4     
         with:

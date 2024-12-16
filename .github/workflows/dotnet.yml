@@ -28,7 +28,7 @@ jobs:
           name: Lint results
           path: lint-results.txt
           retention-days: 5
-        if: ${{ always() }}
+        if: ${{ failure() }}
     
 
   build:

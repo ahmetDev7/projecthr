@@ -4,7 +4,7 @@ public class Address : BaseModel
 {
     public Address() { }
     public Address(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
-
+    
     [Required]
     public string? Street { get; set; }
     [Required]

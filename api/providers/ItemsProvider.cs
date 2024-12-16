@@ -19,7 +19,7 @@ public class ItemsProvider : BaseProvider<Item>
         ItemRequest? req = createValues as ItemRequest;
         if (req == null) throw new ApiFlowException("Could not process create item request. Save new item failed.");
 
-        Item newItem = new(newInstance: true)
+        Item newItem = new(newInstance:true)
         {
             Code = req.Code,
             Description = req.Description,
@@ -37,7 +37,7 @@ public class ItemsProvider : BaseProvider<Item>
             ItemTypeId = req.ItemTypeId,
             SupplierId = req.SupplierId
         };
-
+        
         ValidateModel(newItem);
         _db.Items.Add(newItem);
         SaveToDBOrFail();

@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 public class ItemGroup : BaseModel
 {
-    public ItemGroup() { }
-    public ItemGroup(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
+    public ItemGroup(){}
+    public ItemGroup(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate){}
 
     [Required]
     public string? Name { get; set; }

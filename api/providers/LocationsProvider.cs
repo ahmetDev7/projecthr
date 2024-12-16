@@ -72,8 +72,7 @@ public class LocationsProvider : BaseProvider<Location>
             Location? foundLocation = GetById(inventoryLocation.LocationId.Value);
             if (foundLocation == null) throw new ApiFlowException($"Location not found for id '{inventoryLocation.LocationId}'");
 
-            if (foundLocation.InventoryId.HasValue)
-            {
+            if(foundLocation.InventoryId.HasValue){
                 throw new ApiFlowException($"The location '{inventoryLocation.LocationId}' already contains a stored item. Please select a different location.");
             }
 

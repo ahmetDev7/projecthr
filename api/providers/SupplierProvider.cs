@@ -16,7 +16,7 @@ public class SupplierProvider : BaseProvider<Supplier>
     }
 
     public List<Item> GetItemsBySupplierId(Guid id) => _db.Items.Where(l => l.SupplierId == id).ToList();
-
+    
     public override Supplier? Create(BaseDTO createValues)
     {
         SupplierRequest? req = createValues as SupplierRequest;
@@ -77,7 +77,7 @@ public class SupplierProvider : BaseProvider<Supplier>
 
         return foundSupplier;
     }
-
+    
     public override Supplier? Delete(Guid id)
     {
         Supplier? supplier = GetById(id);
@@ -85,13 +85,13 @@ public class SupplierProvider : BaseProvider<Supplier>
 
         _db.Suppliers.Remove(supplier);
         SaveToDBOrFail();
-
+        
         return supplier;
     }
 
     public override Supplier? GetById(Guid id) => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).FirstOrDefault(i => i.Id == id);
 
     public override List<Supplier> GetAll() => _db.Suppliers.Include(c => c.Contact).Include(a => a.Address).ToList();
-
+    
     protected override void ValidateModel(Supplier model) => _supplierValidator.ValidateAndThrow(model);
 }

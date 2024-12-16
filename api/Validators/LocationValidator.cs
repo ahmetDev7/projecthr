@@ -19,8 +19,7 @@ public class LocationValidator : AbstractValidator<Location>
         RuleFor(Order => Order.WarehouseId)
             .NotNull().WithMessage("warehouse_id required")
             .NotEmpty().WithMessage("warehouse_id cannot be empty.")
-            .Custom((warehouseId, context) =>
-            {
+            .Custom((warehouseId, context ) => {
                 if (!db.Warehouses.Any(w => w.Id == warehouseId))
                 {
                     context.AddFailure("warehouse_id", "The provided warehouse_id does not exist");

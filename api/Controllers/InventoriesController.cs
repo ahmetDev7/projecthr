@@ -16,9 +16,8 @@ public class InventoriesController : ControllerBase
     [HttpPost()]
     public IActionResult Create([FromBody] InventoryRequest req)
     {
-        if (req.ItemId.HasValue && _inventoriesProvider.GetInventoryByItemId(req.ItemId.Value) != null)
-        {
-            return BadRequest(new { message = $"Inventory already exists for ItemId '{req.ItemId.Value}'" });
+        if(req.ItemId.HasValue && _inventoriesProvider.GetInventoryByItemId(req.ItemId.Value) != null){
+            return BadRequest(new {message = $"Inventory already exists for ItemId '{req.ItemId.Value}'"});
         }
 
         Inventory? newInventory = _inventoriesProvider.Create(req);
@@ -36,8 +35,7 @@ public class InventoriesController : ControllerBase
                 Description = newInventory.Description,
                 ItemReference = newInventory.ItemReference,
                 ItemId = newInventory.ItemId,
-                Locations = locations.Select(l => new InventoryLocation()
-                {
+                Locations = locations.Select(l => new InventoryLocation() {
                     LocationId = l.Id,
                     OnHand = l.OnHand
                 }).ToList(),

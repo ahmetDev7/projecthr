@@ -46,12 +46,12 @@ public class Shipment : BaseModel
 
     public void SetShipmentType(string? strShipmentType) => ShipmentType = EnumUtil.ParseOrIgnore<ShipmentType>(strShipmentType);
 
-    public void SetShipmentStatus(string? strShipmentStatus) =>
-        ShipmentStatus = strShipmentStatus == null
+    public void SetShipmentStatus(string? strShipmentStatus) => 
+        ShipmentStatus = strShipmentStatus == null 
             ? global::ShipmentStatus.Pending  // on strShipmentStatus null set to default (Pending)
             : EnumUtil.ParseOrIgnore<ShipmentStatus>(strShipmentStatus);
-
+    
     public void SetPaymentType(string? strPaymentType) => PaymentType = EnumUtil.ParseOrIgnore<PaymentType>(strPaymentType);
     public void SetTransferMode(string? strTransferMode) => TransferMode = EnumUtil.ParseOrIgnore<TransferMode>(strTransferMode);
-
+    
 }

@@ -2,11 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 public abstract class BaseModel
 {
-    public BaseModel() { }
-    public BaseModel(bool newInstance = false, bool isUpdate = false)
+    public BaseModel (){}
+    public BaseModel(bool newInstance=false, bool isUpdate = false)
     {
-        if (newInstance) SetTimeStamps();
-        if (isUpdate) SetUpdatedAt();
+        if(newInstance) SetTimeStamps();
+        if(isUpdate) SetUpdatedAt();
     }
 
     [Required]

@@ -49,7 +49,7 @@ public class Order : BaseModel
     public Guid? ShipToClientId { get; set; }
     public Client? ShipToClient { get; set; }
     [Required]
-    public Guid? BillToClientId { get; set; }
-    public Client? BillToClient { get; set; }
+    public Guid? BillToClientId { get; set; } 
+    public Client? BillToClient { get; set; } 
 
 }

@@ -12,7 +12,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
         _shipmentValidator = validator;
     }
 
-    public override Shipment? GetById(Guid id) =>
+    public override Shipment? GetById(Guid id) => 
         _db.Shipments.Include(s => s.ShipmentItems).FirstOrDefault(s => s.Id == id);
 
     public override List<Shipment>? GetAll() => _db.Shipments.Include(s => s.ShipmentItems).ToList();
@@ -78,13 +78,12 @@ public class ShipmentProvider : BaseProvider<Shipment>
         {
             _db.ShipmentItems.RemoveRange(existingShipment.ShipmentItems);
 
-            existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem(newInstance: true)
-            {
+            existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem(newInstance:true){
                 ItemId = si.ItemId,
                 Amount = si.Amount
             }).ToList();
         }
-
+        
         ValidateModel(existingShipment);
 
         _db.Shipments.Update(existingShipment);
@@ -96,7 +95,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
     public override Shipment? Delete(Guid id)
     {
         Shipment? foundShipment = GetById(id);
-        if (foundShipment == null) return null;
+        if(foundShipment == null) return null;
 
         _db.Shipments.Remove(foundShipment);
         SaveToDBOrFail();

@@ -7,7 +7,7 @@ public static class EnumUtil
         if (string.IsNullOrEmpty(strValue)) return null;
 
         Enum.TryParse(typeof(T), strValue, true, out var result);
-
+        
         if (result is not T enumType) return null;
 
         return enumType;

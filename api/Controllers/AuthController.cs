@@ -30,13 +30,13 @@ public class AuthController : ControllerBase
     [Authorize(Roles = "admin")]
     public IActionResult AdminOnly()
     {
-        return Ok(new { message = "Admin Only Authorized." });
+        return Ok(new{message = "Admin Only Authorized."});
     }
 
     [HttpGet("reader")]
     [Authorize]
     public IActionResult Reader()
     {
-        return Ok(new { message = "Reader / Admin Authorized." });
+        return Ok(new{message = "Reader / Admin Authorized."});
     }
 }

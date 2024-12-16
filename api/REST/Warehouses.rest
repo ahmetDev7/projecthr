@@ -1,0 +1,185 @@
+### CREATE WAREHOUSE
+POST http://localhost:5000/api/warehouses/
+Content-Type: application/json
+
+{
+    "code": "TEST",
+    "name": "Test Company",
+    "contact": {
+      "name": "John Doe",
+      "phone": "+1234567890",
+      "email": "john.doe@testcompany.com"
+    },
+    "address": {
+      "street": "Main Street",
+      "house_number": "123",
+      "house_number_extension": "A",
+      "house_number_extension_extra": "Suite 2",
+      "zipcode": "12345",
+      "city": "Testville",
+      "province": "Testshire",
+      "country_code": "US"
+    }
+}
+
+###
+
+POST http://localhost:5000/api/warehouses/
+Content-Type: application/json
+
+{
+    "code": "TEST",
+    "name": "Test Company",
+    "contact": {
+      "name": "John Doe",
+      "phone": "+1234567890",
+      "email": "john.doe@testcompany.com"
+    },
+    "address_id": "f5548faa-213d-41dd-860a-5940f05decba"
+}
+
+###
+
+POST http://localhost:5000/api/warehouses/
+Content-Type: application/json
+
+{
+    "code": "TEST",
+    "name": "Test Company",
+    "contact_id": "1949fde4-0ed6-4a9a-b5ac-436149b2d693",
+    "address_id": "f5548faa-213d-41dd-860a-5940f05decba"
+}
+
+###
+
+POST http://localhost:5000/api/warehouses/
+Content-Type: application/json
+
+{
+    "code": "TEST",
+    "name": "Test Company",
+    "contact_id": "1949fde4-0ed6-4a9a-b5ac-436149b2d693",
+    "address": {
+      "street": "Main Street",
+      "house_number": "123",
+      "house_number_extension": "A",
+      "house_number_extension_extra": "Suite 2",
+      "zipcode": "12345",
+      "city": "Testville",
+      "province": "Testshire",
+      "country_code": "US"
+    }
+}
+
+###
+
+PUT http://localhost:5000/api/warehouses/10cf92a8-92c8-43e6-aecc-4568cac8b7ad
+Content-Type: application/json
+
+{
+    "code": "Test update warehouse ",
+    "name": "Test Company",
+    "contact": {
+      "name": "Alperen Baytimur",
+      "phone": "+1234567890",
+      "email": "john.doe@testcompany.com"
+    },
+    "address": {
+      "street": "third street",
+      "house_number": "123",
+      "house_number_extension": "A",
+      "house_number_extension_extra": "Suite 2",
+      "zipcode": "12345",
+      "city": "Testville",
+      "province": "Testshire",
+      "country_code": "US"
+    }
+}
+
+###
+
+PUT http://localhost:5000/api/warehouses/10cf92a8-92c8-43e6-aecc-4568cac8b7ad
+Content-Type: application/json
+
+{
+    "code": "Test update warehouse with id's",
+    "name": "Test Company",
+    "contact_id": "59fbc89f-3107-4962-8f4b-6bdeb7920f99",
+    "address_id": "eb74f2ae-8000-45b7-8071-6302622a2af8"
+}
+
+###
+
+PUT http://localhost:5000/api/warehouses/10cf92a8-92c8-43e6-aecc-4568cac8b7ad
+Content-Type: application/json
+
+{
+    "code": "Test update warehouse",
+    "name": "Test Company",
+    "contact": {
+      "name": "Sharif doe",
+      "phone": "+1234567890",
+      "email": "john.doe@testcompany.com"
+    },
+    "address_id": "eb74f2ae-8000-45b7-8071-6302622a2af8"
+}
+
+###
+
+PUT http://localhost:5000/api/warehouses/10cf92a8-92c8-43e6-aecc-4568cac8b7ad
+Content-Type: application/json
+
+{
+    "code": "Test update warehouse",
+    "name": "Test Company",
+    "contact_id":"59fbc89f-3107-4962-8f4b-6bdeb7920f99",
+    "address": {
+      "street": "Main Street",
+      "house_number": "123",
+      "house_number_extension": "A",
+      "house_number_extension_extra": "Suite 2",
+      "zipcode": "12345",
+      "city": "Testville",
+      "province": "Testshire",
+      "country_code": "US"
+    }
+}
+
+###
+
+GET  http://localhost:5000/api/warehouses
+Content-Type: application/json
+
+###
+
+GET  http://localhost:5000/api/warehouses/7ef3414c-2bc5-4687-b551-b281e2781d4b
+Content-Type: application/json
+
+###
+
+GET http://localhost:5000/api/Warehouses/7ef3414c-2bc5-4687-b551-b281e2781d4b/locations
+Content-Type: application/json
+
+###
+
+
+### GET WAREHOUSES
+GET http://localhost:5000/api/warehouses
+Content-Type: application/json
+###
+
+### GET WAREHOUSE BY ID
+GET http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+Content-Type: application/json
+###
+
+### GET LOCATIONS FROM WAREHOUSE
+GET http://localhost:5000/api/warehouses/0f3f0eb5-7671-4a20-b9ef-340a6aa37fa2/locations
+Content-Type: application/json
+###
+
+### DELETE WAREHOUSE BY ID
+DELETE http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+Content-Type: application/json
+
+###

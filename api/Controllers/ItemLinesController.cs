@@ -1,3 +1,4 @@
+using DTO.Item;
 using DTO.ItemLine;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,20 +34,23 @@ public class ItemLinesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(Guid id, [FromBody] ItemLineRequest req){
-        ItemLine? updatedItemLine = _itemLinesProvider.Update(id,req);
-        if(updatedItemLine == null) return NotFound(new {message = $"Item line not found for id '{id}'"});
-        
-        return Ok(new {
-            message = "Item Line updated!", 
-            updated_item_line = new ItemLineResponse {
-                Id = updatedItemLine.Id, 
-                Name = updatedItemLine.Name, 
+    public IActionResult Update(Guid id, [FromBody] ItemLineRequest req)
+    {
+        ItemLine? updatedItemLine = _itemLinesProvider.Update(id, req);
+        if (updatedItemLine == null) return NotFound(new { message = $"Item line not found for id '{id}'" });
+
+        return Ok(new
+        {
+            message = "Item Line updated!",
+            updated_item_line = new ItemLineResponse
+            {
+                Id = updatedItemLine.Id,
+                Name = updatedItemLine.Name,
                 Description = updatedItemLine.Description,
                 CreatedAt = updatedItemLine.CreatedAt,
                 UpdatedAt = updatedItemLine.UpdatedAt
-                }
             }
+        }
         );
     }
 
@@ -56,14 +60,16 @@ public class ItemLinesController : ControllerBase
         ItemLine? deletedItemLine = _itemLinesProvider.Delete(id);
         if (deletedItemLine == null) throw new ApiFlowException($"Item line not found for id '{id}'");
 
-        return Ok(new {
+        return Ok(new
+        {
             message = "Item Line deleted!",
-            deleted_item_line = new ItemLineResponse{
-            Id = deletedItemLine.Id,
-            Name = deletedItemLine.Name,
-            Description = deletedItemLine.Description,
-            CreatedAt = deletedItemLine.CreatedAt,
-            UpdatedAt = deletedItemLine.UpdatedAt
+            deleted_item_line = new ItemLineResponse
+            {
+                Id = deletedItemLine.Id,
+                Name = deletedItemLine.Name,
+                Description = deletedItemLine.Description,
+                CreatedAt = deletedItemLine.CreatedAt,
+                UpdatedAt = deletedItemLine.UpdatedAt
             }
         });
     }
@@ -94,4 +100,27 @@ public class ItemLinesController : ControllerBase
                 UpdatedAt = foundItemLine.UpdatedAt
             });
     }
+
+    [HttpGet("{itemLineId}/items")]
+    public IActionResult ShowRelatedItems(Guid itemLineId) =>
+        Ok(_itemLinesProvider.GetRelatedItemsById(itemLineId)
+        .Select(i => new ItemResponse
+        {
+            Id = i.Id,
+            Code = i.Code,
+            Description = i.Description,
+            ShortDescription = i.ShortDescription,
+            UpcCode = i.UpcCode,
+            ModelNumber = i.ModelNumber,
+            CommodityCode = i.CommodityCode,
+            UnitPurchaseQuantity = i.UnitPurchaseQuantity,
+            UnitOrderQuantity = i.UnitOrderQuantity,
+            PackOrderQuantity = i.PackOrderQuantity,
+            SupplierReferenceCode = i.SupplierReferenceCode,
+            SupplierPartNumber = i.SupplierPartNumber,
+            ItemGroupId = i.ItemGroupId,
+            ItemLineId = i.ItemLineId,
+            ItemTypeId = i.ItemTypeId,
+            SupplierId = i.SupplierId
+        }).ToList());
 }

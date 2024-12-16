@@ -1,7 +1,6 @@
 using DTO.Contact;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using Utils.Date;
+
 
 public class ContactProvider : BaseProvider<Contact>
 {
@@ -59,6 +58,7 @@ public class ContactProvider : BaseProvider<Contact>
         existingContact.Name = req.Name;
         existingContact.Phone = req.Phone;
         existingContact.Email = req.Email;
+        existingContact.SetUpdatedAt();
 
         ValidateModel(existingContact);
 

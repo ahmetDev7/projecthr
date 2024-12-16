@@ -1,0 +1,305 @@
+---
+title: CargoHub V2
+url: https://www.mermaidchart.com/app/projects/9b6a57e7-c2d6-4afb-ba7c-6dee567012ce/diagrams/a5b0d405-d1aa-4b17-8576-9ed2f8b75f50/version/v0.1/edit
+---
+
+classDiagram
+      
+class BaseModel{
+    <<abstract>>
+    + Id : Guid
+    + CreatedAt : DateTime
+    + UpdatedAt : DateTime
+    + BaseModel()
+    + BaseModel(bool newInstance=false, isUpdate=false)
+    + SetTimeStamps() void
+    + SetUpdatedAt() void
+}
+
+class Address {
+    + City : string
+    + CountryCode : string
+    + HouseNumber : string
+    + HouseNumberExtension : string
+    + HouseNumberExtensionExtra: string
+    + Province : string
+    + Street : string
+    + ZipCode : string
+    + Warehouses : ICollection~Warehouse~
+    + Suppliers : ICollection~Supplier~
+    + Clients : ICollection~Client~
+    + Address() 
+    + Address(bool newInstance=false, isUpdate=false)
+}
+
+class Contact {
+    + Email : string
+    + Name : string
+    + Phone : string
+    + Warehouses : ICollection~Warehouse~
+    + Suppliers : ICollection~Supplier~
+    + Clients : ICollection~Client~
+    + Contact()
+    + Contact(bool newInstance=false, isUpdate=false)
+}
+
+class Client {
+    + Name : string
+    + Address : Address
+    + AddressId : Guid
+    + Contact : Contact
+    + ContactId : Guid
+    + Client()
+    + Client(bool newInstance=false, isUpdate=false)
+}
+
+class Warehouse {
+    + Name : string
+    + Address : Address
+    + AddressId : Guid
+    + Code : string
+    + Contact : Contact
+    + ContactId : Guid
+    + Locations : ICollection~Location~
+    + Warehouse()
+    + Warehouse(bool newInstance=false, isUpdate=false)
+}
+
+class Location {
+    + Row : string
+    + Rack : string
+    + Shelf : string
+    + OnHand : int
+    + Inventory : Inventory
+    + InventoryId : Guid
+    + Warehouse : Warehouse
+    + WarehouseId : Guid
+    + Location()
+    + Location(bool newInstance=false, isUpdate=false)
+}
+
+class Order {
+    + Reference : string
+    + ReferenceExtra : string
+    + PickingNotes : string
+    + Notes : string
+    + OrderDate : DateTime
+    + RequestDate : DateTime
+    + OrderStatus : OrderStatus
+    + WarehouseId : Guid
+    + ShipToClientId : Guid
+    + BillToClientId : Guid
+    + Warehouse : Warehouse
+    + ShipToClient : Client
+    + BillToClient : Client
+    + OrderItems : ICollection~OrderItem~
+    + Order()
+    + Order(bool newInstance=false, isUpdate=false)
+}
+
+class OrderItem {
+    + Amount : int
+    + ItemId : Guid
+    + OrderId : Guid
+    + Item : Item
+    + OrderItem()
+    + OrderItem(bool newInstance=false, isUpdate=false)
+}
+
+class Supplier {
+    + Name : string
+    + Code : string
+    + Reference : string
+    + ContactId : Guid
+    + AddressId : Guid
+    + Address : Address
+    + Contact : Contact
+    + Items : ICollection~Item~
+    + Supplier()
+    + Supplier(bool newInstance=false, isUpdate=false)
+}
+
+class Shipment {
+    + CarrierCode : string
+    + CarrierDescription : string
+    + Notes : string
+    + OrderDate : DateTime
+    + RequestDate : DateTime
+    + PaymentType : PaymentType
+    + ShipmentType : ShipmentType
+    + ShipmentStatus : ShipmentStatus
+    + ServiceCode : string
+    + TransferMode : TransferMode
+    + ShipmentItems : ICollection~ShipmentItem~
+    + Shipment()
+    + Shipment(bool newInstance=false, isUpdate=false)
+    + SetPaymentType(string strPaymentType) void
+    + SetShipmentStatus(string strShipmentStatus) void
+    + SetShipmentType(string strShipmentType) void
+    + SetTransferMode(string strTransferMode) void
+}
+
+class ShipmentItem {
+    + Amount : int
+    + ItemId : Guid
+    + ShipmentId : Guid
+    + Item : Item
+    + Shipment : Shipment
+    + Order : Order
+    + ShipmentItem()
+    + ShipmentItem(bool newInstance=false, isUpdate=false)
+}
+
+class Item {
+    + Code : string
+    + CommodityCode : string
+    + Description : string
+    + ShortDescription : string
+    + ModelNumber : string
+    + PackOrderQuantity : int
+    + SupplierPartNumber : string
+    + SupplierReferenceCode : string
+    + UnitOrderQuantity : int
+    + UnitPurchaseQuantity : int
+    + UpcCode : string
+    + ItemGroupId : Guid
+    + ItemLineId : Guid
+    + ItemTypeId : Guid
+    + SupplierId : Guid
+    + ItemGroup : ItemGroup
+    + ItemLine : ItemLine
+    + ItemType : ItemType
+    + Supplier : Supplier
+    + OrderItems : ICollection~OrderItem~
+    + ShipmentItems : ICollection~ShipmentItem~
+    + Item()
+    + Item(bool newInstance=false, isUpdate=false)
+}
+
+class ItemGroup {
+    + Name : string
+    + Description : string
+    + Items : ICollection~Item~
+    + ItemGroup()
+    + ItemGroup(bool newInstance=false, isUpdate=false)
+}
+
+class ItemLine {
+    + Name : string
+    + Description : string
+    + Items : ICollection~Item~
+    + ItemLine()
+    + ItemLine(bool newInstance=false, isUpdate=false)
+}
+
+class ItemType {
+    + Name : string
+    + Description : string
+    + Items : ICollection~Item~
+    + ItemType()
+    + ItemType(bool newInstance=false, isUpdate=false)
+}
+
+
+class Transfer {
+    + Reference : string
+    + TransferFromId : Guid
+    + TransferToId : Guid
+    + TransferStatus : TransferStatus
+    + TransferFrom : Location
+    + TransferTo : Location
+    + TransferItems : ICollection~TransferItem~
+    + Transfer()
+    + Transfer(bool newInstance=false, isUpdate=false)
+}
+
+class TransferItem {
+    + Amount : int
+    + ItemId : Guid
+    + TransferId : Guid
+    + Item : Item
+    + Transfer : Transfer
+    + TransferItem()
+    + TransferItem(bool newInstance=false, isUpdate=false)
+}
+
+class Inventory {
+    + Description : string
+    + Item : Item
+    + ItemId : Guid
+    + ItemReference : string
+    + Locations : ICollection~Location~
+    + Inventory()
+    + Inventory(bool newInstance=false, isUpdate=false)
+}
+
+class Dock {
+    + CAPACITY : const int
+    + WarehouseId : Guid
+    + Warehouse : Warehouse
+    + Dock()
+    + Dock(bool newInstance=false, isUpdate=false)
+}
+
+class DockItem {    
+    + ItemId : Guid
+    + Item : Item
+    + DockId : Guid
+    + Dock : Dock
+    + Amount : int
+    + DockItem()
+    + DockItem(bool newInstance=false, isUpdate=false)
+}
+
+
+BaseModel <|-- Dock
+BaseModel <|-- DockItem
+BaseModel <|-- Address
+BaseModel <|-- Contact
+BaseModel <|-- Shipment
+BaseModel <|-- Order
+BaseModel <|-- Warehouse
+BaseModel <|-- Location
+BaseModel <|-- Supplier
+BaseModel <|-- Item
+BaseModel <|-- Inventory
+BaseModel <|-- Transfer
+BaseModel <|-- ItemGroup
+BaseModel <|-- ItemLine
+BaseModel <|-- ItemType
+BaseModel <|-- Client
+BaseModel <|-- ShipmentItem
+BaseModel <|-- OrderItem
+BaseModel <|-- TransferItem
+
+
+Warehouse "1" *-- "0..*" Location
+Location "0..*" o-- "0..1*" Inventory
+Location  *--  Transfer : has
+Inventory "0..1"  --* "1" Item
+Item "0..*"  o-- "0..1" ItemGroup
+Item "0..*"  o-- "0..1" ItemLine
+Item "0..*"  o-- "0..1" ItemType
+Item "1"  *-- "0..*" ShipmentItem
+Item "1"  *-- "0..*" TransferItem
+Item "1"  *-- "0..*" OrderItem
+Item "0..*"  --* "1" Supplier
+ShipmentItem "1..*"  --* "1" Shipment
+Transfer "1"  *-- "1..*" TransferItem
+OrderItem "1..*"  *-- "1" Order
+Order "0..*"  --* "1..2" Client
+
+Address "1"  *-- "0..*" Client
+Address "1"  *-- "0..*" Warehouse
+Address "1"  *-- "0..*" Supplier
+
+Contact "1"  *-- "0..*" Client
+Contact "1"  *-- "0..*" Warehouse
+Contact "1"  *-- "0..*" Supplier
+
+Dock "1"  *-- "0..*" DockItem
+DockItem "0..*"  --* "1" Item
+
+
+
+

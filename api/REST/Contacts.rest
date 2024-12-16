@@ -1,0 +1,25 @@
+## Create Contact
+POST http://localhost:5000/api/contacts
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "phone": "+123456789",
+    "email": "john.doe@example.com"
+}
+###
+### Get Contact by ID
+GET http://localhost:5000/api/contacts/e9fde123-affa-478e-b900-7800d34e5f05
+## Update Contact
+PUT http://localhost:5000/api/contacts/af5cc9d0-6b2e-4122-a2ef-dbf095892d88
+Content-Type: application/json
+
+{
+    "name": "Jane Doe",
+    "phone": "+977654321",
+    "email": "jane.doe@example.com"
+}
+###
+### Get all Contact
+GET http://localhost:5000/api/contacts
+###

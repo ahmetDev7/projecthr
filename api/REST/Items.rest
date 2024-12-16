@@ -1,0 +1,64 @@
+### GET ITEM BY ID
+GET http://localhost:5000/api/items/8aa1448f-9672-4a19-84d6-37bd5224e6d7
+Content-Type: application/json
+###
+
+### GET INVENTORIES BASED ON SPECIFIC ITEM ID
+GET http://localhost:5000/api/items/d5c91d5f-3a91-4baf-8505-07401913b734/inventories
+Content-Type: application/json
+###
+
+### GET INVENTORIES TOTALS BASED ON SPECIFIC ITEM ID 
+GET http://localhost:5000/api/items/d5c91d5f-3a91-4baf-8505-07401913b734/inventories/totals
+Content-Type: application/json
+###
+
+### GET ALL ITEM 
+GET http://localhost:5000/api/items/
+Content-Type: application/json
+###
+
+### CREATE ITEM
+POST http://localhost:5000/api/items
+Content-Type: application/json
+
+{
+  "code": "ITEM TEST 5",
+  "description": "High-quality ergonomic office chair with adjustable height and back support",
+  "short_description": "Ergonomic office chair",
+  "upc_code": "123456789012",
+  "model_number": "CH-ERG-XL",
+  "commodity_code": "9401710000",
+  "unit_purchase_quantity": -1,
+  "unit_order_quantity": 1,
+  "pack_order_quantity": 10,
+  "supplier_reference_code": "123-ABCD",
+  "supplier_part_number": "CH123-XL",
+  "item_group_id": null,
+  "item_line_id": null,
+  "item_type_id": null,
+  "supplier_id": "015fec53-ae55-4d76-ad5c-00e3ce922d54"
+}
+###
+
+### UPDATE ITEM
+PUT http://localhost:5000/api/items/42076a49-b1ed-4a54-9f90-ecb79fab15f7
+Content-Type: application/json
+
+{
+  "code": "X",
+  "description": "High-quality ergonomic office chair with adjustable height and back support",
+  "short_description": "Ergonomic office chair",
+  "upc_code": "123456789012",
+  "model_number": "CH-ERG-XL",
+  "commodity_code": "9401710000",
+  "unit_purchase_quantity": -1,
+  "unit_order_quantity": 1,
+  "pack_order_quantity": 10,
+  "supplier_reference_code": "123-ABCD",
+  "supplier_part_number": "CH123-XL",
+  "item_group_id": "fc844085-8386-4d1a-af80-88a3b713b08d",
+  "item_line_id": "7a3fb74d-77ec-4ddb-a6d9-8e1b4b94110d",
+  "item_type_id": "211c0c5c-37a3-49f9-8d52-e18ef3358b40",
+  "supplier_id": "c75d0cf3-84d5-44b4-9b1f-141f95df3d77"
+}

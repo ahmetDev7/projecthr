@@ -16,10 +16,13 @@ namespace DTO.Contact
         public string? Email { get; set; }
     }
 
-    
+
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ContactResponse : BaseDTO
     {
+        [JsonPropertyName("id")]
+        public Guid? Id { get; set; }
+
         [JsonPropertyName("name")]
         public string? Name { get; set; }
 

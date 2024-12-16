@@ -92,7 +92,7 @@ public class ClientsController : ControllerBase
 
     }
 
-    
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

@@ -1,8 +1,8 @@
 
 public enum TransferStatus
 {
-    Pending ,
-    Processing ,
-    Cancelled ,
+    Pending,
+    Processing,
+    Cancelled,
     Completed
 }

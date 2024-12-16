@@ -9,7 +9,7 @@ public class Dock : BaseModel
     public Dock(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
 
     [Required]
-    public Guid? WarehouseId {get; set;}
+    public Guid? WarehouseId { get; set; }
 
-    public Warehouse? Warehouse {get; set;}    
+    public Warehouse? Warehouse { get; set; }
 }

@@ -17,7 +17,8 @@ public class GlobalExceptionHandlingMiddleware
         {
             await _next(context);
         }
-        catch(ApiFlowException afe){
+        catch (ApiFlowException afe)
+        {
             context.Response.StatusCode = afe.ResponseStatusCode;
             context.Response.ContentType = CONTENT_TYPE;
             string response = JsonSerializer.Serialize(new { messages = new[] { new { error = afe.Message } } });
@@ -41,9 +42,9 @@ public class GlobalExceptionHandlingMiddleware
 
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Response.ContentType = CONTENT_TYPE;
-            
-            string response = JsonSerializer.Serialize(new 
-            { 
+
+            string response = JsonSerializer.Serialize(new
+            {
                 error = "An unexpected error occurred.",
                 details = ex.Message
             });

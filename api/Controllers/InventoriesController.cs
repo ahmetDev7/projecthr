@@ -54,9 +54,9 @@ public class InventoriesController : ControllerBase
 
     [HttpPut("{id}")]
     public IActionResult Update(Guid id, [FromBody] InventoryRequest req)
-    {   
+    {
         Inventory? updatedInventory = _inventoriesProvider.Update(id, req);
-        if(updatedInventory == null) return NotFound(new {message = $"Inventory not found for id '{id}'"});
+        if (updatedInventory == null) return NotFound(new { message = $"Inventory not found for id '{id}'" });
 
         List<Location> locations = _locationsProvider.GetLocationsByInventoryId(updatedInventory.Id);
         Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(updatedInventory.Id);
@@ -96,7 +96,7 @@ public class InventoriesController : ControllerBase
         Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
 
         Inventory? deletedInventory = _inventoriesProvider.Delete(id);
-        if(deletedInventory == null) throw new ApiFlowException("Failed to delete inventory");
+        if (deletedInventory == null) throw new ApiFlowException("Failed to delete inventory");
 
         return Ok(new
         {

@@ -52,7 +52,7 @@ public class TransferProvider : BaseProvider<Transfer>
     public override Transfer? Delete(Guid id)
     {
         Transfer? foundTransfer = GetById(id);
-        if(foundTransfer == null) return null;
+        if (foundTransfer == null) return null;
 
         _db.Transfers.Remove(foundTransfer);
         SaveToDBOrFail();
@@ -63,9 +63,9 @@ public class TransferProvider : BaseProvider<Transfer>
     public Transfer? CommitTransfer(Guid transferId)
     {
         Transfer? foundTransfer = GetById(transferId) ?? throw new ApiFlowException($"Transfer with ID {transferId} does not exist.", StatusCodes.Status404NotFound);
-        if(foundTransfer.TransferStatus == TransferStatus.Completed)
+        if (foundTransfer.TransferStatus == TransferStatus.Completed)
             throw new ApiFlowException("This transfer has already been commited.", StatusCodes.Status409Conflict);
-        
+
         ValidateModel(foundTransfer);
 
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
@@ -161,7 +161,8 @@ public class TransferProvider : BaseProvider<Transfer>
         }
     }
 
-    public Item? GetItemsFromTransfer(Transfer transfer){
+    public Item? GetItemsFromTransfer(Transfer transfer)
+    {
         Guid? itemId = transfer.TransferItems.First().ItemId;
         return _itemsProvider.GetById((Guid)itemId);
     }

@@ -31,7 +31,7 @@ public class TransferResponse : BaseDTO
 
     [JsonPropertyName("reference")]
     public string? Reference { get; set; }
-    
+
     [JsonPropertyName("transfer_from_id")]
     public Guid? TransferFromId { get; set; }
 

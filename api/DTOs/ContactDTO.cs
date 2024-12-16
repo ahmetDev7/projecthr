@@ -16,7 +16,7 @@ namespace DTO.Contact
         public string? Email { get; set; }
     }
 
-    
+
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ContactResponse : BaseDTO
     {

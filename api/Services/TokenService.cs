@@ -3,7 +3,8 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-public class TokenService {
+public class TokenService
+{
     public async Task<string> GenerateToken(string role)
     {
         var tokenKey = Encoding.UTF8.GetBytes("SuperSecretKeyThatIs32BytesLongX");

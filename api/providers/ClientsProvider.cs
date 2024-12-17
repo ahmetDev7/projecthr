@@ -50,7 +50,6 @@ public class ClientsProvider : BaseProvider<Client>
         if (foundClient == null) return null;
 
         _db.Clients.Remove(foundClient);
-
         SaveToDBOrFail();
 
         return foundClient;

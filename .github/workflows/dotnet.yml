@@ -70,7 +70,7 @@ jobs:
           reports: 'api.Tests/TestResults/*/coverage.cobertura.xml'
           targetdir: 'api.Tests/Report'
           reporttypes: 'Html'
-          classfilters: '+EnumUtil'
+          classfilters: '+EnumUtil' # Temporarily
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
         with:

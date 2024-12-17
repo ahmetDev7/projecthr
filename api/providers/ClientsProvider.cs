@@ -45,12 +45,11 @@ public class ClientsProvider : BaseProvider<Client>
     }
     public override Client? Delete(Guid id)
     {
-        Client? foundClient = _db.Clients.FirstOrDefault(c => c.Id == id);
+        Client? foundClient = GetById(id);
 
         if (foundClient == null) return null;
 
         _db.Clients.Remove(foundClient);
-
         SaveToDBOrFail();
 
         return foundClient;

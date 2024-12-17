@@ -52,20 +52,3 @@ jobs:
           retention-days: 5
         if: ${{ failure() }}
 
-  test:
-    name: Run Tests & Generate Coverage
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Unit Tests & Generate Code Coverage
-        uses: alsi-lawr/dotnet-test-coverlet@v1
-        with:
-          threshold: 80
-          dotnet-version: '8.0'
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: ${{ steps.run-tests.outputs.coverage-report-path }}

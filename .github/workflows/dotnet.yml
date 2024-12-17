@@ -71,3 +71,8 @@ jobs:
           targetdir: 'api.Tests/Report'
           reporttypes: 'Html'
           classfilters: '+EnumUtil'
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CoverageReport       
+          path: 'api.Tests/Report'

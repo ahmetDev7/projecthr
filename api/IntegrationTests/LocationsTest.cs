@@ -2,36 +2,37 @@ using System;
 using System.Net.Http;
 using Xunit;
 using FluentAssertions;
+using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 
-namespace projecthr
+public class TestLocation
 {
-    public class TestLocation
+    private readonly HttpClient _client;
+
+    public TestLocation()
     {
-        private readonly HttpClient _client;
+        _client = new HttpClient { BaseAddress = new Uri("http://localhost:5000") };
+    }
 
-        public TestLocation()
+    [Fact]
+    public async Task TestCreateLocation()
+    {
+        Guid warehouseId = Guid.Parse("5faa39e7-c9f5-48cf-b44b-720a9d22d0f9");
+        var newLocation = new LocationResponse
         {
-            _client = new HttpClient { BaseAddress = new Uri("http://localhost:5000/api/v1") };
-            // _client.DefaultRequestHeaders.Add("Content-Type", "application/json");
-        }
+            Id = Guid.NewGuid(),
+            Row = "MYTEST",
+            Rack = "TEST LOCATION",
+            Shelf = "2",
+            WarehouseId = warehouseId,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
 
+        var content = new StringContent(JsonConvert.SerializeObject(newLocation), Encoding.UTF8, "application/json");
+        var response = await _client.PostAsync("/locations", content);
 
-        [Fact]
-        public async Task TestCreateLocation()
-        {
-            var newLocation = new
-            {
-                id = 115588,
-                warehouse_id = 8,
-                code = "MYTEST",
-                name = "TEST LOCATION",
-                created_at = "2024-10-15 10:21:32",
-                updated_at = "2024-10-15 10:21:32"
-            };
-            var response = await _client.PostAsJsonAsync("/locations", newLocation);
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
-        }
-
-       
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
 }

@@ -52,3 +52,22 @@ jobs:
           retention-days: 5
         if: ${{ failure() }}
 
+  test_and_code_coverage:
+    name: Run Tests & Generate Code Coverage Report
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Run Tests & Generate Report
+        run: dotnet test --collect:"XPlat Code Coverage"
+      - name: ReportGenerator
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.4.1
+        with:
+          reports: 'api.Tests/TestResults/*/coverage.cobertura.xml'
+          targetdir: 'api.Tests/Report'
+          reporttypes: 'Html'
+          classfilters: '+EnumUtil'

@@ -171,30 +171,34 @@ public class ClientsController : ControllerBase
 
         if (foundclient == null) return NotFound(new { message = "Client not found." });
 
-        return Ok(new ClientResponse
+        return Ok(new 
         {
-            Id = foundclient.Id,
-            Name = foundclient.Name,
-            Contact = new ContactResponse
-            {
-                Id = foundclient.ContactId,
-                Name = foundclient.Contact?.Name,
-                Phone = foundclient.Contact?.Phone,
-                Email = foundclient.Contact?.Email
-            },
-            Address = new AddressResponse
-            {
-                Id = foundclient.AddressId,
-                Street = foundclient.Address?.Street,
-                HouseNumber = foundclient.Address?.HouseNumber,
-                HouseNumberExtension = foundclient.Address?.HouseNumberExtension,
-                ZipCode = foundclient.Address?.ZipCode,
-                City = foundclient.Address?.City,
-                Province = foundclient.Address?.Province,
-                CountryCode = foundclient.Address?.CountryCode
-            },
-            CreatedAt = foundclient.CreatedAt,
-            UpdatedAt = foundclient.UpdatedAt
+            Message = "Client deleted",
+            new_client = new ClientResponse{
+                    
+                Id = foundclient.Id,
+                Name = foundclient.Name,
+                Contact = new ContactResponse
+                {
+                    Id = foundclient.ContactId,
+                    Name = foundclient.Contact?.Name,
+                    Phone = foundclient.Contact?.Phone,
+                    Email = foundclient.Contact?.Email
+                },
+                Address = new AddressResponse
+                {
+                    Id = foundclient.AddressId,
+                    Street = foundclient.Address?.Street,
+                    HouseNumber = foundclient.Address?.HouseNumber,
+                    HouseNumberExtension = foundclient.Address?.HouseNumberExtension,
+                    ZipCode = foundclient.Address?.ZipCode,
+                    City = foundclient.Address?.City,
+                    Province = foundclient.Address?.Province,
+                    CountryCode = foundclient.Address?.CountryCode
+                },
+                CreatedAt = foundclient.CreatedAt,
+                UpdatedAt = foundclient.UpdatedAt
+            }
         });
     }
 

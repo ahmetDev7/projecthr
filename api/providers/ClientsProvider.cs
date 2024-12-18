@@ -46,9 +46,12 @@ public class ClientsProvider : BaseProvider<Client>
     public override Client? Delete(Guid id)
     {
         Client? foundClient = GetById(id);
-
         if (foundClient == null) return null;
 
+        if (_db.Orders.Any(o => o.BillToClientId == id) )
+        {
+            throw new ApiFlowException($"{id} The provided client_id is in use and cannot be modified.");
+        }
         _db.Clients.Remove(foundClient);
         SaveToDBOrFail();
 

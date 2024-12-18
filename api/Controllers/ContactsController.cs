@@ -83,4 +83,24 @@ public class ContactsController : ControllerBase
         Email = c.Email
     }).ToList());
 
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        Contact? foundContact = _contactProvider.Delete(id);
+
+        if (foundContact == null)
+            return NotFound(new { message = $"Contact not found for id {id}" });
+
+        return Ok(new
+        {
+            message = "Contact deleted!",
+            Contact = new ContactResponse
+            {
+                Id = foundContact.Id,
+                Name = foundContact.Name,
+                Phone = foundContact.Phone,
+                Email = foundContact.Email
+            }
+        });
+    }
 }

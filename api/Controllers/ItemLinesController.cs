@@ -34,20 +34,23 @@ public class ItemLinesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(Guid id, [FromBody] ItemLineRequest req){
-        ItemLine? updatedItemLine = _itemLinesProvider.Update(id,req);
-        if(updatedItemLine == null) return NotFound(new {message = $"Item line not found for id '{id}'"});
-        
-        return Ok(new {
-            message = "Item Line updated!", 
-            updated_item_line = new ItemLineResponse {
-                Id = updatedItemLine.Id, 
-                Name = updatedItemLine.Name, 
+    public IActionResult Update(Guid id, [FromBody] ItemLineRequest req)
+    {
+        ItemLine? updatedItemLine = _itemLinesProvider.Update(id, req);
+        if (updatedItemLine == null) return NotFound(new { message = $"Item line not found for id '{id}'" });
+
+        return Ok(new
+        {
+            message = "Item Line updated!",
+            updated_item_line = new ItemLineResponse
+            {
+                Id = updatedItemLine.Id,
+                Name = updatedItemLine.Name,
                 Description = updatedItemLine.Description,
                 CreatedAt = updatedItemLine.CreatedAt,
                 UpdatedAt = updatedItemLine.UpdatedAt
-                }
             }
+        }
         );
     }
 
@@ -57,14 +60,16 @@ public class ItemLinesController : ControllerBase
         ItemLine? deletedItemLine = _itemLinesProvider.Delete(id);
         if (deletedItemLine == null) throw new ApiFlowException($"Item line not found for id '{id}'");
 
-        return Ok(new {
+        return Ok(new
+        {
             message = "Item Line deleted!",
-            deleted_item_line = new ItemLineResponse{
-            Id = deletedItemLine.Id,
-            Name = deletedItemLine.Name,
-            Description = deletedItemLine.Description,
-            CreatedAt = deletedItemLine.CreatedAt,
-            UpdatedAt = deletedItemLine.UpdatedAt
+            deleted_item_line = new ItemLineResponse
+            {
+                Id = deletedItemLine.Id,
+                Name = deletedItemLine.Name,
+                Description = deletedItemLine.Description,
+                CreatedAt = deletedItemLine.CreatedAt,
+                UpdatedAt = deletedItemLine.UpdatedAt
             }
         });
     }

@@ -17,12 +17,12 @@ public class Transfer : BaseModel
 
     public ICollection<TransferItem>? TransferItems { get; set; }
 
-    public Location? TransferTo {get; set;}
+    public Location? TransferTo { get; set; }
 
-    public Location? TransferFrom {get; set;}
+    public Location? TransferFrom { get; set; }
 
     public void SetTransferStatus(string? strTransferStatus) =>
-    this.TransferStatus = string.IsNullOrEmpty(strTransferStatus) 
+    this.TransferStatus = string.IsNullOrEmpty(strTransferStatus)
         ? global::TransferStatus.Pending  // on strTransferStatus null set to default (Pending)
         : EnumUtil.ParseOrIgnore<TransferStatus>(strTransferStatus);
 

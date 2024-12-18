@@ -11,7 +11,7 @@ public class WarehouseValidator : AbstractValidator<Warehouse>
         RuleFor(Warehouse => Warehouse.Code)
             .NotNull().WithMessage("code is required.")
             .NotEmpty().WithMessage("code cannot be empty.");
-        
+
         RuleFor(Warehouse => Warehouse.ContactId)
             .NotNull().WithMessage("contact_id is required.")
             .NotEmpty().WithMessage("contact_id cannot be empty.")

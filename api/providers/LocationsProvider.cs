@@ -9,7 +9,8 @@ public class LocationsProvider : BaseProvider<Location>
         _locationValidator = locationValidator;
     }
 
-    private IQueryable<Location> GetLocationByIdQuery(bool includeWarehouse = false, bool includeInventory = false){
+    private IQueryable<Location> GetLocationByIdQuery(bool includeWarehouse = false, bool includeInventory = false)
+    {
         IQueryable<Location> query = _db.Locations.AsQueryable();
         if (includeWarehouse) query = query.Include(l => l.Warehouse);
         if (includeInventory) query = query.Include(l => l.Inventory);
@@ -19,7 +20,7 @@ public class LocationsProvider : BaseProvider<Location>
     public override Location? GetById(Guid id) => GetLocationByIdQuery().FirstOrDefault(l => l.Id == id);
 
     public Location? GetById(Guid id, bool includeWarehouse = false, bool includeInventory = false) => GetLocationByIdQuery(includeWarehouse, includeInventory).FirstOrDefault(l => l.Id == id);
-    
+
     public override List<Location>? GetAll() => _db.Locations.ToList();
 
     public override Location? Create(BaseDTO createValues)
@@ -83,7 +84,8 @@ public class LocationsProvider : BaseProvider<Location>
             Location? foundLocation = GetById(inventoryLocation.LocationId.Value);
             if (foundLocation == null) throw new ApiFlowException($"Location not found for id '{inventoryLocation.LocationId}'");
 
-            if(foundLocation.InventoryId.HasValue){
+            if (foundLocation.InventoryId.HasValue)
+            {
                 throw new ApiFlowException($"The location '{inventoryLocation.LocationId}' already contains a stored item. Please select a different location.");
             }
 

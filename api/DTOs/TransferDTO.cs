@@ -30,8 +30,8 @@ public class TransferRequestUpdate : BaseDTO
     public Guid? TransferToId { get; set; }
 
     [JsonPropertyName("transfer_status")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]  
-    public TransferStatus TransferStatus { get; set;}
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public TransferStatus TransferStatus { get; set; }
 
     [JsonPropertyName("items")]
     public List<TransferItemDTO>? Items { get; set; }

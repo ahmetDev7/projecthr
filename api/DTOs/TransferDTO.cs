@@ -17,6 +17,26 @@ public class TransferRequestCreate : BaseDTO
     public List<TransferItemDTO>? Items { get; set; }
 }
 
+[ApiExplorerSettings(IgnoreApi = true)]
+public class TransferRequestUpdate : BaseDTO
+{
+    [JsonPropertyName("reference")]
+    public string? Reference { get; set; }
+
+    [JsonPropertyName("transfer_from_id")]
+    public Guid? TransferFromId { get; set; }
+
+    [JsonPropertyName("transfer_to_id")]
+    public Guid? TransferToId { get; set; }
+
+    [JsonPropertyName("transfer_status")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]  
+    public TransferStatus TransferStatus { get; set;}
+
+    [JsonPropertyName("items")]
+    public List<TransferItemDTO>? Items { get; set; }
+}
+
 public class TransferItemDTO()
 {
     public Guid? ItemId { get; set; }
@@ -31,7 +51,7 @@ public class TransferResponse : BaseDTO
 
     [JsonPropertyName("reference")]
     public string? Reference { get; set; }
-    
+
     [JsonPropertyName("transfer_from_id")]
     public Guid? TransferFromId { get; set; }
 

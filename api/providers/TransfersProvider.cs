@@ -49,10 +49,36 @@ public class TransferProvider : BaseProvider<Transfer>
         return newTransfer;
     }
 
+    public override Transfer? Update(Guid id, BaseDTO updatedValues)
+    {
+        TransferRequestUpdate? req = updatedValues as TransferRequestUpdate;
+        if (req == null) throw new ApiFlowException("Could not process update transfer request. Update failed.");
+
+        Transfer? foundTransfer = GetById(id);
+        if (foundTransfer == null) throw new ApiFlowException("Could not update transfer.", StatusCodes.Status404NotFound);
+
+        foundTransfer.Reference = req.Reference;
+        foundTransfer.TransferFromId = req.TransferFromId;
+        foundTransfer.TransferToId = req.TransferToId;
+        foundTransfer.TransferStatus = req.TransferStatus;
+        _db.TransferItems.RemoveRange(foundTransfer.TransferItems);
+        foundTransfer.TransferItems = req.Items?.Select(reqItem => new TransferItem(newInstance: true)
+        {
+            Id = Guid.NewGuid(),
+            ItemId = reqItem.ItemId,
+            Amount = reqItem.Amount
+        }).ToList();
+
+        ValidateModel(foundTransfer);
+        SaveToDBOrFail();
+
+        return foundTransfer;
+    }
+
     public override Transfer? Delete(Guid id)
     {
         Transfer? foundTransfer = GetById(id);
-        if(foundTransfer == null) return null;
+        if (foundTransfer == null) return null;
 
         _db.Transfers.Remove(foundTransfer);
         SaveToDBOrFail();
@@ -63,9 +89,9 @@ public class TransferProvider : BaseProvider<Transfer>
     public Transfer? CommitTransfer(Guid transferId)
     {
         Transfer? foundTransfer = GetById(transferId) ?? throw new ApiFlowException($"Transfer with ID {transferId} does not exist.", StatusCodes.Status404NotFound);
-        if(foundTransfer.TransferStatus == TransferStatus.Completed)
+        if (foundTransfer.TransferStatus == TransferStatus.Completed)
             throw new ApiFlowException("This transfer has already been commited.", StatusCodes.Status409Conflict);
-        
+
         ValidateModel(foundTransfer);
 
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
@@ -161,10 +187,14 @@ public class TransferProvider : BaseProvider<Transfer>
         }
     }
 
-    public Item? GetItemsFromTransfer(Transfer transfer){
+    public Item? GetItemsFromTransfer(Transfer transfer)
+    {
         Guid? itemId = transfer.TransferItems.First().ItemId;
         return _itemsProvider.GetById((Guid)itemId);
     }
+
+    public bool IsTransferCompleted(Guid transferId) => _db.Transfers.Any(t => t.Id == transferId && t.TransferStatus == TransferStatus.Completed);
+    public bool TransferExists(Guid transferId) => _db.Transfers.Any(t => t.Id == transferId);
 
     protected override void ValidateModel(Transfer model) => _transferValidator.ValidateAndThrow(model);
 }

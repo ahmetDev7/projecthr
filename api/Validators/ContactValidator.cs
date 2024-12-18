@@ -2,7 +2,7 @@ using FluentValidation;
 
 public class ContactValidator : AbstractValidator<Contact>
 {
-    public ContactValidator(AppDbContext db)
+    public ContactValidator()
     {
         RuleFor(contact => contact.Name)
             .NotNull().WithMessage("Name is required.")

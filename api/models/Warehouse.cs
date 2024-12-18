@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 public class Warehouse : BaseModel
 {
-    public Warehouse(){}
-    public Warehouse(bool newInstance=false, bool isUpdate = false) : base(newInstance, isUpdate){}
+    public Warehouse() { }
+    public Warehouse(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
 
     [Required]
     public string? Code { get; set; }
     [Required]
-    public string? Name { get; set; }    
+    public string? Name { get; set; }
     [Required]
     public Guid? ContactId { get; set; } // Foreign Key Relationships
     public Contact? Contact { get; set; }
@@ -19,4 +19,7 @@ public class Warehouse : BaseModel
 
     // Navigation property for locations
     public ICollection<Location>? Locations { get; set; }
+
+    public Dock? Dock { get; set; }
+
 }

@@ -49,7 +49,7 @@ public class InventoriesProvider : BaseProvider<Inventory>
     {
         InventoryRequest? req = updatedValues as InventoryRequest;
         if (req == null) throw new ApiFlowException("Invalid inventory request. Could not update inventory.");
-        
+
         _inventoryRequestValidator.ValidateAndThrow(req);
 
         Inventory? foundInventory = GetById(id);
@@ -74,25 +74,25 @@ public class InventoriesProvider : BaseProvider<Inventory>
             foundInventory.ItemReference = req.ItemReference;
 
             UnlinkInventoryLocations(foundInventory.Id);
-  
+
             _locationsProvider.FillOnHandAmount(foundInventory.Id, req.Locations, false);
             foundInventory.SetUpdatedAt();
 
             ValidateModel(foundInventory);
             SaveToDBOrFail();
             transaction.Commit();
-            
+
             return foundInventory;
         }
-        catch(Exception)
+        catch (Exception)
         {
             transaction.Rollback();
-            throw; 
+            throw;
             /*
                 NOTE: 
                     - Intentional throw so that GlobalExceptionMiddleware will handle the response     
                     - https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2200#example  
-            */ 
+            */
         }
     }
 

@@ -11,7 +11,8 @@ public class ItemsProvider : BaseProvider<Item>
         _itemValidator = validator;
     }
 
-    private IQueryable<Item> GetItemByIdQuery(bool includeInventory = false){
+    private IQueryable<Item> GetItemByIdQuery(bool includeInventory = false)
+    {
         IQueryable<Item> query = _db.Items.AsQueryable();
 
         if (includeInventory) query = query.Include(i => i.Inventory);
@@ -20,10 +21,10 @@ public class ItemsProvider : BaseProvider<Item>
     }
 
     public override Item? GetById(Guid id) => GetItemByIdQuery().FirstOrDefault(i => i.Id == id);
-    
+
     public Item? GetById(Guid id, bool includeInventory = false) => GetItemByIdQuery(includeInventory).FirstOrDefault(i => i.Id == id);
 
-    
+
 
     public override List<Item>? GetAll() => _db.Items.ToList();
 
@@ -32,7 +33,7 @@ public class ItemsProvider : BaseProvider<Item>
         ItemRequest? req = createValues as ItemRequest;
         if (req == null) throw new ApiFlowException("Could not process create item request. Save new item failed.");
 
-        Item newItem = new(newInstance:true)
+        Item newItem = new(newInstance: true)
         {
             Code = req.Code,
             Description = req.Description,
@@ -50,7 +51,7 @@ public class ItemsProvider : BaseProvider<Item>
             ItemTypeId = req.ItemTypeId,
             SupplierId = req.SupplierId
         };
-        
+
         ValidateModel(newItem);
         _db.Items.Add(newItem);
         SaveToDBOrFail();
@@ -80,7 +81,7 @@ public class ItemsProvider : BaseProvider<Item>
         existingItem.ItemLineId = req.ItemLineId;
         existingItem.ItemTypeId = req.ItemTypeId;
         existingItem.SupplierId = req.SupplierId;
-        
+
         ValidateModel(existingItem);
 
         _db.Items.Update(existingItem);

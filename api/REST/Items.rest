@@ -23,7 +23,7 @@ POST http://localhost:5000/api/items
 Content-Type: application/json
 
 {
-  "code": "ITEM TEST 2",
+  "code": "ITEM TEST 5",
   "description": "High-quality ergonomic office chair with adjustable height and back support",
   "short_description": "Ergonomic office chair",
   "upc_code": "123456789012",
@@ -34,10 +34,10 @@ Content-Type: application/json
   "pack_order_quantity": 10,
   "supplier_reference_code": "123-ABCD",
   "supplier_part_number": "CH123-XL",
-    "item_group_id": null,
+  "item_group_id": null,
   "item_line_id": null,
   "item_type_id": null,
-  "supplier_id": "009b8fdf-3e25-4026-bd27-8727c19831f6"
+  "supplier_id": "015fec53-ae55-4d76-ad5c-00e3ce922d54"
 }
 ###
 

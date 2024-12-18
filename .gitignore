@@ -1,2 +1,5 @@
 .vs
 .idea
+api.Tests/bin
+api.Tests/obj
+api.Tests/TestResults

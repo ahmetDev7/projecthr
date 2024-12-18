@@ -46,7 +46,12 @@ public class AddressProvider : BaseProvider<Address>
         Address? foundAddress = _db.Addresses.FirstOrDefault(a => a.Id == id);
         if (foundAddress == null) return null;
 
-        ValidateModel(foundAddress);
+        if (_db.Warehouses.Any(w => w.AddressId == id) ||
+        _db.Clients.Any(c => c.AddressId == id) ||
+        _db.Suppliers.Any(s => s.AddressId == id))
+        {
+            throw new ApiFlowException($"{id} The provided address_id is in use and cannot be modified.");
+        }
 
         _db.Addresses.Remove(foundAddress);
         SaveToDBOrFail();

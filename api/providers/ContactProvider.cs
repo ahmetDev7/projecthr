@@ -1,3 +1,4 @@
+using System.Data;
 using DTO.Contact;
 using FluentValidation;
 
@@ -41,6 +42,13 @@ public class ContactProvider : BaseProvider<Contact>
         Contact? foundContact = _db.Contacts.FirstOrDefault(c => c.Id == id);
         if (foundContact == null) return null;
 
+
+        if (_db.Warehouses.Any(w => w.ContactId == id) ||
+            _db.Clients.Any(c => c.ContactId == id) ||
+            _db.Suppliers.Any(s => s.ContactId == id))
+        {
+            throw new ApiFlowException($"{id} The provided contact_id is in use and cannot be modified or deleted.");
+        }
         _db.Contacts.Remove(foundContact);
         SaveToDBOrFail();
 

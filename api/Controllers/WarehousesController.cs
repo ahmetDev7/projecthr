@@ -108,24 +108,24 @@ public class WarehousesController : ControllerBase
                 Code = deletedWarehouse.Code,
                 Name = deletedWarehouse.Name,
                 Contact = new ContactResponse
-                    {
-                        Id = deletedWarehouse.ContactId,
-                        Name = deletedWarehouse.Contact?.Name,
-                        Phone = deletedWarehouse.Contact?.Phone,
-                        Email = deletedWarehouse.Contact?.Email
-                    },
-                    Address = new AddressResponse
-                    {
-                        Id = deletedWarehouse.AddressId,
-                        Street = deletedWarehouse.Address?.Street,
-                        HouseNumber = deletedWarehouse.Address?.HouseNumber,
-                        HouseNumberExtension = deletedWarehouse.Address?.HouseNumberExtension,
-                        HouseNumberExtensionExtra = deletedWarehouse.Address?.HouseNumberExtensionExtra,
-                        ZipCode = deletedWarehouse.Address?.ZipCode,
-                        City = deletedWarehouse.Address?.City,
-                        Province = deletedWarehouse.Address?.Province,
-                        CountryCode = deletedWarehouse.Address?.CountryCode
-                    },
+                {
+                    Id = deletedWarehouse.ContactId,
+                    Name = deletedWarehouse.Contact?.Name,
+                    Phone = deletedWarehouse.Contact?.Phone,
+                    Email = deletedWarehouse.Contact?.Email
+                },
+                Address = new AddressResponse
+                {
+                    Id = deletedWarehouse.AddressId,
+                    Street = deletedWarehouse.Address?.Street,
+                    HouseNumber = deletedWarehouse.Address?.HouseNumber,
+                    HouseNumberExtension = deletedWarehouse.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = deletedWarehouse.Address?.HouseNumberExtensionExtra,
+                    ZipCode = deletedWarehouse.Address?.ZipCode,
+                    City = deletedWarehouse.Address?.City,
+                    Province = deletedWarehouse.Address?.Province,
+                    CountryCode = deletedWarehouse.Address?.CountryCode
+                },
                 CreatedAt = deletedWarehouse.CreatedAt,
                 UpdatedAt = deletedWarehouse.UpdatedAt,
             }

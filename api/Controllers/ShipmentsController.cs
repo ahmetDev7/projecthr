@@ -90,32 +90,35 @@ public class ShipmentsController : ControllerBase
         Shipment? deletedShipment = _shipmentProvider.Delete(id);
         if (deletedShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
 
-        return Ok(new {
+        return Ok(new
+        {
             message = "Shipment deleted!",
-            deleted_shipment = new ShipmentResponse{
-            Id = deletedShipment.Id,
-            OrderId = deletedShipment.OrderId,
-            OrderDate = deletedShipment.OrderDate,
-            RequestDate = deletedShipment.RequestDate,
-            ShipmentDate = deletedShipment.ShipmentDate,
-            ShipmentType = deletedShipment.ShipmentType.ToString(),
-            ShipmentStatus = deletedShipment.ShipmentStatus.ToString(),
-            Notes = deletedShipment.Notes,
-            CarrierCode = deletedShipment.CarrierCode,
-            CarrierDescription = deletedShipment.CarrierDescription,
-            ServiceCode = deletedShipment.ServiceCode,
-            PaymentType = deletedShipment.PaymentType.ToString(),
-            TransferMode = deletedShipment.TransferMode.ToString(),
-            TotalPackageCount = deletedShipment.TotalPackageCount,
-            TotalPackageWeight = deletedShipment.TotalPackageWeight,
-            CreatedAt = deletedShipment.CreatedAt,
-            UpdatedAt = deletedShipment.UpdatedAt,
-            Items = deletedShipment.ShipmentItems?.Select(si => new ShipmentItemRR
+            deleted_shipment = new ShipmentResponse
             {
-                ItemId = si.ItemId,
-                Amount = si.Amount
-            }).ToList()
-        }});
+                Id = deletedShipment.Id,
+                OrderId = deletedShipment.OrderId,
+                OrderDate = deletedShipment.OrderDate,
+                RequestDate = deletedShipment.RequestDate,
+                ShipmentDate = deletedShipment.ShipmentDate,
+                ShipmentType = deletedShipment.ShipmentType.ToString(),
+                ShipmentStatus = deletedShipment.ShipmentStatus.ToString(),
+                Notes = deletedShipment.Notes,
+                CarrierCode = deletedShipment.CarrierCode,
+                CarrierDescription = deletedShipment.CarrierDescription,
+                ServiceCode = deletedShipment.ServiceCode,
+                PaymentType = deletedShipment.PaymentType.ToString(),
+                TransferMode = deletedShipment.TransferMode.ToString(),
+                TotalPackageCount = deletedShipment.TotalPackageCount,
+                TotalPackageWeight = deletedShipment.TotalPackageWeight,
+                CreatedAt = deletedShipment.CreatedAt,
+                UpdatedAt = deletedShipment.UpdatedAt,
+                Items = deletedShipment.ShipmentItems?.Select(si => new ShipmentItemRR
+                {
+                    ItemId = si.ItemId,
+                    Amount = si.Amount
+                }).ToList()
+            }
+        });
     }
 
     [HttpGet()]
@@ -153,7 +156,7 @@ public class ShipmentsController : ControllerBase
         return (foundShipment == null)
             ? NotFound(new { message = $"Shipment not found for id '{id}'" })
             : Ok(new ShipmentResponse
-            {        
+            {
                 Id = foundShipment.Id,
                 OrderId = foundShipment.OrderId,
                 OrderDate = foundShipment.OrderDate,
@@ -176,6 +179,6 @@ public class ShipmentsController : ControllerBase
                     ItemId = item.ItemId,
                     Amount = item.Amount
                 }).ToList()
-        });
+            });
     }
 }

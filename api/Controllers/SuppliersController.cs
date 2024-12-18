@@ -18,7 +18,7 @@ public class SuppliersController : ControllerBase
     public IActionResult GetItemsSupplier(Guid id)
     {
         List<Item> items = _supplierProvider.GetItemsBySupplierId(id);
-        if(_supplierProvider.GetById(id) == null) throw new ApiFlowException("Supplier not found");
+        if (_supplierProvider.GetById(id) == null) throw new ApiFlowException("Supplier not found");
 
         List<ItemResponse> itemsSupplier = items.Select(item => new ItemResponse
         {
@@ -129,37 +129,42 @@ public class SuppliersController : ControllerBase
     {
         Supplier? deletedSupplier = _supplierProvider.Delete(id);
         if (deletedSupplier == null) throw new ApiFlowException($"Supplier not found for id '{id}'");
-    
-        return Ok(new { Message = "Supplier succesfully deleted", deleted_supplier = new SupplierResponse{
-            Id = deletedSupplier.Id,
-            Code = deletedSupplier.Code,
-            Name = deletedSupplier.Name,
-            Reference = deletedSupplier.Reference,
-            Contact = new ContactResponse
+
+        return Ok(new
+        {
+            Message = "Supplier succesfully deleted",
+            deleted_supplier = new SupplierResponse
             {
-                Id = deletedSupplier.ContactId,
-                Name = deletedSupplier.Contact?.Name,
-                Phone = deletedSupplier.Contact?.Phone,
-                Email = deletedSupplier.Contact?.Email
-            },
-            Address = new AddressResponse
-            {
-                Id = deletedSupplier.AddressId,
-                Street = deletedSupplier.Address?.Street,
-                HouseNumber = deletedSupplier.Address?.HouseNumber,
-                HouseNumberExtension = deletedSupplier.Address?.HouseNumberExtension,
-                HouseNumberExtensionExtra = deletedSupplier.Address?.HouseNumberExtensionExtra,
-                ZipCode = deletedSupplier.Address?.ZipCode,
-                City = deletedSupplier.Address?.City,
-                Province = deletedSupplier.Address?.Province,
-                CountryCode = deletedSupplier.Address?.CountryCode
-            },
-            CreatedAt = deletedSupplier.CreatedAt,
-            UpdatedAt = deletedSupplier.UpdatedAt
-        }});
+                Id = deletedSupplier.Id,
+                Code = deletedSupplier.Code,
+                Name = deletedSupplier.Name,
+                Reference = deletedSupplier.Reference,
+                Contact = new ContactResponse
+                {
+                    Id = deletedSupplier.ContactId,
+                    Name = deletedSupplier.Contact?.Name,
+                    Phone = deletedSupplier.Contact?.Phone,
+                    Email = deletedSupplier.Contact?.Email
+                },
+                Address = new AddressResponse
+                {
+                    Id = deletedSupplier.AddressId,
+                    Street = deletedSupplier.Address?.Street,
+                    HouseNumber = deletedSupplier.Address?.HouseNumber,
+                    HouseNumberExtension = deletedSupplier.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = deletedSupplier.Address?.HouseNumberExtensionExtra,
+                    ZipCode = deletedSupplier.Address?.ZipCode,
+                    City = deletedSupplier.Address?.City,
+                    Province = deletedSupplier.Address?.Province,
+                    CountryCode = deletedSupplier.Address?.CountryCode
+                },
+                CreatedAt = deletedSupplier.CreatedAt,
+                UpdatedAt = deletedSupplier.UpdatedAt
+            }
+        });
     }
 
-   [HttpGet("{id}")]
+    [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {
         Supplier? supplier = _supplierProvider.GetById(id);
@@ -223,6 +228,6 @@ public class SuppliersController : ControllerBase
         },
         CreatedAt = ig.CreatedAt,
         UpdatedAt = ig.UpdatedAt
-        
+
     }).ToList());
 }

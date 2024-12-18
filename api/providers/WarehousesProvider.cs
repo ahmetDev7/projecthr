@@ -21,7 +21,7 @@ public class WarehousesProvider : BaseProvider<Warehouse>
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
         try
         {
-               Warehouse? newWarehouse = new Warehouse(newInstance: true)
+            Warehouse? newWarehouse = new Warehouse(newInstance: true)
             {
                 Code = req.Code,
                 Name = req.Name,

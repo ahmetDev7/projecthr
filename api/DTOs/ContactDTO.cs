@@ -21,7 +21,7 @@ namespace DTO.Contact
         }
     }
 
-    
+
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ContactResponse : BaseDTO
     {

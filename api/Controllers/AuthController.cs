@@ -31,11 +31,11 @@ public class AuthController : ControllerBase
         var token = await _tokenService.GenerateToken(role.ToLower());
         return Ok(new { Token = token });
     }
-    
+
     [HttpGet("admin-only")]
     [Authorize(Roles = "admin,operative")]
     public IActionResult AdminOnly()
     {
-        return Ok(new{message = "Admin Only Authorized."});
+        return Ok(new { message = "Admin Only Authorized." });
     }
 }

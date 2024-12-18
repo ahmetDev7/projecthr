@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -105,11 +106,12 @@ builder.Services.AddTransient<ItemGroupProvider>();
 builder.Services.AddTransient<OrderProvider>();
 builder.Services.AddTransient<ShipmentProvider>();
 builder.Services.AddTransient<SupplierProvider>();
+builder.Services.AddTransient<TransferProvider>();
 builder.Services.AddTransient<ClientsProvider>();
 builder.Services.AddTransient<InventoriesProvider>();
 builder.Services.AddTransient<ItemLinesProvider>();
 builder.Services.AddTransient<ItemTypesProvider>();
-
+builder.Services.AddTransient<DocksProvider>();
 
 builder.Services.AddScoped<IValidator<Supplier>, SupplierValidator>();
 builder.Services.AddScoped<IValidator<Location>, LocationValidator>();
@@ -118,6 +120,9 @@ builder.Services.AddScoped<IValidator<ItemGroup>, ItemGroupValidator>();
 builder.Services.AddScoped<IValidator<Order>, OrderValidator>();
 builder.Services.AddScoped<IValidator<Shipment>, ShipmentValidator>();
 builder.Services.AddScoped<IValidator<Contact>, ContactValidator>();
+
+builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
+builder.Services.AddScoped<IValidator<Transfer>, TransferValidator>();
 builder.Services.AddScoped<IValidator<Inventory>, InventoryValidator>();
 builder.Services.AddScoped<IValidator<ItemLine>, ItemLineValidator>();
 builder.Services.AddScoped<IValidator<Warehouse>, WarehouseValidator>();
@@ -125,9 +130,12 @@ builder.Services.AddScoped<IValidator<ItemType>, ItemTypeValidator>();
 builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
 builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
 builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();
+builder.Services.AddScoped<IValidator<Dock>, DockValidator>();
 
 
-builder.Services.AddControllers();
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+ options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); ;
 
 var app = builder.Build();
 
@@ -135,7 +143,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapGet("/", () => "Hello world 🚀");
+app.MapGet("/", () => "CargoHub API 🚚📦");
 
 
 app.MapControllers();

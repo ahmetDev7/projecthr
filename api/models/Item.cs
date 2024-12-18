@@ -56,5 +56,5 @@ public class Item : BaseModel
     public ICollection<OrderItem>? OrderItems { get; set; }
     public ICollection<ShipmentItem>? ShipmentItems { get; set; } // shipment_items table connection
 
-    public Inventory? Inventory { get; set; }
+    public Inventory? Inventory{ get; set; }
 }

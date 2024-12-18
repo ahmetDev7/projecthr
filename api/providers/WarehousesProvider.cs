@@ -4,11 +4,17 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 public class WarehousesProvider : BaseProvider<Warehouse>
 {
+    public readonly DocksProvider _docksProvider; 
+    private readonly AddressProvider _addressProvider;
+    private readonly ContactProvider _contactProvider;
     private IValidator<Warehouse> _WarehouseValidator;
 
-    public WarehousesProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, IValidator<Warehouse> validator) : base(db)
+    public WarehousesProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, DocksProvider docksProvider, IValidator<Warehouse> validator) : base(db)
     {
+        _addressProvider = addressProvider;
+        _contactProvider = contactProvider;
         _WarehouseValidator = validator;
+        _docksProvider = docksProvider;
     }
     public override Warehouse? GetById(Guid id) => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).FirstOrDefault(l => l.Id == id);
 
@@ -32,6 +38,7 @@ public class WarehousesProvider : BaseProvider<Warehouse>
             _db.Warehouses.Add(newWarehouse);
 
             SaveToDBOrFail();
+            _docksProvider.InternalCreate(newWarehouse.Id); // Creates an specific dock inside warehouse (only for create)
             transaction.Commit();
 
 

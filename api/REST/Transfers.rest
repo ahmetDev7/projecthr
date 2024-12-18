@@ -1,0 +1,58 @@
+### GET TRANSFERS
+GET http://localhost:5000/api/transfers
+Content-Type: application/json
+###
+
+### GET TRANSFER BY ID
+GET http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
+Content-Type: application/json
+###
+
+### GET ITEMS FROM TRANSFER
+GET http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b/items
+Content-Type: application/json
+###
+
+### CREATE TRANSFER
+POST http://localhost:5000/api/transfers
+Content-Type: application/json
+
+{
+  "transfer_from_id": "fc4825d7-40ae-49c9-9d7a-28fea72ca300",
+  "transfer_to_id": "8be858aa-f305-4262-82a4-b56fa2d756f2",
+  "reference": "TST-0273",
+  "items": [
+    {
+      "itemId": "ad2e16aa-6d7c-4687-aa96-b11cc297ff50",
+      "amount": 50
+    }
+  ]
+}
+###
+
+### UPDATE TRANSFER
+PUT http://localhost:5000/api/transfers/586f80b3-c631-4160-be01-7ecc7e3777a6
+Content-Type: application/json
+
+{
+  "transfer_from_id": "5aeb7004-fd10-4dab-82f3-05216ff3df4d",
+  "transfer_to_id": "5aeb7004-fd10-4dab-82f3-05216ff3df7c",
+  "reference": "TST-0273",
+  "transfer_status": "Processing",
+  "items": [
+    {
+      "itemId": "d91369f6-af0a-4b45-9b23-ec263a6f2556",
+      "amount": 50
+    }
+  ]
+}
+###
+
+### DELETE TRANSFER
+DELETE http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
+Content-Type: application/json
+
+### COMMIT TRANSFER
+PUT http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b/commit
+Content-Type: application/json
+###

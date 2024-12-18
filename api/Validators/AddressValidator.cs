@@ -2,7 +2,7 @@ using FluentValidation;
 
 public class AddressValidator : AbstractValidator<Address>
 {
-    public AddressValidator()
+    public AddressValidator(AppDbContext db)
     {
         RuleFor(address => address.Street)
             .NotNull().WithMessage("street is required.")

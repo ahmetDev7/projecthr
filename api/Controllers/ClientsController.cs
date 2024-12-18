@@ -171,11 +171,12 @@ public class ClientsController : ControllerBase
 
         if (foundclient == null) return NotFound(new { message = "Client not found." });
 
-        return Ok(new 
+        return Ok(new
         {
             Message = "Client deleted",
-            new_client = new ClientResponse{
-                    
+            new_client = new ClientResponse
+            {
+
                 Id = foundclient.Id,
                 Name = foundclient.Name,
                 Contact = new ContactResponse

@@ -7,7 +7,7 @@ public class SupplierValidator : AbstractValidator<Supplier>
         RuleFor(Supplier => Supplier.Name)
             .NotNull().WithMessage("name is required.")
             .NotEmpty().WithMessage("name cannot be empty.");
-            
+
         RuleFor(Supplier => Supplier.Code)
             .NotNull().WithMessage("code is required.")
             .NotEmpty().WithMessage("code cannot be empty.");

@@ -1,1 +1,1 @@
-public abstract class BaseDTO{}
+public abstract class BaseDTO { }

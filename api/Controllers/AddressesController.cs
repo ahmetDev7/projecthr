@@ -21,7 +21,7 @@ public class AddressesController : ControllerBase
 
         if (newAddress == null) throw new ApiFlowException("Saving new Address failed.");
 
-        return Ok(new 
+        return Ok(new
         {
             message = "Address created",
             new_address = new AddressResponse
@@ -42,11 +42,11 @@ public class AddressesController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Update(Guid id, [FromBody] AddressRequest req)
     {
-        Address? updateAddress = _addressProvider.Update(id,req);
+        Address? updateAddress = _addressProvider.Update(id, req);
 
         if (updateAddress == null) throw new ApiFlowException($"Address not found for id '{id}'");
 
-        return Ok(new 
+        return Ok(new
         {
             message = "Address updated",
             new_address = new AddressResponse
@@ -66,18 +66,18 @@ public class AddressesController : ControllerBase
 
     [HttpGet()]
     public IActionResult ShowAll() => Ok(_addressProvider.GetAll().Select(a => new AddressResponse
-            {
-                Id = a.Id,
-                Street = a.Street,
-                HouseNumber = a.HouseNumber,
-                HouseNumberExtension = a.HouseNumberExtension,
-                HouseNumberExtensionExtra = a.HouseNumberExtensionExtra,
-                ZipCode = a.ZipCode,
-                City = a.City,
-                Province = a.Province,
-                CountryCode = a.CountryCode
-        }));
-        
+    {
+        Id = a.Id,
+        Street = a.Street,
+        HouseNumber = a.HouseNumber,
+        HouseNumberExtension = a.HouseNumberExtension,
+        HouseNumberExtensionExtra = a.HouseNumberExtensionExtra,
+        ZipCode = a.ZipCode,
+        City = a.City,
+        Province = a.Province,
+        CountryCode = a.CountryCode
+    }));
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {
@@ -85,7 +85,7 @@ public class AddressesController : ControllerBase
 
         if (foundAddress == null) throw new ApiFlowException($"Address not found for id '{id}'");
 
-        return Ok(new 
+        return Ok(new
         {
             message = "Address found",
             new_address = new AddressResponse

@@ -50,6 +50,9 @@ public class WarehouseResponse : BaseDTO
     [JsonPropertyName("address")]
     public AddressRequest? Address { get; set; }
 
+    [JsonPropertyName("dock")]
+    public DockResponse? Dock { get; set; }
+
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }
 

@@ -102,4 +102,28 @@ public class AddressesController : ControllerBase
             }
         });
     }
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        Address? deletedAddress = _addressProvider.Delete(id);
+
+        if (deletedAddress == null) throw new ApiFlowException($"Address not found for id '{id}'");
+
+        return Ok(new
+        {
+            message = "Address Deleted",
+            new_address = new AddressResponse
+            {
+                Id = deletedAddress.Id,
+                Street = deletedAddress.Street,
+                HouseNumber = deletedAddress.HouseNumber,
+                HouseNumberExtension = deletedAddress.HouseNumberExtension,
+                HouseNumberExtensionExtra = deletedAddress.HouseNumberExtensionExtra,
+                ZipCode = deletedAddress.ZipCode,
+                City = deletedAddress.City,
+                Province = deletedAddress.Province,
+                CountryCode = deletedAddress.CountryCode
+            }
+        });
+    }
 }

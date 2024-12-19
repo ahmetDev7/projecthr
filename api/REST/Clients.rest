@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "name": "Client D",
-  "contact_id": "a2a2bb62-0398-4b76-a80e-0f509154906f",
-  "address_id": "21903d3a-3d0f-4949-bf0d-e2a84cd1a450"
+  "contact_id": "3f2488a2-7747-4541-b29a-a28735ebd921",
+  "address_id": "016d60c2-a192-497a-b72c-49a1dedc3dab"
 }
 ###
 # Update Client with Contact ID and Address ID
@@ -14,8 +14,8 @@ Content-Type: application/json
 
 {
   "name": "Updated Client D",
-  "contact_id": "8d2e7d61-e596-46e4-acd8-e85ef8805110",
-  "address_id": "0ba16ba7-0c7a-45de-9fe6-9054fb6df6a8"
+  "contact_id": "3f2488a2-7747-4541-b29a-a28735ebd921",
+  "address_id": "016d60c2-a192-497a-b72c-49a1dedc3dab"
 }
 ###
 # Delete Clients

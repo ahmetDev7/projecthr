@@ -26,5 +26,6 @@ public class Location : BaseModel
     }
 
     public Guid? InventoryId { get; set; }
+
     public Inventory? Inventory { get; set; }
 }

@@ -61,20 +61,22 @@ public class SuppliersController : ControllerBase
                 Reference = supplier.Reference,
                 Contact = new ContactResponse
                 {
-                    Name = supplier.Contact.Name,
-                    Email = supplier.Contact.Email,
-                    Phone = supplier.Contact.Phone
+                    Id = supplier.ContactId,
+                    Name = supplier.Contact?.Name,
+                    Phone = supplier.Contact?.Phone,
+                    Email = supplier.Contact?.Email
                 },
                 Address = new AddressResponse
                 {
-                    Street = supplier.Address.Street,
-                    HouseNumber = supplier.Address.HouseNumber,
-                    HouseNumberExtension = supplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = supplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = supplier.Address.ZipCode,
-                    City = supplier.Address.City,
-                    Province = supplier.Address.Province,
-                    CountryCode = supplier.Address.CountryCode,
+                    Id = supplier.AddressId,
+                    Street = supplier.Address?.Street,
+                    HouseNumber = supplier.Address?.HouseNumber,
+                    HouseNumberExtension = supplier.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = supplier.Address?.HouseNumberExtensionExtra,
+                    ZipCode = supplier.Address?.ZipCode,
+                    City = supplier.Address?.City,
+                    Province = supplier.Address?.Province,
+                    CountryCode = supplier.Address?.CountryCode
                 },
                 CreatedAt = supplier.CreatedAt,
                 UpdatedAt = supplier.UpdatedAt
@@ -99,20 +101,22 @@ public class SuppliersController : ControllerBase
                 Reference = updatedSupplier.Reference,
                 Contact = new ContactResponse
                 {
-                    Name = updatedSupplier.Contact.Name,
-                    Email = updatedSupplier.Contact.Email,
-                    Phone = updatedSupplier.Contact.Phone
+                    Id = updatedSupplier.ContactId,
+                    Name = updatedSupplier.Contact?.Name,
+                    Phone = updatedSupplier.Contact?.Phone,
+                    Email = updatedSupplier.Contact?.Email
                 },
                 Address = new AddressResponse
                 {
-                    Street = updatedSupplier.Address.Street,
-                    HouseNumber = updatedSupplier.Address.HouseNumber,
-                    HouseNumberExtension = updatedSupplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = updatedSupplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = updatedSupplier.Address.ZipCode,
-                    City = updatedSupplier.Address.City,
-                    Province = updatedSupplier.Address.Province,
-                    CountryCode = updatedSupplier.Address.CountryCode
+                    Id = updatedSupplier.AddressId,
+                    Street = updatedSupplier.Address?.Street,
+                    HouseNumber = updatedSupplier.Address?.HouseNumber,
+                    HouseNumberExtension = updatedSupplier.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = updatedSupplier.Address?.HouseNumberExtensionExtra,
+                    ZipCode = updatedSupplier.Address?.ZipCode,
+                    City = updatedSupplier.Address?.City,
+                    Province = updatedSupplier.Address?.Province,
+                    CountryCode = updatedSupplier.Address?.CountryCode
                 },
                 CreatedAt = updatedSupplier.CreatedAt,
                 UpdatedAt = updatedSupplier.UpdatedAt
@@ -173,20 +177,22 @@ public class SuppliersController : ControllerBase
             Reference = supplier.Reference,
             Contact = new ContactResponse
             {
-                Name = supplier.Contact.Name,
-                Email = supplier.Contact.Email,
-                Phone = supplier.Contact.Phone
+                Id = supplier.ContactId,
+                Name = supplier.Contact?.Name,
+                Phone = supplier.Contact?.Phone,
+                Email = supplier.Contact?.Email
             },
             Address = new AddressResponse
             {
-                Street = supplier.Address.Street,
-                HouseNumber = supplier.Address.HouseNumber,
-                HouseNumberExtension = supplier.Address.HouseNumberExtension,
-                HouseNumberExtensionExtra = supplier.Address.HouseNumberExtensionExtra,
-                ZipCode = supplier.Address.ZipCode,
-                City = supplier.Address.City,
-                Province = supplier.Address.Province,
-                CountryCode = supplier.Address.CountryCode,
+                Id = supplier.AddressId,
+                Street = supplier.Address?.Street,
+                HouseNumber = supplier.Address?.HouseNumber,
+                HouseNumberExtension = supplier.Address?.HouseNumberExtension,
+                HouseNumberExtensionExtra = supplier.Address?.HouseNumberExtensionExtra,
+                ZipCode = supplier.Address?.ZipCode,
+                City = supplier.Address?.City,
+                Province = supplier.Address?.Province,
+                CountryCode = supplier.Address?.CountryCode
             },
             CreatedAt = supplier.CreatedAt,
             UpdatedAt = supplier.UpdatedAt
@@ -201,20 +207,22 @@ public class SuppliersController : ControllerBase
         Reference = ig.Reference,
         Contact = new ContactResponse
         {
-            Name = ig.Contact.Name,
-            Email = ig.Contact.Email,
-            Phone = ig.Contact.Phone
+            Id = ig.ContactId,
+            Name = ig.Contact?.Name,
+            Phone = ig.Contact?.Phone,
+            Email = ig.Contact?.Email
         },
         Address = new AddressResponse
         {
-            Street = ig.Address.Street,
-            HouseNumber = ig.Address.HouseNumber,
-            HouseNumberExtension = ig.Address.HouseNumberExtension,
-            HouseNumberExtensionExtra = ig.Address.HouseNumberExtensionExtra,
-            ZipCode = ig.Address.ZipCode,
-            City = ig.Address.City,
-            Province = ig.Address.Province,
-            CountryCode = ig.Address.CountryCode,
+            Id = ig.AddressId,
+            Street = ig.Address?.Street,
+            HouseNumber = ig.Address?.HouseNumber,
+            HouseNumberExtension = ig.Address?.HouseNumberExtension,
+            HouseNumberExtensionExtra = ig.Address?.HouseNumberExtensionExtra,
+            ZipCode = ig.Address?.ZipCode,
+            City = ig.Address?.City,
+            Province = ig.Address?.Province,
+            CountryCode = ig.Address?.CountryCode
         },
         CreatedAt = ig.CreatedAt,
         UpdatedAt = ig.UpdatedAt

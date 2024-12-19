@@ -61,7 +61,7 @@ public class ContactProvider : BaseProvider<Contact>
         if (req == null) throw new ApiFlowException("Invalid contact request. Could not update contact.");
 
         Contact? existingContact = _db.Contacts.FirstOrDefault(c => c.Id == id);
-        if (existingContact == null) throw new ApiFlowException($"Contact not found for id '{id}'");
+        if (existingContact == null) throw new ApiFlowException($"Contact not found for id '{id}'", StatusCodes.Status404NotFound);
 
         existingContact.Name = req.Name;
         existingContact.Phone = req.Phone;
@@ -77,16 +77,4 @@ public class ContactProvider : BaseProvider<Contact>
     }
 
     protected override void ValidateModel(Contact model) => _contactValidator.ValidateAndThrow(model);
-
-    // Andere methoden zoals GetOrCreateContact blijven zoals ze zijn
-    public Contact? GetOrCreateContact(ContactRequest? contact = null, Guid? contactId = null)
-    {
-        if (contact == null && contactId == null) return null;
-
-        if (contactId != null) return GetById(contactId.Value);
-
-        if (contact != null) return Create(contact);
-
-        return null;
-    }
 }

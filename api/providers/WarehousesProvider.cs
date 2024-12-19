@@ -4,49 +4,45 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 public class WarehousesProvider : BaseProvider<Warehouse>
 {
+    public readonly DocksProvider _docksProvider;
     private readonly AddressProvider _addressProvider;
     private readonly ContactProvider _contactProvider;
-    private readonly DocksProvider _docksProvider;
     private IValidator<Warehouse> _WarehouseValidator;
 
     public WarehousesProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, DocksProvider docksProvider, IValidator<Warehouse> validator) : base(db)
     {
         _addressProvider = addressProvider;
         _contactProvider = contactProvider;
-        _docksProvider = docksProvider;
         _WarehouseValidator = validator;
+        _docksProvider = docksProvider;
     }
     public override Warehouse? GetById(Guid id) => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).FirstOrDefault(l => l.Id == id);
 
     public override List<Warehouse> GetAll() => _db.Warehouses.Include(w => w.Address).Include(w => w.Contact).ToList();
 
-    public Warehouse? Create<BaseDTO>(BaseDTO newElement)
+    public override Warehouse? Create(BaseDTO newElement)
     {
         WarehouseRequest? req = newElement as WarehouseRequest ?? throw new ApiFlowException("Could not process create warehouse request. Save new warehouse failed.");
 
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
         try
         {
-            Address? relatedAddress = _addressProvider.GetOrCreateAddress(address: req.Address, addressId: req.AddressId);
-            Contact? relatedContact = _contactProvider.GetOrCreateContact(contact: req.Contact, contactId: req.ContactId);
-
             Warehouse? newWarehouse = new Warehouse(newInstance: true)
             {
                 Code = req.Code,
                 Name = req.Name,
-                AddressId = relatedAddress != null ? relatedAddress.Id : null,
-                ContactId = relatedContact != null ? relatedContact.Id : null,
+                AddressId = req.AddressId,
+                ContactId = req.ContactId,
             };
-
+            ValidateModel(newWarehouse);
             _db.Warehouses.Add(newWarehouse);
+
             SaveToDBOrFail();
             _docksProvider.InternalCreate(newWarehouse.Id); // Creates an specific dock inside warehouse (only for create)
             transaction.Commit();
 
-            newWarehouse.Contact = relatedContact;
-            newWarehouse.Address = relatedAddress;
 
-            return newWarehouse;
+            return GetById(newWarehouse.Id);
         }
         catch (Exception)
         {
@@ -65,18 +61,15 @@ public class WarehousesProvider : BaseProvider<Warehouse>
 
         foundWarehouse.Name = req.Name;
         foundWarehouse.Code = req.Code;
-
-        Guid? oldAddressId = foundWarehouse.AddressId;
-        Guid? oldContactId = foundWarehouse.AddressId;
-
-        // TODO: UPDATE CONTACT AND ADDRESS (coming soon with address and contact rework)       
-
-        foundWarehouse.SetUpdatedAt();
+        foundWarehouse.AddressId = req.AddressId;
+        foundWarehouse.ContactId = req.ContactId;
 
         ValidateModel(foundWarehouse);
+        foundWarehouse.SetUpdatedAt();
+
         SaveToDBOrFail();
 
-        return foundWarehouse;
+        return GetById(foundWarehouse.Id);
     }
 
     public override Warehouse? Delete(Guid id)

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using DTO.Contact;
+using DTO.Address;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -26,24 +28,24 @@ public class WarehousesController : ControllerBase
                     Id = createdWarehouse.Id,
                     Code = createdWarehouse.Code,
                     Name = createdWarehouse.Name,
-                    ContactId = createdWarehouse.ContactId,
-                    Contact = new DTO.Contact.ContactRequest
+                    Contact = new ContactResponse
                     {
-                        Name = createdWarehouse.Contact.Name,
-                        Email = createdWarehouse.Contact.Email,
-                        Phone = createdWarehouse.Contact.Phone,
+                        Id = createdWarehouse.ContactId,
+                        Name = createdWarehouse.Contact?.Name,
+                        Phone = createdWarehouse.Contact?.Phone,
+                        Email = createdWarehouse.Contact?.Email
                     },
-                    AddressId = createdWarehouse.AddressId,
-                    Address = new DTO.Address.AddressRequest
+                    Address = new AddressResponse
                     {
-                        Street = createdWarehouse.Address.Street,
-                        HouseNumber = createdWarehouse.Address.HouseNumber,
-                        HouseNumberExtension = createdWarehouse.Address.HouseNumberExtension,
-                        HouseNumberExtensionExtra = createdWarehouse.Address.HouseNumberExtensionExtra,
-                        ZipCode = createdWarehouse.Address.ZipCode,
-                        City = createdWarehouse.Address.City,
-                        Province = createdWarehouse.Address.Province,
-                        CountryCode = createdWarehouse.Address.CountryCode,
+                        Id = createdWarehouse.AddressId,
+                        Street = createdWarehouse.Address?.Street,
+                        HouseNumber = createdWarehouse.Address?.HouseNumber,
+                        HouseNumberExtension = createdWarehouse.Address?.HouseNumberExtension,
+                        HouseNumberExtensionExtra = createdWarehouse.Address?.HouseNumberExtensionExtra,
+                        ZipCode = createdWarehouse.Address?.ZipCode,
+                        City = createdWarehouse.Address?.City,
+                        Province = createdWarehouse.Address?.Province,
+                        CountryCode = createdWarehouse.Address?.CountryCode
                     },
                     CreatedAt = createdWarehouse.CreatedAt,
                     UpdatedAt = createdWarehouse.UpdatedAt,
@@ -67,24 +69,24 @@ public class WarehousesController : ControllerBase
                     Id = id,
                     Code = updatedWarehouse.Code,
                     Name = updatedWarehouse.Name,
-                    ContactId = updatedWarehouse.ContactId,
-                    Contact = new DTO.Contact.ContactRequest
+                    Contact = new ContactResponse
                     {
-                        Name = updatedWarehouse.Contact.Name,
-                        Phone = updatedWarehouse.Contact.Phone,
-                        Email = updatedWarehouse.Contact.Email
+                        Id = updatedWarehouse.ContactId,
+                        Name = updatedWarehouse.Contact?.Name,
+                        Phone = updatedWarehouse.Contact?.Phone,
+                        Email = updatedWarehouse.Contact?.Email
                     },
-                    AddressId = updatedWarehouse.AddressId,
-                    Address = new DTO.Address.AddressRequest
+                    Address = new AddressResponse
                     {
-                        Street = updatedWarehouse.Address.Street,
-                        HouseNumber = updatedWarehouse.Address.HouseNumber,
-                        HouseNumberExtension = updatedWarehouse.Address.HouseNumberExtension,
-                        HouseNumberExtensionExtra = updatedWarehouse.Address.HouseNumberExtensionExtra,
-                        ZipCode = updatedWarehouse.Address.ZipCode,
-                        City = updatedWarehouse.Address.City,
-                        Province = updatedWarehouse.Address.Province,
-                        CountryCode = updatedWarehouse.Address.CountryCode
+                        Id = updatedWarehouse.AddressId,
+                        Street = updatedWarehouse.Address?.Street,
+                        HouseNumber = updatedWarehouse.Address?.HouseNumber,
+                        HouseNumberExtension = updatedWarehouse.Address?.HouseNumberExtension,
+                        HouseNumberExtensionExtra = updatedWarehouse.Address?.HouseNumberExtensionExtra,
+                        ZipCode = updatedWarehouse.Address?.ZipCode,
+                        City = updatedWarehouse.Address?.City,
+                        Province = updatedWarehouse.Address?.Province,
+                        CountryCode = updatedWarehouse.Address?.CountryCode
                     },
                     CreatedAt = updatedWarehouse.CreatedAt,
                     UpdatedAt = updatedWarehouse.UpdatedAt
@@ -105,24 +107,24 @@ public class WarehousesController : ControllerBase
                 Id = deletedWarehouse.Id,
                 Code = deletedWarehouse.Code,
                 Name = deletedWarehouse.Name,
-                ContactId = deletedWarehouse.ContactId,
-                Contact = new DTO.Contact.ContactRequest
+                Contact = new ContactResponse
                 {
-                    Name = deletedWarehouse.Contact.Name,
-                    Email = deletedWarehouse.Contact.Email,
-                    Phone = deletedWarehouse.Contact.Phone,
+                    Id = deletedWarehouse.ContactId,
+                    Name = deletedWarehouse.Contact?.Name,
+                    Phone = deletedWarehouse.Contact?.Phone,
+                    Email = deletedWarehouse.Contact?.Email
                 },
-                AddressId = deletedWarehouse.AddressId,
-                Address = new DTO.Address.AddressRequest
+                Address = new AddressResponse
                 {
-                    Street = deletedWarehouse.Address.Street,
-                    HouseNumber = deletedWarehouse.Address.HouseNumber,
-                    HouseNumberExtension = deletedWarehouse.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = deletedWarehouse.Address.HouseNumberExtensionExtra,
-                    ZipCode = deletedWarehouse.Address.ZipCode,
-                    City = deletedWarehouse.Address.City,
-                    Province = deletedWarehouse.Address.Province,
-                    CountryCode = deletedWarehouse.Address.CountryCode,
+                    Id = deletedWarehouse.AddressId,
+                    Street = deletedWarehouse.Address?.Street,
+                    HouseNumber = deletedWarehouse.Address?.HouseNumber,
+                    HouseNumberExtension = deletedWarehouse.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = deletedWarehouse.Address?.HouseNumberExtensionExtra,
+                    ZipCode = deletedWarehouse.Address?.ZipCode,
+                    City = deletedWarehouse.Address?.City,
+                    Province = deletedWarehouse.Address?.Province,
+                    CountryCode = deletedWarehouse.Address?.CountryCode
                 },
                 CreatedAt = deletedWarehouse.CreatedAt,
                 UpdatedAt = deletedWarehouse.UpdatedAt,
@@ -140,24 +142,24 @@ public class WarehousesController : ControllerBase
             Id = foundWarehouse.Id,
             Code = foundWarehouse.Code,
             Name = foundWarehouse.Name,
-            ContactId = foundWarehouse.ContactId,
-            Contact = new DTO.Contact.ContactRequest
+            Contact = new ContactResponse
             {
-                Name = foundWarehouse.Contact.Name,
-                Email = foundWarehouse.Contact.Email,
-                Phone = foundWarehouse.Contact.Phone,
+                Id = foundWarehouse.ContactId,
+                Name = foundWarehouse.Contact?.Name,
+                Phone = foundWarehouse.Contact?.Phone,
+                Email = foundWarehouse.Contact?.Email
             },
-            AddressId = foundWarehouse.AddressId,
-            Address = new DTO.Address.AddressRequest
+            Address = new AddressResponse
             {
-                Street = foundWarehouse.Address.Street,
-                HouseNumber = foundWarehouse.Address.HouseNumber,
-                HouseNumberExtension = foundWarehouse.Address.HouseNumberExtension,
-                HouseNumberExtensionExtra = foundWarehouse.Address.HouseNumberExtensionExtra,
-                ZipCode = foundWarehouse.Address.ZipCode,
-                City = foundWarehouse.Address.City,
-                Province = foundWarehouse.Address.Province,
-                CountryCode = foundWarehouse.Address.CountryCode,
+                Id = foundWarehouse.AddressId,
+                Street = foundWarehouse.Address?.Street,
+                HouseNumber = foundWarehouse.Address?.HouseNumber,
+                HouseNumberExtension = foundWarehouse.Address?.HouseNumberExtension,
+                HouseNumberExtensionExtra = foundWarehouse.Address?.HouseNumberExtensionExtra,
+                ZipCode = foundWarehouse.Address?.ZipCode,
+                City = foundWarehouse.Address?.City,
+                Province = foundWarehouse.Address?.Province,
+                CountryCode = foundWarehouse.Address?.CountryCode
             },
             CreatedAt = foundWarehouse.CreatedAt,
             UpdatedAt = foundWarehouse.UpdatedAt,
@@ -170,24 +172,24 @@ public class WarehousesController : ControllerBase
         Id = w.Id,
         Code = w.Code,
         Name = w.Name,
-        ContactId = w.ContactId,
-        Contact = new DTO.Contact.ContactRequest
+        Contact = new ContactResponse
         {
-            Name = w.Contact.Name,
-            Email = w.Contact.Email,
-            Phone = w.Contact.Phone,
+            Id = w.ContactId,
+            Name = w.Contact?.Name,
+            Phone = w.Contact?.Phone,
+            Email = w.Contact?.Email
         },
-        AddressId = w.AddressId,
-        Address = new DTO.Address.AddressRequest
+        Address = new AddressResponse
         {
-            Street = w.Address.Street,
-            HouseNumber = w.Address.HouseNumber,
-            HouseNumberExtension = w.Address.HouseNumberExtension,
-            HouseNumberExtensionExtra = w.Address.HouseNumberExtensionExtra,
-            ZipCode = w.Address.ZipCode,
-            City = w.Address.City,
-            Province = w.Address.Province,
-            CountryCode = w.Address.CountryCode,
+            Id = w.AddressId,
+            Street = w.Address?.Street,
+            HouseNumber = w.Address?.HouseNumber,
+            HouseNumberExtension = w.Address?.HouseNumberExtension,
+            HouseNumberExtensionExtra = w.Address?.HouseNumberExtensionExtra,
+            ZipCode = w.Address?.ZipCode,
+            City = w.Address?.City,
+            Province = w.Address?.Province,
+            CountryCode = w.Address?.CountryCode
         },
         CreatedAt = w.CreatedAt,
         UpdatedAt = w.UpdatedAt,

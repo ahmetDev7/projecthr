@@ -164,6 +164,45 @@ public class ClientsController : ControllerBase
         return Ok(clientResponses);
     }
 
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        Client? foundclient = _clientProvider.Delete(id);
+
+        if (foundclient == null) return NotFound(new { message = "Client not found." });
+
+        return Ok(new
+        {
+            Message = "Client deleted",
+            new_client = new ClientResponse
+            {
+
+                Id = foundclient.Id,
+                Name = foundclient.Name,
+                Contact = new ContactResponse
+                {
+                    Id = foundclient.ContactId,
+                    Name = foundclient.Contact?.Name,
+                    Phone = foundclient.Contact?.Phone,
+                    Email = foundclient.Contact?.Email
+                },
+                Address = new AddressResponse
+                {
+                    Id = foundclient.AddressId,
+                    Street = foundclient.Address?.Street,
+                    HouseNumber = foundclient.Address?.HouseNumber,
+                    HouseNumberExtension = foundclient.Address?.HouseNumberExtension,
+                    ZipCode = foundclient.Address?.ZipCode,
+                    City = foundclient.Address?.City,
+                    Province = foundclient.Address?.Province,
+                    CountryCode = foundclient.Address?.CountryCode
+                },
+                CreatedAt = foundclient.CreatedAt,
+                UpdatedAt = foundclient.UpdatedAt
+            }
+        });
+    }
+
     [HttpGet("{clientId}/orders")]
     public IActionResult ShowRelatedOrders(Guid clientId) =>
         Ok(_clientProvider.GetRelatedOrdersById(clientId)

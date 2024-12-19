@@ -48,9 +48,10 @@ public class ClientsProvider : BaseProvider<Client>
         Client? foundClient = GetById(id);
         if (foundClient == null) return null;
 
-        if (_db.Orders.Any(o => o.BillToClientId == id))
+        if (_db.Orders.Any(o => o.BillToClientId == id) ||
+            _db.Orders.Any(o => o.ShipToClientId == id))
         {
-            throw new ApiFlowException($"{id} The provided client_id is in use and cannot be modified.");
+            throw new ApiFlowException($"{id} The provided client_id is in use and cannot be deleted.");
         }
         _db.Clients.Remove(foundClient);
         SaveToDBOrFail();

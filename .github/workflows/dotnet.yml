@@ -69,10 +69,14 @@ jobs:
         with:
           reports: 'api.Tests/TestResults/*/coverage.cobertura.xml'
           targetdir: 'api.Tests/Report'
-          reporttypes: 'Html'
+          reporttypes: 'MarkdownSummaryGithub'
           classfilters: '+EnumUtil' # Temporarily
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
         with:
           name: CoverageReport       
           path: 'api.Tests/Report'
+      - name: Add Coverage Report to Summary
+        run: cat api.Tests/Report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY  
+
+          

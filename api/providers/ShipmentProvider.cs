@@ -24,7 +24,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
         Shipment newShipment = new Shipment(newInstance: true)
         {
-            OrderId = req.OrderId,
+            // OrderId = req.OrderId,
             OrderDate = req.OrderDate,
             RequestDate = req.RequestDate,
             ShipmentDate = req.ShipmentDate,
@@ -60,7 +60,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
         Shipment? existingShipment = _db.Shipments.Include(o => o.ShipmentItems).FirstOrDefault(o => o.Id == id);
         if (existingShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
 
-        existingShipment.OrderId = req.OrderId;
+        // existingShipment.OrderId = req.OrderId;
         existingShipment.OrderDate = DateUtil.ToUtcOrNull(req.OrderDate);
         existingShipment.RequestDate = DateUtil.ToUtcOrNull(req.RequestDate);
         existingShipment.ShipmentDate = DateUtil.ToUtcOrNull(req.ShipmentDate);

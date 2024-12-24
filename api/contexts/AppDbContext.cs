@@ -16,7 +16,6 @@ public class AppDbContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
-
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<TransferItem> TransferItems { get; set; }
     public DbSet<Client> Clients { get; set; }

@@ -45,7 +45,6 @@ public class Order : BaseModel
     public Warehouse? Warehouse { get; set; }
     [Required]
     public ICollection<OrderItem>? OrderItems { get; set; }
-    public ICollection<Shipment>? Shipments { get; set; }
     public Guid? ShipToClientId { get; set; }
     public Client? ShipToClient { get; set; }
     [Required]

@@ -22,7 +22,7 @@ public class ShipmentsController : ControllerBase
         return Ok(new ShipmentResponse
         {
             Id = newShipment.Id,
-            OrderId = newShipment.OrderId,
+            // OrderId = newShipment.OrderId,
             OrderDate = newShipment.OrderDate,
             RequestDate = newShipment.RequestDate,
             ShipmentDate = newShipment.ShipmentDate,
@@ -59,7 +59,7 @@ public class ShipmentsController : ControllerBase
                 updated_shipment = new ShipmentResponse
                 {
                     Id = updatedShipment.Id,
-                    OrderId = updatedShipment.OrderId,
+                    // OrderId = updatedShipment.OrderId,
                     OrderDate = updatedShipment.OrderDate,
                     RequestDate = updatedShipment.RequestDate,
                     ShipmentDate = updatedShipment.ShipmentDate,
@@ -96,7 +96,7 @@ public class ShipmentsController : ControllerBase
             deleted_shipment = new ShipmentResponse
             {
                 Id = deletedShipment.Id,
-                OrderId = deletedShipment.OrderId,
+                // OrderId = deletedShipment.OrderId,
                 OrderDate = deletedShipment.OrderDate,
                 RequestDate = deletedShipment.RequestDate,
                 ShipmentDate = deletedShipment.ShipmentDate,
@@ -125,7 +125,7 @@ public class ShipmentsController : ControllerBase
     public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
     {
         Id = s.Id,
-        OrderId = s.OrderId,
+        // OrderId = s.OrderId,
         OrderDate = s.OrderDate,
         RequestDate = s.RequestDate,
         ShipmentDate = s.ShipmentDate,
@@ -158,7 +158,7 @@ public class ShipmentsController : ControllerBase
             : Ok(new ShipmentResponse
             {
                 Id = foundShipment.Id,
-                OrderId = foundShipment.OrderId,
+                // OrderId = foundShipment.OrderId,
                 OrderDate = foundShipment.OrderDate,
                 RequestDate = foundShipment.RequestDate,
                 ShipmentDate = foundShipment.ShipmentDate,

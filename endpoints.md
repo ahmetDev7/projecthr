@@ -217,6 +217,6 @@
 
 ❗ `PUT /shipments/{shipment_id}/commit - Update a shipment status
 
-❗ `PUT /shipments/{shipment_id}/orders/connect (Controleren bij PO)
+❗ `PUT /shipments/{shipment_id}/orders/connect (Controleren bij PO) (is zelfde als PUT /shipments/shipment_id/orders. dus hoeft niet)
 
 ✅ `DELETE /shipments/{shipment_id}` - Delete a specific shipment by ID.

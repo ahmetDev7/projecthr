@@ -79,9 +79,9 @@ Table items {
   upc_code varchar [not null]
   model_number varchar [not null]
   commodity_code varchar 
-  unit_purchase_quantity int [default : 1, not null]
-  unit_order_quantity int [default : 1, not null]
-  pack_order_quantity int [default : 1, not null]
+  unit_purchase_quantity int [default: 1, not null]
+  unit_order_quantity int [default: 1, not null]
+  pack_order_quantity int [default: 1, not null]
   supplier_reference_code varchar
   supplier_part_number varchar [not null]
   item_line uuid [ref: > item_lines.id, null]

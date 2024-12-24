@@ -24,8 +24,4 @@ public class Location : BaseModel
         get => _onHand;
         set => _onHand = value.HasValue && value > 0 ? value : 0;
     }
-
-    public Guid? InventoryId { get; set; }
-
-    public Inventory? Inventory { get; set; }
 }

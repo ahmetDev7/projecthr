@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Dock> Docks { get; set; }
     public DbSet<DockItem> DockItems { get; set; }
+    public DbSet<InventoryLocation> InventoryLocations { get; set; }
 
 
 

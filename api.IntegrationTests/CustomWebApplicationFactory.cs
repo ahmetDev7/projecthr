@@ -10,10 +10,6 @@ namespace api.IntegrationTests
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.ConfigureAppConfiguration((context, config) =>
-            {
-               
-            });
         }
     }
 }

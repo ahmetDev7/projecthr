@@ -157,3 +157,5 @@ app.UseSwaggerUI(c =>
 });
 
 app.Run("http://localhost:5000");
+
+public partial class Program { }

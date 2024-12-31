@@ -30,7 +30,7 @@ namespace api.IntegrationTests
             var responseBody = await response.Content.ReadAsStringAsync();
             var jsonArray = JArray.Parse(responseBody);
 
-            Assert.True(jsonArray.Count <= 0, "Expected non-empty list of item types.");
+            Assert.True(jsonArray.Count > 0, "Expected non-empty list of item types.");
         }
     }
 }

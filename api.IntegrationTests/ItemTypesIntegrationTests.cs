@@ -9,6 +9,7 @@ namespace api.IntegrationTests
     public class ItemTypesIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private readonly HttpClient _client;
+        private readonly string _baseUrl = "/api/ItemTypes";
 
         public ItemTypesIntegrationTests(WebApplicationFactory<Program> factory)
         {
@@ -18,13 +19,10 @@ namespace api.IntegrationTests
         [Fact]
         public async Task GetAll_ItemTypes_ReturnsOkAndNonEmptyList()
         {
-            // Arrange
-            var url = "/api/ItemTypes";
+            var url = _baseUrl;
 
-            // Act
             var response = await _client.GetAsync(url);
 
-            // Assert
             Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
 
             var responseBody = await response.Content.ReadAsStringAsync();

@@ -3,3 +3,5 @@
 api.Tests/bin
 api.Tests/obj
 api.Tests/TestResults
+api.IntegrationTests/bin
+api.IntegrationTests/obj

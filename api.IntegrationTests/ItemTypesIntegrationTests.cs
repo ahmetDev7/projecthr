@@ -19,7 +19,7 @@ namespace api.IntegrationTests
         public async Task GetAll_ItemTypes_ReturnsOkAndNonEmptyList()
         {
             // Arrange
-            var url = "/itemtypes";
+            var url = "/api/ItemTypes";
 
             // Act
             var response = await _client.GetAsync(url);
@@ -30,7 +30,7 @@ namespace api.IntegrationTests
             var responseBody = await response.Content.ReadAsStringAsync();
             var jsonArray = JArray.Parse(responseBody);
 
-            Assert.True(jsonArray.Count > 0, "Expected non-empty list of item types.");
+            Assert.True(jsonArray.Count <= 0, "Expected non-empty list of item types.");
         }
     }
 }

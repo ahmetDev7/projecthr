@@ -62,7 +62,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-      - name: Run Tests & Generate Report
+      - name: Run Unit Tests & Generate Report
         run: dotnet test api.Tests/api.Tests.csproj --collect:"XPlat Code Coverage"
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.4.1

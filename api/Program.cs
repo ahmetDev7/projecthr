@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Load Env vars
 builder.Configuration.AddJsonFile("./env.json", optional: false, reloadOnChange: true);
 
-// Verkrijg de waarde van de variabelen uit het JSON-bestand
 var connectionString = builder.Configuration["DB_CONNECTION_STRING"];
 var securityKey = builder.Configuration["SECURITY_KEY"];
 

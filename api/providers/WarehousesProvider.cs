@@ -5,14 +5,10 @@ using Microsoft.EntityFrameworkCore.Storage;
 public class WarehousesProvider : BaseProvider<Warehouse>
 {
     public readonly DocksProvider _docksProvider;
-    private readonly AddressProvider _addressProvider;
-    private readonly ContactProvider _contactProvider;
     private IValidator<Warehouse> _WarehouseValidator;
 
-    public WarehousesProvider(AppDbContext db, AddressProvider addressProvider, ContactProvider contactProvider, DocksProvider docksProvider, IValidator<Warehouse> validator) : base(db)
+    public WarehousesProvider(AppDbContext db, DocksProvider docksProvider, IValidator<Warehouse> validator) : base(db)
     {
-        _addressProvider = addressProvider;
-        _contactProvider = contactProvider;
         _WarehouseValidator = validator;
         _docksProvider = docksProvider;
     }

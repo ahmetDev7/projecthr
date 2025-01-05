@@ -4,13 +4,13 @@ Content-Type: application/json
 {
     "code": "TEST",
     "name": "Test Company",
-    "contact_id": "e3138a4d-4086-4b0f-9262-ba46e7b2c799",
-    "address_id": "08a1f135-9cb3-4dc2-8470-eabdc7ccc249"
+    "contact_id": "8d2e7d61-e596-46e4-acd8-e85ef8805110",
+    "address_id": "0ba16ba7-0c7a-45de-9fe6-9054fb6df6a8"
 }
 ###
 ###
 
-PUT http://localhost:5000/api/warehouses/77aff44d-4112-49b6-84ce-006b1a1eafa1
+PUT http://localhost:5000/api/warehouses/8dbab3d8-34b4-4528-968b-74d8f94515a5
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 
 ###
 
-GET  http://localhost:5000/api/warehouses/7ef3414c-2bc5-4687-b551-b281e2781d4b
+GET  http://localhost:5000/api/warehouses/8dbab3d8-34b4-4528-968b-74d8f94515a5
 Content-Type: application/json
 
 ###
@@ -48,12 +48,12 @@ Content-Type: application/json
 ###
 
 ### GET LOCATIONS FROM WAREHOUSE
-GET http://localhost:5000/api/warehouses/0f3f0eb5-7671-4a20-b9ef-340a6aa37fa2/locations
+GET http://localhost:5000/api/warehouses/8dbab3d8-34b4-4528-968b-74d8f94515a5/locations
 Content-Type: application/json
 ###
 
 ### DELETE WAREHOUSE BY ID
-DELETE http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+DELETE http://localhost:5000/api/warehouses/8dbab3d8-34b4-4528-968b-74d8f94515a5
 Content-Type: application/json
 
 ###

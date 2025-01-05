@@ -33,7 +33,10 @@ public class WarehousesController : ControllerBase
                         Id = createdWarehouse.ContactId,
                         Name = createdWarehouse.Contact?.Name,
                         Phone = createdWarehouse.Contact?.Phone,
-                        Email = createdWarehouse.Contact?.Email
+                        Email = createdWarehouse.Contact?.Email,
+                        CreatedAt = createdWarehouse.Contact?.CreatedAt,
+                        UpdatedAt = createdWarehouse.Contact?.UpdatedAt
+            
                     },
                     Address = new AddressResponse
                     {
@@ -45,7 +48,9 @@ public class WarehousesController : ControllerBase
                         ZipCode = createdWarehouse.Address?.ZipCode,
                         City = createdWarehouse.Address?.City,
                         Province = createdWarehouse.Address?.Province,
-                        CountryCode = createdWarehouse.Address?.CountryCode
+                        CountryCode = createdWarehouse.Address?.CountryCode,
+                        CreatedAt = createdWarehouse.Address?.CreatedAt,
+                        UpdatedAt = createdWarehouse.Address?.UpdatedAt
                     },
                     CreatedAt = createdWarehouse.CreatedAt,
                     UpdatedAt = createdWarehouse.UpdatedAt,
@@ -74,7 +79,9 @@ public class WarehousesController : ControllerBase
                         Id = updatedWarehouse.ContactId,
                         Name = updatedWarehouse.Contact?.Name,
                         Phone = updatedWarehouse.Contact?.Phone,
-                        Email = updatedWarehouse.Contact?.Email
+                        Email = updatedWarehouse.Contact?.Email,
+                        CreatedAt = updatedWarehouse.Contact?.CreatedAt,
+                        UpdatedAt = updatedWarehouse.Contact?.UpdatedAt
                     },
                     Address = new AddressResponse
                     {
@@ -86,7 +93,9 @@ public class WarehousesController : ControllerBase
                         ZipCode = updatedWarehouse.Address?.ZipCode,
                         City = updatedWarehouse.Address?.City,
                         Province = updatedWarehouse.Address?.Province,
-                        CountryCode = updatedWarehouse.Address?.CountryCode
+                        CountryCode = updatedWarehouse.Address?.CountryCode,
+                        CreatedAt = updatedWarehouse.Address?.CreatedAt,
+                        UpdatedAt = updatedWarehouse.Address?.UpdatedAt
                     },
                     CreatedAt = updatedWarehouse.CreatedAt,
                     UpdatedAt = updatedWarehouse.UpdatedAt
@@ -112,7 +121,9 @@ public class WarehousesController : ControllerBase
                     Id = deletedWarehouse.ContactId,
                     Name = deletedWarehouse.Contact?.Name,
                     Phone = deletedWarehouse.Contact?.Phone,
-                    Email = deletedWarehouse.Contact?.Email
+                    Email = deletedWarehouse.Contact?.Email,
+                    CreatedAt = deletedWarehouse.Contact?.CreatedAt,
+                    UpdatedAt = deletedWarehouse.Contact?.UpdatedAt
                 },
                 Address = new AddressResponse
                 {
@@ -124,7 +135,9 @@ public class WarehousesController : ControllerBase
                     ZipCode = deletedWarehouse.Address?.ZipCode,
                     City = deletedWarehouse.Address?.City,
                     Province = deletedWarehouse.Address?.Province,
-                    CountryCode = deletedWarehouse.Address?.CountryCode
+                    CountryCode = deletedWarehouse.Address?.CountryCode,
+                    CreatedAt = deletedWarehouse.Address?.CreatedAt,
+                    UpdatedAt = deletedWarehouse.Address?.UpdatedAt
                 },
                 CreatedAt = deletedWarehouse.CreatedAt,
                 UpdatedAt = deletedWarehouse.UpdatedAt,
@@ -147,7 +160,9 @@ public class WarehousesController : ControllerBase
                 Id = foundWarehouse.ContactId,
                 Name = foundWarehouse.Contact?.Name,
                 Phone = foundWarehouse.Contact?.Phone,
-                Email = foundWarehouse.Contact?.Email
+                Email = foundWarehouse.Contact?.Email,
+                CreatedAt = foundWarehouse.Contact?.CreatedAt,
+                UpdatedAt = foundWarehouse.Contact?.UpdatedAt
             },
             Address = new AddressResponse
             {
@@ -159,7 +174,9 @@ public class WarehousesController : ControllerBase
                 ZipCode = foundWarehouse.Address?.ZipCode,
                 City = foundWarehouse.Address?.City,
                 Province = foundWarehouse.Address?.Province,
-                CountryCode = foundWarehouse.Address?.CountryCode
+                CountryCode = foundWarehouse.Address?.CountryCode,
+                CreatedAt = foundWarehouse.Address?.CreatedAt,
+                UpdatedAt = foundWarehouse.Address?.UpdatedAt
             },
             CreatedAt = foundWarehouse.CreatedAt,
             UpdatedAt = foundWarehouse.UpdatedAt,
@@ -177,7 +194,9 @@ public class WarehousesController : ControllerBase
             Id = w.ContactId,
             Name = w.Contact?.Name,
             Phone = w.Contact?.Phone,
-            Email = w.Contact?.Email
+            Email = w.Contact?.Email,
+            CreatedAt = w.Contact?.CreatedAt,
+            UpdatedAt = w.Contact?.UpdatedAt
         },
         Address = new AddressResponse
         {
@@ -189,7 +208,10 @@ public class WarehousesController : ControllerBase
             ZipCode = w.Address?.ZipCode,
             City = w.Address?.City,
             Province = w.Address?.Province,
-            CountryCode = w.Address?.CountryCode
+            CountryCode = w.Address?.CountryCode,
+            CreatedAt = w.Address?.CreatedAt,
+            UpdatedAt = w.Address?.UpdatedAt
+            
         },
         CreatedAt = w.CreatedAt,
         UpdatedAt = w.UpdatedAt,

@@ -37,12 +37,6 @@ public class InventoryResponse : BaseDTO
     [JsonPropertyName("locations")]
     public List<InventoryLocation>? Locations { get; set; }
 
-    [JsonPropertyName("created_at")]
-    public DateTime? CreatedAt { get; set; }
-
-    [JsonPropertyName("updated_at")]
-    public DateTime? UpdatedAt { get; set; }
-
     [JsonPropertyName("total_on_hand")]
     public int? TotalOnHand { get; set; }
 
@@ -57,6 +51,11 @@ public class InventoryResponse : BaseDTO
 
     [JsonPropertyName("total_available")]
     public int? TotalAvailable { get; set; }
+    [JsonPropertyName("created_at")]
+    public DateTime? CreatedAt { get; set; }
+
+    [JsonPropertyName("updated_at")]
+    public DateTime? UpdatedAt { get; set; }
 }
 
 

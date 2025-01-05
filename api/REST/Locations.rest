@@ -1,10 +1,10 @@
 
-GET http://localhost:5000/api/locations/bc9f1924-fa1a-4ec9-9e3a-d55434b8d701
+GET http://localhost:5000/api/locations/e25c8573-c227-438e-b322-b2078ebbe6e0
 Content-Type: application/json
 ###
 
 ### GET ALL LOCATIONS
-GET http://localhost:5000/api/locations/all
+GET http://localhost:5000/api/locations
 Content-Type: application/json
 ###
 
@@ -16,21 +16,21 @@ Content-Type: application/json
     "row" : "5",
     "rack" : "567",
     "shelf" : "124",
-    "warehouse_id" : "efe777c1-cbb6-47b0-87ad-1e60a7cdc373"
+    "warehouse_id" : "b00f364b-7f7f-46b4-9048-0e6a962c1762"
 }
 ###
 
-PUT  http://localhost:5000/api/locations/34bb1055-2c2a-45df-9c3b-472a40315d21
+PUT  http://localhost:5000/api/locations/e25c8573-c227-438e-b322-b2078ebbe6e0
 Content-Type: application/json
 
-{
-    "rack" : "123",
-    "row" : "123",
-    "warehouse_id" : "489d70dd-f26a-447c-b1bd-5ddcb12a8f7c"
+{   "row" : "5",
+    "rack" : "567",
+    "shelf" : "124",
+    "warehouse_id" : "b00f364b-7f7f-46b4-9048-0e6a962c1762"
 }
 ###
 
 ### DELETE LOCATION
-DELETE  http://localhost:5000/api/locations/3c402cfe-e91f-4d68-be47-f1876de9bd25
+DELETE  http://localhost:5000/api/locations/e25c8573-c227-438e-b322-b2078ebbe6e0
 Content-Type: application/json
 ###

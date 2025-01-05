@@ -27,7 +27,9 @@ public class ContactsController : ControllerBase
                 Id = newContact?.Id,
                 Name = newContact?.Name,
                 Phone = newContact?.Phone,
-                Email = newContact?.Email
+                Email = newContact?.Email,
+                CreatedAt = newContact?.CreatedAt,
+                UpdatedAt = newContact?.UpdatedAt
             }
         });
     }
@@ -48,7 +50,9 @@ public class ContactsController : ControllerBase
                 Id = updateContact.Id,
                 Name = updateContact.Name,
                 Phone = updateContact.Phone,
-                Email = updateContact.Email
+                Email = updateContact.Email,
+                CreatedAt = updateContact.CreatedAt,
+                UpdatedAt = updateContact.UpdatedAt
             }
         });
     }
@@ -69,7 +73,9 @@ public class ContactsController : ControllerBase
                 Id = foundContact.Id,
                 Name = foundContact.Name,
                 Phone = foundContact.Phone,
-                Email = foundContact.Email
+                Email = foundContact.Email,
+                CreatedAt = foundContact.CreatedAt,
+                UpdatedAt = foundContact.UpdatedAt
             }
         });
     }
@@ -80,7 +86,9 @@ public class ContactsController : ControllerBase
         Id = c.Id,
         Name = c.Name,
         Phone = c.Phone,
-        Email = c.Email
+        Email = c.Email,
+        CreatedAt = c.CreatedAt,
+        UpdatedAt = c.UpdatedAt
     }).ToList());
 
     [HttpDelete("{id}")]
@@ -99,7 +107,9 @@ public class ContactsController : ControllerBase
                 Id = foundContact.Id,
                 Name = foundContact.Name,
                 Phone = foundContact.Phone,
-                Email = foundContact.Email
+                Email = foundContact.Email,
+                CreatedAt = foundContact.CreatedAt,
+                UpdatedAt = foundContact.UpdatedAt
             }
         });
     }

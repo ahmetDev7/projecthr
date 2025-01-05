@@ -19,38 +19,43 @@ public class ClientsController : ControllerBase
     [HttpPost()]
     public IActionResult Create([FromBody] ClientRequest req)
     {
-        Client? newClient = _clientProvider.Create(req);
+        Client? createClient = _clientProvider.Create(req);
 
-        if (newClient == null) BadRequest(new { message = "Client creation failed." });
+        if (createClient == null) BadRequest(new { message = "Client creation failed." });
 
         return Ok(new
         {
             message = "Client created!",
             new_client = new ClientResponse
             {
-                Id = newClient.Id,
-                Name = newClient.Name,
+                Id = createClient.Id,
+                Name = createClient.Name,
                 Contact = new ContactResponse
                 {
-                    Id = newClient.ContactId,
-                    Name = newClient.Contact?.Name,
-                    Phone = newClient.Contact?.Phone,
-                    Email = newClient.Contact?.Email
+                    Id = createClient.ContactId,
+                    Name = createClient.Contact?.Name,
+                    Phone = createClient.Contact?.Phone,
+                    Email = createClient.Contact?.Email,
+                    CreatedAt = createClient.Contact?.CreatedAt,
+                    UpdatedAt = createClient.Contact?.UpdatedAt
+
                 },
                 Address = new AddressResponse
                 {
-                    Id = newClient.AddressId,
-                    Street = newClient.Address?.Street,
-                    HouseNumber = newClient.Address?.HouseNumber,
-                    HouseNumberExtension = newClient.Address?.HouseNumberExtension,
-                    HouseNumberExtensionExtra = newClient.Address?.HouseNumberExtensionExtra,
-                    ZipCode = newClient.Address?.ZipCode,
-                    City = newClient.Address?.City,
-                    Province = newClient.Address?.Province,
-                    CountryCode = newClient.Address?.CountryCode
+                    Id = createClient.AddressId,
+                    Street = createClient.Address?.Street,
+                    HouseNumber = createClient.Address?.HouseNumber,
+                    HouseNumberExtension = createClient.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = createClient.Address?.HouseNumberExtensionExtra,
+                    ZipCode = createClient.Address?.ZipCode,
+                    City = createClient.Address?.City,
+                    Province = createClient.Address?.Province,
+                    CountryCode = createClient.Address?.CountryCode,
+                    CreatedAt = createClient.Address?.CreatedAt,
+                    UpdatedAt = createClient.Address?.UpdatedAt
                 },
-                CreatedAt = newClient.CreatedAt,
-                UpdatedAt = newClient.UpdatedAt
+                CreatedAt = createClient.CreatedAt,
+                UpdatedAt = createClient.UpdatedAt
             }
         });
     }
@@ -72,7 +77,9 @@ public class ClientsController : ControllerBase
                 Id = foundClient.ContactId,
                 Name = foundClient.Contact?.Name,
                 Phone = foundClient.Contact?.Phone,
-                Email = foundClient.Contact?.Email
+                Email = foundClient.Contact?.Email,
+                CreatedAt = foundClient.Contact?.CreatedAt,
+                UpdatedAt = foundClient.Contact?.UpdatedAt
             },
             Address = new AddressResponse
             {
@@ -84,7 +91,9 @@ public class ClientsController : ControllerBase
                 ZipCode = foundClient.Address?.ZipCode,
                 City = foundClient.Address?.City,
                 Province = foundClient.Address?.Province,
-                CountryCode = foundClient.Address?.CountryCode
+                CountryCode = foundClient.Address?.CountryCode,
+                CreatedAt = foundClient.Address?.CreatedAt,
+                UpdatedAt = foundClient.Address?.UpdatedAt
             },
             CreatedAt = foundClient.CreatedAt,
             UpdatedAt = foundClient.UpdatedAt
@@ -96,35 +105,40 @@ public class ClientsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {
-        Client? createdClient = _clientProvider.GetById(id);
+        Client? foundClient = _clientProvider.GetById(id);
 
-        if (createdClient == null) return NotFound(new { message = "Client not found." });
+        if (foundClient == null) return NotFound(new { message = "Client not found." });
 
         return Ok(new ClientResponse
         {
-            Id = createdClient.Id,
-            Name = createdClient.Name,
+            Id = foundClient.Id,
+            Name = foundClient.Name,
             Contact = new ContactResponse
             {
-                Id = createdClient.ContactId,
-                Name = createdClient.Contact?.Name,
-                Phone = createdClient.Contact?.Phone,
-                Email = createdClient.Contact?.Email
+                Id = foundClient.ContactId,
+                Name = foundClient.Contact?.Name,
+                Phone = foundClient.Contact?.Phone,
+                Email = foundClient.Contact?.Email,
+                CreatedAt = foundClient.Contact?.CreatedAt,
+                UpdatedAt = foundClient.Contact?.UpdatedAt
+
             },
             Address = new AddressResponse
             {
-                Id = createdClient.AddressId,
-                Street = createdClient.Address?.Street,
-                HouseNumber = createdClient.Address?.HouseNumber,
-                HouseNumberExtension = createdClient.Address?.HouseNumberExtension,
-                HouseNumberExtensionExtra = createdClient.Address?.HouseNumberExtensionExtra,
-                ZipCode = createdClient.Address?.ZipCode,
-                City = createdClient.Address?.City,
-                Province = createdClient.Address?.Province,
-                CountryCode = createdClient.Address?.CountryCode
+                Id = foundClient.AddressId,
+                Street = foundClient.Address?.Street,
+                HouseNumber = foundClient.Address?.HouseNumber,
+                HouseNumberExtension = foundClient.Address?.HouseNumberExtension,
+                HouseNumberExtensionExtra = foundClient.Address?.HouseNumberExtensionExtra,
+                ZipCode = foundClient.Address?.ZipCode,
+                City = foundClient.Address?.City,
+                Province = foundClient.Address?.Province,
+                CountryCode = foundClient.Address?.CountryCode,
+                CreatedAt = foundClient.Address?.CreatedAt,
+                UpdatedAt = foundClient.Address?.UpdatedAt
             },
-            CreatedAt = createdClient.CreatedAt,
-            UpdatedAt = createdClient.UpdatedAt
+            CreatedAt = foundClient.CreatedAt,
+            UpdatedAt = foundClient.UpdatedAt
         });
     }
 
@@ -143,7 +157,9 @@ public class ClientsController : ControllerBase
                 Id = c.ContactId,
                 Name = c.Contact?.Name,
                 Phone = c.Contact?.Phone,
-                Email = c.Contact?.Email
+                Email = c.Contact?.Email,
+                CreatedAt = c.Contact?.CreatedAt,
+                UpdatedAt = c.Contact?.UpdatedAt
             },
             Address = new AddressResponse
             {
@@ -155,7 +171,9 @@ public class ClientsController : ControllerBase
                 ZipCode = c.Address?.ZipCode,
                 City = c.Address?.City,
                 Province = c.Address?.Province,
-                CountryCode = c.Address?.CountryCode
+                CountryCode = c.Address?.CountryCode,
+                CreatedAt = c.Address?.CreatedAt,
+                UpdatedAt = c.Address?.UpdatedAt
             },
             CreatedAt = c.CreatedAt,
             UpdatedAt = c.UpdatedAt
@@ -167,9 +185,9 @@ public class ClientsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(Guid id)
     {
-        Client? foundclient = _clientProvider.Delete(id);
+        Client? deletedClient = _clientProvider.Delete(id);
 
-        if (foundclient == null) return NotFound(new { message = "Client not found." });
+        if (deletedClient == null) return NotFound(new { message = "Client not found." });
 
         return Ok(new
         {
@@ -177,28 +195,32 @@ public class ClientsController : ControllerBase
             new_client = new ClientResponse
             {
 
-                Id = foundclient.Id,
-                Name = foundclient.Name,
+                Id = deletedClient.Id,
+                Name = deletedClient.Name,
                 Contact = new ContactResponse
                 {
-                    Id = foundclient.ContactId,
-                    Name = foundclient.Contact?.Name,
-                    Phone = foundclient.Contact?.Phone,
-                    Email = foundclient.Contact?.Email
+                    Id = deletedClient.ContactId,
+                    Name = deletedClient.Contact?.Name,
+                    Phone = deletedClient.Contact?.Phone,
+                    Email = deletedClient.Contact?.Email,
+                    CreatedAt = deletedClient.Contact?.CreatedAt,
+                    UpdatedAt = deletedClient.Contact?.UpdatedAt
                 },
                 Address = new AddressResponse
                 {
-                    Id = foundclient.AddressId,
-                    Street = foundclient.Address?.Street,
-                    HouseNumber = foundclient.Address?.HouseNumber,
-                    HouseNumberExtension = foundclient.Address?.HouseNumberExtension,
-                    ZipCode = foundclient.Address?.ZipCode,
-                    City = foundclient.Address?.City,
-                    Province = foundclient.Address?.Province,
-                    CountryCode = foundclient.Address?.CountryCode
+                    Id = deletedClient.AddressId,
+                    Street = deletedClient.Address?.Street,
+                    HouseNumber = deletedClient.Address?.HouseNumber,
+                    HouseNumberExtension = deletedClient.Address?.HouseNumberExtension,
+                    ZipCode = deletedClient.Address?.ZipCode,
+                    City = deletedClient.Address?.City,
+                    Province = deletedClient.Address?.Province,
+                    CountryCode = deletedClient.Address?.CountryCode,
+                    CreatedAt = deletedClient.Address?.CreatedAt,
+                    UpdatedAt = deletedClient.Address?.UpdatedAt
                 },
-                CreatedAt = foundclient.CreatedAt,
-                UpdatedAt = foundclient.UpdatedAt
+                CreatedAt = deletedClient.CreatedAt,
+                UpdatedAt = deletedClient.UpdatedAt
             }
         });
     }

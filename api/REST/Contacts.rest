@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 ###
 ## Update Contact
-PUT http://localhost:5000/api/contacts/af5cc9d0-6b2e-4122-a2ef-dbf095892d88
+PUT http://localhost:5000/api/contacts/422d16fb-9a03-4998-8c97-ce0ea25fbd7a
 Content-Type: application/json
 
 {
@@ -22,8 +22,8 @@ Content-Type: application/json
 GET http://localhost:5000/api/contacts
 ###
 ### Get Contact by ID
-GET http://localhost:5000/api/contacts/8d2e7d61-e596-46e4-acd8-e85ef8805110
+GET http://localhost:5000/api/contacts/422d16fb-9a03-4998-8c97-ce0ea25fbd7a
 ###
 ### Delete Contact
-DELETE http://localhost:5000/api/contacts/dceae1cc-a77c-4526-9ca8-3fb0b9030cc2
+DELETE http://localhost:5000/api/contacts/422d16fb-9a03-4998-8c97-ce0ea25fbd7a
 ###

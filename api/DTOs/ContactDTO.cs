@@ -31,7 +31,7 @@ namespace DTO.Contact
 
         [JsonPropertyName("email")]
         public string? Email { get; set; }
-        
+
         [JsonPropertyName("created_at")]
         public DateTime? CreatedAt { get; set; }
 

@@ -121,7 +121,7 @@ public class ClientsController : ControllerBase
                 Email = foundClient.Contact?.Email,
                 CreatedAt = foundClient.Contact?.CreatedAt,
                 UpdatedAt = foundClient.Contact?.UpdatedAt
-                
+
             },
             Address = new AddressResponse
             {

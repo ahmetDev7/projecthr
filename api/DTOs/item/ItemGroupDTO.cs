@@ -22,7 +22,7 @@ namespace DTO.ItemGroup
         public string? Name { get; set; }
         [JsonPropertyName("description")]
         public string? Description { get; set; }
-        
+
         [JsonPropertyName("created_at")]
         public DateTime? CreatedAt { get; set; }
 

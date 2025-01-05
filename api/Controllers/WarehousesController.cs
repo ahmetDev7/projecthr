@@ -36,7 +36,7 @@ public class WarehousesController : ControllerBase
                         Email = createdWarehouse.Contact?.Email,
                         CreatedAt = createdWarehouse.Contact?.CreatedAt,
                         UpdatedAt = createdWarehouse.Contact?.UpdatedAt
-            
+
                     },
                     Address = new AddressResponse
                     {
@@ -211,7 +211,7 @@ public class WarehousesController : ControllerBase
             CountryCode = w.Address?.CountryCode,
             CreatedAt = w.Address?.CreatedAt,
             UpdatedAt = w.Address?.UpdatedAt
-            
+
         },
         CreatedAt = w.CreatedAt,
         UpdatedAt = w.UpdatedAt,

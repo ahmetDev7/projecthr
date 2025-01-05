@@ -88,6 +88,7 @@ public class OrderProvider : BaseProvider<Order>
         existingOrder.BillToClientId = req.BillToClientId;
         existingOrder.ShipToClientId = req.ShipToClientId;
         existingOrder.WarehouseId = req.WarehouseId;
+        existingOrder.SetUpdatedAt();
 
         if (req.OrderItems != null)
         {

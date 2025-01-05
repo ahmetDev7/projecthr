@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241231185539_update_tbl_locations_remove_column_on_hand")]
+    partial class update_tbl_locations_remove_column_on_hand
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,19 +209,20 @@ namespace api.Migrations
                     b.Property<string>("ItemReference")
                         .HasColumnType("text");
 
-                    b.Property<int>("TotalAllocated")
+                    b.Property<int?>("TotalAvailable")
+                        .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("TotalAvailable")
+                    b.Property<int?>("TotalExpected")
+                        .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("TotalExpected")
+                    b.Property<int?>("TotalOnHand")
+                        .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("TotalOnHand")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalOrderd")
+                    b.Property<int?>("TotalOrderd")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -249,7 +253,8 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("OnHandAmount")
+                    b.Property<int?>("OnHandAmount")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")

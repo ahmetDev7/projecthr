@@ -8,14 +8,13 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load Env vars
 builder.Configuration.AddJsonFile("./env.json", optional: false, reloadOnChange: true);
-
 var connectionString = builder.Configuration["DB_CONNECTION_STRING"];
 var securityKey = builder.Configuration["SECURITY_KEY"];
 
 if (connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
 if (securityKey == null) throw new InvalidOperationException("The required environment variable 'SECURITY_KEY' is not set.");
+
 builder.Services.AddSingleton(securityKey);
 
 // Add services to the container.

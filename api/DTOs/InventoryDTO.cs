@@ -15,7 +15,7 @@ public class InventoryRequest : BaseDTO
     public Guid? ItemId { get; set; }
 
     [JsonPropertyName("locations")]
-    public List<InventoryLocation>? Locations { get; set; }
+    public List<InventoryLocationRR>? Locations { get; set; }
 }
 
 
@@ -35,7 +35,7 @@ public class InventoryResponse : BaseDTO
     public Guid? ItemId { get; set; }
 
     [JsonPropertyName("locations")]
-    public List<InventoryLocation>? Locations { get; set; }
+    public List<InventoryLocationResponse>? Locations { get; set; }
 
     [JsonPropertyName("total_on_hand")]
     public int? TotalOnHand { get; set; }
@@ -59,7 +59,7 @@ public class InventoryResponse : BaseDTO
 }
 
 
-public class InventoryLocation : BaseDTO
+public class InventoryLocationRR : BaseDTO
 {
     [JsonPropertyName("location_id")]
     public Guid? LocationId { get; set; }
@@ -68,3 +68,14 @@ public class InventoryLocation : BaseDTO
     public int? OnHand { get; set; }
 }
 
+public class InventoryLocationResponse : BaseDTO
+{
+    [JsonPropertyName("warehouse_id")]
+    public Guid? WarehouseId { get; set; }
+
+    [JsonPropertyName("location_id")]
+    public Guid? LocationId { get; set; }
+
+    [JsonPropertyName("on_hand")]
+    public int? OnHand { get; set; }
+}

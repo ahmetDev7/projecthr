@@ -71,7 +71,7 @@ public class TransferValidator : AbstractValidator<Transfer>
                 if (fromLocation)
                 {
                     // check if the inventory_id is on the location (from_transfer_id)
-                    Location? locationOfTransferFrom = db.Locations.FirstOrDefault(l => l.InventoryId == foundInventory.Id && l.Id == transfer.TransferFromId);
+                    Location? locationOfTransferFrom = db.Locations.FirstOrDefault(l => l.Id == transfer.TransferFromId);
                     if (locationOfTransferFrom == null)
                     {
                         context.AddFailure("items", $"item is not from this location {transfer.TransferFromId}");
@@ -80,11 +80,11 @@ public class TransferValidator : AbstractValidator<Transfer>
 
                     // check if the selected on_hand amount is lower or equal to the selected amount
                     int? transferAmount = transferItem.Amount;
-                    if (transferAmount > locationOfTransferFrom.OnHand)
-                    {
-                        context.AddFailure("items", "The transfer amount exceeds the available inventory at the source location. Please adjust the amount to match the on-hand quantity.");
-                        return;
-                    }
+                    // if (transferAmount > locationOfTransferFrom.OnHand)
+                    // {
+                    //     context.AddFailure("items", "The transfer amount exceeds the available inventory at the source location. Please adjust the amount to match the on-hand quantity.");
+                    //     return;
+                    // }
                 }
 
                 if (toLocation)
@@ -94,11 +94,11 @@ public class TransferValidator : AbstractValidator<Transfer>
                     if (transferToLocation == null) return;
 
                     // if inventory_id is different from the item.InventoryId then show exception.
-                    if (transferToLocation.InventoryId.HasValue && foundInventory?.Id != transferToLocation.InventoryId)
-                    {
-                        context.AddFailure("items", $"There already is another item on this location {transfer.TransferToId}");
-                        return;
-                    }
+                    // if (transferToLocation.InventoryId.HasValue && foundInventory?.Id != transferToLocation.InventoryId)
+                    // {
+                    //     context.AddFailure("items", $"There already is another item on this location {transfer.TransferToId}");
+                    //     return;
+                    // }
                 }
 
                 int? totalAmount = null;

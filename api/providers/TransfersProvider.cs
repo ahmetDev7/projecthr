@@ -132,16 +132,16 @@ public class TransferProvider : BaseProvider<Transfer>
 
             if (isFromLocation)
             {
-                fromLocation.OnHand -= totalAmount;
+                // fromLocation.OnHand -= totalAmount;
             }
 
             if (isToLocation)
             {
                 // if inventory_id is empty set inventory_id with on_hand
-                if (!toLocation.InventoryId.HasValue) toLocation.InventoryId = ItemInventory.Id;
+                // if (!toLocation.InventoryId.HasValue) toLocation.InventoryId = ItemInventory.Id;
 
                 // if inventory_id is the same inventory_id as item then increment on_hand amount
-                toLocation.OnHand = (toLocation.OnHand ?? 0) + totalAmount;
+                // toLocation.OnHand = (toLocation.OnHand ?? 0) + totalAmount;
             }
 
             if (isToDock)

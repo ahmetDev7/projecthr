@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241224235506_update_tbl_inventory_calculated_fields")]
+    partial class update_tbl_inventory_calculated_fields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,19 +209,20 @@ namespace api.Migrations
                     b.Property<string>("ItemReference")
                         .HasColumnType("text");
 
-                    b.Property<int>("TotalAllocated")
+                    b.Property<int?>("TotalAvailable")
+                        .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("TotalAvailable")
+                    b.Property<int?>("TotalExpected")
+                        .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("TotalExpected")
+                    b.Property<int?>("TotalOnHand")
+                        .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("TotalOnHand")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalOrderd")
+                    b.Property<int?>("TotalOrderd")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -230,38 +234,6 @@ namespace api.Migrations
                         .IsUnique();
 
                     b.ToTable("Inventories");
-                });
-
-            modelBuilder.Entity("InventoryLocation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("InventoryId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("LocationId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("OnHandAmount")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InventoryId");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("InventoryLocations");
                 });
 
             modelBuilder.Entity("Item", b =>
@@ -419,6 +391,9 @@ namespace api.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("OnHand")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Rack")
                         .IsRequired()
@@ -844,25 +819,6 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("InventoryLocation", b =>
-                {
-                    b.HasOne("Inventory", "Inventory")
-                        .WithMany()
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Inventory");
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Item", b =>

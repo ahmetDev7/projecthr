@@ -121,6 +121,8 @@ public class ItemTypesController : ControllerBase
             ItemGroupId = i.ItemGroupId,
             ItemLineId = i.ItemLineId,
             ItemTypeId = i.ItemTypeId,
-            SupplierId = i.SupplierId
+            SupplierId = i.SupplierId,
+            CreatedAt = i.CreatedAt,
+            UpdatedAt = i.UpdatedAt
         }).ToList());
 }

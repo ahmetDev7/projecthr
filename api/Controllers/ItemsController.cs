@@ -52,6 +52,8 @@ public class ItemsController : ControllerBase
                 ItemLineId = newItem.ItemLineId,
                 ItemTypeId = newItem.ItemTypeId,
                 SupplierId = newItem.SupplierId,
+                CreatedAt = newItem.CreatedAt,
+                UpdatedAt = newItem.UpdatedAt
             }
         });
     }
@@ -84,6 +86,8 @@ public class ItemsController : ControllerBase
                     ItemLineId = updatedItem.ItemLineId,
                     ItemTypeId = updatedItem.ItemTypeId,
                     SupplierId = updatedItem.SupplierId,
+                    CreatedAt = updatedItem.CreatedAt,
+                    UpdatedAt = updatedItem.UpdatedAt
                 }
             });
     }
@@ -113,6 +117,8 @@ public class ItemsController : ControllerBase
                 ItemLineId = foundItem.ItemLineId,
                 ItemTypeId = foundItem.ItemTypeId,
                 SupplierId = foundItem.SupplierId,
+                CreatedAt = foundItem.CreatedAt,
+                UpdatedAt = foundItem.UpdatedAt
             });
     }
 
@@ -135,6 +141,8 @@ public class ItemsController : ControllerBase
         ItemLineId = i.ItemLineId,
         ItemTypeId = i.ItemTypeId,
         SupplierId = i.SupplierId,
+        CreatedAt = i.CreatedAt,
+        UpdatedAt = i.UpdatedAt
     }).ToList());
 
     [HttpGet("{id}/inventories")]

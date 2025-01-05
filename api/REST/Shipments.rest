@@ -3,7 +3,7 @@ POST http://localhost:5000/api/shipments
 Content-Type: application/json
 
 {
-  "order_id": "af05b644-16e7-4dee-97f0-b9dda23e7f92",
+  "order_id": "0415f598-6998-4340-8275-999dafb961e8",
   "order_date": "2023-11-19T14:12:33.807Z",
   "request_date": "2024-11-19T14:12:33.807Z",
   "shipment_date": "2024-11-19T14:12:33.807Z",
@@ -19,7 +19,7 @@ Content-Type: application/json
   "total_package_weight": 3.4,
   "items": [
     {
-      "item_id": "3a1cc49a-09b0-4413-b0d8-0d6391026209",
+      "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
       "amount": 2
     }
   ]
@@ -29,11 +29,11 @@ Content-Type: application/json
 
 ### UPDATE SHIPMENT
 
-PUT http://localhost:5000/api/shipments/ba62a851-630c-43aa-b8c9-300d65cc207f
+PUT http://localhost:5000/api/shipments/090df922-046d-4379-bbd1-0ef696fecb83
 Content-Type: application/json
 
 {
-  "order_id": "af05b644-16e7-4dee-97f0-b9dda23e7f92",
+  "order_id": "0415f598-6998-4340-8275-999dafb961e8",
   "order_date": "2023-11-19T14:12:33.807Z",
   "request_date": "2024-11-19T14:12:33.807Z",
   "shipment_date": "2024-11-19T14:12:33.807Z",
@@ -49,14 +49,14 @@ Content-Type: application/json
   "total_package_weight": 3.4,
   "items": [
     {
-      "item_id": "3a1cc49a-09b0-4413-b0d8-0d6391026209",
+      "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
       "amount": 5
     }
   ]
 }
 
 ### DELETE SHIPMENT (change ID to the ID in your database)
-DELETE http://localhost:5000/api/shipments/91c4d824-9c93-48ee-a4b6-943c1421a0ee
+DELETE http://localhost:5000/api/shipments/090df922-046d-4379-bbd1-0ef696fecb83
 Content-Type: application/json
 
 ###
@@ -68,5 +68,5 @@ Content-Type: application/json
 ###
 
 ### GET SHIPMENT BY ID (change ID to existing ID in your database)
-GET http://localhost:5000/api/shipments/85e299a8-71e3-4c6b-baf5-d0112129a8c5
+GET http://localhost:5000/api/shipments/090df922-046d-4379-bbd1-0ef696fecb83
 Content-Type: application/json

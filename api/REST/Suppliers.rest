@@ -5,12 +5,12 @@ Content-Type: application/json
   "code": "dit is een get item test",
   "name": "string",
   "reference": "123-ABCD",
-  "contact_id": "936e76a5-37d5-4514-86b0-1caa13da5ac4",
-  "address_id": "0ba16va7-0c7a-45de-9fe6-9054fb6df6a8"
+  "contact_id": "8d2e7d61-e596-46e4-acd8-e85ef8805110",
+  "address_id": "b372cf41-44f1-4823-a97c-316fef12ba27"
 }
 
 ###
-PUT http://localhost:5000/api/Suppliers/3fe4cab3-3308-471e-8820-a8a126379ea4
+PUT http://localhost:5000/api/Suppliers/608aca13-9c94-4eb4-aa7c-eea50ce10f48
 Content-Type: application/json
   
  {
@@ -29,14 +29,14 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5000/api/Suppliers/9dd95911-0571-49b7-be44-cd18171569fe/Items
+GET http://localhost:5000/api/Suppliers/608aca13-9c94-4eb4-aa7c-eea50ce10f48/Items
 Content-Type: application/json
 
 ###
 
-GET http://localhost:5000/api/Suppliers/a69d21c7-29b6-4fb3-9bc6-3ce1fe693ca3
+GET http://localhost:5000/api/Suppliers/608aca13-9c94-4eb4-aa7c-eea50ce10f48
 Content-Type: application/json
 
 ###
-DELETE http://localhost:5000/api/Suppliers/9dd95911-0571-49b7-be44-cd18171569fe
+DELETE http://localhost:5000/api/Suppliers/608aca13-9c94-4eb4-aa7c-eea50ce10f48
 Content-Type: application/json

@@ -34,7 +34,10 @@ public class AddressesController : ControllerBase
                 ZipCode = newAddress.ZipCode,
                 City = newAddress.City,
                 Province = newAddress.Province,
-                CountryCode = newAddress.CountryCode
+                CountryCode = newAddress.CountryCode,
+                CreatedAt = newAddress.CreatedAt,
+                UpdatedAt = newAddress.UpdatedAt
+
             }
         });
     }
@@ -59,7 +62,9 @@ public class AddressesController : ControllerBase
                 ZipCode = updateAddress.ZipCode,
                 City = updateAddress.City,
                 Province = updateAddress.Province,
-                CountryCode = updateAddress.CountryCode
+                CountryCode = updateAddress.CountryCode,
+                CreatedAt = updateAddress.CreatedAt,
+                UpdatedAt = updateAddress.UpdatedAt
             }
         });
     }
@@ -75,7 +80,9 @@ public class AddressesController : ControllerBase
         ZipCode = a.ZipCode,
         City = a.City,
         Province = a.Province,
-        CountryCode = a.CountryCode
+        CountryCode = a.CountryCode,
+        CreatedAt = a.CreatedAt,
+        UpdatedAt = a.UpdatedAt
     }));
 
     [HttpGet("{id}")]
@@ -98,7 +105,9 @@ public class AddressesController : ControllerBase
                 ZipCode = foundAddress.ZipCode,
                 City = foundAddress.City,
                 Province = foundAddress.Province,
-                CountryCode = foundAddress.CountryCode
+                CountryCode = foundAddress.CountryCode,
+                CreatedAt = foundAddress.CreatedAt,
+                UpdatedAt = foundAddress.UpdatedAt
             }
         });
     }
@@ -122,7 +131,9 @@ public class AddressesController : ControllerBase
                 ZipCode = deletedAddress.ZipCode,
                 City = deletedAddress.City,
                 Province = deletedAddress.Province,
-                CountryCode = deletedAddress.CountryCode
+                CountryCode = deletedAddress.CountryCode,
+                CreatedAt = deletedAddress.CreatedAt,
+                UpdatedAt = deletedAddress.UpdatedAt
             }
         });
     }

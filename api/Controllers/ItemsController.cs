@@ -7,13 +7,11 @@ public class ItemsController : ControllerBase
 {
     private readonly ItemsProvider _itemsProvider;
     private readonly InventoriesProvider _inventoriesProvider;
-    private readonly LocationsProvider _locationsProvider;
 
     public ItemsController(ItemsProvider itemsProvider, InventoriesProvider inventoriesProvider, LocationsProvider locationsProvider)
     {
         _itemsProvider = itemsProvider;
         _inventoriesProvider = inventoriesProvider;
-        _locationsProvider = locationsProvider;
     }
 
     /*
@@ -146,25 +144,23 @@ public class ItemsController : ControllerBase
             return NotFound(new { message = "The specified item is not currently associated with any inventory." });
         }
 
-        List<Location> locations = _locationsProvider.GetLocationsByInventoryId(foundInventory.Id);
-        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
-
-        return Ok(new InventoryResponse
+        return Ok(new InventoryResponse()
         {
             Id = foundInventory.Id,
             Description = foundInventory.Description,
             ItemReference = foundInventory.ItemReference,
             ItemId = foundInventory.ItemId,
-            Locations = locations.Select(l => new InventoryLocation()
+            Locations = _inventoriesProvider.GetInventoryLocations(foundInventory.Id).Select(i => new InventoryLocationResponse
             {
-                LocationId = l.Id,
-                OnHand = l.OnHand
+                WarehouseId = i.Location.WarehouseId,
+                LocationId = i.LocationId,
+                OnHand = i.OnHandAmount
             }).ToList(),
-            TotalOnHand = calculatedValues["TotalOnHand"],
-            TotalExpected = calculatedValues["TotalExpected"],
-            TotalOrdered = calculatedValues["TotalOrdered"],
-            TotalAllocated = calculatedValues["TotalAllocated"],
-            TotalAvailable = calculatedValues["TotalAvailable"],
+            TotalOnHand = foundInventory.TotalOnHand,
+            TotalExpected = foundInventory.TotalExpected,
+            TotalOrdered = foundInventory.TotalOrderd,
+            TotalAllocated = foundInventory.TotalAllocated,
+            TotalAvailable = foundInventory.TotalAvailable,
             CreatedAt = foundInventory.CreatedAt,
             UpdatedAt = foundInventory.UpdatedAt,
         });
@@ -179,16 +175,15 @@ public class ItemsController : ControllerBase
             return NotFound(new { message = "The specified item is not currently associated with any inventory." });
         }
 
-        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
-
         return Ok(
             new
             {
-                total_on_hand = calculatedValues["TotalOnHand"],
-                total_expected = calculatedValues["TotalExpected"],
-                total_orderd = calculatedValues["TotalOrdered"],
-                total_allocated = calculatedValues["TotalAllocated"],
-                total_available = calculatedValues["TotalAvailable"],
+                inventory_id = foundInventory.Id,
+                total_on_hand = foundInventory.TotalOnHand,
+                total_expected = foundInventory.TotalExpected,
+                total_orderd = foundInventory.TotalOrderd,
+                total_allocated = foundInventory.TotalAllocated,
+                total_available = foundInventory.TotalAvailable,
             }
         );
     }

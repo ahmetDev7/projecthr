@@ -5,12 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 public class InventoriesController : ControllerBase
 {
     private readonly InventoriesProvider _inventoriesProvider;
-    private readonly LocationsProvider _locationsProvider;
 
     public InventoriesController(InventoriesProvider inventoriesProvider, LocationsProvider locationsProvider)
     {
         _inventoriesProvider = inventoriesProvider;
-        _locationsProvider = locationsProvider;
     }
 
     [HttpPost()]
@@ -24,103 +22,105 @@ public class InventoriesController : ControllerBase
         Inventory? newInventory = _inventoriesProvider.Create(req);
         if (newInventory == null) throw new ApiFlowException("Saving new inventory failed.");
 
-        List<Location> locations = _locationsProvider.GetLocationsByInventoryId(newInventory.Id);
-        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(newInventory.Id);
-
-        return Ok(new
-        {
-            message = "Inventory created!",
-            created_inventory = new InventoryResponse
+        return Ok(
+            new
             {
-                Id = newInventory.Id,
-                Description = newInventory.Description,
-                ItemReference = newInventory.ItemReference,
-                ItemId = newInventory.ItemId,
-                Locations = locations.Select(l => new InventoryLocation()
+                message = "Inventory created!",
+                created_inventory = new InventoryResponse()
                 {
-                    LocationId = l.Id,
-                    OnHand = l.OnHand
-                }).ToList(),
-                TotalOnHand = calculatedValues["TotalOnHand"],
-                TotalExpected = calculatedValues["TotalExpected"],
-                TotalOrdered = calculatedValues["TotalOrdered"],
-                TotalAllocated = calculatedValues["TotalAllocated"],
-                TotalAvailable = calculatedValues["TotalAvailable"],
-                CreatedAt = newInventory.CreatedAt,
-                UpdatedAt = newInventory.UpdatedAt,
+                    Id = newInventory.Id,
+                    Description = newInventory.Description,
+                    ItemReference = newInventory.ItemReference,
+                    ItemId = newInventory.ItemId,
+                    Locations = _inventoriesProvider.GetInventoryLocations(newInventory.Id).Select(i => new InventoryLocationResponse
+                    {
+                        WarehouseId = i.Location.WarehouseId,
+                        LocationId = i.LocationId,
+                        OnHand = i.OnHandAmount
+                    }).ToList(),
+                    TotalOnHand = newInventory.TotalOnHand,
+                    TotalExpected = newInventory.TotalExpected,
+                    TotalOrdered = newInventory.TotalOrderd,
+                    TotalAllocated = newInventory.TotalAllocated,
+                    TotalAvailable = newInventory.TotalAvailable,
+                    CreatedAt = newInventory.CreatedAt,
+                    UpdatedAt = newInventory.UpdatedAt,
+                }
             }
-        });
+        );
     }
 
     [HttpPut("{id}")]
     public IActionResult Update(Guid id, [FromBody] InventoryRequest req)
     {
         Inventory? updatedInventory = _inventoriesProvider.Update(id, req);
-        if (updatedInventory == null) return NotFound(new { message = $"Inventory not found for id '{id}'" });
+        if (updatedInventory == null) throw new ApiFlowException("Update inventory failed.");
 
-        List<Location> locations = _locationsProvider.GetLocationsByInventoryId(updatedInventory.Id);
-        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(updatedInventory.Id);
-
-        return Ok(new
-        {
-            message = "Inventory updated!",
-            updated_inventory = new InventoryResponse
+        return Ok(
+            new
             {
-                Id = updatedInventory.Id,
-                Description = updatedInventory.Description,
-                ItemReference = updatedInventory.ItemReference,
-                ItemId = updatedInventory.ItemId,
-                Locations = locations.Select(l => new InventoryLocation()
+                message = "Inventory updated!",
+                updated_inventory = new InventoryResponse()
                 {
-                    LocationId = l.Id,
-                    OnHand = l.OnHand
-                }).ToList(),
-                TotalOnHand = calculatedValues["TotalOnHand"],
-                TotalExpected = calculatedValues["TotalExpected"],
-                TotalOrdered = calculatedValues["TotalOrdered"],
-                TotalAllocated = calculatedValues["TotalAllocated"],
-                TotalAvailable = calculatedValues["TotalAvailable"],
-                CreatedAt = updatedInventory.CreatedAt,
-                UpdatedAt = updatedInventory.UpdatedAt,
+                    Id = updatedInventory.Id,
+                    Description = updatedInventory.Description,
+                    ItemReference = updatedInventory.ItemReference,
+                    ItemId = updatedInventory.ItemId,
+                    Locations = _inventoriesProvider.GetInventoryLocations(updatedInventory.Id).Select(i => new InventoryLocationResponse
+                    {
+                        WarehouseId = i.Location.WarehouseId,
+                        LocationId = i.LocationId,
+                        OnHand = i.OnHandAmount
+                    }).ToList(),
+                    TotalOnHand = updatedInventory.TotalOnHand,
+                    TotalExpected = updatedInventory.TotalExpected,
+                    TotalOrdered = updatedInventory.TotalOrderd,
+                    TotalAllocated = updatedInventory.TotalAllocated,
+                    TotalAvailable = updatedInventory.TotalAvailable,
+                    CreatedAt = updatedInventory.CreatedAt,
+                    UpdatedAt = updatedInventory.UpdatedAt,
+                }
             }
-        });
+        );
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(Guid id)
     {
         Inventory? foundInventory = _inventoriesProvider.GetById(id);
-        if (foundInventory == null) return NotFound(new { message = $"Inventory not found for id '{id}'" });
+        if (foundInventory == null) throw new ApiFlowException($"Inventory not found for id '{id}'", StatusCodes.Status404NotFound);
 
-        List<Location> locations = _locationsProvider.GetLocationsByInventoryId(foundInventory.Id);
-        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
+        List<InventoryLocationResponse>? inventoryLocationResponse = _inventoriesProvider.GetInventoryLocations(foundInventory.Id).Select(i => new InventoryLocationResponse
+        {
+            WarehouseId = i.Location.WarehouseId,
+            LocationId = i.LocationId,
+            OnHand = i.OnHandAmount
+        }).ToList();
 
         Inventory? deletedInventory = _inventoriesProvider.Delete(id);
         if (deletedInventory == null) throw new ApiFlowException("Failed to delete inventory");
 
-        return Ok(new
-        {
-            message = "Inventory deleted!",
-            deleted_inventory = new InventoryResponse
+        return Ok(
+            new
             {
-                Id = foundInventory.Id,
-                Description = foundInventory.Description,
-                ItemReference = foundInventory.ItemReference,
-                ItemId = foundInventory.ItemId,
-                Locations = locations.Select(l => new InventoryLocation()
+                message = "Inventory deleted!",
+                deleted_inventory = new InventoryResponse()
                 {
-                    LocationId = l.Id,
-                    OnHand = l.OnHand
-                }).ToList(),
-                TotalOnHand = calculatedValues["TotalOnHand"],
-                TotalExpected = calculatedValues["TotalExpected"],
-                TotalOrdered = calculatedValues["TotalOrdered"],
-                TotalAllocated = calculatedValues["TotalAllocated"],
-                TotalAvailable = calculatedValues["TotalAvailable"],
-                CreatedAt = foundInventory.CreatedAt,
-                UpdatedAt = foundInventory.UpdatedAt,
+                    Id = foundInventory.Id,
+                    Description = foundInventory.Description,
+                    ItemReference = foundInventory.ItemReference,
+                    ItemId = foundInventory.ItemId,
+                    Locations = inventoryLocationResponse,
+                    TotalOnHand = foundInventory.TotalOnHand,
+                    TotalExpected = foundInventory.TotalExpected,
+                    TotalOrdered = foundInventory.TotalOrderd,
+                    TotalAllocated = foundInventory.TotalAllocated,
+                    TotalAvailable = foundInventory.TotalAvailable,
+                    CreatedAt = foundInventory.CreatedAt,
+                    UpdatedAt = foundInventory.UpdatedAt,
+                }
             }
-        });
+        );
     }
 
 
@@ -128,27 +128,25 @@ public class InventoriesController : ControllerBase
     public IActionResult ShowSingle(Guid id)
     {
         Inventory? foundInventory = _inventoriesProvider.GetById(id);
-        if (foundInventory == null) return NotFound(new { message = $"Inventory not found for id '{id}'" });
+        if (foundInventory == null) throw new ApiFlowException($"Inventory not found for id '{id}'", StatusCodes.Status404NotFound);
 
-        Dictionary<string, int> calculatedValues = _inventoriesProvider.GetCalculatedValues(foundInventory.Id);
-        List<Location> locations = _locationsProvider.GetLocationsByInventoryId(foundInventory.Id);
-
-        return Ok(new InventoryResponse
+        return Ok(new InventoryResponse()
         {
             Id = foundInventory.Id,
             Description = foundInventory.Description,
             ItemReference = foundInventory.ItemReference,
             ItemId = foundInventory.ItemId,
-            Locations = locations.Select(l => new InventoryLocation()
+            Locations = _inventoriesProvider.GetInventoryLocations(foundInventory.Id).Select(i => new InventoryLocationResponse
             {
-                LocationId = l.Id,
-                OnHand = l.OnHand
+                WarehouseId = i.Location.WarehouseId,
+                LocationId = i.LocationId,
+                OnHand = i.OnHandAmount
             }).ToList(),
-            TotalOnHand = calculatedValues["TotalOnHand"],
-            TotalExpected = calculatedValues["TotalExpected"],
-            TotalOrdered = calculatedValues["TotalOrdered"],
-            TotalAllocated = calculatedValues["TotalAllocated"],
-            TotalAvailable = calculatedValues["TotalAvailable"],
+            TotalOnHand = foundInventory.TotalOnHand,
+            TotalExpected = foundInventory.TotalExpected,
+            TotalOrdered = foundInventory.TotalOrderd,
+            TotalAllocated = foundInventory.TotalAllocated,
+            TotalAvailable = foundInventory.TotalAvailable,
             CreatedAt = foundInventory.CreatedAt,
             UpdatedAt = foundInventory.UpdatedAt,
         });
@@ -162,16 +160,17 @@ public class InventoriesController : ControllerBase
         Description = i.Description,
         ItemReference = i.ItemReference,
         ItemId = i.ItemId,
-        Locations = _locationsProvider.GetLocationsByInventoryId(i.Id).Select(l => new InventoryLocation()
+        Locations = _inventoriesProvider.GetInventoryLocations(i.Id).Select(i => new InventoryLocationResponse
         {
-            LocationId = l.Id,
-            OnHand = l.OnHand
+            WarehouseId = i.Location.WarehouseId,
+            LocationId = i.LocationId,
+            OnHand = i.OnHandAmount
         }).ToList(),
-        TotalOnHand = _inventoriesProvider.CalculateTotalOnHand(i.Id),
-        TotalExpected = _inventoriesProvider.CalculateTotalExpected(),
-        TotalOrdered = _inventoriesProvider.CalculateTotalOrdered(),
-        TotalAllocated = _inventoriesProvider.CalculateTotalAllocated(),
-        TotalAvailable = _inventoriesProvider.CalculateTotalAvailable(),
+        TotalOnHand = i.TotalOnHand,
+        TotalExpected = i.TotalExpected,
+        TotalOrdered = i.TotalOrderd,
+        TotalAllocated = i.TotalAllocated,
+        TotalAvailable = i.TotalAvailable,
         CreatedAt = i.CreatedAt,
         UpdatedAt = i.UpdatedAt,
     }).ToList());

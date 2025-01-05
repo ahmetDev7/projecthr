@@ -12,34 +12,42 @@ public class Inventory : BaseModel
     private int _totalExpected = 0;
     private int _totalOrderd = 0;
     private int _totalAvailable = 0;
+    private int _totalAllocated = 0;
 
 
     [Required]
-    public int? TotalOnHand
+    public int TotalOnHand
     {
         get => _totalOnHand;
-        set => _totalOnHand = value == null || value < 0 ? 0 : value.Value;
+        set => _totalOnHand = value < 0 ? 0 : value;
     }
 
     [Required]
-    public int? TotalExpected
+    public int TotalExpected
     {
         get => _totalExpected;
-        set => _totalExpected = value == null || value < 0 ? 0 : value.Value;
+        set => _totalExpected = value < 0 ? 0 : value;
     }
 
     [Required]
-    public int? TotalOrderd
+    public int TotalOrderd
     {
         get => _totalOrderd;
-        set => _totalOrderd = value == null || value < 0 ? 0 : value.Value;
+        set => _totalOrderd = value < 0 ? 0 : value;
     }
 
     [Required]
-    public int? TotalAvailable
+    public int TotalAvailable
     {
         get => _totalAvailable;
-        set => _totalAvailable = value == null || value < 0 ? 0 : value.Value;
+        set => _totalAvailable = value < 0 ? 0 : value;
+    }
+
+    [Required]
+    public int TotalAllocated
+    {
+        get => _totalAllocated;
+        set => _totalAllocated = value < 0 ? 0 : value;
     }
 
     [Required]

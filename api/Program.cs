@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Configuration.AddJsonFile("./env.json", optional: false, reloadOnChange: true);
 var connectionString = builder.Configuration["DB_CONNECTION_STRING"];
 var securityKey = builder.Configuration["SECURITY_KEY"];
@@ -156,3 +157,5 @@ app.UseSwaggerUI(c =>
 });
 
 app.Run("http://localhost:5000");
+
+public partial class Program { }

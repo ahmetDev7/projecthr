@@ -96,7 +96,7 @@ public class LocationsController : ControllerBase
             });
     }
 
-    [HttpGet("all")]
+    [HttpGet()]
     public IActionResult ShowAll() => Ok(_locationsProvider.GetAll().Select(l => new LocationResponse
     {
         Id = l.Id,

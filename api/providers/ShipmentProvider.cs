@@ -74,6 +74,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
         existingShipment.SetTransferMode(req.TransferMode);
         existingShipment.TotalPackageCount = req.TotalPackageCount;
         existingShipment.TotalPackageWeight = req.TotalPackageWeight;
+        existingShipment.SetUpdatedAt();
         if (req.Items != null)
         {
             _db.ShipmentItems.RemoveRange(existingShipment.ShipmentItems);

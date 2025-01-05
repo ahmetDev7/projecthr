@@ -117,5 +117,10 @@ namespace DTO.Item
 
         [JsonPropertyName("supplier_id")]
         public Guid? SupplierId { get; set; }
+        [JsonPropertyName("created_at")]
+        public DateTime? CreatedAt { get; set; }
+
+        [JsonPropertyName("updated_at")]
+        public DateTime? UpdatedAt { get; set; }
     }
 }

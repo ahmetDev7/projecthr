@@ -53,6 +53,7 @@ public class LocationsProvider : BaseProvider<Location>
         foundLocation.Rack = req.Rack;
         foundLocation.Shelf = req.Shelf;
         foundLocation.WarehouseId = req.WarehouseId;
+        foundLocation.SetUpdatedAt();
 
 
         ValidateModel(foundLocation);

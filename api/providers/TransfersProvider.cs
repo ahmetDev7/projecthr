@@ -206,10 +206,10 @@ public class TransferProvider : BaseProvider<Transfer>
 
     }
 
-    public Item? GetItemsFromTransfer(Transfer transfer)
+    public List<Item> GetItemsFromTransfer(Transfer transfer)
     {
-        Guid? itemId = transfer.TransferItems.First().ItemId;
-        return _itemsProvider.GetById(itemId.Value);
+        List<Guid?> itemIds = transfer.TransferItems.Select(ti => ti.ItemId).ToList();
+        return _db.Items.Where(i => itemIds.Contains(i.Id)).ToList();
     }
 
     public bool IsTransferCompleted(Guid transferId) => _db.Transfers.Any(t => t.Id == transferId && t.TransferStatus == TransferStatus.Completed);

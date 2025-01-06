@@ -20,7 +20,7 @@ public class InventoriesController : ControllerBase
         }
 
         Inventory? newInventory = _inventoriesProvider.Create(req);
-        if (newInventory == null) throw new ApiFlowException("Saving new inventory failed.");
+        if (newInventory == null) throw new ApiFlowException("Inventory not found", StatusCodes.Status404NotFound);
 
         return Ok(
             new
@@ -54,7 +54,7 @@ public class InventoriesController : ControllerBase
     public IActionResult Update(Guid id, [FromBody] InventoryRequest req)
     {
         Inventory? updatedInventory = _inventoriesProvider.Update(id, req);
-        if (updatedInventory == null) throw new ApiFlowException("Update inventory failed.");
+        if (updatedInventory == null) throw new ApiFlowException("Inventory not found", StatusCodes.Status404NotFound);
 
         return Ok(
             new

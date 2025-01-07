@@ -20,7 +20,7 @@ public class DockWithItemsResponse : BaseDTO
     public Guid? Id { get; set; }
 
     [JsonPropertyName("capacity")]
-    public int? Capacity {get; set;}
+    public int? Capacity { get; set; }
 
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }
@@ -41,7 +41,7 @@ public class DockItemResponse : BaseDTO
     public Guid? ItemId { get; set; }
 
     [JsonPropertyName("amount")]
-    public int? Amount {get; set;}
+    public int? Amount { get; set; }
 
     [JsonPropertyName("dock_id")]
     public Guid? DockId { get; set; }

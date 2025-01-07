@@ -273,7 +273,8 @@ public class WarehousesController : ControllerBase
             Capacity = Dock.CAPCITY,
             CreatedAt = dock.CreatedAt,
             UpdatedAt = dock.UpdatedAt,
-            DockItems = dockItems.Select(di => new DockItemResponse() {
+            DockItems = dockItems.Select(di => new DockItemResponse()
+            {
                 Id = di.Id,
                 ItemId = di.ItemId,
                 Amount = di.Amount,

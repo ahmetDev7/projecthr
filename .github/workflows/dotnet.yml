@@ -109,14 +109,15 @@ jobs:
               "description": "Een nieuwe Linux x64 artifact is beschikbaar voor download!",
               "color": 2123412,
               "thumbnail": {
-                "url": "https://www.flaticon.com/free-icon/linux_121147"
+                "url": "https://i.giphy.com/PqjTdvXImZQfcmTYEO.webp"
               },
               "author": {
                 "name": "${{ github.actor }}",
                 "url": "https://github.com/${{ github.actor_id }}",
                 "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
               },
-              "url": "https://github.com/***"
+              "url": "https://github.com/ahmetDev7/projecthr/actions"
             }
           ]
           }' ${{ secrets.DISCORD_WEBHOOK_URL }})
+        if: ${{ success() }}

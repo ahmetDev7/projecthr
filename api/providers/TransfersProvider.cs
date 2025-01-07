@@ -89,8 +89,10 @@ public class TransferProvider : BaseProvider<Transfer>
     public Transfer? CommitTransfer(Guid transferId)
     {
         Transfer? foundTransfer = GetById(transferId) ?? throw new ApiFlowException($"Transfer with ID {transferId} does not exist.", StatusCodes.Status404NotFound);
+
         if (foundTransfer.TransferStatus == TransferStatus.Completed)
-            throw new ApiFlowException("This transfer has already been commited.", StatusCodes.Status409Conflict);
+            throw new ApiFlowException(message: "This transfer has already been commited.", StatusCodes.Status409Conflict);
+
 
         ValidateModel(foundTransfer);
 
@@ -103,81 +105,97 @@ public class TransferProvider : BaseProvider<Transfer>
             bool isFromDock = !isFromLocation;
             bool isToDock = !isToLocation;
 
-            Location? fromLocation = null;
-            Location? toLocation = null;
-            Dock? dock = null;
-            DockItem? dockItem = null;
+            Location? fromLocation = isFromLocation
+                ? _locationsProvider.GetById(foundTransfer.TransferFromId.Value, includeWarehouse: true)
+                : null;
 
-            TransferItem? firstItem = foundTransfer.TransferItems.First();
-            Inventory? ItemInventory = _inventoriesProvider.GetInventoryByItemId(itemId: firstItem.ItemId.Value); // because all items are the same always take the first one
+            Location? toLocation = isToLocation
+                ? _locationsProvider.GetById(foundTransfer.TransferToId.Value, includeWarehouse: true)
+                : null;
 
+            Dock? dock = fromLocation?.Warehouse?.Dock ?? toLocation?.Warehouse?.Dock;
 
-            if (isFromLocation)
+            List<DockItem>? dockItems = (isFromDock || isToDock)
+                ? _db.DockItems.Where(di => di.DockId == dock.Id).ToList()
+                : null;
+
+            foreach (TransferItem transferItem in foundTransfer.TransferItems)
             {
-                fromLocation = _locationsProvider.GetById(foundTransfer.TransferFromId.Value, includeWarehouse: true, includeInventory: true);
-                dock = fromLocation.Warehouse.Dock;
-            }
-            if (isToLocation)
-            {
-                toLocation = _locationsProvider.GetById(foundTransfer.TransferToId.Value, includeWarehouse: true, includeInventory: true);
-                if (dock == null) dock = toLocation.Warehouse.Dock;
-            }
+                Guid? currentItemId = transferItem.ItemId;
+                Inventory? currentItemInventory = _inventoriesProvider.GetInventoryByItemId(itemId: currentItemId);
+                DockItem? itemInDock = (isFromDock || isToDock) ? _db.DockItems.FirstOrDefault(d => d.ItemId == currentItemId) : null;
 
-            if (isFromDock || isToDock)
-            {
-                dockItem = _db.DockItems.FirstOrDefault(di => di.DockId == dock.Id && di.ItemId == firstItem.ItemId);
-            }
-
-            int? totalAmount = foundTransfer.TransferItems.Sum(i => i.Amount);
-
-            if (isFromLocation)
-            {
-                // fromLocation.OnHand -= totalAmount;
-            }
-
-            if (isToLocation)
-            {
-                // if inventory_id is empty set inventory_id with on_hand
-                // if (!toLocation.InventoryId.HasValue) toLocation.InventoryId = ItemInventory.Id;
-
-                // if inventory_id is the same inventory_id as item then increment on_hand amount
-                // toLocation.OnHand = (toLocation.OnHand ?? 0) + totalAmount;
-            }
-
-            if (isToDock)
-            {
-                // create or increment the item that is going to be at DockItem
-                if (dockItem == null)
+                if (isFromLocation)
                 {
-                    DockItem newDockItem = new(newInstance: true)
+                    InventoryLocation? inventoryLocation = _db.InventoryLocations.FirstOrDefault(il => il.InventoryId == currentItemInventory.Id && il.LocationId == foundTransfer.TransferFromId);
+                    inventoryLocation.OnHandAmount -= transferItem.Amount.Value;
+                }
+
+                if (isToLocation)
+                {
+                    // the inventory location for tranfer_to_id
+                    InventoryLocation? foundInventoryLocationTo = _db.InventoryLocations.FirstOrDefault(il => il.LocationId == foundTransfer.TransferToId);
+
+                    // if the item does not exist on the transfer_to location then create a new inventoryLocation with the item
+                    if (foundInventoryLocationTo == null)
                     {
-                        ItemId = firstItem.ItemId,
-                        DockId = dock.Id,
-                        Amount = totalAmount
-                    };
-                    _db.DockItems.Add(newDockItem);
+                        _db.InventoryLocations.Add(new InventoryLocation(newInstance: true)
+                        {
+                            InventoryId = currentItemInventory.Id,
+                            LocationId = foundTransfer.TransferToId,
+                            OnHandAmount = transferItem.Amount.Value
+                        });
+                    }
+                    else // if the item does exist on on the transfer_to location then increment the onHandAmount
+                    {
+                        foundInventoryLocationTo.OnHandAmount += transferItem.Amount.Value;
+                        foundInventoryLocationTo.SetUpdatedAt();
+                        _db.InventoryLocations.Update(foundInventoryLocationTo);
+                    }
+
                 }
-                else
+
+                // create or increment the item that is going to be at DockItem
+                if (isToDock)
                 {
-                    dockItem.Amount += totalAmount;
-                    dockItem.SetUpdatedAt();
+                    // if not found create dockitem
+                    if (itemInDock == null)
+                    {
+                        _db.DockItems.Add(new DockItem(newInstance: true)
+                        {
+                            ItemId = currentItemId,
+                            DockId = dock.Id,
+                            Amount = transferItem.Amount
+                        });
+                    }
+                    else
+                    {
+                        // if found increment
+                        itemInDock.Amount += transferItem.Amount;
+                        _db.DockItems.Update(itemInDock);
+                    }
+                }
+
+
+                // remove or decrement the item that is going to be removed from dock
+                if (isFromDock)
+                {
+                    itemInDock.Amount -= transferItem.Amount;
+
+                    if (itemInDock.Amount == 0)
+                    {
+                        _db.DockItems.Remove(itemInDock);
+                    }
+                    else
+                    {
+                        itemInDock.SetUpdatedAt();
+                        _db.DockItems.Update(itemInDock);
+                    }
                 }
             }
-
-            // remove or decrement the item that is going to be removed from dock
-            if (isFromDock)
-            {
-                dockItem.Amount -= totalAmount;
-                if (dockItem.Amount == null)
-                    dockItem.SetUpdatedAt();
-                _db.DockItems.Remove(dockItem);
-            }
-
             foundTransfer.TransferStatus = TransferStatus.Completed;
             SaveToDBOrFail();
             transaction.Commit();
-
-
             return foundTransfer;
         }
         catch (Exception)
@@ -185,12 +203,13 @@ public class TransferProvider : BaseProvider<Transfer>
             transaction.Rollback();
             throw;
         }
+
     }
 
-    public Item? GetItemsFromTransfer(Transfer transfer)
+    public List<Item> GetItemsFromTransfer(Transfer transfer)
     {
-        Guid? itemId = transfer.TransferItems.First().ItemId;
-        return _itemsProvider.GetById((Guid)itemId);
+        List<Guid?> itemIds = transfer.TransferItems.Select(ti => ti.ItemId).ToList();
+        return _db.Items.Where(i => itemIds.Contains(i.Id)).ToList();
     }
 
     public bool IsTransferCompleted(Guid transferId) => _db.Transfers.Any(t => t.Id == transferId && t.TransferStatus == TransferStatus.Completed);

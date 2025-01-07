@@ -32,6 +32,7 @@ public class WarehousesController : ControllerBase
                     {
                         Id = createdWarehouse.ContactId,
                         Name = createdWarehouse.Contact?.Name,
+                        Function = createdWarehouse.Contact?.Function,
                         Phone = createdWarehouse.Contact?.Phone,
                         Email = createdWarehouse.Contact?.Email,
                         CreatedAt = createdWarehouse.Contact?.CreatedAt,
@@ -84,6 +85,7 @@ public class WarehousesController : ControllerBase
                     {
                         Id = updatedWarehouse.ContactId,
                         Name = updatedWarehouse.Contact?.Name,
+                        Function = updatedWarehouse.Contact?.Function,
                         Phone = updatedWarehouse.Contact?.Phone,
                         Email = updatedWarehouse.Contact?.Email,
                         CreatedAt = updatedWarehouse.Contact?.CreatedAt,
@@ -132,6 +134,7 @@ public class WarehousesController : ControllerBase
                 {
                     Id = deletedWarehouse.ContactId,
                     Name = deletedWarehouse.Contact?.Name,
+                    Function = deletedWarehouse.Contact?.Function,
                     Phone = deletedWarehouse.Contact?.Phone,
                     Email = deletedWarehouse.Contact?.Email,
                     CreatedAt = deletedWarehouse.Contact?.CreatedAt,
@@ -177,6 +180,7 @@ public class WarehousesController : ControllerBase
             {
                 Id = foundWarehouse.ContactId,
                 Name = foundWarehouse.Contact?.Name,
+                Function = foundWarehouse.Contact?.Function,
                 Phone = foundWarehouse.Contact?.Phone,
                 Email = foundWarehouse.Contact?.Email,
                 CreatedAt = foundWarehouse.Contact?.CreatedAt,
@@ -217,6 +221,7 @@ public class WarehousesController : ControllerBase
         {
             Id = w.ContactId,
             Name = w.Contact?.Name,
+            Function = w.Contact?.Function,
             Phone = w.Contact?.Phone,
             Email = w.Contact?.Email,
             CreatedAt = w.Contact?.CreatedAt,

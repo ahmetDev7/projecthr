@@ -8,6 +8,10 @@ public class ContactValidator : AbstractValidator<Contact>
             .NotNull().WithMessage("Name is required.")
             .NotEmpty().WithMessage("Name cannot be empty.");
 
+        RuleFor(contact => contact.Function)
+            .NotNull().WithMessage("Function is required.")
+            .NotEmpty().WithMessage("Function cannot be empty.");
+
         RuleFor(contact => contact.Phone)
             .NotNull().WithMessage("Phone is required.")
             .NotEmpty().WithMessage("Phone cannot be empty.");

@@ -9,6 +9,9 @@ namespace DTO.Contact
         [JsonPropertyName("name")]
         public string? Name { get; set; }
 
+        [JsonPropertyName("function")]
+        public string? Function { get; set; }
+
         [JsonPropertyName("phone")]
         public string? Phone { get; set; }
 
@@ -25,6 +28,9 @@ namespace DTO.Contact
 
         [JsonPropertyName("name")]
         public string? Name { get; set; }
+
+        [JsonPropertyName("function")]
+        public string? Function { get; set; }
 
         [JsonPropertyName("phone")]
         public string? Phone { get; set; }

@@ -26,6 +26,7 @@ public class ContactsController : ControllerBase
             {
                 Id = newContact?.Id,
                 Name = newContact?.Name,
+                Function = newContact?.Function,
                 Phone = newContact?.Phone,
                 Email = newContact?.Email,
                 CreatedAt = newContact?.CreatedAt,
@@ -49,6 +50,7 @@ public class ContactsController : ControllerBase
             {
                 Id = updateContact.Id,
                 Name = updateContact.Name,
+                Function = updateContact.Function,
                 Phone = updateContact.Phone,
                 Email = updateContact.Email,
                 CreatedAt = updateContact.CreatedAt,
@@ -65,18 +67,15 @@ public class ContactsController : ControllerBase
         if (foundContact == null)
             return NotFound(new { message = $"Contact not found for id {id}" });
 
-        return Ok(new
+        return Ok(new ContactResponse
         {
-            message = "Contact found!",
-            Contact = new ContactResponse
-            {
-                Id = foundContact.Id,
-                Name = foundContact.Name,
-                Phone = foundContact.Phone,
-                Email = foundContact.Email,
-                CreatedAt = foundContact.CreatedAt,
-                UpdatedAt = foundContact.UpdatedAt
-            }
+            Id = foundContact.Id,
+            Name = foundContact.Name,
+            Function = foundContact.Function,
+            Phone = foundContact.Phone,
+            Email = foundContact.Email,
+            CreatedAt = foundContact.CreatedAt,
+            UpdatedAt = foundContact.UpdatedAt
         });
     }
 
@@ -85,6 +84,7 @@ public class ContactsController : ControllerBase
     {
         Id = c.Id,
         Name = c.Name,
+        Function = c.Function,
         Phone = c.Phone,
         Email = c.Email,
         CreatedAt = c.CreatedAt,
@@ -106,6 +106,7 @@ public class ContactsController : ControllerBase
             {
                 Id = foundContact.Id,
                 Name = foundContact.Name,
+                Function = foundContact.Function,
                 Phone = foundContact.Phone,
                 Email = foundContact.Email,
                 CreatedAt = foundContact.CreatedAt,

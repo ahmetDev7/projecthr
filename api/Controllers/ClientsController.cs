@@ -36,6 +36,7 @@ public class ClientsController : ControllerBase
                     Name = createClient.Contact?.Name,
                     Phone = createClient.Contact?.Phone,
                     Email = createClient.Contact?.Email,
+                    Function = createClient.Contact?.Function,
                     CreatedAt = createClient.Contact?.CreatedAt,
                     UpdatedAt = createClient.Contact?.UpdatedAt
 
@@ -76,6 +77,7 @@ public class ClientsController : ControllerBase
             {
                 Id = foundClient.ContactId,
                 Name = foundClient.Contact?.Name,
+                Function = foundClient.Contact?.Function,
                 Phone = foundClient.Contact?.Phone,
                 Email = foundClient.Contact?.Email,
                 CreatedAt = foundClient.Contact?.CreatedAt,
@@ -117,6 +119,7 @@ public class ClientsController : ControllerBase
             {
                 Id = foundClient.ContactId,
                 Name = foundClient.Contact?.Name,
+                Function = foundClient.Contact?.Function,
                 Phone = foundClient.Contact?.Phone,
                 Email = foundClient.Contact?.Email,
                 CreatedAt = foundClient.Contact?.CreatedAt,
@@ -156,6 +159,7 @@ public class ClientsController : ControllerBase
             {
                 Id = c.ContactId,
                 Name = c.Contact?.Name,
+                Function = c.Contact?.Function,
                 Phone = c.Contact?.Phone,
                 Email = c.Contact?.Email,
                 CreatedAt = c.Contact?.CreatedAt,
@@ -201,6 +205,7 @@ public class ClientsController : ControllerBase
                 {
                     Id = deletedClient.ContactId,
                     Name = deletedClient.Contact?.Name,
+                    Function = deletedClient.Contact?.Function,
                     Phone = deletedClient.Contact?.Phone,
                     Email = deletedClient.Contact?.Email,
                     CreatedAt = deletedClient.Contact?.CreatedAt,

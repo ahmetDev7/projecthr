@@ -65,6 +65,7 @@ public class SuppliersController : ControllerBase
                 {
                     Id = supplier.ContactId,
                     Name = supplier.Contact?.Name,
+                    Function = supplier.Contact?.Function,
                     Phone = supplier.Contact?.Phone,
                     Email = supplier.Contact?.Email,
                     CreatedAt = supplier.Contact?.CreatedAt,
@@ -110,6 +111,7 @@ public class SuppliersController : ControllerBase
                 {
                     Id = updatedSupplier.ContactId,
                     Name = updatedSupplier.Contact?.Name,
+                    Function = updatedSupplier.Contact?.Function,
                     Phone = updatedSupplier.Contact?.Phone,
                     Email = updatedSupplier.Contact?.Email,
                     CreatedAt = updatedSupplier.Contact?.CreatedAt,
@@ -153,6 +155,7 @@ public class SuppliersController : ControllerBase
                 Contact = new ContactResponse
                 {
                     Name = deletedSupplier.Contact?.Name,
+                    Function = deletedSupplier.Contact?.Function,
                     Email = deletedSupplier.Contact?.Email,
                     Phone = deletedSupplier.Contact?.Phone,
                     CreatedAt = deletedSupplier.Contact?.CreatedAt,
@@ -194,6 +197,7 @@ public class SuppliersController : ControllerBase
             {
                 Id = supplier.ContactId,
                 Name = supplier.Contact?.Name,
+                Function = supplier.Contact?.Function,
                 Phone = supplier.Contact?.Phone,
                 Email = supplier.Contact?.Email,
                 CreatedAt = supplier.Contact?.CreatedAt,
@@ -228,6 +232,7 @@ public class SuppliersController : ControllerBase
         {
             Id = ig.ContactId,
             Name = ig.Contact?.Name,
+            Function = ig.Contact?.Function,
             Phone = ig.Contact?.Phone,
             Email = ig.Contact?.Email,
             CreatedAt = ig.Contact?.CreatedAt,

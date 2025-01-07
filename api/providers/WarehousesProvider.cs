@@ -80,5 +80,7 @@ public class WarehousesProvider : BaseProvider<Warehouse>
 
     public List<Location> GetLocationsByWarehouseId(Guid warehouseId) => _db.Locations.Where(l => l.WarehouseId == warehouseId).ToList();
 
+    public List<DockItem> GetDockItemsByDockId(Guid dockId) => _db.DockItems.Include(di => di.Item).Where(di => di.DockId == dockId).ToList();
+
     protected override void ValidateModel(Warehouse model) => _WarehouseValidator.ValidateAndThrow(model);
 }

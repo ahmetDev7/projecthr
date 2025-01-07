@@ -52,8 +52,14 @@ public class WarehousesController : ControllerBase
                         CreatedAt = createdWarehouse.Address?.CreatedAt,
                         UpdatedAt = createdWarehouse.Address?.UpdatedAt
                     },
-                    CreatedAt = createdWarehouse.CreatedAt,
-                    UpdatedAt = createdWarehouse.UpdatedAt,
+                    Dock = new DockResponse
+                    {
+                        Id = createdWarehouse?.Dock?.Id,
+                        CreatedAt = createdWarehouse?.Dock?.CreatedAt,
+                        UpdatedAt = createdWarehouse?.Dock?.UpdatedAt,
+                    },
+                    CreatedAt = createdWarehouse?.CreatedAt,
+                    UpdatedAt = createdWarehouse?.UpdatedAt,
                 }
             }
         );
@@ -97,8 +103,14 @@ public class WarehousesController : ControllerBase
                         CreatedAt = updatedWarehouse.Address?.CreatedAt,
                         UpdatedAt = updatedWarehouse.Address?.UpdatedAt
                     },
-                    CreatedAt = updatedWarehouse.CreatedAt,
-                    UpdatedAt = updatedWarehouse.UpdatedAt
+                    Dock = new DockResponse
+                    {
+                        Id = updatedWarehouse?.Dock?.Id,
+                        CreatedAt = updatedWarehouse?.Dock?.CreatedAt,
+                        UpdatedAt = updatedWarehouse?.Dock?.UpdatedAt,
+                    },
+                    CreatedAt = updatedWarehouse?.CreatedAt,
+                    UpdatedAt = updatedWarehouse?.UpdatedAt
                 }
             });
     }
@@ -139,8 +151,14 @@ public class WarehousesController : ControllerBase
                     CreatedAt = deletedWarehouse.Address?.CreatedAt,
                     UpdatedAt = deletedWarehouse.Address?.UpdatedAt
                 },
-                CreatedAt = deletedWarehouse.CreatedAt,
-                UpdatedAt = deletedWarehouse.UpdatedAt,
+                Dock = new DockResponse
+                {
+                    Id = deletedWarehouse?.Dock?.Id,
+                    CreatedAt = deletedWarehouse?.Dock?.CreatedAt,
+                    UpdatedAt = deletedWarehouse?.Dock?.UpdatedAt,
+                },
+                CreatedAt = deletedWarehouse?.CreatedAt,
+                UpdatedAt = deletedWarehouse?.UpdatedAt,
             }
         });
     }
@@ -178,8 +196,14 @@ public class WarehousesController : ControllerBase
                 CreatedAt = foundWarehouse.Address?.CreatedAt,
                 UpdatedAt = foundWarehouse.Address?.UpdatedAt
             },
-            CreatedAt = foundWarehouse.CreatedAt,
-            UpdatedAt = foundWarehouse.UpdatedAt,
+            Dock = new DockResponse
+            {
+                Id = foundWarehouse?.Dock?.Id,
+                CreatedAt = foundWarehouse?.Dock?.CreatedAt,
+                UpdatedAt = foundWarehouse?.Dock?.UpdatedAt,
+            },
+            CreatedAt = foundWarehouse?.CreatedAt,
+            UpdatedAt = foundWarehouse?.UpdatedAt,
         });
     }
 
@@ -213,8 +237,14 @@ public class WarehousesController : ControllerBase
             UpdatedAt = w.Address?.UpdatedAt
 
         },
-        CreatedAt = w.CreatedAt,
-        UpdatedAt = w.UpdatedAt,
+        Dock = new DockResponse
+        {
+            Id = w?.Dock?.Id,
+            CreatedAt = w?.Dock?.CreatedAt,
+            UpdatedAt = w?.Dock?.UpdatedAt,
+        },
+        CreatedAt = w?.CreatedAt,
+        UpdatedAt = w?.UpdatedAt,
     }).ToList());
 
     [HttpGet("{warehouseId}/locations")]
@@ -228,4 +258,30 @@ public class WarehousesController : ControllerBase
         CreatedAt = l.CreatedAt,
         UpdatedAt = l.UpdatedAt
     }));
+
+    [HttpGet("{warehouseId}/dock")]
+    public IActionResult GetWarehouseDock(Guid warehouseId)
+    {
+        Warehouse? foundWarehouse = _warehouseProvider.GetById(warehouseId);
+        if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{warehouseId}'" });
+        List<DockItem> dockItems = _warehouseProvider.GetDockItemsByDockId(foundWarehouse.Dock.Id);
+        Dock? dock = foundWarehouse.Dock;
+
+        return Ok(new DockWithItemsResponse
+        {
+            Id = dock.Id,
+            Capacity = Dock.CAPCITY,
+            CreatedAt = dock.CreatedAt,
+            UpdatedAt = dock.UpdatedAt,
+            DockItems = dockItems.Select(di => new DockItemResponse()
+            {
+                Id = di.Id,
+                ItemId = di.ItemId,
+                Amount = di.Amount,
+                DockId = di.DockId,
+                CreatedAt = di.CreatedAt,
+                UpdatedAt = di.UpdatedAt,
+            }).ToList()
+        });
+    }
 }

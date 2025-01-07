@@ -53,7 +53,8 @@ public class TransferValidator : AbstractValidator<Transfer>
                 }
             }
 
-            if(warehouseFrom ==null && warehouseTo == null){
+            if (warehouseFrom == null && warehouseTo == null)
+            {
                 context.AddFailure("transfer_from_id and transfer_to_id", $"Warehouse not dock not found for transfer_from_id and transfer_to_id");
                 return;
             }
@@ -87,8 +88,8 @@ public class TransferValidator : AbstractValidator<Transfer>
                 if (fromLocation)
                 {
                     // check if the item.inventoryId is on the location (from_transfer_id)
-                    InventoryLocation? locationOfTransferFrom = db.InventoryLocations.FirstOrDefault(il => 
-                        il.InventoryId == currentInventoryId && 
+                    InventoryLocation? locationOfTransferFrom = db.InventoryLocations.FirstOrDefault(il =>
+                        il.InventoryId == currentInventoryId &&
                         il.LocationId == transfer.TransferFromId
                     );
 

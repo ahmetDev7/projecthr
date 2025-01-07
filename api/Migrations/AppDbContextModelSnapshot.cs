@@ -115,7 +115,6 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Function")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")

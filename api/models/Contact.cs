@@ -7,8 +7,7 @@ public class Contact : BaseModel
 
     [Required]
     public string? Name { get; set; }
-
-    [Required]
+    
     public string? Function { get; set; }
 
     [Required]

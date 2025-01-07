@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250107132113_update_tbl_contact_with_new_column_function")]
+    [Migration("20250107145345_update_tbl_contact_with_new_column_function")]
     partial class update_tbl_contact_with_new_column_function
     {
         /// <inheritdoc />
@@ -118,7 +118,6 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Function")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")

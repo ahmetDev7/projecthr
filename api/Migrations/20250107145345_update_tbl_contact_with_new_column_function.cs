@@ -14,8 +14,7 @@ namespace api.Migrations
                 name: "Function",
                 table: "Contacts",
                 type: "text",
-                nullable: false,
-                defaultValue: "");
+                nullable: true);
         }
 
         /// <inheritdoc />

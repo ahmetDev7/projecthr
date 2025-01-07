@@ -98,3 +98,25 @@ jobs:
         with:
           name: linux-x64-artifact
           path: ./release
+      - name: Release notification Discord
+        run: |
+          RESPONSE=$(curl -H "Content-Type: application/json" -X POST -d '{
+          "content": "@everyone",
+          "embeds": [
+            {
+              "type": "rich",
+              "title": "Er is een nieuwe release beschikbaar!",
+              "description": "Een nieuwe Linux x64 artifact is beschikbaar voor download!",
+              "color": 2123412,
+              "thumbnail": {
+                "url": "https://www.flaticon.com/free-icon/linux_121147"
+              },
+              "author": {
+                "name": "${{ github.actor }}",
+                "url": "https://github.com/${{ github.actor_id }}",
+                "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
+              },
+              "url": "https://github.com/***"
+            }
+          ]
+          }' ${{ secrets.DISCORD_WEBHOOK_URL }})

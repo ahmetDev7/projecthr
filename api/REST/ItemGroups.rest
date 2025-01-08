@@ -1,5 +1,5 @@
 ### GET ITEM GROUP BY ID
-GET http://localhost:5000/api/itemGroups/8aa1448f-9672-4a19-84d6-37bd5224e6d5
+GET http://localhost:5000/api/itemGroups/67c88360-15b8-4ea5-9658-6661e0637f34
 Content-Type: application/json
 ###
 
@@ -14,7 +14,7 @@ Content-Type: application/json
 ###
 
 ### UPDATE ITEM GROUP
-PUT http://localhost:5000/api/itemGroups/8aa1448f-9672-4a19-84d6-37bd5224e6d5
+PUT http://localhost:5000/api/itemGroups/67c88360-15b8-4ea5-9658-6661e0637f34
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 ###
 
 ### DELETE ITEM GROUP
-DELETE http://localhost:5000/api/itemGroups/da582b6a-5466-439a-b4f7-d10fdb0754ad
+DELETE http://localhost:5000/api/itemGroups/67c88360-15b8-4ea5-9658-6661e0637f34
 Content-Type: application/json
 ###
 
@@ -43,6 +43,6 @@ Content-Type: application/json
 ###
 
 ### GET ALL ITEMS FROM ITEM GROUP
-GET http://localhost:5000/api/itemGroups/8aa1448f-9672-4a19-84d6-37bd5224e6d5/items
+GET http://localhost:5000/api/itemGroups/67c88360-15b8-4ea5-9658-6661e0637f34/items
 Content-Type: application/json
 ###

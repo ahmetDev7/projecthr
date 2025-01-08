@@ -9,7 +9,7 @@ Content-Type: application/json
 ###
 
 ### UPDATE ITEM TYPE
-PUT http://localhost:5000/api/ItemTypes/488d6d27-80d4-4187-968e-e28b468c1b14
+PUT http://localhost:5000/api/ItemTypes/413586e0-4698-426d-9da1-93fef530c541
 Content-Type: application/json
 
 {
@@ -18,12 +18,12 @@ Content-Type: application/json
 }
 
 ### DELETE ITEM TYPE
-DELETE http://localhost:5000/api/ItemTypes/cc3329d0-6414-45c7-b4d9-a1b9c2c4ba6e
+DELETE http://localhost:5000/api/ItemTypes/413586e0-4698-426d-9da1-93fef530c541
 Content-Type: application/json
 ###
 
 ### GET ITEM TYPE BY ID
-GET http://localhost:5000/api/itemtypes/caf0c9e3-0266-4ece-800d-cf4a101f0f69
+GET http://localhost:5000/api/itemtypes/413586e0-4698-426d-9da1-93fef530c541
 Content-Type: application/json
 ###
 

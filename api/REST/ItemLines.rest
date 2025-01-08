@@ -10,7 +10,7 @@ Content-Type: application/json
 
 
 ### UPDATE ITEM LINE
-PUT http://localhost:5000/api/ItemLines/488d6d27-80d4-4187-968e-e28b468c1b14
+PUT http://localhost:5000/api/ItemLines/d141e044-ce23-4d01-9c44-508b5c4f106d
 Content-Type: application/json
 
 {
@@ -20,7 +20,7 @@ Content-Type: application/json
 ###
 
 ### DELETE ITEM LINE
-DELETE http://localhost:5000/api/ItemLines/42bca5a7-1bda-48cb-8008-8884b4a208ab
+DELETE http://localhost:5000/api/ItemLines/d141e044-ce23-4d01-9c44-508b5c4f106d
 Content-Type: application/json
 ###
 
@@ -30,11 +30,11 @@ Content-Type: application/json
 ###
 
 ### GET ITEM LINE BY ID
-GET http://localhost:5000/api/itemlines/04ccd936-c43b-4568-aa5a-b23093c0b8d8
+GET http://localhost:5000/api/itemlines/d141e044-ce23-4d01-9c44-508b5c4f106d
 Content-Type: application/json
 ###
 
 ### GET ALL ITEMS FROM ITEM LINES
-GET http://localhost:5000/api/itemlines/cf00599d-e7df-446b-abd7-46830459a864/items
+GET http://localhost:5000/api/itemlines/d141e044-ce23-4d01-9c44-508b5c4f106d/items
 Content-Type: application/json
 ###

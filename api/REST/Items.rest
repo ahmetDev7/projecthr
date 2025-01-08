@@ -1,5 +1,5 @@
 ### GET ITEM BY ID
-GET http://localhost:5000/api/items/8aa1448f-9672-4a19-84d6-37bd5224e6d7
+GET http://localhost:5000/api/items/18063ce1-1726-4d2c-9de8-9f90673f0e66
 Content-Type: application/json
 ###
 
@@ -37,12 +37,12 @@ Content-Type: application/json
   "item_group_id": null,
   "item_line_id": null,
   "item_type_id": null,
-  "supplier_id": "015fec53-ae55-4d76-ad5c-00e3ce922d54"
+  "supplier_id": "27a1e19b-32bf-4e14-a21e-12ef2bd919d2"
 }
 ###
 
 ### UPDATE ITEM
-PUT http://localhost:5000/api/items/42076a49-b1ed-4a54-9f90-ecb79fab15f7
+PUT http://localhost:5000/api/items/18063ce1-1726-4d2c-9de8-9f90673f0e66
 Content-Type: application/json
 
 {
@@ -54,11 +54,8 @@ Content-Type: application/json
   "commodity_code": "9401710000",
   "unit_purchase_quantity": -1,
   "unit_order_quantity": 1,
-  "pack_order_quantity": 10,
+  "pack_order_quantity": 1,
   "supplier_reference_code": "123-ABCD",
   "supplier_part_number": "CH123-XL",
-  "item_group_id": "fc844085-8386-4d1a-af80-88a3b713b08d",
-  "item_line_id": "7a3fb74d-77ec-4ddb-a6d9-8e1b4b94110d",
-  "item_type_id": "211c0c5c-37a3-49f9-8d52-e18ef3358b40",
-  "supplier_id": "c75d0cf3-84d5-44b4-9b1f-141f95df3d77"
+  "supplier_id": "27a1e19b-32bf-4e14-a21e-12ef2bd919d2"
 }

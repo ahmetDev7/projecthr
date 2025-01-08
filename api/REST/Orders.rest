@@ -3,26 +3,29 @@ POST http://localhost:5000/api/orders
 Content-Type: application/json
 
 {
-    "order_date": "2024-11-17",
-    "request_date": "2025-11-16",
+    "order_date": "2024-11-17T00:00:00Z",
+    "request_date": "2025-11-16T00:00:00Z",
     "reference": "1234",
     "reference_extra": "",
     "order_status": "besteld",
     "note": "0",
-    "ship_to_client": "sidi",
     "picking_notes": "",
-    "total_amount": "1.3455",
-    "total_discount": "0",
-    "total_tax": "0",
-    "total_surcharge": "0",
-    "warehouse_id": "d323b35d-f6f2-41f7-99ee-b9a8eb366504",
+    "total_amount": 1.35,
+    "total_discount": 0,
+    "total_tax": 0,
+    "total_surcharge": 0,
+    "warehouse_id": "b00f364b-7f7f-46b4-9048-0e6a962c1762",
     "order_items": [
-            {
-                "item_id": "ac3811c9-a02b-45a9-9ea7-4db7c3422843",
-                "amount": 23
-            }
-        ] 
-}
+      {
+        "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
+        "amount": 23
+      }
+    ],
+    "bill_to_client": "68f5aec1-f1f4-44ca-ad6e-e0d701632cef",
+    "ship_to_client": null,
+    "created_at": "2024-12-02T15:29:21.754146Z",
+    "updated_at": "2024-12-02T15:29:21.754147Z"
+  }
 ### DELETE ORDER (change ID to the ID in your database)
 DELETE http://localhost:5000/api/orders/efd1f0dd-7030-46ea-809c-e7cd9c2a1d6a
 Content-Type: application/json
@@ -31,38 +34,41 @@ Content-Type: application/json
 
 =======
 ### UPDATE ORDER
-PUT http://localhost:5000/api/orders/{593a5935-c506-4457-9c53-d93a08b1fc2d}
+PUT http://localhost:5000/api/orders/0415f598-6998-4340-8275-999dafb961e8
 Content-Type: application/json
 
 {
-    "order_date": "2025-11-17",
-    "request_date": "2025-11-16",
-    "reference": "123",
-    "reference_extra": "432",
-    "order_status": "ONDERWEG",
-    "notes": "0",
-    "ship_to_client": "sidi",
+    "order_date": "2024-11-17T00:00:00Z",
+    "request_date": "2025-11-16T00:00:00Z",
+    "reference": "1234",
+    "reference_extra": "",
+    "order_status": "besteld",
+    "note": "0",
     "picking_notes": "",
-    "total_amount": "1.3455",
-    "total_discount": "0",
-    "total_tax": "0",
-    "total_surcharge": "0",
-    "warehouse_id": "d323b35d-f6f2-41f7-99ee-b9a8eb366504",
+    "total_amount": 1.35,
+    "total_discount": 0,
+    "total_tax": 0,
+    "total_surcharge": 0,
+    "warehouse_id": "b00f364b-7f7f-46b4-9048-0e6a962c1762",
     "order_items": [
         {
-            "item_id": "ac3811c9-a02b-45a9-9ea7-4db7c3422843",
-            "amount": 1
+            "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
+            "amount": 23
         }
-    ]
+    ],
+    "bill_to_client": "68f5aec1-f1f4-44ca-ad6e-e0d701632cef",
+    "ship_to_client": null,
+    "created_at": "2025-01-05T13:40:19.6006503Z",
+    "updated_at": "2025-01-05T13:40:19.6006503Z"
 }
 
 ### GET ORDER BY ID (change ID to existing ID in your database)
-GET http://localhost:5000/api/orders/efd1f0dd-7030-46ea-809c-e7cd9c2a1d6a
+GET http://localhost:5000/api/orders/0415f598-6998-4340-8275-999dafb961e8
 Content-Type: application/json
 ###
 
 # Get order items by order ID
-GET http://localhost:5000/api/orders/{ce3c28e1-d246-4c2c-a0db-3a26a169d9fb}/items
+GET http://localhost:5000/api/orders/ce3c28e1-d246-4c2c-a0db-3a26a169d9fb/items
 Content-Type: application/json
 ###
 GET http://localhost:5000/api/orders

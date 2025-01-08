@@ -1,18 +1,17 @@
 using FluentValidation;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 public class InventoriesProvider : BaseProvider<Inventory>
 {
-    private readonly LocationsProvider _locationsProvider;
     private readonly ItemsProvider _itemsProvider;
     private IValidator<Inventory> _inventoryValidator;
     private IValidator<InventoryRequest> _inventoryRequestValidator;
 
 
-    public InventoriesProvider(AppDbContext db, LocationsProvider locationsProvider, ItemsProvider itemsProvider, IValidator<Inventory> inventoryValidator, IValidator<InventoryRequest> inventoryRequestValidator) : base(db)
+    public InventoriesProvider(AppDbContext db, ItemsProvider itemsProvider, IValidator<Inventory> inventoryValidator, IValidator<InventoryRequest> inventoryRequestValidator) : base(db)
     {
-        _locationsProvider = locationsProvider;
         _itemsProvider = itemsProvider;
         _inventoryValidator = inventoryValidator;
         _inventoryRequestValidator = inventoryRequestValidator;
@@ -31,16 +30,30 @@ public class InventoriesProvider : BaseProvider<Inventory>
 
         Inventory newInventory = new(newInstance: true)
         {
+            Id = Guid.NewGuid(),
             Description = req.Description,
             ItemReference = req.ItemReference,
             ItemId = req.ItemId,
         };
 
         ValidateModel(newInventory);
-        _db.Inventories.Add(newInventory);
 
-        _locationsProvider.FillOnHandAmount(newInventory.Id, req.Locations, false);
-        SaveToDBOrFail();
+        using IDbContextTransaction transaction = _db.Database.BeginTransaction();
+        try
+        {
+            _db.Inventories.Add(newInventory);
+            FillInventoryLocations(req.Locations, newInventory.Id);
+            newInventory.TotalOnHand = CalculateTotalOnHand(newInventory.Id);
+            SaveToDBOrFail();
+
+            setCaluclatedValues(newInventory);
+            transaction.Commit();
+        }
+        catch (Exception)
+        {
+            transaction.Rollback();
+            throw;
+        }
 
         return newInventory;
     }
@@ -62,10 +75,10 @@ public class InventoriesProvider : BaseProvider<Inventory>
             if (req.ItemId.HasValue)
             {
                 Item? foundItem = _itemsProvider.GetById(id: req.ItemId.Value, includeInventory: true);
-                if (foundItem == null) throw new ApiFlowException($"Item not found for id '{req.ItemId.Value}'");
+                if (foundItem == null) throw new ApiFlowException($"Item not found for id '{req.ItemId.Value}'", StatusCodes.Status404NotFound);
 
                 if (foundInventory.ItemId.Value != foundItem.Id && foundItem.Inventory != null)
-                    throw new ApiFlowException($"This item for id '{foundItem.Id}' already has an allocated inventory please select a different item.");
+                    throw new ApiFlowException($"This item for id '{foundItem.Id}' already has an allocated inventory please select a different item.", StatusCodes.Status409Conflict);
 
                 foundInventory.ItemId = foundItem.Id;
             }
@@ -73,13 +86,15 @@ public class InventoriesProvider : BaseProvider<Inventory>
             foundInventory.Description = req.Description;
             foundInventory.ItemReference = req.ItemReference;
 
-            UnlinkInventoryLocations(foundInventory.Id);
+            // Unlink inventory locations with ExecuteDelete: https://learn.microsoft.com/en-us/ef/core/saving/execute-insert-update-delete#executeupdate
+            _db.InventoryLocations.Where(il => il.InventoryId == foundInventory.Id).ExecuteDelete();
 
-            _locationsProvider.FillOnHandAmount(foundInventory.Id, req.Locations, false);
+            FillInventoryLocations(req.Locations, foundInventory.Id);
             foundInventory.SetUpdatedAt();
-
             ValidateModel(foundInventory);
             SaveToDBOrFail();
+
+            setCaluclatedValues(inventory: foundInventory);
             transaction.Commit();
 
             return foundInventory;
@@ -96,13 +111,6 @@ public class InventoriesProvider : BaseProvider<Inventory>
         }
     }
 
-    // Unlink inventory locations with ExecuteUpdate: https://learn.microsoft.com/en-us/ef/core/saving/execute-insert-update-delete#executeupdate
-    private void UnlinkInventoryLocations(Guid id) =>
-            _db.Locations.Where(l => l.InventoryId == id)
-            .ExecuteUpdate(setters => setters
-            .SetProperty(l => l.InventoryId, l => null)
-            .SetProperty(l => l.OnHand, l => 0));
-
     public override Inventory? Delete(Guid id)
     {
         Inventory? foundInventory = GetById(id);
@@ -113,48 +121,51 @@ public class InventoriesProvider : BaseProvider<Inventory>
         return foundInventory;
     }
 
+    protected override void ValidateModel(Inventory model) => _inventoryValidator.ValidateAndThrow(model);
+
+    private void FillInventoryLocations(List<InventoryLocationRR> inventoryLocations, Guid inventoryId)
+    {
+        foreach (InventoryLocationRR location in inventoryLocations)
+        {
+            _db.InventoryLocations.Add(new InventoryLocation(newInstance: true)
+            {
+                InventoryId = inventoryId,
+                LocationId = location.LocationId,
+                OnHandAmount = location.OnHand ?? 0
+            });
+        }
+    }
+
     public Inventory? GetInventoryByItemId(Guid? itemId) => _db.Inventories.Where(i => i.ItemId == itemId).FirstOrDefault();
 
+    public List<InventoryLocation>? GetInventoryLocations(Guid inventoryId) => _db.InventoryLocations
+        .Include(il => il.Location)
+        .Where(il => il.InventoryId == inventoryId)
+        .ToList();
+
+    public void setCaluclatedValues(Inventory? inventory = null, Guid? inventoryId = null)
+    {
+        if (inventoryId.HasValue) inventory = GetById(inventoryId.Value);
+
+        if (inventory == null) throw new Exception("Processing inventory calculated values failed.");
+
+        inventory.TotalOnHand = CalculateTotalOnHand(inventory.Id);
+        inventory.TotalAllocated = 0; //TODO:
+        inventory.TotalAvailable = 0; //TODO:
+        inventory.TotalOrderd = 0; //TODO:
+        inventory.TotalExpected = 0; //TODO:
+        inventory.SetUpdatedAt();
+        _db.Inventories.Update(inventory);
+        SaveToDBOrFail();
+    }
+
     /*
-        total_on_hand int //calculated value from location_inventory
-        total_expected int //calculated value 
-        total_ordered int //calculated value op basis van order
-        total_allocated int //calculated value
-        total_available int //calculated value
+        total_on_hand int FIXME: Optellen op basis van inventory_locations SUM
+        total_expected int FIXME: (inbound shipments) items amount optellen
+        total_ordered int FIXME: als het ordered is maar nog niet klaar is (alles optellen met status pending)
+        total_allocated int FIXME: als order is afgerond en shipment is onderweg (toegewezen aan shipment)
+        total_available int FIXME: (total on hand + total expected) - (total ordered + total allocated)
     */
 
-    public int CalculateTotalOnHand(Guid inventoryId) => _db.Locations.Where(location => location.InventoryId == inventoryId).Sum(location => location.OnHand ?? 0);
-
-    public int CalculateTotalExpected()
-    {
-        return 0; // TODO
-    }
-
-    public int CalculateTotalOrdered()
-    {
-        return 0; // TODO
-    }
-
-    public int CalculateTotalAllocated()
-    {
-        return 0; // TODO
-    }
-
-    public int CalculateTotalAvailable()
-    {
-        return 0; // TODO
-    }
-
-    public Dictionary<string, int> GetCalculatedValues(Guid inventoryId) => new Dictionary<string, int>()
-        {
-            {"TotalOnHand", CalculateTotalOnHand(inventoryId)},
-            {"TotalExpected", CalculateTotalExpected()},
-            {"TotalOrdered", CalculateTotalOrdered()},
-            {"TotalAllocated", CalculateTotalAllocated()},
-            {"TotalAvailable", CalculateTotalAvailable()},
-        };
-
-
-
-    protected override void ValidateModel(Inventory model) => _inventoryValidator.ValidateAndThrow(model);
+    public int CalculateTotalOnHand(Guid inventoryId) => _db.InventoryLocations.Where(il => il.InventoryId == inventoryId).Sum(il => il.OnHandAmount);
 }

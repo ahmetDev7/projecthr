@@ -30,11 +30,29 @@ Content-Type: application/json
 }
 ###
 
+### UPDATE TRANSFER
+PUT http://localhost:5000/api/transfers/586f80b3-c631-4160-be01-7ecc7e3777a6
+Content-Type: application/json
+
+{
+  "transfer_from_id": "5aeb7004-fd10-4dab-82f3-05216ff3df4d",
+  "transfer_to_id": "5aeb7004-fd10-4dab-82f3-05216ff3df7c",
+  "reference": "TST-0273",
+  "transfer_status": "Processing",
+  "items": [
+    {
+      "itemId": "d91369f6-af0a-4b45-9b23-ec263a6f2556",
+      "amount": 50
+    }
+  ]
+}
+###
+
 ### DELETE TRANSFER
 DELETE http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
 Content-Type: application/json
 
 ### COMMIT TRANSFER
-PUT http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b
+PUT http://localhost:5000/api/transfers/7fcf22de-edd6-423c-a371-a4e9cc9d0f1b/commit
 Content-Type: application/json
 ###

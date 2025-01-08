@@ -26,8 +26,11 @@ public class ContactsController : ControllerBase
             {
                 Id = newContact?.Id,
                 Name = newContact?.Name,
+                Function = newContact?.Function,
                 Phone = newContact?.Phone,
-                Email = newContact?.Email
+                Email = newContact?.Email,
+                CreatedAt = newContact?.CreatedAt,
+                UpdatedAt = newContact?.UpdatedAt
             }
         });
     }
@@ -47,8 +50,11 @@ public class ContactsController : ControllerBase
             {
                 Id = updateContact.Id,
                 Name = updateContact.Name,
+                Function = updateContact.Function,
                 Phone = updateContact.Phone,
-                Email = updateContact.Email
+                Email = updateContact.Email,
+                CreatedAt = updateContact.CreatedAt,
+                UpdatedAt = updateContact.UpdatedAt
             }
         });
     }
@@ -61,16 +67,15 @@ public class ContactsController : ControllerBase
         if (foundContact == null)
             return NotFound(new { message = $"Contact not found for id {id}" });
 
-        return Ok(new
+        return Ok(new ContactResponse
         {
-            message = "Contact found!",
-            Contact = new ContactResponse
-            {
-                Id = foundContact.Id,
-                Name = foundContact.Name,
-                Phone = foundContact.Phone,
-                Email = foundContact.Email
-            }
+            Id = foundContact.Id,
+            Name = foundContact.Name,
+            Function = foundContact.Function,
+            Phone = foundContact.Phone,
+            Email = foundContact.Email,
+            CreatedAt = foundContact.CreatedAt,
+            UpdatedAt = foundContact.UpdatedAt
         });
     }
 
@@ -79,8 +84,34 @@ public class ContactsController : ControllerBase
     {
         Id = c.Id,
         Name = c.Name,
+        Function = c.Function,
         Phone = c.Phone,
-        Email = c.Email
+        Email = c.Email,
+        CreatedAt = c.CreatedAt,
+        UpdatedAt = c.UpdatedAt
     }).ToList());
 
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        Contact? foundContact = _contactProvider.Delete(id);
+
+        if (foundContact == null)
+            return NotFound(new { message = $"Contact not found for id {id}" });
+
+        return Ok(new
+        {
+            message = "Contact deleted!",
+            Contact = new ContactResponse
+            {
+                Id = foundContact.Id,
+                Name = foundContact.Name,
+                Function = foundContact.Function,
+                Phone = foundContact.Phone,
+                Email = foundContact.Email,
+                CreatedAt = foundContact.CreatedAt,
+                UpdatedAt = foundContact.UpdatedAt
+            }
+        });
+    }
 }

@@ -22,15 +22,5 @@ public class AddressValidator : AbstractValidator<Address>
         RuleFor(address => address.CountryCode)
             .NotNull().WithMessage("country_code is required.")
             .NotEmpty().WithMessage("country_code cannot be empty.");
-        RuleFor(address => address.Id)
-            .Custom((addressId, context) =>
-            {
-                if (db.Warehouses.Any(w => w.AddressId == addressId) ||
-                    db.Clients.Any(c => c.AddressId == addressId) ||
-                    db.Suppliers.Any(s => s.AddressId == addressId))
-                {
-                    context.AddFailure("address_id", "The provided address_id is in use and cannot be modified.");
-                }
-            });
     }
 }

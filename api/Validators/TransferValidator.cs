@@ -6,6 +6,9 @@ public class TransferValidator : AbstractValidator<Transfer>
     {
         RuleFor(transfer => transfer).Custom((transfer, context) =>
         {
+
+            if (transfer.TransferItems == null || transfer.TransferItems.Count == 0) return;
+
             // check if transfer_from and transfer_to are not the same
             if (transfer.TransferFromId == transfer.TransferToId)
             {
@@ -13,8 +16,7 @@ public class TransferValidator : AbstractValidator<Transfer>
                 return;
             }
 
-            if (transfer.TransferItems == null || transfer.TransferItems.Count == 0) return;
-
+            int? totalAmount = null;
             bool fromDock = transfer.TransferFromId == null;
             bool toDock = transfer.TransferToId == null;
 
@@ -29,6 +31,7 @@ public class TransferValidator : AbstractValidator<Transfer>
                 Location? locationFrom = locationsProvider.GetById(id: transfer.TransferFromId.Value, includeWarehouse: true);
                 if (locationFrom == null) return;
                 warehouseFrom = locationFrom.Warehouse;
+                warehouseTo = locationFrom.Warehouse;
                 if (warehouseFrom == null)
                 {
                     context.AddFailure("transfer_from_id", $"Warehouse not found");
@@ -40,6 +43,7 @@ public class TransferValidator : AbstractValidator<Transfer>
             {
                 Location? locationTo = locationsProvider.GetById(id: transfer.TransferToId.Value, includeWarehouse: true);
                 if (locationTo == null) return;
+                warehouseFrom = locationTo.Warehouse;
                 warehouseTo = locationTo.Warehouse;
 
                 if (warehouseTo == null)
@@ -49,10 +53,21 @@ public class TransferValidator : AbstractValidator<Transfer>
                 }
             }
 
+            if (warehouseFrom == null && warehouseTo == null)
+            {
+                context.AddFailure("transfer_from_id and transfer_to_id", $"Warehouse not dock not found for transfer_from_id and transfer_to_id");
+                return;
+            }
+
             if (fromLocation && toLocation && warehouseFrom.Id != warehouseTo.Id)
             {
                 context.AddFailure("transfer_from_id and transfer_to_id", $"Both locations must be in the same warehouse");
                 return;
+            }
+
+            if (fromDock || toDock)
+            {
+                totalAmount = transfer.TransferItems.Sum(i => i.Amount);
             }
 
             foreach (TransferItem transferItem in transfer.TransferItems)
@@ -68,54 +83,41 @@ public class TransferValidator : AbstractValidator<Transfer>
                     return;
                 }
 
+                Guid currentInventoryId = foundInventory.Id;
+
                 if (fromLocation)
                 {
-                    // check if the inventory_id is on the location (from_transfer_id)
-                    Location? locationOfTransferFrom = db.Locations.FirstOrDefault(l => l.InventoryId == foundInventory.Id && l.Id == transfer.TransferFromId);
+                    // check if the item.inventoryId is on the location (from_transfer_id)
+                    InventoryLocation? locationOfTransferFrom = db.InventoryLocations.FirstOrDefault(il =>
+                        il.InventoryId == currentInventoryId &&
+                        il.LocationId == transfer.TransferFromId
+                    );
+
+                    // returns error if the given inventoryId is not found with the corresponding location of from_transfer_id
                     if (locationOfTransferFrom == null)
                     {
-                        context.AddFailure("items", $"item is not from this location {transfer.TransferFromId}");
+                        context.AddFailure("transfer_from", $"item_id {itemId} not found on the specified location of transfer_from_id {transfer.TransferFromId}");
                         return;
                     }
 
                     // check if the selected on_hand amount is lower or equal to the selected amount
                     int? transferAmount = transferItem.Amount;
-                    if (transferAmount > locationOfTransferFrom.OnHand)
+                    if (locationOfTransferFrom.OnHandAmount < transferAmount)
                     {
                         context.AddFailure("items", "The transfer amount exceeds the available inventory at the source location. Please adjust the amount to match the on-hand quantity.");
                         return;
                     }
                 }
 
-                if (toLocation)
-                {
-                    // get inventory_id from location
-                    Location? transferToLocation = db.Locations.FirstOrDefault(l => l.Id == transfer.TransferToId);
-                    if (transferToLocation == null) return;
-
-                    // if inventory_id is different from the item.InventoryId then show exception.
-                    if (transferToLocation.InventoryId.HasValue && foundInventory?.Id != transferToLocation.InventoryId)
-                    {
-                        context.AddFailure("items", $"There already is another item on this location {transfer.TransferToId}");
-                        return;
-                    }
-                }
-
-                int? totalAmount = null;
-                if (fromDock || toDock)
-                {
-                    totalAmount = transfer.TransferItems.Sum(i => i.Amount);
-                }
-
                 if (fromDock)
                 {
                     // Find the item in the destination dock
-                    DockItem fromDockItem = db.DockItems.FirstOrDefault(di => di.DockId == warehouseTo.Dock.Id && di.ItemId == itemId);
+                    DockItem? fromDockItem = db.DockItems.FirstOrDefault(di => di.DockId == warehouseFrom.Dock.Id && di.ItemId == itemId);
 
                     // Validate item existence in the dock
                     if (fromDockItem == null)
                     {
-                        context.AddFailure("items", $"Item not in dock");
+                        context.AddFailure("items", $"Item {itemId} not found in dock of warehouse {warehouseFrom.Id}");
                         return;
                     }
 
@@ -138,7 +140,7 @@ public class TransferValidator : AbstractValidator<Transfer>
 
                     if (totalAmount > spaceAvailable)
                     {
-                        context.AddFailure("items", $"The selected amount exceeds the dock's capacity. The maximum capacity is 50, with only {spaceAvailable} space(s) remaining. You attempted to add {totalAmount} item(s). Please adjust the quantity to fit within the available space.");
+                        context.AddFailure("items", $"The selected amount exceeds the dock's capacity. The maximum capacity is {Dock.CAPCITY}, with only {spaceAvailable} space(s) remaining. You attempted to add {totalAmount} item(s). Please adjust the quantity to fit within the available space.");
                         return;
                     }
                 }
@@ -153,7 +155,7 @@ public class TransferValidator : AbstractValidator<Transfer>
             {
                 if (TransferFromId.HasValue && !db.Locations.Any(l => l.Id == TransferFromId))
                 {
-                    context.AddFailure("transfer_from_id", "The provided transfer_from_id does not exist.");
+                    context.AddFailure("transfer_from_id", "The provided location of transfer_from_id does not exist.");
                 }
             });
 
@@ -162,7 +164,7 @@ public class TransferValidator : AbstractValidator<Transfer>
             {
                 if (TransferToId.HasValue && !db.Locations.Any(l => l.Id == TransferToId))
                 {
-                    context.AddFailure("transfer_to_id", "The provided transfer_to_id does not exist.");
+                    context.AddFailure("transfer_to_id", "The provided location of transfer_to_id does not exist.");
                 }
             });
 

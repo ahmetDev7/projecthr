@@ -28,17 +28,16 @@ public class WarehousesController : ControllerBase
                     Id = createdWarehouse.Id,
                     Code = createdWarehouse.Code,
                     Name = createdWarehouse.Name,
-                    Contact = new ContactResponse
+                    Contacts = createdWarehouse.WarehouseContacts.Select(wc => new ContactResponse
                     {
-                        Id = createdWarehouse.ContactId,
-                        Name = createdWarehouse.Contact?.Name,
-                        Function = createdWarehouse.Contact?.Function,
-                        Phone = createdWarehouse.Contact?.Phone,
-                        Email = createdWarehouse.Contact?.Email,
-                        CreatedAt = createdWarehouse.Contact?.CreatedAt,
-                        UpdatedAt = createdWarehouse.Contact?.UpdatedAt
-
-                    },
+                        Id = wc.ContactId,
+                        Name = wc.Contact?.Name,
+                        Function = wc.Contact?.Function,
+                        Phone = wc.Contact?.Phone,
+                        Email = wc.Contact?.Email,
+                        CreatedAt = wc.Contact?.CreatedAt,
+                        UpdatedAt = wc.Contact?.UpdatedAt
+                    }).ToList(),
                     Address = new AddressResponse
                     {
                         Id = createdWarehouse.AddressId,
@@ -81,16 +80,16 @@ public class WarehousesController : ControllerBase
                     Id = id,
                     Code = updatedWarehouse.Code,
                     Name = updatedWarehouse.Name,
-                    Contact = new ContactResponse
+                    Contacts = updatedWarehouse.WarehouseContacts.Select(wc => new ContactResponse
                     {
-                        Id = updatedWarehouse.ContactId,
-                        Name = updatedWarehouse.Contact?.Name,
-                        Function = updatedWarehouse.Contact?.Function,
-                        Phone = updatedWarehouse.Contact?.Phone,
-                        Email = updatedWarehouse.Contact?.Email,
-                        CreatedAt = updatedWarehouse.Contact?.CreatedAt,
-                        UpdatedAt = updatedWarehouse.Contact?.UpdatedAt
-                    },
+                        Id = wc.ContactId,
+                        Name = wc.Contact?.Name,
+                        Function = wc.Contact?.Function,
+                        Phone = wc.Contact?.Phone,
+                        Email = wc.Contact?.Email,
+                        CreatedAt = wc.Contact?.CreatedAt,
+                        UpdatedAt = wc.Contact?.UpdatedAt
+                    }).ToList(),
                     Address = new AddressResponse
                     {
                         Id = updatedWarehouse.AddressId,
@@ -130,16 +129,16 @@ public class WarehousesController : ControllerBase
                 Id = deletedWarehouse.Id,
                 Code = deletedWarehouse.Code,
                 Name = deletedWarehouse.Name,
-                Contact = new ContactResponse
+                Contacts = deletedWarehouse.WarehouseContacts.Select(wc => new ContactResponse
                 {
-                    Id = deletedWarehouse.ContactId,
-                    Name = deletedWarehouse.Contact?.Name,
-                    Function = deletedWarehouse.Contact?.Function,
-                    Phone = deletedWarehouse.Contact?.Phone,
-                    Email = deletedWarehouse.Contact?.Email,
-                    CreatedAt = deletedWarehouse.Contact?.CreatedAt,
-                    UpdatedAt = deletedWarehouse.Contact?.UpdatedAt
-                },
+                    Id = wc.ContactId,
+                    Name = wc.Contact?.Name,
+                    Function = wc.Contact?.Function,
+                    Phone = wc.Contact?.Phone,
+                    Email = wc.Contact?.Email,
+                    CreatedAt = wc.Contact?.CreatedAt,
+                    UpdatedAt = wc.Contact?.UpdatedAt
+                }).ToList(),
                 Address = new AddressResponse
                 {
                     Id = deletedWarehouse.AddressId,
@@ -176,16 +175,16 @@ public class WarehousesController : ControllerBase
             Id = foundWarehouse.Id,
             Code = foundWarehouse.Code,
             Name = foundWarehouse.Name,
-            Contact = new ContactResponse
+            Contacts = foundWarehouse.WarehouseContacts.Select(wc => new ContactResponse
             {
-                Id = foundWarehouse.ContactId,
-                Name = foundWarehouse.Contact?.Name,
-                Function = foundWarehouse.Contact?.Function,
-                Phone = foundWarehouse.Contact?.Phone,
-                Email = foundWarehouse.Contact?.Email,
-                CreatedAt = foundWarehouse.Contact?.CreatedAt,
-                UpdatedAt = foundWarehouse.Contact?.UpdatedAt
-            },
+                Id = wc.ContactId,
+                Name = wc.Contact?.Name,
+                Function = wc.Contact?.Function,
+                Phone = wc.Contact?.Phone,
+                Email = wc.Contact?.Email,
+                CreatedAt = wc.Contact?.CreatedAt,
+                UpdatedAt = wc.Contact?.UpdatedAt
+            }).ToList(),
             Address = new AddressResponse
             {
                 Id = foundWarehouse.AddressId,
@@ -217,16 +216,16 @@ public class WarehousesController : ControllerBase
         Id = w.Id,
         Code = w.Code,
         Name = w.Name,
-        Contact = new ContactResponse
+        Contacts = w.WarehouseContacts.Select(wc => new ContactResponse
         {
-            Id = w.ContactId,
-            Name = w.Contact?.Name,
-            Function = w.Contact?.Function,
-            Phone = w.Contact?.Phone,
-            Email = w.Contact?.Email,
-            CreatedAt = w.Contact?.CreatedAt,
-            UpdatedAt = w.Contact?.UpdatedAt
-        },
+            Id = wc.ContactId,
+            Name = wc.Contact?.Name,
+            Function = wc.Contact?.Function,
+            Phone = wc.Contact?.Phone,
+            Email = wc.Contact?.Email,
+            CreatedAt = wc.Contact?.CreatedAt,
+            UpdatedAt = wc.Contact?.UpdatedAt
+        }).ToList(),
         Address = new AddressResponse
         {
             Id = w.AddressId,

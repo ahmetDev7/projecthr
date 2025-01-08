@@ -38,6 +38,8 @@ public class SuppliersController : ControllerBase
             ItemLineId = item.ItemLineId,
             ItemTypeId = item.ItemTypeId,
             SupplierId = item.SupplierId,
+            CreatedAt = item.CreatedAt,
+            UpdatedAt = item.UpdatedAt
         }).ToList();
 
         return Ok(itemsSupplier);
@@ -61,20 +63,28 @@ public class SuppliersController : ControllerBase
                 Reference = supplier.Reference,
                 Contact = new ContactResponse
                 {
-                    Name = supplier.Contact.Name,
-                    Email = supplier.Contact.Email,
-                    Phone = supplier.Contact.Phone
+                    Id = supplier.ContactId,
+                    Name = supplier.Contact?.Name,
+                    Function = supplier.Contact?.Function,
+                    Phone = supplier.Contact?.Phone,
+                    Email = supplier.Contact?.Email,
+                    CreatedAt = supplier.Contact?.CreatedAt,
+                    UpdatedAt = supplier.Contact?.UpdatedAt
+
                 },
                 Address = new AddressResponse
                 {
-                    Street = supplier.Address.Street,
-                    HouseNumber = supplier.Address.HouseNumber,
-                    HouseNumberExtension = supplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = supplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = supplier.Address.ZipCode,
-                    City = supplier.Address.City,
-                    Province = supplier.Address.Province,
-                    CountryCode = supplier.Address.CountryCode,
+                    Id = supplier.AddressId,
+                    Street = supplier.Address?.Street,
+                    HouseNumber = supplier.Address?.HouseNumber,
+                    HouseNumberExtension = supplier.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = supplier.Address?.HouseNumberExtensionExtra,
+                    ZipCode = supplier.Address?.ZipCode,
+                    City = supplier.Address?.City,
+                    Province = supplier.Address?.Province,
+                    CountryCode = supplier.Address?.CountryCode,
+                    CreatedAt = supplier.Address?.CreatedAt,
+                    UpdatedAt = supplier.Address?.UpdatedAt
                 },
                 CreatedAt = supplier.CreatedAt,
                 UpdatedAt = supplier.UpdatedAt
@@ -99,20 +109,27 @@ public class SuppliersController : ControllerBase
                 Reference = updatedSupplier.Reference,
                 Contact = new ContactResponse
                 {
-                    Name = updatedSupplier.Contact.Name,
-                    Email = updatedSupplier.Contact.Email,
-                    Phone = updatedSupplier.Contact.Phone
+                    Id = updatedSupplier.ContactId,
+                    Name = updatedSupplier.Contact?.Name,
+                    Function = updatedSupplier.Contact?.Function,
+                    Phone = updatedSupplier.Contact?.Phone,
+                    Email = updatedSupplier.Contact?.Email,
+                    CreatedAt = updatedSupplier.Contact?.CreatedAt,
+                    UpdatedAt = updatedSupplier.Contact?.UpdatedAt
                 },
                 Address = new AddressResponse
                 {
-                    Street = updatedSupplier.Address.Street,
-                    HouseNumber = updatedSupplier.Address.HouseNumber,
-                    HouseNumberExtension = updatedSupplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = updatedSupplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = updatedSupplier.Address.ZipCode,
-                    City = updatedSupplier.Address.City,
-                    Province = updatedSupplier.Address.Province,
-                    CountryCode = updatedSupplier.Address.CountryCode
+                    Id = updatedSupplier.AddressId,
+                    Street = updatedSupplier.Address?.Street,
+                    HouseNumber = updatedSupplier.Address?.HouseNumber,
+                    HouseNumberExtension = updatedSupplier.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = updatedSupplier.Address?.HouseNumberExtensionExtra,
+                    ZipCode = updatedSupplier.Address?.ZipCode,
+                    City = updatedSupplier.Address?.City,
+                    Province = updatedSupplier.Address?.Province,
+                    CountryCode = updatedSupplier.Address?.CountryCode,
+                    CreatedAt = updatedSupplier.Address?.CreatedAt,
+                    UpdatedAt = updatedSupplier.Address?.UpdatedAt
                 },
                 CreatedAt = updatedSupplier.CreatedAt,
                 UpdatedAt = updatedSupplier.UpdatedAt
@@ -137,20 +154,25 @@ public class SuppliersController : ControllerBase
                 Reference = deletedSupplier.Reference,
                 Contact = new ContactResponse
                 {
-                    Name = deletedSupplier.Contact.Name,
-                    Email = deletedSupplier.Contact.Email,
-                    Phone = deletedSupplier.Contact.Phone
+                    Name = deletedSupplier.Contact?.Name,
+                    Function = deletedSupplier.Contact?.Function,
+                    Email = deletedSupplier.Contact?.Email,
+                    Phone = deletedSupplier.Contact?.Phone,
+                    CreatedAt = deletedSupplier.Contact?.CreatedAt,
+                    UpdatedAt = deletedSupplier.Contact?.UpdatedAt
                 },
                 Address = new AddressResponse
                 {
-                    Street = deletedSupplier.Address.Street,
-                    HouseNumber = deletedSupplier.Address.HouseNumber,
-                    HouseNumberExtension = deletedSupplier.Address.HouseNumberExtension,
-                    HouseNumberExtensionExtra = deletedSupplier.Address.HouseNumberExtensionExtra,
-                    ZipCode = deletedSupplier.Address.ZipCode,
-                    City = deletedSupplier.Address.City,
-                    Province = deletedSupplier.Address.Province,
-                    CountryCode = deletedSupplier.Address.CountryCode
+                    Street = deletedSupplier.Address?.Street,
+                    HouseNumber = deletedSupplier.Address?.HouseNumber,
+                    HouseNumberExtension = deletedSupplier.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = deletedSupplier.Address?.HouseNumberExtensionExtra,
+                    ZipCode = deletedSupplier.Address?.ZipCode,
+                    City = deletedSupplier.Address?.City,
+                    Province = deletedSupplier.Address?.Province,
+                    CountryCode = deletedSupplier.Address?.CountryCode,
+                    CreatedAt = deletedSupplier.Address?.CreatedAt,
+                    UpdatedAt = deletedSupplier.Address?.UpdatedAt
                 },
                 CreatedAt = deletedSupplier.CreatedAt,
                 UpdatedAt = deletedSupplier.UpdatedAt
@@ -173,20 +195,27 @@ public class SuppliersController : ControllerBase
             Reference = supplier.Reference,
             Contact = new ContactResponse
             {
-                Name = supplier.Contact.Name,
-                Email = supplier.Contact.Email,
-                Phone = supplier.Contact.Phone
+                Id = supplier.ContactId,
+                Name = supplier.Contact?.Name,
+                Function = supplier.Contact?.Function,
+                Phone = supplier.Contact?.Phone,
+                Email = supplier.Contact?.Email,
+                CreatedAt = supplier.Contact?.CreatedAt,
+                UpdatedAt = supplier.Contact?.UpdatedAt
             },
             Address = new AddressResponse
             {
-                Street = supplier.Address.Street,
-                HouseNumber = supplier.Address.HouseNumber,
-                HouseNumberExtension = supplier.Address.HouseNumberExtension,
-                HouseNumberExtensionExtra = supplier.Address.HouseNumberExtensionExtra,
-                ZipCode = supplier.Address.ZipCode,
-                City = supplier.Address.City,
-                Province = supplier.Address.Province,
-                CountryCode = supplier.Address.CountryCode,
+                Id = supplier.AddressId,
+                Street = supplier.Address?.Street,
+                HouseNumber = supplier.Address?.HouseNumber,
+                HouseNumberExtension = supplier.Address?.HouseNumberExtension,
+                HouseNumberExtensionExtra = supplier.Address?.HouseNumberExtensionExtra,
+                ZipCode = supplier.Address?.ZipCode,
+                City = supplier.Address?.City,
+                Province = supplier.Address?.Province,
+                CountryCode = supplier.Address?.CountryCode,
+                CreatedAt = supplier.Address?.CreatedAt,
+                UpdatedAt = supplier.Address?.UpdatedAt
             },
             CreatedAt = supplier.CreatedAt,
             UpdatedAt = supplier.UpdatedAt
@@ -201,20 +230,27 @@ public class SuppliersController : ControllerBase
         Reference = ig.Reference,
         Contact = new ContactResponse
         {
-            Name = ig.Contact.Name,
-            Email = ig.Contact.Email,
-            Phone = ig.Contact.Phone
+            Id = ig.ContactId,
+            Name = ig.Contact?.Name,
+            Function = ig.Contact?.Function,
+            Phone = ig.Contact?.Phone,
+            Email = ig.Contact?.Email,
+            CreatedAt = ig.Contact?.CreatedAt,
+            UpdatedAt = ig.Contact?.UpdatedAt
         },
         Address = new AddressResponse
         {
-            Street = ig.Address.Street,
-            HouseNumber = ig.Address.HouseNumber,
-            HouseNumberExtension = ig.Address.HouseNumberExtension,
-            HouseNumberExtensionExtra = ig.Address.HouseNumberExtensionExtra,
-            ZipCode = ig.Address.ZipCode,
-            City = ig.Address.City,
-            Province = ig.Address.Province,
-            CountryCode = ig.Address.CountryCode,
+            Id = ig.AddressId,
+            Street = ig.Address?.Street,
+            HouseNumber = ig.Address?.HouseNumber,
+            HouseNumberExtension = ig.Address?.HouseNumberExtension,
+            HouseNumberExtensionExtra = ig.Address?.HouseNumberExtensionExtra,
+            ZipCode = ig.Address?.ZipCode,
+            City = ig.Address?.City,
+            Province = ig.Address?.Province,
+            CountryCode = ig.Address?.CountryCode,
+            CreatedAt = ig.Address?.CreatedAt,
+            UpdatedAt = ig.Address?.UpdatedAt
         },
         CreatedAt = ig.CreatedAt,
         UpdatedAt = ig.UpdatedAt

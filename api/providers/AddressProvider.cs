@@ -1,6 +1,5 @@
 using DTO.Address;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 public class AddressProvider : BaseProvider<Address>
 {
@@ -46,7 +45,12 @@ public class AddressProvider : BaseProvider<Address>
         Address? foundAddress = _db.Addresses.FirstOrDefault(a => a.Id == id);
         if (foundAddress == null) return null;
 
-        ValidateModel(foundAddress);
+        if (_db.Warehouses.Any(w => w.AddressId == id) ||
+        _db.Clients.Any(c => c.AddressId == id) ||
+        _db.Suppliers.Any(s => s.AddressId == id))
+        {
+            throw new ApiFlowException($"{id} The provided address_id is in use and cannot be modified.");
+        }
 
         _db.Addresses.Remove(foundAddress);
         SaveToDBOrFail();
@@ -81,15 +85,4 @@ public class AddressProvider : BaseProvider<Address>
     }
 
     protected override void ValidateModel(Address model) => _addressValidator.ValidateAndThrow(model);
-
-    public Address? GetOrCreateAddress(AddressRequest? address = null, Guid? addressId = null)
-    {
-        if (address == null && addressId == null) return null;
-
-        if (addressId != null) return GetById(addressId.Value);
-
-        if (address != null) return Create(address);
-
-        return null;
-    }
 }

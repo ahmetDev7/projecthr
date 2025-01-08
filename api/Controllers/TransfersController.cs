@@ -39,6 +39,42 @@ public class TransfersController : ControllerBase
         });
     }
 
+    [HttpPut("{transferId}")]
+    public IActionResult Update(Guid transferId, [FromBody] TransferRequestUpdate req)
+    {
+        // transfer exists
+        if (!_transferProvider.TransferExists(transferId))
+            return NotFound(new { message = $"Transfer not found for id {transferId}" });
+
+
+        // check if transfer is completed
+        if (_transferProvider.IsTransferCompleted(transferId))
+            return Conflict(new { message = $"This transfer has already been completed. Updates to a completed transfer are not allowed." });
+
+
+        Transfer? updatedTransfer = _transferProvider.Update(transferId, req);
+        return Ok(new
+        {
+            message = "Transfer updated!",
+            created_transfer = new TransferResponse
+            {
+                Id = updatedTransfer.Id,
+                Reference = updatedTransfer.Reference,
+                TransferFromId = updatedTransfer.TransferFromId,
+                TransferToId = updatedTransfer.TransferToId,
+                TransferStatus = updatedTransfer.TransferStatus.ToString(),
+                Items = updatedTransfer.TransferItems?.Select(ti => new TransferItemDTO()
+                {
+                    ItemId = ti.ItemId,
+                    Amount = ti.Amount,
+                }).ToList(),
+                CreatedAt = updatedTransfer.CreatedAt,
+                UpdatedAt = updatedTransfer.UpdatedAt,
+            }
+        });
+    }
+
+
     [HttpDelete("{transferId}")]
     public IActionResult Delete(Guid transferId)
     {
@@ -66,7 +102,7 @@ public class TransfersController : ControllerBase
         });
     }
 
-    [HttpPut("{transferId}")]
+    [HttpPut("{transferId}/commit")]
     public IActionResult CommitTransfer(Guid transferId)
     {
         Transfer? commitedTransfer = _transferProvider.CommitTransfer(transferId);
@@ -140,25 +176,29 @@ public class TransfersController : ControllerBase
         Transfer? foundTransfer = _transferProvider.GetById(transferId);
         if (foundTransfer == null) return NotFound(new { message = $"Transfer not found for id '{transferId}'" });
 
-        Item? item = _transferProvider.GetItemsFromTransfer(foundTransfer);
-        return Ok(new ItemResponse
-        {
-            Id = item.Id,
-            Code = item.Code,
-            Description = item.Description,
-            ShortDescription = item.ShortDescription,
-            UpcCode = item.UpcCode,
-            ModelNumber = item.ModelNumber,
-            CommodityCode = item.CommodityCode,
-            UnitPurchaseQuantity = item.UnitPurchaseQuantity,
-            UnitOrderQuantity = item.UnitOrderQuantity,
-            PackOrderQuantity = item.PackOrderQuantity,
-            SupplierReferenceCode = item.SupplierReferenceCode,
-            SupplierPartNumber = item.SupplierPartNumber,
-            ItemGroupId = item.ItemGroupId,
-            ItemLineId = item.ItemLineId,
-            ItemTypeId = item.ItemTypeId,
-            SupplierId = item.SupplierId,
-        });
+        List<Item> items = _transferProvider.GetItemsFromTransfer(foundTransfer);
+        return Ok(
+            items.Select(item =>
+            new ItemResponse
+            {
+                Id = item.Id,
+                Code = item.Code,
+                Description = item.Description,
+                ShortDescription = item.ShortDescription,
+                UpcCode = item.UpcCode,
+                ModelNumber = item.ModelNumber,
+                CommodityCode = item.CommodityCode,
+                UnitPurchaseQuantity = item.UnitPurchaseQuantity,
+                UnitOrderQuantity = item.UnitOrderQuantity,
+                PackOrderQuantity = item.PackOrderQuantity,
+                SupplierReferenceCode = item.SupplierReferenceCode,
+                SupplierPartNumber = item.SupplierPartNumber,
+                ItemGroupId = item.ItemGroupId,
+                ItemLineId = item.ItemLineId,
+                ItemTypeId = item.ItemTypeId,
+                SupplierId = item.SupplierId,
+                CreatedAt = item.CreatedAt,
+                UpdatedAt = item.UpdatedAt,
+            }));
     }
 }

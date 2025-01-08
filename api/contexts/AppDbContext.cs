@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Dock> Docks { get; set; }
     public DbSet<DockItem> DockItems { get; set; }
+    public DbSet<InventoryLocation> InventoryLocations { get; set; }
 
 
 
@@ -77,13 +78,6 @@ public class AppDbContext : DbContext
             .WithMany(c => c.BillToOrders)
             .HasForeignKey(o => o.BillToClientId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        // Relation to Locations | On delete set in Locations tbl InventoryId to null
-        modelBuilder.Entity<Inventory>()
-            .HasMany(i => i.Locations)
-            .WithOne(l => l.Inventory)
-            .HasForeignKey(l => l.InventoryId)
-            .OnDelete(DeleteBehavior.SetNull);
 
         // Relation one to one with Dock | On delete Warehouse delete Dock
         modelBuilder.Entity<Warehouse>()

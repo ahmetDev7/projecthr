@@ -17,4 +17,3 @@ public class ContactValidator : AbstractValidator<Contact>
             .NotEmpty().WithMessage("Email cannot be empty.");
     }
 }
-

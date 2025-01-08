@@ -4,13 +4,14 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load Env vars
-DotNetEnv.Env.Load();
-string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-string? securityKey = Environment.GetEnvironmentVariable("SECURITY_KEY");
+builder.Configuration.AddJsonFile("./env.json", optional: false, reloadOnChange: true);
+var connectionString = builder.Configuration["DB_CONNECTION_STRING"];
+var securityKey = builder.Configuration["SECURITY_KEY"];
+
 if (connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
 if (securityKey == null) throw new InvalidOperationException("The required environment variable 'SECURITY_KEY' is not set.");
 
@@ -133,7 +134,8 @@ builder.Services.AddScoped<IValidator<Dock>, DockValidator>();
 
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+ options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); ;
 
 var app = builder.Build();
 
@@ -155,3 +157,5 @@ app.UseSwaggerUI(c =>
 });
 
 app.Run("http://localhost:5000");
+
+public partial class Program { }

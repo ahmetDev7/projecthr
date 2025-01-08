@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 ###
 ### Update Address
-PUT http://localhost:5000/api/addresses/94509304-04ff-44f6-ba10-d77524c71a2f
+PUT http://localhost:5000/api/addresses/53ac563b-a1d7-4498-b468-3b6b917ad6f1
 Content-Type: application/json
 
 {
@@ -34,5 +34,4 @@ GET  http://localhost:5000/api/addresses
 GET  http://localhost:5000/api/addresses/b372cf41-44f1-4823-a97c-316fef12ba27
 ###
 ### Delete Single Address
-DELETE http://localhost:5000/api/addresses/4b758ac2-5b59-4524-9d9c-d200b6da2543
-###
+DELETE http://localhost:5000/api/addresses/ef674f0e-0a8b-4e23-9136-a6936de70921

@@ -1,10 +1,10 @@
 ---
+config:
+theme: neo
 title: CargoHub V2
 url: https://www.mermaidchart.com/app/projects/9b6a57e7-c2d6-4afb-ba7c-6dee567012ce/diagrams/a5b0d405-d1aa-4b17-8576-9ed2f8b75f50/version/v0.1/edit
 ---
-
 classDiagram
-      
 class BaseModel{
     <<abstract>>
     + Id : Guid
@@ -14,6 +14,13 @@ class BaseModel{
     + BaseModel(bool newInstance=false, isUpdate=false)
     + SetTimeStamps() void
     + SetUpdatedAt() void
+}
+
+class BaseLog{
+    <<abstract>>
+    + Id : Guid
+    + CreatedAt : DateTime
+    + BaseLog()
 }
 
 class Address {
@@ -31,7 +38,6 @@ class Address {
     + Address() 
     + Address(bool newInstance=false, isUpdate=false)
 }
-
 class Contact {
     + Email : string
     + Name : string
@@ -42,7 +48,6 @@ class Contact {
     + Contact()
     + Contact(bool newInstance=false, isUpdate=false)
 }
-
 class Client {
     + Name : string
     + Address : Address
@@ -52,7 +57,6 @@ class Client {
     + Client()
     + Client(bool newInstance=false, isUpdate=false)
 }
-
 class Warehouse {
     + Name : string
     + Address : Address
@@ -64,7 +68,6 @@ class Warehouse {
     + Warehouse()
     + Warehouse(bool newInstance=false, isUpdate=false)
 }
-
 class Location {
     + Row : string
     + Rack : string
@@ -77,7 +80,6 @@ class Location {
     + Location()
     + Location(bool newInstance=false, isUpdate=false)
 }
-
 class Order {
     + Reference : string
     + ReferenceExtra : string
@@ -96,7 +98,6 @@ class Order {
     + Order()
     + Order(bool newInstance=false, isUpdate=false)
 }
-
 class OrderItem {
     + Amount : int
     + ItemId : Guid
@@ -105,7 +106,6 @@ class OrderItem {
     + OrderItem()
     + OrderItem(bool newInstance=false, isUpdate=false)
 }
-
 class Supplier {
     + Name : string
     + Code : string
@@ -118,7 +118,6 @@ class Supplier {
     + Supplier()
     + Supplier(bool newInstance=false, isUpdate=false)
 }
-
 class Shipment {
     + CarrierCode : string
     + CarrierDescription : string
@@ -138,18 +137,15 @@ class Shipment {
     + SetShipmentType(string strShipmentType) void
     + SetTransferMode(string strTransferMode) void
 }
-
 class ShipmentItem {
     + Amount : int
     + ItemId : Guid
     + ShipmentId : Guid
     + Item : Item
     + Shipment : Shipment
-    + Order : Order
     + ShipmentItem()
     + ShipmentItem(bool newInstance=false, isUpdate=false)
 }
-
 class Item {
     + Code : string
     + CommodityCode : string
@@ -175,7 +171,6 @@ class Item {
     + Item()
     + Item(bool newInstance=false, isUpdate=false)
 }
-
 class ItemGroup {
     + Name : string
     + Description : string
@@ -183,7 +178,6 @@ class ItemGroup {
     + ItemGroup()
     + ItemGroup(bool newInstance=false, isUpdate=false)
 }
-
 class ItemLine {
     + Name : string
     + Description : string
@@ -191,7 +185,6 @@ class ItemLine {
     + ItemLine()
     + ItemLine(bool newInstance=false, isUpdate=false)
 }
-
 class ItemType {
     + Name : string
     + Description : string
@@ -199,8 +192,6 @@ class ItemType {
     + ItemType()
     + ItemType(bool newInstance=false, isUpdate=false)
 }
-
-
 class Transfer {
     + Reference : string
     + TransferFromId : Guid
@@ -212,7 +203,6 @@ class Transfer {
     + Transfer()
     + Transfer(bool newInstance=false, isUpdate=false)
 }
-
 class TransferItem {
     + Amount : int
     + ItemId : Guid
@@ -222,15 +212,28 @@ class TransferItem {
     + TransferItem()
     + TransferItem(bool newInstance=false, isUpdate=false)
 }
-
 class Inventory {
     + Description : string
     + Item : Item
     + ItemId : Guid
     + ItemReference : string
-    + Locations : ICollection~Location~
+    + TotalOnHand : int
+    + TotalExpected : int
+    + TotalOrderd : int
+    + TotalAvailable : int
+    + TotalAllocated : int
     + Inventory()
     + Inventory(bool newInstance=false, isUpdate=false)
+}
+
+class InventoryLocation {
+    + OnHandAmount : int
+    + LocationId : Guid
+    + Location : Location
+    + InventoryId : Guid
+    + Inventory : Inventory
+    + InventoryLocation()
+    + InventoryLocation(bool newInstance=false, isUpdate=false)
 }
 
 class Dock {
@@ -240,7 +243,6 @@ class Dock {
     + Dock()
     + Dock(bool newInstance=false, isUpdate=false)
 }
-
 class DockItem {    
     + ItemId : Guid
     + Item : Item
@@ -251,7 +253,36 @@ class DockItem {
     + DockItem(bool newInstance=false, isUpdate=false)
 }
 
+class OrderShipment{
+    + OrderId : Guid
+    + Order : Order
+    + ShipmentId : Guid
+    + Shipment : Shipment
+    + OrderShipment()
+    + OrderShipment(bool newInstance=false, isUpdate=false)
+}
 
+class WarehouseLog{
+    + EmployeeName : string
+    + Role : Role
+    + Action : LogAction
+    + EntityId : Guid
+    + Entity : EntityType
+    + OldValue : string
+    + NewValue : string
+}
+
+class AppLog{
+    + Level : ErrorLevel
+    + Message : string
+    + Context : string
+
+}
+
+BaseLog <|-- WarehouseLog
+BaseLog <|-- AppLog
+
+BaseModel <|-- OrderShipment
 BaseModel <|-- Dock
 BaseModel <|-- DockItem
 BaseModel <|-- Address
@@ -271,10 +302,9 @@ BaseModel <|-- Client
 BaseModel <|-- ShipmentItem
 BaseModel <|-- OrderItem
 BaseModel <|-- TransferItem
-
+BaseModel <|-- InventoryLocation
 
 Warehouse "1" *-- "0..*" Location
-Location "0..*" o-- "0..1*" Inventory
 Location  *--  Transfer : has
 Inventory "0..1"  --* "1" Item
 Item "0..*"  o-- "0..1" ItemGroup
@@ -288,18 +318,13 @@ ShipmentItem "1..*"  --* "1" Shipment
 Transfer "1"  *-- "1..*" TransferItem
 OrderItem "1..*"  *-- "1" Order
 Order "0..*"  --* "1..2" Client
-
 Address "1"  *-- "0..*" Client
 Address "1"  *-- "0..*" Warehouse
 Address "1"  *-- "0..*" Supplier
-
 Contact "1"  *-- "0..*" Client
 Contact "1"  *-- "0..*" Warehouse
 Contact "1"  *-- "0..*" Supplier
-
 Dock "1"  *-- "0..*" DockItem
 DockItem "0..*"  --* "1" Item
-
-
-
-
+Inventory "1"  --* "0..*" InventoryLocation
+Location "1"  --* "0..*" InventoryLocation

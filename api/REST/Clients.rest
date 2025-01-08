@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 ###
 # Update Client with Contact ID and Address ID
-PUT http://localhost:5000/api/clients/fa5946ab-2ab8-4274-a2eb-b717855f8dca
+PUT http://localhost:5000/api/clients/e6ee7b10-2dbf-4bcd-aeed-7071e3f76b9e
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 ###
 # Delete Clients
-DELETE http://localhost:5000/api/clients/4a07f327-2ce1-499a-b2ab-692ce2a471be
+DELETE http://localhost:5000/api/clients/e6ee7b10-2dbf-4bcd-aeed-7071e3f76b9e
 ###
 ### GetById Clients
 GET http://localhost:5000/api/clients/17187ac9-34b3-4a94-b4c9-922c06606117

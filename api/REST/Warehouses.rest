@@ -2,40 +2,29 @@ POST http://localhost:5000/api/warehouses/
 Content-Type: application/json
 
 {
-    "code": "TEST",
-    "name": "Test Company",
-    "contact_id": "e3138a4d-4086-4b0f-9262-ba46e7b2c799",
-    "address_id": "08a1f135-9cb3-4dc2-8470-eabdc7ccc249"
+  "code": "WD_001",
+  "name": "Sample Warehouse multi contact",
+  "contact_ids": [
+    "3087768f-d44f-404b-a1b1-54a691ea94b7",
+    "438a616f-d0d9-4c86-9443-18ec3139f9ae",
+    "47048a9c-1892-4b34-b8db-b6c99c873af9"
+  ],
+  "address_id": "59fdc093-b2d0-41fd-96b2-8f58030e53be"
 }
 ###
 ###
 
-PUT http://localhost:5000/api/warehouses/77aff44d-4112-49b6-84ce-006b1a1eafa1
+PUT http://localhost:5000/api/warehouses/5559d711-a141-46b3-b30b-4860f4d7879b
 Content-Type: application/json
 
 {
-    "code": "Test update warehouse with id's",
-    "name": "Test Company",
-    "contact_id": "8d2e7d61-e596-46e4-acd8-e85ef8805110",
-    "address_id": "0ba16ba7-0c7a-45de-9fe6-9054fb6df6a8"
+    "code": "WD_001 UPDATED",
+    "name": "Test Company UPDATED",
+  "contact_ids": [
+    "3087768f-d44f-404b-a1b1-54a691ea94b7"
+  ],
+    "address_id": "59fdc093-b2d0-41fd-96b2-8f58030e53be"
 }
-
-###
-GET  http://localhost:5000/api/warehouses
-Content-Type: application/json
-
-###
-
-GET  http://localhost:5000/api/warehouses/7ef3414c-2bc5-4687-b551-b281e2781d4b
-Content-Type: application/json
-
-###
-
-GET http://localhost:5000/api/Warehouses/7ef3414c-2bc5-4687-b551-b281e2781d4b/locations
-Content-Type: application/json
-
-###
-
 
 ### GET WAREHOUSES
 GET http://localhost:5000/api/warehouses
@@ -43,17 +32,21 @@ Content-Type: application/json
 ###
 
 ### GET WAREHOUSE BY ID
-GET http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+GET http://localhost:5000/api/warehouses/eed6a18f-38ef-450a-bcc4-e0cbcfb82a57
 Content-Type: application/json
 ###
 
 ### GET LOCATIONS FROM WAREHOUSE
-GET http://localhost:5000/api/warehouses/0f3f0eb5-7671-4a20-b9ef-340a6aa37fa2/locations
+GET http://localhost:5000/api/warehouses/eed6a18f-38ef-450a-bcc4-e0cbcfb82a57/locations
+Content-Type: application/json
+###
+
+### GET DOCK and DOCK ITEMS FROM WAREHOUSE
+GET http://localhost:5000/api/warehouses/eed6a18f-38ef-450a-bcc4-e0cbcfb82a57/dock
 Content-Type: application/json
 ###
 
 ### DELETE WAREHOUSE BY ID
-DELETE http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+DELETE http://localhost:5000/api/warehouses/eed6a18f-38ef-450a-bcc4-e0cbcfb82a57
 Content-Type: application/json
-
 ###

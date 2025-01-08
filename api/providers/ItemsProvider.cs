@@ -81,6 +81,7 @@ public class ItemsProvider : BaseProvider<Item>
         existingItem.ItemLineId = req.ItemLineId;
         existingItem.ItemTypeId = req.ItemTypeId;
         existingItem.SupplierId = req.SupplierId;
+        existingItem.SetUpdatedAt();
 
         ValidateModel(existingItem);
 

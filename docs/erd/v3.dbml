@@ -55,11 +55,32 @@ Table locations {
   row varchar [not null]
   rack varchar [not null]
   shelf varchar [not null]
-  on_hand int [null]
   created_at datetime [not null]
   updated_at datetime [not null]
   warehouse_id uuid [ref: > warehouses.id, not null]
-  inventory_id uuid [ref: > inventories.id, null]
+}
+
+Table inventory_locations {
+  id uuid [pk]
+  inventory_id uuid [ref: - inventories.id, not null]
+  location_id uuid [ref: - locations.id , not null]
+  on_hand int [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table inventories {
+  id uuid [pk, not null]
+  description varchar
+  item_reference varchar
+  total_on_hand int [default:0]
+  total_expected int [default:0]
+  total_ordered int [default:0]
+  total_available int [default:0]
+  total_allocated int [default:0]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+  item_id uuid [ref: - items.id, not null] // Foreign Key to item
 }
 
 Table clients {
@@ -127,19 +148,6 @@ Table suppliers {
   updated_at datetime [not null]
 }
 
-Table inventories {
-  id uuid [pk, not null]
-  description varchar
-  item_reference varchar
-  //NOTE calculated value (from location_inventory): total_on_hand int
-  //NOTE calculated value: total_expected int
-  //NOTE calculated value: total_ordered int
-  //NOTE calculated value: total_allocated int
-  //NOTE calculated value: total_available int
-  created_at datetime [not null]
-  updated_at datetime [not null]
-  item_id uuid [ref: - items.id, null] // Foreign Key to item
-}
 
 Table orders {
   id uuid [pk]

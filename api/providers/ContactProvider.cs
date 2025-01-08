@@ -25,6 +25,7 @@ public class ContactProvider : BaseProvider<Contact>
         Contact newContact = new Contact(newInstance: true)
         {
             Name = req.Name,
+            Function = req.Function,
             Phone = req.Phone,
             Email = req.Email
         };
@@ -42,12 +43,12 @@ public class ContactProvider : BaseProvider<Contact>
         Contact? foundContact = _db.Contacts.FirstOrDefault(c => c.Id == id);
         if (foundContact == null) return null;
 
-
-        if (_db.Warehouses.Any(w => w.ContactId == id) ||
+        if (
+            _db.WarehouseContacts.Any(wc => wc.ContactId == id) ||
             _db.Clients.Any(c => c.ContactId == id) ||
             _db.Suppliers.Any(s => s.ContactId == id))
         {
-            throw new ApiFlowException($"{id} The provided contact_id is in use and cannot be modified or deleted.");
+            throw new ApiFlowException($"{id} The provided contact_id is in use and cannot be modified or deleted.", StatusCodes.Status409Conflict);
         }
         _db.Contacts.Remove(foundContact);
         SaveToDBOrFail();
@@ -64,6 +65,7 @@ public class ContactProvider : BaseProvider<Contact>
         if (existingContact == null) throw new ApiFlowException($"Contact not found for id '{id}'", StatusCodes.Status404NotFound);
 
         existingContact.Name = req.Name;
+        existingContact.Function = req.Function;
         existingContact.Phone = req.Phone;
         existingContact.Email = req.Email;
         existingContact.SetUpdatedAt();

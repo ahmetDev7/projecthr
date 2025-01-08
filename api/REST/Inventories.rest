@@ -5,26 +5,26 @@ Content-Type: application/json
 {
   "description": "INVENTORY ITEM 3 DESCRIPTION",
   "item_reference": "INVENTORY ITEM 3 REFERENCE",
-  "item_id": "ccddafaf-1f67-4308-9a58-a69d9ad553c0",
+  "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
   "locations": [
     {
-      "location_id": "c8cb6a30-f7f2-47f0-ac37-c6edba7a80e5",
+      "location_id": "646fd5c8-425e-44a9-9d5a-3d603e692092",
       "on_hand": 17
     }
   ]
 }
 ###
 
-PUT http://localhost:5000/api/inventories/7ae136ec-6a69-4fdf-8402-27528bc59416
+PUT http://localhost:5000/api/inventories/39201c04-2adc-42f1-982a-b47852ec3e86
 Content-Type: application/json
 
 {
   "description": "The description",
   "item_reference": "Some item",
-  "item_id": "ccddafaf-1f67-4308-9a58-a69d9ad553c0",
+  "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
   "locations": [
     {
-      "location_id": "27abd208-6f49-4ee5-a0e9-233f5280c3a4",
+      "location_id": "a38df692-09ed-418a-8c53-7ea765a895ce",
       "on_hand": 800
     }
     ,
@@ -40,10 +40,10 @@ GET http://localhost:5000/api/inventories
 Content-Type: application/json
 ###
 
-GET http://localhost:5000/api/inventories/be06eec8-ed7f-4596-80f2-838050a09882
+GET http://localhost:5000/api/inventories/39201c04-2adc-42f1-982a-b47852ec3e86
 Content-Type: application/json
 ###
 
-DELETE http://localhost:5000/api/inventories/9eb5298d-a6ee-41dd-a46c-2e6e60212df3
+DELETE http://localhost:5000/api/inventories/39201c04-2adc-42f1-982a-b47852ec3e86
 Content-Type: application/json
 ###

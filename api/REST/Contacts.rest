@@ -3,27 +3,29 @@ POST http://localhost:5000/api/contacts
 Content-Type: application/json
 
 {
-    "name": "John Doe",
+    "name": "Jane Doe",
+    "function": "Sales",
     "phone": "+123456789",
     "email": "john.doe@example.com"
 }
 ###
 ## Update Contact
-PUT http://localhost:5000/api/contacts/af5cc9d0-6b2e-4122-a2ef-dbf095892d88
+PUT http://localhost:5000/api/contacts/b2efa902-9f5c-4a27-84b3-fa3fdecf991b
 Content-Type: application/json
 
 {
-    "name": "Jane Doe",
+    "name": "Jan Frans",
     "phone": "+977654321",
-    "email": "jane.doe@example.com"
+    "email": "jan.frans@example.com",
+    "function": "CEO"
 }
 ###
 ### Get all Contact
 GET http://localhost:5000/api/contacts
 ###
 ### Get Contact by ID
-GET http://localhost:5000/api/contacts/8d2e7d61-e596-46e4-acd8-e85ef8805110
+GET http://localhost:5000/api/contacts/3a51b000-65da-47ee-88e6-42cd8908057e
 ###
 ### Delete Contact
-DELETE http://localhost:5000/api/contacts/dceae1cc-a77c-4526-9ca8-3fb0b9030cc2
+DELETE http://localhost:5000/api/contacts/b2efa902-9f5c-4a27-84b3-fa3fdecf991b
 ###

@@ -114,6 +114,9 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Function")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -206,6 +209,21 @@ namespace api.Migrations
                     b.Property<string>("ItemReference")
                         .HasColumnType("text");
 
+                    b.Property<int>("TotalAllocated")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalAvailable")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalExpected")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalOnHand")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalOrderd")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -215,6 +233,38 @@ namespace api.Migrations
                         .IsUnique();
 
                     b.ToTable("Inventories");
+                });
+
+            modelBuilder.Entity("InventoryLocation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("InventoryId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("LocationId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("OnHandAmount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventoryId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("InventoryLocations");
                 });
 
             modelBuilder.Entity("Item", b =>
@@ -373,12 +423,6 @@ namespace api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("InventoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int?>("OnHand")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Rack")
                         .IsRequired()
                         .HasColumnType("text");
@@ -399,8 +443,6 @@ namespace api.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InventoryId");
 
                     b.HasIndex("WarehouseId");
 
@@ -747,10 +789,6 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ContactId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -765,9 +803,36 @@ namespace api.Migrations
 
                     b.HasIndex("AddressId");
 
+                    b.ToTable("Warehouses");
+                });
+
+            modelBuilder.Entity("WarehouseContact", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ContactId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("WarehouseId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("ContactId");
 
-                    b.ToTable("Warehouses");
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("WarehouseContacts");
                 });
 
             modelBuilder.Entity("Client", b =>
@@ -830,6 +895,25 @@ namespace api.Migrations
                     b.Navigation("Item");
                 });
 
+            modelBuilder.Entity("InventoryLocation", b =>
+                {
+                    b.HasOne("Inventory", "Inventory")
+                        .WithMany()
+                        .HasForeignKey("InventoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inventory");
+
+                    b.Navigation("Location");
+                });
+
             modelBuilder.Entity("Item", b =>
                 {
                     b.HasOne("ItemGroup", "ItemGroup")
@@ -861,18 +945,11 @@ namespace api.Migrations
 
             modelBuilder.Entity("Location", b =>
                 {
-                    b.HasOne("Inventory", "Inventory")
-                        .WithMany("Locations")
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("Warehouse", "Warehouse")
                         .WithMany("Locations")
                         .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Inventory");
 
                     b.Navigation("Warehouse");
                 });
@@ -1019,15 +1096,26 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("WarehouseContact", b =>
+                {
                     b.HasOne("Contact", "Contact")
-                        .WithMany("Warehouses")
+                        .WithMany("WarehouseContacts")
                         .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Address");
+                    b.HasOne("Warehouse", "Warehouse")
+                        .WithMany("WarehouseContacts")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Contact");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("Address", b =>
@@ -1044,12 +1132,7 @@ namespace api.Migrations
 
             modelBuilder.Entity("Contact", b =>
                 {
-                    b.Navigation("Warehouses");
-                });
-
-            modelBuilder.Entity("Inventory", b =>
-                {
-                    b.Navigation("Locations");
+                    b.Navigation("WarehouseContacts");
                 });
 
             modelBuilder.Entity("Item", b =>
@@ -1110,6 +1193,8 @@ namespace api.Migrations
                     b.Navigation("Dock");
 
                     b.Navigation("Locations");
+
+                    b.Navigation("WarehouseContacts");
                 });
 #pragma warning restore 612, 618
         }

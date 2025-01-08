@@ -1,6 +1,5 @@
 using DTO.Address;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 public class AddressProvider : BaseProvider<Address>
 {

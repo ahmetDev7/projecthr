@@ -24,7 +24,9 @@ public class ItemGroupsController : ControllerBase
         {
             Id = newItemGroup.Id,
             Name = newItemGroup.Name,
-            Description = newItemGroup.Description
+            Description = newItemGroup.Description,
+            CreatedAt = newItemGroup.CreatedAt,
+            UpdatedAt = newItemGroup.UpdatedAt
         });
     }
 
@@ -41,7 +43,9 @@ public class ItemGroupsController : ControllerBase
             {
                 Id = updatedItemGroup.Id,
                 Name = updatedItemGroup.Name,
-                Description = updatedItemGroup.Description
+                Description = updatedItemGroup.Description,
+                CreatedAt = updatedItemGroup.CreatedAt,
+                UpdatedAt = updatedItemGroup.UpdatedAt
             }
         }
         );
@@ -59,7 +63,9 @@ public class ItemGroupsController : ControllerBase
             {
                 Id = deletedItemGroup.Id,
                 Name = deletedItemGroup.Name,
-                Description = deletedItemGroup.Description
+                Description = deletedItemGroup.Description,
+                CreatedAt = deletedItemGroup.CreatedAt,
+                UpdatedAt = deletedItemGroup.UpdatedAt
             }
         });
     }
@@ -75,7 +81,9 @@ public class ItemGroupsController : ControllerBase
             {
                 Id = foundItemGroup.Id,
                 Name = foundItemGroup.Name,
-                Description = foundItemGroup.Description
+                Description = foundItemGroup.Description,
+                CreatedAt = foundItemGroup.CreatedAt,
+                UpdatedAt = foundItemGroup.UpdatedAt
             });
     }
 
@@ -105,5 +113,7 @@ public class ItemGroupsController : ControllerBase
             SupplierReferenceCode = i.SupplierReferenceCode,
             SupplierPartNumber = i.SupplierPartNumber,
             ItemGroupId = i.ItemGroupId,
+            CreatedAt = i.CreatedAt,
+            UpdatedAt = i.UpdatedAt,
         }).ToList());
 }

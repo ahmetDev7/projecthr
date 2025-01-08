@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - development
+      - release
   pull_request:
     branches:
       - main
@@ -79,4 +80,46 @@ jobs:
       - name: Add Coverage Report to Summary
         run: cat api.Tests/Report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY  
 
-          
+  dotnet_publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: test_and_code_coverage
+    if: ${{ github.ref_name == 'release' }} 
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Dotnet publish
+        run: dotnet publish -c Release -r linux-x64 --self-contained -o ./release
+      - name: Upload Linux x64 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-x64-artifact
+          path: ./release
+      - name: Release notification Discord
+        run: |
+          RESPONSE=$(curl -H "Content-Type: application/json" -X POST -d '{
+          "content": "@everyone",
+          "embeds": [
+            {
+              "type": "rich",
+              "title": "Er is een nieuwe release beschikbaar!",
+              "description": "Een nieuwe Linux x64 artifact is beschikbaar voor download!",
+              "color": 2123412,
+              "thumbnail": {
+                "url": "https://i.giphy.com/PqjTdvXImZQfcmTYEO.webp"
+              },
+              "author": {
+                "name": "${{ github.actor }}",
+                "url": "https://github.com/${{ github.actor_id }}",
+                "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
+              },
+              "url": "https://github.com/ahmetDev7/projecthr/actions"
+            }
+          ]
+          }' ${{ secrets.DISCORD_WEBHOOK_URL }})
+        if: ${{ success() }}

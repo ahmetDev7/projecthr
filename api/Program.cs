@@ -131,6 +131,7 @@ builder.Services.AddScoped<IValidator<Address>, AddressValidator>();
 builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
 builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();
 builder.Services.AddScoped<IValidator<Dock>, DockValidator>();
+builder.Services.AddScoped<IValidator<WarehouseRequest>, WarehouseRequestValidator>();
 
 
 

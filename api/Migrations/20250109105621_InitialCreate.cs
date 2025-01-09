@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,7 @@ namespace api.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    Function = table.Column<string>(type: "text", nullable: true),
                     Phone = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -61,6 +62,64 @@ namespace api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ItemGroups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemLines",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemLines", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Clients",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    ContactId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AddressId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Clients_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Clients_Contacts_ContactId",
+                        column: x => x.ContactId,
+                        principalTable: "Contacts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,6 +198,9 @@ namespace api.Migrations
                     SupplierReferenceCode = table.Column<string>(type: "text", nullable: false),
                     SupplierPartNumber = table.Column<string>(type: "text", nullable: true),
                     ItemGroupId = table.Column<Guid>(type: "uuid", nullable: true),
+                    SupplierId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ItemLineId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ItemTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -150,6 +212,42 @@ namespace api.Migrations
                         column: x => x.ItemGroupId,
                         principalTable: "ItemGroups",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Items_ItemLines_ItemLineId",
+                        column: x => x.ItemLineId,
+                        principalTable: "ItemLines",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Items_ItemTypes_ItemTypeId",
+                        column: x => x.ItemTypeId,
+                        principalTable: "ItemTypes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Items_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Docks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    WarehouseId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Docks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Docks_Warehouses_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,6 +290,8 @@ namespace api.Migrations
                     TotalTax = table.Column<decimal>(type: "numeric", nullable: true),
                     TotalSurcharge = table.Column<decimal>(type: "numeric", nullable: true),
                     WarehouseId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ShipToClientId = table.Column<Guid>(type: "uuid", nullable: true),
+                    BillToClientId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -199,11 +299,107 @@ namespace api.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Orders_Clients_BillToClientId",
+                        column: x => x.BillToClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_Clients_ShipToClientId",
+                        column: x => x.ShipToClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Orders_Warehouses_WarehouseId",
                         column: x => x.WarehouseId,
                         principalTable: "Warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Inventories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    ItemReference = table.Column<string>(type: "text", nullable: true),
+                    TotalOnHand = table.Column<int>(type: "integer", nullable: false),
+                    TotalExpected = table.Column<int>(type: "integer", nullable: false),
+                    TotalOrderd = table.Column<int>(type: "integer", nullable: false),
+                    TotalAvailable = table.Column<int>(type: "integer", nullable: false),
+                    TotalAllocated = table.Column<int>(type: "integer", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inventories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Inventories_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DockItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DockId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Amount = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DockItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DockItems_Docks_DockId",
+                        column: x => x.DockId,
+                        principalTable: "Docks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DockItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transfers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Reference = table.Column<string>(type: "text", nullable: true),
+                    TransferFromId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TransferToId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TransferStatus = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transfers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transfers_Locations_TransferFromId",
+                        column: x => x.TransferFromId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Transfers_Locations_TransferToId",
+                        column: x => x.TransferToId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -267,6 +463,62 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InventoryLocations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    InventoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LocationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    OnHandAmount = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InventoryLocations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InventoryLocations_Inventories_InventoryId",
+                        column: x => x.InventoryId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InventoryLocations_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransferItems",
+                columns: table => new
+                {
+                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TransferId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Amount = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransferItems", x => new { x.ItemId, x.TransferId });
+                    table.ForeignKey(
+                        name: "FK_TransferItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TransferItems_Transfers_TransferId",
+                        column: x => x.TransferId,
+                        principalTable: "Transfers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShipmentItems",
                 columns: table => new
                 {
@@ -295,9 +547,66 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Clients_AddressId",
+                table: "Clients",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_ContactId",
+                table: "Clients",
+                column: "ContactId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DockItems_DockId",
+                table: "DockItems",
+                column: "DockId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DockItems_ItemId",
+                table: "DockItems",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Docks_WarehouseId",
+                table: "Docks",
+                column: "WarehouseId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inventories_ItemId",
+                table: "Inventories",
+                column: "ItemId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InventoryLocations_InventoryId",
+                table: "InventoryLocations",
+                column: "InventoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InventoryLocations_LocationId",
+                table: "InventoryLocations",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Items_ItemGroupId",
                 table: "Items",
                 column: "ItemGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_ItemLineId",
+                table: "Items",
+                column: "ItemLineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_ItemTypeId",
+                table: "Items",
+                column: "ItemTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_SupplierId",
+                table: "Items",
+                column: "SupplierId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_WarehouseId",
@@ -313,6 +622,16 @@ namespace api.Migrations
                 name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_BillToClientId",
+                table: "Orders",
+                column: "BillToClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ShipToClientId",
+                table: "Orders",
+                column: "ShipToClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_WarehouseId",
@@ -345,6 +664,21 @@ namespace api.Migrations
                 column: "ContactId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TransferItems_TransferId",
+                table: "TransferItems",
+                column: "TransferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transfers_TransferFromId",
+                table: "Transfers",
+                column: "TransferFromId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transfers_TransferToId",
+                table: "Transfers",
+                column: "TransferToId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Warehouses_AddressId",
                 table: "Warehouses",
                 column: "AddressId");
@@ -359,7 +693,10 @@ namespace api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "DockItems");
+
+            migrationBuilder.DropTable(
+                name: "InventoryLocations");
 
             migrationBuilder.DropTable(
                 name: "OrderItems");
@@ -368,19 +705,43 @@ namespace api.Migrations
                 name: "ShipmentItems");
 
             migrationBuilder.DropTable(
-                name: "Suppliers");
+                name: "TransferItems");
 
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "Docks");
+
+            migrationBuilder.DropTable(
+                name: "Inventories");
 
             migrationBuilder.DropTable(
                 name: "Shipments");
 
             migrationBuilder.DropTable(
-                name: "ItemGroups");
+                name: "Transfers");
+
+            migrationBuilder.DropTable(
+                name: "Items");
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "ItemGroups");
+
+            migrationBuilder.DropTable(
+                name: "ItemLines");
+
+            migrationBuilder.DropTable(
+                name: "ItemTypes");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
+
+            migrationBuilder.DropTable(
+                name: "Clients");
 
             migrationBuilder.DropTable(
                 name: "Warehouses");

@@ -30,7 +30,6 @@ namespace api.IntegrationTests
                 var db = scopedServices.GetRequiredService<AppDbContext>();
 
                 db.Database.EnsureCreated();
-                db.Database.Migrate();
                 Seeding.IntializeTestDB(db);
             }
 

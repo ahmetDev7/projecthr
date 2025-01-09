@@ -12,19 +12,21 @@ namespace api.IntegrationTests
     public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {   
+        {
             base.ConfigureWebHost(builder);
 
-            builder.ConfigureTestServices(services => {
+            builder.ConfigureTestServices(services =>
+            {
                 var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
 
                 services.Remove(dbContextDescriptor);
 
                 var dbConnectionDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbConnection));
-                
+
                 services.Remove(dbConnectionDescriptor);
 
-                services.AddSingleton<DbConnection>(container => {
+                services.AddSingleton<DbConnection>(container =>
+                {
                     var connection = new SqliteConnection("DataSource=:memory:");
                     connection.Open();
 
@@ -33,13 +35,13 @@ namespace api.IntegrationTests
 
                 services.AddDbContext<AppDbContext>((container, options) =>
                 {
-                        var connection = container.GetRequiredService<DbConnection>();
-                        options.UseSqlite(connection);
+                    var connection = container.GetRequiredService<DbConnection>();
+                    options.UseSqlite(connection);
                 });
 
                 services.AddScoped<IStartupFilter, SeedDataStartupFilter>();
             });
-            
+
             builder.UseEnvironment("Test");
         }
 

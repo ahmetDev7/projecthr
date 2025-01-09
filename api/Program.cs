@@ -98,10 +98,13 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
-if (builder.Environment.IsEnvironment("Test")){
+if (builder.Environment.IsEnvironment("Test"))
+{
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlite("DataSource=:memory:"));
-} else {
+}
+else
+{
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString));
 }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace api.IntegrationTests{
+namespace api.IntegrationTests
+{
     public class DatabaseFixture : IDisposable
     {
         public AppDbContext Context { get; private set; }

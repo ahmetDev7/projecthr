@@ -7,7 +7,8 @@ namespace api.IntegrationTests
 {
     public class Seeding
     {
-        public static void IntializeTestDB(AppDbContext db){
+        public static void IntializeTestDB(AppDbContext db)
+        {
             db.ItemTypes.AddRange(GetItemTypes());
             db.SaveChanges();
         }

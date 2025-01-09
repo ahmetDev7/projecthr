@@ -24,8 +24,17 @@ namespace api.IntegrationTests
             var result = await response.Content.ReadFromJsonAsync<List<ItemType>>();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             
-            // Seeded 3 Item Types in Seeding.cs
             result.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public async Task GetSingleItemType_ReturnsSuccesWithItemType()
+        {
+            var response = await _httpClient.GetAsync(_baseUrl + "/276b1f8f-f695-46f4-9db0-78ec3f358210");
+            var result = await response.Content.ReadFromJsonAsync<ItemType>();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            
+            result.Should().NotBeNull();
         }
     }
 }

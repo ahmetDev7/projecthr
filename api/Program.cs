@@ -13,7 +13,7 @@ var securityKey = "";
 if (!builder.Environment.IsEnvironment("Test"))
 {
     builder.Configuration.AddJsonFile("./env.json", optional: false, reloadOnChange: true);
-    
+
     connectionString = builder.Configuration["DB_CONNECTION_STRING"];
     securityKey = builder.Configuration["SECURITY_KEY"];
 

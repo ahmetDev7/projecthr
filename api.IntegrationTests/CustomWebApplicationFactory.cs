@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Data.Sqlite;
+using Microsoft.AspNetCore.Builder;
 
 namespace api.IntegrationTests
 {
@@ -36,8 +37,32 @@ namespace api.IntegrationTests
                         options.UseSqlite(connection);
                 });
 
-                builder.UseEnvironment("Test");
+                services.AddScoped<IStartupFilter, SeedDataStartupFilter>();
             });
+            
+            builder.UseEnvironment("Test");
+        }
+
+        public class SeedDataStartupFilter : IStartupFilter
+        {
+            private readonly IServiceProvider _serviceProvider;
+
+            public SeedDataStartupFilter(IServiceProvider serviceProvider)
+            {
+                _serviceProvider = serviceProvider;
+            }
+
+            public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+            {
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    db.Database.EnsureCreated();
+                    Seeding.IntializeTestDB(db);
+                }
+
+                return next;
+            }
         }
     }
 }

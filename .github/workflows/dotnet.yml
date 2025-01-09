@@ -101,7 +101,8 @@ jobs:
           targetdir: 'api.IntegrationTests/Report'
           reporttypes: 'MarkdownSummaryGithub'
           classfilters: |
-            +api.Controllers.*Controller*
+            +api.Controllers.*Controller
+          verbosity: debug
       - name: Upload Integration Tests Coverage Report Artifact
         uses: actions/upload-artifact@v4
         with:

@@ -54,7 +54,7 @@ namespace api.IntegrationTests
 
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
-        
+
         [Fact]
         public async Task DeleteLocation_ReturnsNotFound()
         {

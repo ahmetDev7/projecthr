@@ -25,7 +25,7 @@ namespace api.IntegrationTests
             };
         }
         private static List<Location> GetLocations()
-        {   
+        {
             return new List<Location>(){
                 new Location(newInstance: true)
                 {
@@ -36,7 +36,7 @@ namespace api.IntegrationTests
                     WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49")
                 },
                 new Location(newInstance: true)
-                { 
+                {
                     Id = Guid.Parse("e6786fad-435b-460f-b6dd-11dd32b3b6a6"),
                     Row = "2",
                     Rack = "3",
@@ -84,7 +84,7 @@ namespace api.IntegrationTests
             };
         }
 
-        private static List<Warehouse>GetWarehouses()
+        private static List<Warehouse> GetWarehouses()
         {
             return new List<Warehouse>()
             {
@@ -97,8 +97,8 @@ namespace api.IntegrationTests
                 }
             };
 
-            
+
         }
-        
+
     }
 }

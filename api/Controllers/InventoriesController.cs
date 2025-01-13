@@ -130,26 +130,31 @@ public class InventoriesController : ControllerBase
         Inventory? foundInventory = _inventoriesProvider.GetById(id);
         if (foundInventory == null) throw new ApiFlowException($"Inventory not found for id '{id}'", StatusCodes.Status404NotFound);
 
-        return Ok(new InventoryResponse()
+        return Ok(new
         {
-            Id = foundInventory.Id,
-            Description = foundInventory.Description,
-            ItemReference = foundInventory.ItemReference,
-            ItemId = foundInventory.ItemId,
-            Locations = _inventoriesProvider.GetInventoryLocations(foundInventory.Id).Select(i => new InventoryLocationResponse
+            message = "Inventory found!",
+            Inventory = new InventoryResponse()
             {
-                WarehouseId = i.Location.WarehouseId,
-                LocationId = i.LocationId,
-                OnHand = i.OnHandAmount
-            }).ToList(),
-            TotalOnHand = foundInventory.TotalOnHand,
-            TotalExpected = foundInventory.TotalExpected,
-            TotalOrdered = foundInventory.TotalOrderd,
-            TotalAllocated = foundInventory.TotalAllocated,
-            TotalAvailable = foundInventory.TotalAvailable,
-            CreatedAt = foundInventory.CreatedAt,
-            UpdatedAt = foundInventory.UpdatedAt,
+                Id = foundInventory.Id,
+                Description = foundInventory.Description,
+                ItemReference = foundInventory.ItemReference,
+                ItemId = foundInventory.ItemId,
+                Locations = _inventoriesProvider.GetInventoryLocations(foundInventory.Id).Select(i => new InventoryLocationResponse
+                {
+                    WarehouseId = i.Location.WarehouseId,
+                    LocationId = i.LocationId,
+                    OnHand = i.OnHandAmount
+                }).ToList(),
+                TotalOnHand = foundInventory.TotalOnHand,
+                TotalExpected = foundInventory.TotalExpected,
+                TotalOrdered = foundInventory.TotalOrderd,
+                TotalAllocated = foundInventory.TotalAllocated,
+                TotalAvailable = foundInventory.TotalAvailable,
+                CreatedAt = foundInventory.CreatedAt,
+                UpdatedAt = foundInventory.UpdatedAt,
+            }
         });
+
     }
 
 

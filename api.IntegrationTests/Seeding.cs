@@ -57,7 +57,8 @@ namespace api.IntegrationTests
                     UnitOrderQuantity = 2,
                     PackOrderQuantity = 2,
                     SupplierReferenceCode = "02BA",
-                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8")
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                    ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210")
                 }
             };
 

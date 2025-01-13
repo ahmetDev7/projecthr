@@ -47,7 +47,7 @@ namespace api.IntegrationTests
 
             result.Should().HaveCount(2);
         }
-        
+
 
         [Fact]
         public async Task CreateItemType_CreatesNewItemType()

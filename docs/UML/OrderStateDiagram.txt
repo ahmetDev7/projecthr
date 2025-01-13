@@ -3,11 +3,12 @@
 
 state "Pending" as Pending
 state "Being_Packed" as Being_Packed
-state "Delivered" as Delivered
+state "Closed" as Closed
 
 Pending --> Being_Packed: Validate warehouse stock\n(Ensure items are available in warehouse)\nPUT /orders/{order_id}
-Being_Packed--> Delivered : Confirm stock consistency\nPUT /orders/{order_id}
-
 Being_Packed--> Being_Packed: Validation fails\n(Return error: Unable to reserve stock)
-Delivered --> [*]
+Being_Packed--> Closed: Confirm stock consistency\nPUT /orders/{order_id}
+
+
+Closed--> [*]
 @enduml

@@ -52,5 +52,5 @@ public class Order : BaseModel
     public Guid? BillToClientId { get; set; }
     public Client? BillToClient { get; set; }
 
-    public ICollection<OrderShipment>? OrderShipments {get; set;}
+    public ICollection<OrderShipment>? OrderShipments { get; set; }
 }

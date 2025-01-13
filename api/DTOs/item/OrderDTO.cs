@@ -45,7 +45,7 @@ namespace DTO.Order
 
         [JsonPropertyName("bill_to_client")]
         public Guid? BillToClientId { get; set; }
-        
+
         [JsonPropertyName("ship_to_client")]
         public Guid? ShipToClientId { get; set; }
 

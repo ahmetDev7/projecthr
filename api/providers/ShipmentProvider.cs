@@ -174,7 +174,8 @@ public class ShipmentProvider : BaseProvider<Shipment>
         return foundShipment;
     }
 
-    public Shipment? CommitShipment(Shipment shipment){
+    public Shipment? CommitShipment(Shipment shipment)
+    {
         shipment.ShipmentStatus = ShipmentStatus.Delivered;
         _db.Shipments.Update(shipment);
         SaveToDBOrFail();

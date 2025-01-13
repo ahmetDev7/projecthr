@@ -42,7 +42,7 @@ public class Shipment : BaseModel
 
     public ICollection<ShipmentItem>? ShipmentItems { get; set; }
 
-    public ICollection<OrderShipment>? OrderShipments {get; set;}
+    public ICollection<OrderShipment>? OrderShipments { get; set; }
 
     public void SetShipmentType(string? strShipmentType) => ShipmentType = EnumUtil.ParseOrIgnore<ShipmentType>(strShipmentType);
 

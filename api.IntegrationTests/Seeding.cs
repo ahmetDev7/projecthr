@@ -35,13 +35,17 @@ namespace api.IntegrationTests
                 {
                     Id = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
                     Code = "123",
+                    Description = "123",
+                    ShortDescription = "123",
                     UpcCode = "123",
                     ModelNumber = "2",
+                    CommodityCode = "55",
                     UnitPurchaseQuantity = 20,
                     UnitOrderQuantity = 20,
                     PackOrderQuantity = 20,
                     SupplierReferenceCode = "AB20",
-                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8")
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                    ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210")
                 },
                 new Item(newInstance:true)
                 {

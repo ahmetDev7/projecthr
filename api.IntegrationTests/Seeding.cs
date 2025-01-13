@@ -18,6 +18,7 @@ namespace api.IntegrationTests
             db.Suppliers.AddRange(GetSuppliers());
             db.Docks.AddRange(GetDocks());
             db.Clients.AddRange(GetClients());
+            db.Orders.AddRange(GetOrders());
             db.SaveChanges();
         }
 

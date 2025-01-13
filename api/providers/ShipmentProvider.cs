@@ -69,7 +69,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
             if (req.ShipmentStatus == null)
             {
-                newShipment.ShipmentStatus = ShipmentStatus.Pending;
+                newShipment.ShipmentStatus = ShipmentStatus.Plan;
             }
 
             ValidateModel(newShipment);
@@ -148,7 +148,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
             if (req.ShipmentStatus == null)
             {
-                existingShipment.ShipmentStatus = ShipmentStatus.Pending;
+                existingShipment.ShipmentStatus = ShipmentStatus.Plan;
             }
 
             ValidateModel(existingShipment);

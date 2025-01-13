@@ -25,7 +25,7 @@ namespace api.IntegrationTests
             var result = await response.Content.ReadFromJsonAsync<List<ItemType>>();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().HaveCount(4);
+            result.Should().HaveCount(3);
         }
 
         [Fact]
@@ -60,6 +60,32 @@ namespace api.IntegrationTests
 
             var response = await _httpClient.PostAsJsonAsync(_baseUrl, newItemType);
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task UpdateItemType_UpdateNewItemType()
+        {
+            var updatedItemType = new ItemType
+            {
+                Name = "Updated Item Type 2",
+                Description = "Updated Description Item Type 2"
+            };
+
+            var updateResponse = await _httpClient.PutAsJsonAsync(_baseUrl + "/" + "37f7653c-080b-4b1d-b1db-5b467fe29762", updatedItemType);
+            updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task DeleteItemType_DeleteExistingItemType_CheckIfDeleted()
+        {
+            // Item Type 3 delete
+            var deleteResponse = await _httpClient.DeleteAsync(_baseUrl + "/" + "23a60ea1-4471-4f1f-b0f5-a25527121647");
+
+            deleteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var getResponse = await _httpClient.GetAsync(_baseUrl + "/" + "23a60ea1-4471-4f1f-b0f5-a25527121647");
+
+            getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
 }

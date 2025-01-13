@@ -81,13 +81,17 @@ public class ItemTypesController : ControllerBase
 
         return (foundItemType == null)
             ? NotFound(new { message = $"Item Type not found for id '{id}'" })
-            : Ok(new ItemTypeResponse
+            : Ok(new
             {
-                Id = foundItemType.Id,
-                Name = foundItemType.Name,
-                Description = foundItemType.Description,
-                CreatedAt = foundItemType.CreatedAt,
-                UpdatedAt = foundItemType.UpdatedAt
+                message = "Item type found!",
+                Item_Type = new ItemTypeResponse
+                {
+                    Id = foundItemType.Id,
+                    Name = foundItemType.Name,
+                    Description = foundItemType.Description,
+                    CreatedAt = foundItemType.CreatedAt,
+                    UpdatedAt = foundItemType.UpdatedAt
+                }
             });
     }
 

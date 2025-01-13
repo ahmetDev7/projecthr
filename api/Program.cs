@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using DTO.Shipment;
+using DTO.Order;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -132,6 +134,8 @@ builder.Services.AddScoped<IValidator<Client>, ClientValidator>();
 builder.Services.AddScoped<IValidator<InventoryRequest>, InventoryRequestValidator>();
 builder.Services.AddScoped<IValidator<Dock>, DockValidator>();
 builder.Services.AddScoped<IValidator<WarehouseRequest>, WarehouseRequestValidator>();
+builder.Services.AddScoped<IValidator<ShipmentRequest>, ShipmentRequestValidator>();
+builder.Services.AddScoped<IValidator<OrderRequest>, OrderRequestValidator>();
 
 
 

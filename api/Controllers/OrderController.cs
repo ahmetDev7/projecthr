@@ -1,5 +1,4 @@
 using System.Data;
-using DTO.ItemGroup;
 using DTO.Order;
 using Microsoft.AspNetCore.Mvc;
 
@@ -92,6 +91,17 @@ public class OrdersController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Update(Guid id, [FromBody] OrderRequest req)
     {
+        Order? foundOrder = _orderProvider.GetById(id);
+        if (foundOrder == null)
+        {
+            return NotFound(new { message = $"Order not found for id '{id}'" });
+        }
+
+        if (foundOrder.OrderStatus == OrderStatus.Closed)
+        {
+            throw new ApiFlowException("This order has been closed and cannot be updated.", StatusCodes.Status409Conflict);
+        }
+
         Order? updatedOrder = _orderProvider.Update(id, req);
 
         return updatedOrder == null
@@ -159,10 +169,8 @@ public class OrdersController : ControllerBase
         Order? foundOrder = _orderProvider.GetById(id);
         return foundOrder == null
             ? NotFound(new { message = $"Order not found for id '{id}'" })
-            : Ok(new
-            {
-                message = "Order found!",
-                order = new OrderResponse
+            : Ok(
+                new OrderResponse
                 {
                     Id = foundOrder.Id,
                     OrderDate = foundOrder.OrderDate,
@@ -187,7 +195,7 @@ public class OrdersController : ControllerBase
                         Amount = oi.Amount
                     }).ToList()
                 }
-            });
+            );
     }
 
     [HttpGet("{id}/items")]

@@ -29,7 +29,7 @@ public class Shipment : BaseModel
     public int? TotalPackageCount
     {
         get => _totalPackageCount;
-        set => _totalPackageCount = NumberUtil.EnsureNonNegative((int)value);
+        set => _totalPackageCount = NumberUtil.EnsureNonNegative(value.Value);
     }
 
     private decimal _totalPackageWeight = 0;
@@ -37,10 +37,12 @@ public class Shipment : BaseModel
     public decimal? TotalPackageWeight
     {
         get => _totalPackageWeight;
-        set => _totalPackageWeight = NumberUtil.EnsureNonNegativeWithFourDecimals((decimal)value);
+        set => _totalPackageWeight = NumberUtil.EnsureNonNegativeWithFourDecimals(value.Value);
     }
 
     public ICollection<ShipmentItem>? ShipmentItems { get; set; }
+
+    public ICollection<OrderShipment>? OrderShipments {get; set;}
 
     public void SetShipmentType(string? strShipmentType) => ShipmentType = EnumUtil.ParseOrIgnore<ShipmentType>(strShipmentType);
 

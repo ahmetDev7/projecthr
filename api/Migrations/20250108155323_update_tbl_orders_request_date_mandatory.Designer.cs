@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250108155323_update_tbl_orders_request_date_mandatory")]
+    partial class update_tbl_orders_request_date_mandatory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,8 +472,9 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("integer");
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PickingNotes")
                         .HasColumnType("text");
@@ -536,7 +540,6 @@ namespace api.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("OrderId")
-                        .IsRequired()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -899,13 +902,13 @@ namespace api.Migrations
             modelBuilder.Entity("InventoryLocation", b =>
                 {
                     b.HasOne("Inventory", "Inventory")
-                        .WithMany("InventoryLocations")
+                        .WithMany()
                         .HasForeignKey("InventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Location", "Location")
-                        .WithMany("InventoryLocations")
+                        .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -989,15 +992,11 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Order", "Order")
+                    b.HasOne("Order", null)
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.Navigation("Item");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("OrderShipment", b =>
@@ -1140,11 +1139,6 @@ namespace api.Migrations
                     b.Navigation("WarehouseContacts");
                 });
 
-            modelBuilder.Entity("Inventory", b =>
-                {
-                    b.Navigation("InventoryLocations");
-                });
-
             modelBuilder.Entity("Item", b =>
                 {
                     b.Navigation("Inventory");
@@ -1173,8 +1167,6 @@ namespace api.Migrations
 
             modelBuilder.Entity("Location", b =>
                 {
-                    b.Navigation("InventoryLocations");
-
                     b.Navigation("TransfersFrom");
 
                     b.Navigation("TransfersTo");

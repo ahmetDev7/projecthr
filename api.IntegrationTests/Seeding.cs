@@ -19,7 +19,6 @@ namespace api.IntegrationTests
             db.Suppliers.AddRange(GetSuppliers());
             db.Clients.AddRange(GetClients());
             db.Orders.AddRange(GetOrders());
-            db.OrderItems.AddRange(GetOrderItems());
             db.SaveChanges();
         }
 
@@ -237,24 +236,6 @@ namespace api.IntegrationTests
                             Amount = 4
                         }
                     }
-                }
-            };
-        }
-        private static List<OrderItem> GetOrderItems()
-        {
-            return new List<OrderItem>()
-            {
-                new OrderItem(newInstance:true)
-                {
-                    Id = Guid.Parse("a0bed18c-f6e8-4b3f-be00-fb73a5be40ca"),
-                    ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
-                    Amount = 2
-                },
-                new OrderItem(newInstance:true)
-                {
-                    Id = Guid.Parse("43a022ec-33cc-4fd6-8d7f-1b0c8df76e89"),
-                    ItemId = Guid.Parse("ab868b64-2a27-451a-be78-105e824547be"),
-                    Amount = 4
                 }
             };
         }

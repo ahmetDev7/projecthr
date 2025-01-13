@@ -9,15 +9,21 @@ using DTO.Shipment;
 using DTO.Order;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = "";
+var securityKey = "";
 
-builder.Configuration.AddJsonFile("./env.json", optional: false, reloadOnChange: true);
-var connectionString = builder.Configuration["DB_CONNECTION_STRING"];
-var securityKey = builder.Configuration["SECURITY_KEY"];
+if (!builder.Environment.IsEnvironment("Test"))
+{
+    builder.Configuration.AddJsonFile("./env.json", optional: false, reloadOnChange: true);
 
-if (connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
-if (securityKey == null) throw new InvalidOperationException("The required environment variable 'SECURITY_KEY' is not set.");
+    connectionString = builder.Configuration["DB_CONNECTION_STRING"];
+    securityKey = builder.Configuration["SECURITY_KEY"];
 
-builder.Services.AddSingleton(securityKey);
+    if (connectionString == null) throw new InvalidOperationException("The required environment variable 'DB_CONNECTION_STRING' is not set.");
+    if (securityKey == null) throw new InvalidOperationException("The required environment variable 'SECURITY_KEY' is not set.");
+
+    builder.Services.AddSingleton(securityKey);
+}
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -99,6 +105,18 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+
+if (builder.Environment.IsEnvironment("Test"))
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlite("DataSource=:memory:"));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
+
 builder.Services.AddTransient<AddressProvider>();
 builder.Services.AddTransient<ContactProvider>();
 builder.Services.AddTransient<WarehousesProvider>();

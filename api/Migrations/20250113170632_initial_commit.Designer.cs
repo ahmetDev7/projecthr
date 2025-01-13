@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250113145058_update_cascading_order_and_order_item_relation")]
-    partial class update_cascading_order_and_order_item_relation
+    [Migration("20250113170632_initial_commit")]
+    partial class initial_commit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

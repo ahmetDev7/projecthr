@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace api.IntegrationTests
 {
-    public class SupplierIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
+    public class SuppliersIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl = "/api/Suppliers";
 
-        public SupplierIntegrationTests(CustomWebApplicationFactory<Program> factory)
+        public SuppliersIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
             _httpClient = factory.CreateClient(new WebApplicationFactoryClientOptions
             {

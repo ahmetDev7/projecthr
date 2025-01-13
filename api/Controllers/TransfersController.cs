@@ -136,21 +136,26 @@ public class TransfersController : ControllerBase
 
         return (foundTransfer == null)
             ? NotFound(new { message = $"Transfer not found for id '{id}'" })
-            : Ok(new TransferResponse
+            :Ok(new
+        {
+            message = "Transfer retrieved successfully!",
+            Transfer = new TransferResponse
             {
                 Id = foundTransfer.Id,
                 Reference = foundTransfer.Reference,
                 TransferFromId = foundTransfer.TransferFromId,
                 TransferToId = foundTransfer.TransferToId,
                 TransferStatus = foundTransfer.TransferStatus.ToString(),
-                Items = foundTransfer.TransferItems?.Select(ti => new TransferItemDTO()
+                Items = foundTransfer.TransferItems?.Select(ti => new TransferItemDTO
                 {
                     ItemId = ti.ItemId,
-                    Amount = ti.Amount,
+                    Amount = ti.Amount
                 }).ToList(),
                 CreatedAt = foundTransfer.CreatedAt,
                 UpdatedAt = foundTransfer.UpdatedAt,
-            });
+            }
+        });
+
     }
 
     [HttpGet()]

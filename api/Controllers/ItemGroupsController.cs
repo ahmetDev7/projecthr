@@ -20,13 +20,17 @@ public class ItemGroupsController : ControllerBase
         if (newItemGroup == null) throw new ApiFlowException("Saving new Item Group failed.");
 
 
-        return Ok(new ItemGroupResponse
+        return Ok(new
         {
-            Id = newItemGroup.Id,
-            Name = newItemGroup.Name,
-            Description = newItemGroup.Description,
-            CreatedAt = newItemGroup.CreatedAt,
-            UpdatedAt = newItemGroup.UpdatedAt
+            message = "Item group created!",
+            ItemGroup = new ItemGroupResponse
+            {
+                Id = newItemGroup.Id,
+                Name = newItemGroup.Name,
+                Description = newItemGroup.Description,
+                CreatedAt = newItemGroup.CreatedAt,
+                UpdatedAt = newItemGroup.UpdatedAt
+            }
         });
     }
 
@@ -59,6 +63,7 @@ public class ItemGroupsController : ControllerBase
 
         return Ok(new
         {
+            message = "Item group deleted!",
             deleted_item_group = new ItemGroupResponse
             {
                 Id = deletedItemGroup.Id,
@@ -68,6 +73,7 @@ public class ItemGroupsController : ControllerBase
                 UpdatedAt = deletedItemGroup.UpdatedAt
             }
         });
+
     }
 
     [HttpGet("{id}")]
@@ -77,13 +83,17 @@ public class ItemGroupsController : ControllerBase
 
         return (foundItemGroup == null)
             ? NotFound(new { message = $"Item group not found for id '{id}'" })
-            : Ok(new ItemGroupResponse
+            : Ok(new
             {
-                Id = foundItemGroup.Id,
-                Name = foundItemGroup.Name,
-                Description = foundItemGroup.Description,
-                CreatedAt = foundItemGroup.CreatedAt,
-                UpdatedAt = foundItemGroup.UpdatedAt
+                message = "Item group found!",
+                ItemGroup = new ItemGroupResponse
+                {
+                    Id = foundItemGroup.Id,
+                    Name = foundItemGroup.Name,
+                    Description = foundItemGroup.Description,
+                    CreatedAt = foundItemGroup.CreatedAt,
+                    UpdatedAt = foundItemGroup.UpdatedAt
+                }
             });
     }
 

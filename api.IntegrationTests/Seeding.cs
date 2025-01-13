@@ -13,11 +13,9 @@ namespace api.IntegrationTests
             db.Locations.AddRange(GetLocations());
             db.Addresses.AddRange(GetAddresses());
             db.Warehouses.AddRange(GetWarehouses());
-            db.Docks.AddRange(GetDocks());
             db.Items.AddRange(GetItems());
             db.Contacts.AddRange(GetContacts());
             db.Suppliers.AddRange(GetSuppliers());
-            db.Clients.AddRange(GetClients());
             db.SaveChanges();
         }
 
@@ -150,7 +148,6 @@ namespace api.IntegrationTests
                     Code = "321",
                     Name = "Neevletsma",
                     AddressId = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f207e")
-
                 }
             };
 

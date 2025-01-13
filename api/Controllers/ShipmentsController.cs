@@ -191,4 +191,50 @@ public class ShipmentsController : ControllerBase
                 Orders = foundShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
             });
     }
+
+    [HttpPut("{id}/commit")]
+    public IActionResult ActionCommit(Guid id)
+    {
+        Shipment? foundShipment = _shipmentProvider.GetById(id);
+        if (foundShipment == null) return NotFound(new { message = $"Shipment not found for id '{id}'" });
+
+        if (foundShipment.ShipmentStatus == ShipmentStatus.Delivered)
+        {
+            throw new ApiFlowException("This shipment has already been delivered. Updates are not allowed.", StatusCodes.Status409Conflict);
+        }
+
+        Shipment? commitedShipment = _shipmentProvider.CommitShipment(foundShipment);
+
+        return Ok(
+            new
+            {
+                message = "Shipment deliverd!",
+                commited_shipment = new ShipmentResponse
+                {
+                    Id = commitedShipment.Id,
+                    OrderDate = commitedShipment.OrderDate,
+                    RequestDate = commitedShipment.RequestDate,
+                    ShipmentDate = commitedShipment.ShipmentDate,
+                    ShipmentType = commitedShipment.ShipmentType.ToString(),
+                    ShipmentStatus = commitedShipment.ShipmentStatus.ToString(),
+                    Notes = commitedShipment.Notes,
+                    CarrierCode = commitedShipment.CarrierCode,
+                    CarrierDescription = commitedShipment.CarrierDescription,
+                    ServiceCode = commitedShipment.ServiceCode,
+                    PaymentType = commitedShipment.PaymentType.ToString(),
+                    TransferMode = commitedShipment.TransferMode.ToString(),
+                    TotalPackageCount = commitedShipment.TotalPackageCount,
+                    TotalPackageWeight = commitedShipment.TotalPackageWeight,
+                    CreatedAt = commitedShipment.CreatedAt,
+                    UpdatedAt = commitedShipment.UpdatedAt,
+                    Items = commitedShipment.ShipmentItems?.Select(item => new ShipmentItemRR
+                    {
+                        ItemId = item.ItemId,
+                        Amount = item.Amount
+                    }).ToList(),
+                    Orders = commitedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+                }
+            }
+        );
+    }
 }

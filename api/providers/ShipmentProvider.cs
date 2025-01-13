@@ -174,5 +174,12 @@ public class ShipmentProvider : BaseProvider<Shipment>
         return foundShipment;
     }
 
+    public Shipment? CommitShipment(Shipment shipment){
+        shipment.ShipmentStatus = ShipmentStatus.Delivered;
+        _db.Shipments.Update(shipment);
+        SaveToDBOrFail();
+        return shipment;
+    }
+
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);
 }

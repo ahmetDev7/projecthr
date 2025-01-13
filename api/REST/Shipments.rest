@@ -23,11 +23,9 @@ Content-Type: application/json
     }
   ]
 }
-
 ###
 
 ### UPDATE SHIPMENT
-
 PUT http://localhost:5000/api/shipments/d55c48a1-ad37-4a84-b833-073739baa28a
 Content-Type: application/json
 
@@ -59,7 +57,7 @@ Content-Type: application/json
 }
 
 ### DELETE SHIPMENT (change ID to the ID in your database)
-DELETE http://localhost:5000/api/shipments/fb9de910-62b9-44c3-8105-96d1b2dd1faa
+DELETE http://localhost:5000/api/shipments/b83852b9-4f57-43a9-832c-da298760e519
 Content-Type: application/json
 
 ###
@@ -72,4 +70,9 @@ Content-Type: application/json
 
 ### GET SHIPMENT BY ID (change ID to existing ID in your database)
 GET http://localhost:5000/api/shipments/6ce6a3b6-5dd2-4491-a519-cf01ee755a9a
+Content-Type: application/json
+###
+
+### COMMIT SHIPMENT (change ID to the ID in your database)
+PUT http://localhost:5000/api/shipments/ef2bb6bb-8865-4fc1-b009-c2e9b848daec/commit
 Content-Type: application/json

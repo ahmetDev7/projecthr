@@ -16,6 +16,8 @@ namespace api.IntegrationTests
             db.Items.AddRange(GetItems());
             db.Contacts.AddRange(GetContacts());
             db.Suppliers.AddRange(GetSuppliers());
+            db.Docks.AddRange(GetDocks());
+            db.Clients.AddRange(GetClients());
             db.SaveChanges();
         }
 
@@ -140,7 +142,14 @@ namespace api.IntegrationTests
                     Id = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49"),
                     Code = "123",
                     Name = "Amstelveen",
-                    AddressId = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f207e"),
+                    AddressId = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f207e")
+                },
+                new Warehouse(newInstance: true)
+                {
+                    Id = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
+                    Code = "321",
+                    Name = "Neevletsma",
+                    AddressId = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f207e")
                 }
             };
 
@@ -168,6 +177,35 @@ namespace api.IntegrationTests
                     AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099")
 
                 }
+            };
+        }
+        private static List<Dock> GetDocks()
+        {
+            return new List<Dock>()
+            {
+                new Dock(){Id = Guid.Parse("b1c4625d-a113-4d5a-bf19-34e6d695a67c"),WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49")},
+                new Dock(){Id = Guid.Parse("33b9d661-89be-41e3-ace2-e9f9c505bde0"),WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec")}
+            };
+        }
+        private static List<Client> GetClients()
+        {
+            return new List<Client>()
+            {
+                new Client(newInstance:true)
+                {
+                    Id = Guid.Parse("8f568644-4d30-4658-ab68-c80d0636ba8f"),
+                    Name = "Jansen",
+                    ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
+                    AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099"),
+                },
+                new Client(newInstance:true)
+                {
+                    Id = Guid.Parse("68b7ef68-b6a7-45de-a6f8-7656b7af44b7"),
+                    Name = "Tim",
+                    ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
+                    AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099"),
+                }
+
             };
         }
 

@@ -75,7 +75,6 @@ public class OrderProvider : BaseProvider<Order>
     public override Order? Delete(Guid id)
     {
         // TODO: ON DELETE: Recalculate on_hand and orderd amount
-        
         Order? foundOrder = _db.Orders.FirstOrDefault(s => s.Id == id);
         if (foundOrder == null) return null;
 
@@ -140,6 +139,14 @@ public class OrderProvider : BaseProvider<Order>
         SaveToDBOrFail();
 
         return existingOrder;
+    }
+
+    public Order? CommitOrder(Order order)
+    {
+        order.OrderStatus = OrderStatus.Closed;
+        _db.Orders.Update(order);
+        SaveToDBOrFail();
+        return order;
     }
 
     protected override void ValidateModel(Order model) => _orderValidator.ValidateAndThrow(model);

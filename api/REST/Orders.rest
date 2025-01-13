@@ -65,3 +65,6 @@ Content-Type: application/json
 GET http://localhost:5000/api/orders
 Content-Type: application/json
 ###
+
+PUT http://localhost:5000/api/orders/84aa00ad-1bc2-41c6-9d30-807f48091719/commit
+Content-Type: application/json

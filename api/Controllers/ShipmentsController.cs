@@ -57,7 +57,7 @@ public class ShipmentsController : ControllerBase
 
         return updatedShipment == null
             ? NotFound(new { message = $"Shipment not found for id '{id}'" })
-            :  Ok(new
+            : Ok(new
             {
                 message = "Shipment updated!",
                 Shipment = new ShipmentResponse
@@ -159,7 +159,7 @@ public class ShipmentsController : ControllerBase
 
         return (foundShipment == null)
             ? NotFound(new { message = $"Shipment not found for id '{id}'" })
-            :  Ok(new
+            : Ok(new
             {
                 message = "Shipment found!",
                 Shipment = new ShipmentResponse

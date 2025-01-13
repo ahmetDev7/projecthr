@@ -170,7 +170,7 @@ public class WarehousesController : ControllerBase
     {
         Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
         if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-        return  Ok(new
+        return Ok(new
         {
             message = "Warehouse retrieved successfully!",
             Warehouse = new WarehouseResponse

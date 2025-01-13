@@ -23,8 +23,6 @@ public class ShipmentRequestValidator : AbstractValidator<ShipmentRequest>
                 }
             });
 
-
-
         RuleForEach(ShipmentRequest => ShipmentRequest.Orders).ChildRules(order =>
         {
             order.RuleFor(order => order)
@@ -35,8 +33,41 @@ public class ShipmentRequestValidator : AbstractValidator<ShipmentRequest>
                     if (orderId != null && !db.Orders.Any(i => i.Id == orderId))
                     {
                         context.AddFailure("orders", $"The provided order {orderId} does not exist.");
+                        return;
                     }
                 });
+        });
+
+
+        RuleFor(ShipmentRequest => ShipmentRequest).Custom((req, context) =>
+        {
+            foreach (Guid? orderId in req.Orders ?? [])
+            {
+                if (orderId.HasValue)
+                {
+                    foreach (ShipmentItemRR? row in req.Items ?? [])
+                    {
+                        bool hasOrderItem = db.OrderItems.Any(oi => oi.OrderId == orderId && oi.ItemId == row.ItemId);
+                        if (!hasOrderItem)
+                        {
+                            context.AddFailure("orders", $"The provided item with ID {row.ItemId} is not part of order {orderId}.");
+                            return;
+                        }
+
+                        bool orderIsClosed = db.Orders.Any(o => o.OrderStatus == OrderStatus.Closed);
+                        if (orderIsClosed)
+                        {
+                            context.AddFailure("orders", $"The order with ID {orderId} is closed. Shipments can no longer be assigned to a closed order.");
+                            return;
+                        }
+                    }
+
+                    // FUTURE FEATURE: shipment_item amount not exceeding order_item amount
+                }
+            }
+
+
+
         });
     }
 }

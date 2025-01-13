@@ -18,77 +18,87 @@ public class ShipmentsController : ControllerBase
         Shipment? newShipment = _shipmentProvider.Create(req);
         if (newShipment == null) throw new ApiFlowException("Saving new Shipment failed.");
 
-
-        return Ok(new ShipmentResponse
+        return Ok(new
         {
-            Id = newShipment.Id,
-            // OrderId = newShipment.OrderId,
-            OrderDate = newShipment.OrderDate,
-            RequestDate = newShipment.RequestDate,
-            ShipmentDate = newShipment.ShipmentDate,
-            ShipmentType = newShipment.ShipmentType.ToString(),
-            ShipmentStatus = newShipment.ShipmentStatus.ToString(),
-            Notes = newShipment.Notes,
-            CarrierCode = newShipment.CarrierCode,
-            CarrierDescription = newShipment.CarrierDescription,
-            ServiceCode = newShipment.ServiceCode,
-            PaymentType = newShipment.PaymentType.ToString(),
-            TransferMode = newShipment.TransferMode.ToString(),
-            TotalPackageCount = newShipment.TotalPackageCount,
-            TotalPackageWeight = newShipment.TotalPackageWeight,
-            CreatedAt = newShipment.CreatedAt,
-            UpdatedAt = newShipment.UpdatedAt,
-            Items = newShipment.ShipmentItems?.Select(si => new ShipmentItemRR
+            message = "Shipment created!",
+            created_shipment = new ShipmentResponse
             {
-                ItemId = si.ItemId,
-                Amount = si.Amount
-            }).ToList()
+                Id = newShipment.Id,
+                OrderDate = newShipment.OrderDate,
+                RequestDate = newShipment.RequestDate,
+                ShipmentDate = newShipment.ShipmentDate,
+                ShipmentType = newShipment.ShipmentType.ToString(),
+                ShipmentStatus = newShipment.ShipmentStatus.ToString(),
+                Notes = newShipment.Notes,
+                CarrierCode = newShipment.CarrierCode,
+                CarrierDescription = newShipment.CarrierDescription,
+                ServiceCode = newShipment.ServiceCode,
+                PaymentType = newShipment.PaymentType.ToString(),
+                TransferMode = newShipment.TransferMode.ToString(),
+                TotalPackageCount = newShipment.TotalPackageCount,
+                TotalPackageWeight = newShipment.TotalPackageWeight,
+                CreatedAt = newShipment.CreatedAt,
+                UpdatedAt = newShipment.UpdatedAt,
+                Items = newShipment.ShipmentItems?.Select(item => new ShipmentItemRR
+                {
+                    ItemId = item.ItemId,
+                    Amount = item.Amount
+                }).ToList(),
+                Orders = newShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+            }
         });
     }
+
 
     [HttpPut("{id}")]
     public IActionResult Update(Guid id, [FromBody] ShipmentRequest req)
     {
+        Shipment? foundShipment = _shipmentProvider.GetById(id);
+        if (foundShipment == null) return NotFound(new { message = $"Shipment not found for id '{id}'" });
+
+        if (foundShipment.ShipmentStatus == ShipmentStatus.Delivered)
+        {
+            throw new ApiFlowException("This shipment has already been delivered. Updates are not allowed.", StatusCodes.Status409Conflict);
+        }
+
         Shipment? updatedShipment = _shipmentProvider.Update(id, req);
 
-        return updatedShipment == null
-            ? NotFound(new { message = $"Shipment not found for id '{id}'" })
-            : Ok(new
+        return Ok(new
+        {
+            message = "Shipment updated!",
+            updated_shipment = new ShipmentResponse
             {
-                message = "Shipment updated!",
-                updated_shipment = new ShipmentResponse
+                Id = updatedShipment.Id,
+                OrderDate = updatedShipment.OrderDate,
+                RequestDate = updatedShipment.RequestDate,
+                ShipmentDate = updatedShipment.ShipmentDate,
+                ShipmentType = updatedShipment.ShipmentType.ToString(),
+                ShipmentStatus = updatedShipment.ShipmentStatus.ToString(),
+                Notes = updatedShipment.Notes,
+                CarrierCode = updatedShipment.CarrierCode,
+                CarrierDescription = updatedShipment.CarrierDescription,
+                ServiceCode = updatedShipment.ServiceCode,
+                PaymentType = updatedShipment.PaymentType.ToString(),
+                TransferMode = updatedShipment.TransferMode.ToString(),
+                TotalPackageCount = updatedShipment.TotalPackageCount,
+                TotalPackageWeight = updatedShipment.TotalPackageWeight,
+                CreatedAt = updatedShipment.CreatedAt,
+                UpdatedAt = updatedShipment.UpdatedAt,
+                Items = updatedShipment.ShipmentItems?.Select(item => new ShipmentItemRR
                 {
-                    Id = updatedShipment.Id,
-                    // OrderId = updatedShipment.OrderId,
-                    OrderDate = updatedShipment.OrderDate,
-                    RequestDate = updatedShipment.RequestDate,
-                    ShipmentDate = updatedShipment.ShipmentDate,
-                    ShipmentType = updatedShipment.ShipmentType.ToString(),
-                    ShipmentStatus = updatedShipment.ShipmentStatus.ToString(),
-                    Notes = updatedShipment.Notes,
-                    CarrierCode = updatedShipment.CarrierCode,
-                    CarrierDescription = updatedShipment.CarrierDescription,
-                    ServiceCode = updatedShipment.ServiceCode,
-                    PaymentType = updatedShipment.PaymentType.ToString(),
-                    TransferMode = updatedShipment.TransferMode.ToString(),
-                    TotalPackageCount = updatedShipment.TotalPackageCount,
-                    TotalPackageWeight = updatedShipment.TotalPackageWeight,
-                    CreatedAt = updatedShipment.CreatedAt,
-                    UpdatedAt = updatedShipment.UpdatedAt,
-                    Items = updatedShipment.ShipmentItems?.Select(item => new ShipmentItemRR
-                    {
-                        ItemId = item.ItemId,
-                        Amount = item.Amount
-                    }).ToList()
-                }
-            });
+                    ItemId = item.ItemId,
+                    Amount = item.Amount
+                }).ToList(),
+                Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+            }
+        });
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(Guid id)
     {
         Shipment? deletedShipment = _shipmentProvider.Delete(id);
-        if (deletedShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
+        if (deletedShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'", StatusCodes.Status404NotFound);
 
         return Ok(new
         {
@@ -96,7 +106,6 @@ public class ShipmentsController : ControllerBase
             deleted_shipment = new ShipmentResponse
             {
                 Id = deletedShipment.Id,
-                // OrderId = deletedShipment.OrderId,
                 OrderDate = deletedShipment.OrderDate,
                 RequestDate = deletedShipment.RequestDate,
                 ShipmentDate = deletedShipment.ShipmentDate,
@@ -112,11 +121,12 @@ public class ShipmentsController : ControllerBase
                 TotalPackageWeight = deletedShipment.TotalPackageWeight,
                 CreatedAt = deletedShipment.CreatedAt,
                 UpdatedAt = deletedShipment.UpdatedAt,
-                Items = deletedShipment.ShipmentItems?.Select(si => new ShipmentItemRR
+                Items = deletedShipment.ShipmentItems?.Select(item => new ShipmentItemRR
                 {
-                    ItemId = si.ItemId,
-                    Amount = si.Amount
-                }).ToList()
+                    ItemId = item.ItemId,
+                    Amount = item.Amount
+                }).ToList(),
+                Orders = deletedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
             }
         });
     }
@@ -125,7 +135,6 @@ public class ShipmentsController : ControllerBase
     public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
     {
         Id = s.Id,
-        // OrderId = s.OrderId,
         OrderDate = s.OrderDate,
         RequestDate = s.RequestDate,
         ShipmentDate = s.ShipmentDate,
@@ -145,7 +154,8 @@ public class ShipmentsController : ControllerBase
         {
             ItemId = item.ItemId,
             Amount = item.Amount
-        }).ToList()
+        }).ToList(),
+        Orders = s?.OrderShipments?.Select(os => os.OrderId)?.ToList()
     }).ToList());
 
     [HttpGet("{id}")]
@@ -158,7 +168,6 @@ public class ShipmentsController : ControllerBase
             : Ok(new ShipmentResponse
             {
                 Id = foundShipment.Id,
-                // OrderId = foundShipment.OrderId,
                 OrderDate = foundShipment.OrderDate,
                 RequestDate = foundShipment.RequestDate,
                 ShipmentDate = foundShipment.ShipmentDate,
@@ -178,7 +187,8 @@ public class ShipmentsController : ControllerBase
                 {
                     ItemId = item.ItemId,
                     Amount = item.Amount
-                }).ToList()
+                }).ToList(),
+                Orders = foundShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
             });
     }
 }

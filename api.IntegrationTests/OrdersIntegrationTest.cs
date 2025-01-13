@@ -31,7 +31,7 @@ namespace api.IntegrationTests
         [Fact]
         public async Task GetSingleOrder_ReturnsSuccesWithOrder()
         {
-            var response = await _httpClient.GetAsync(_baseUrl + "/e62ea286-c4ed-4ff6-88bc-9b408a15a64d");
+            var response = await _httpClient.GetAsync(_baseUrl + "/7ffe0c5e-c188-47a4-9dcf-f3e17c2ff41c");
             var result = await response.Content.ReadFromJsonAsync<Order>();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 

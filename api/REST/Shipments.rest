@@ -20,11 +20,11 @@ Content-Type: application/json
     {
       "item_id": "dac06dda-eda1-4557-8eef-e4b0b0545ae7",
       "amount": 51
+    },
+    {
+      "item_id": "718cbea0-21a2-43dd-893b-8f8521f026fe",
+      "amount": 51
     }
-  ],
-  "orders": [
-    "4b8273b8-535b-4378-87e1-852a5adab5d8",
-    "e495587e-f200-4633-ae88-563612d57d11"
   ]
 }
 ###
@@ -73,7 +73,7 @@ Content-Type: application/json
 ###
 
 ### GET SHIPMENT BY ID (change ID to existing ID in your database)
-GET http://localhost:5000/api/shipments/6ce6a3b6-5dd2-4491-a519-cf01ee755a9a
+GET http://localhost:5000/api/shipments/6efdee99-e458-45a3-840e-042bf39241d1
 Content-Type: application/json
 ###
 
@@ -89,6 +89,18 @@ Content-Type: application/json
 
 
 ### Get items from shipment (change ID to the ID in your database)
-GET http://localhost:5000/api/shipments/86335c30-65ab-4854-ace1-d6a56bca36fd/items
+GET http://localhost:5000/api/shipments/e47b6230-ad63-4275-bc19-fd90825d5d14/items
 Content-Type: application/json
+###
+
+### UPDATE items from shipment (change ID to the ID in your database)
+PUT http://localhost:5000/api/shipments/6efdee99-e458-45a3-840e-042bf39241d1/items
+Content-Type: application/json
+
+[
+    {
+      "item_id": "718cbea0-21a2-43dd-893b-8f8521f026fe",
+      "amount": 11
+    }
+]
 ###

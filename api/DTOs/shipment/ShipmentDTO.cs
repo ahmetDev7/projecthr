@@ -125,5 +125,15 @@ namespace DTO.Shipment
         [JsonPropertyName("amount")]
         public int? Amount { get; set; }
     }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class UpdateShipmentItemDTO : BaseDTO
+    {
+        [JsonPropertyName("items")]
+        public List<ShipmentItemRR>? Items { get; set; }
+
+        [JsonPropertyName("orders")]
+        public List<Guid?>? Orders { get; set; }
+    }
 }
 

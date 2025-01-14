@@ -8,11 +8,13 @@ public class ShipmentProvider : BaseProvider<Shipment>
 {
     private IValidator<Shipment> _shipmentValidator;
     private IValidator<ShipmentRequest> _shipmentRequestValidator;
+    private IValidator<UpdateShipmentItemDTO> _shipmentItemRequestValidator;
 
-    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator) : base(db)
+    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> shipmentItemRequestValidator) : base(db)
     {
         _shipmentValidator = validator;
         _shipmentRequestValidator = shipmentRequestValidator;
+        _shipmentItemRequestValidator = shipmentItemRequestValidator;
     }
 
     public override Shipment? GetById(Guid id) =>
@@ -200,6 +202,43 @@ public class ShipmentProvider : BaseProvider<Shipment>
                   .ThenInclude(si => si.Item)
                   .SelectMany(s => s.ShipmentItems.Select(si => si.Item))
                   .ToList();
+    }
+
+    public Shipment? UpdateShipmentItems(Shipment shipment, List<ShipmentItemRR> shipmentItems)
+    {
+        var reqDTO = new UpdateShipmentItemDTO()
+        {
+            Items = shipmentItems,
+            Orders = shipment?.OrderShipments?.Select(os => os.OrderId).ToList()
+        };
+
+        _shipmentItemRequestValidator.ValidateAndThrow(reqDTO);
+
+        using IDbContextTransaction transaction = _db.Database.BeginTransaction();
+        try
+        {
+            _db.ShipmentItems.RemoveRange(shipment.ShipmentItems);
+            if (shipmentItems.Count() > 0)
+            {
+                shipment.ShipmentItems = shipmentItems.Select(si => new ShipmentItem(newInstance: true)
+                {
+                    ItemId = si.ItemId,
+                    Amount = si.Amount
+                }).ToList();
+            }
+
+
+            ValidateModel(shipment);
+            _db.Shipments.Update(shipment);
+            SaveToDBOrFail();
+            transaction.Commit();
+            return shipment;
+        }
+        catch (Exception)
+        {
+            transaction.Rollback();
+            throw;
+        }
     }
 
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);

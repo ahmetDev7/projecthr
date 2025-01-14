@@ -2,22 +2,23 @@ POST http://localhost:5000/api/warehouses/
 Content-Type: application/json
 
 {
-    "code": "WH_D01",
-    "name": "Test Company with DOCK TEST",
-    "contact_id": "b2efa902-9f5c-4a27-84b3-fa3fdecf991b",
-    "address_id": "4eaac4fb-b7fa-4167-8779-dcb72b68d4fd"
+  "code": "WD_002",
+  "name": "Sample Warehouse multi contact",
+  "contact_ids": ["d7ab8478-bcf8-4bd5-9fb7-a92ff66f448b"],
+  "address_id": "0071cb5d-bd6f-4398-8dba-e60ef0aa3bdd"
 }
 ###
-###
 
-PUT http://localhost:5000/api/warehouses/8dbab3d8-34b4-4528-968b-74d8f94515a5
+PUT http://localhost:5000/api/warehouses/5559d711-a141-46b3-b30b-4860f4d7879b
 Content-Type: application/json
 
 {
-    "code": "Test update warehouse with id's",
-    "name": "Test Company",
-    "contact_id": "8d2e7d61-e596-46e4-acd8-e85ef8805110",
-    "address_id": "0ba16ba7-0c7a-45de-9fe6-9054fb6df6a8"
+    "code": "WD_001 UPDATED",
+    "name": "Test Company UPDATED",
+  "contact_ids": [
+    "3087768f-d44f-404b-a1b1-54a691ea94b7"
+  ],
+    "address_id": "59fdc093-b2d0-41fd-96b2-8f58030e53be"
 }
 
 ### GET WAREHOUSES
@@ -26,21 +27,21 @@ Content-Type: application/json
 ###
 
 ### GET WAREHOUSE BY ID
-GET http://localhost:5000/api/warehouses/6ae8144f-a5a4-49b0-a093-b0f30659f256
+GET http://localhost:5000/api/warehouses/eed6a18f-38ef-450a-bcc4-e0cbcfb82a57
 Content-Type: application/json
 ###
 
 ### GET LOCATIONS FROM WAREHOUSE
-GET http://localhost:5000/api/warehouses/8dbab3d8-34b4-4528-968b-74d8f94515a5/locations
+GET http://localhost:5000/api/warehouses/eed6a18f-38ef-450a-bcc4-e0cbcfb82a57/locations
 Content-Type: application/json
 ###
 
 ### GET DOCK and DOCK ITEMS FROM WAREHOUSE
-GET http://localhost:5000/api/warehouses/9ace5180-bae2-40f5-b774-6c88cca9fcc2/dock
+GET http://localhost:5000/api/warehouses/4bb69c11-f4b0-439f-b584-62df6ebdfcc6/dock
 Content-Type: application/json
 ###
 
 ### DELETE WAREHOUSE BY ID
-DELETE http://localhost:5000/api/warehouses/530d3c56-1f6d-4ea0-bb0f-7669f80ccffe
+DELETE http://localhost:5000/api/warehouses/eed6a18f-38ef-450a-bcc4-e0cbcfb82a57
 Content-Type: application/json
 ###

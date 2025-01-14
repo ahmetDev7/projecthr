@@ -23,7 +23,7 @@ POST http://localhost:5000/api/items
 Content-Type: application/json
 
 {
-  "code": "ITEM TEST 5",
+  "code": "ITEM TEST 2",
   "description": "High-quality ergonomic office chair with adjustable height and back support",
   "short_description": "Ergonomic office chair",
   "upc_code": "123456789012",
@@ -37,7 +37,7 @@ Content-Type: application/json
   "item_group_id": null,
   "item_line_id": null,
   "item_type_id": null,
-  "supplier_id": "27a1e19b-32bf-4e14-a21e-12ef2bd919d2"
+  "supplier_id": "8667ccae-41be-44d4-845f-d144719ec3ea"
 }
 ###
 

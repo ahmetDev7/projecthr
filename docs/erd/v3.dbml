@@ -278,6 +278,7 @@ Enum shipment_type {
 }
 
 Enum shipment_status {
+  Plan
   Pending
   Transit
   Delivered
@@ -296,8 +297,8 @@ Enum payment_type {
 
 Enum order_status {
   Pending
-  Packed
-  Delivered
+  Being_Packed
+  Closed
 }
 
 Enum log_action {

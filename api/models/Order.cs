@@ -8,11 +8,12 @@ public class Order : BaseModel
 
     [Required]
     public DateTime? OrderDate { get; set; }
+    [Required]
     public DateTime? RequestDate { get; set; }
     public string? Reference { get; set; }
     public string? ReferenceExtra { get; set; }
     [Required]
-    public string? OrderStatus { get; set; }
+    public OrderStatus? OrderStatus { get; set; } // default: order_status.pending
     public string? Notes { get; set; }
     public string? PickingNotes { get; set; }
     private decimal? _totalAmount;
@@ -45,11 +46,11 @@ public class Order : BaseModel
     public Warehouse? Warehouse { get; set; }
     [Required]
     public ICollection<OrderItem>? OrderItems { get; set; }
-    public ICollection<Shipment>? Shipments { get; set; }
     public Guid? ShipToClientId { get; set; }
     public Client? ShipToClient { get; set; }
     [Required]
     public Guid? BillToClientId { get; set; }
     public Client? BillToClient { get; set; }
 
+    public ICollection<OrderShipment>? OrderShipments { get; set; }
 }

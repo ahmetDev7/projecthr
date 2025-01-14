@@ -173,6 +173,8 @@
 
 ✅ `PUT /orders/{order_id}/items` - Update items in a specific order.
 
+✅ `PUT /orders/{order_id}/commit` - Update order to order status closed.
+
 ✅ `DELETE /orders/{order_id}` - Delete a specific order by ID.
 
 
@@ -211,12 +213,12 @@
 
 ✅ `PUT /shipments/{shipment_id}` - Update a specific shipment by ID.
 
-❗ `PUT /shipments/{shipment_id}/orders` - Update orders in a specific shipment. (ZIE update_orders_in_shipment bij PYTHON APP orders.py: line 91)
+✅ `PUT /shipments/{shipment_id}/orders` - Update orders in a specific shipment. (ZIE update_orders_in_shipment bij PYTHON APP orders.py: line 91)
 
 ✅ `PUT /shipments/{shipment_id}/items` - Update items in a specific shipment.
 
-❗ `PUT /shipments/{shipment_id}/commit - Update a shipment status
+✅ `PUT /shipments/{shipment_id}/commit - Update a shipment status
 
-❗ `PUT /shipments/{shipment_id}/orders/connect (Controleren bij PO)
+❗ `PUT /shipments/{shipment_id}/orders/connect (Controleren bij PO) (is zelfde als PUT /shipments/shipment_id/orders. dus hoeft niet)
 
 ✅ `DELETE /shipments/{shipment_id}` - Delete a specific shipment by ID.

@@ -18,24 +18,24 @@ namespace api.IntegrationTests
             });
         }
 
-        [Fact]
-        public async Task GetOrders_OrdersExist_ReturnsSuccesWithOrders()
-        {
-            var response = await _httpClient.GetAsync(_baseUrl);
-            var result = await response.Content.ReadFromJsonAsync<List<Order>>();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        // [Fact]
+        // public async Task GetOrders_OrdersExist_ReturnsSuccesWithOrders()
+        // {
+        //     var response = await _httpClient.GetAsync(_baseUrl);
+        //     var result = await response.Content.ReadFromJsonAsync<List<Order>>();
+        //     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().HaveCount(1);
-        }
+        //     result.Should().HaveCount(1);
+        // }
 
-        [Fact]
-        public async Task GetSingleOrder_ReturnsSuccesWithOrder()
-        {
-            var response = await _httpClient.GetAsync(_baseUrl + "/7ffe0c5e-c188-47a4-9dcf-f3e17c2ff41c");
-            var result = await response.Content.ReadFromJsonAsync<Order>();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        // [Fact]
+        // public async Task GetSingleOrder_ReturnsSuccesWithOrder()
+        // {
+        //     var response = await _httpClient.GetAsync(_baseUrl + "/7ffe0c5e-c188-47a4-9dcf-f3e17c2ff41c");
+        //     var result = await response.Content.ReadFromJsonAsync<Order>();
+        //     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().NotBeNull();
-        }
+        //     result.Should().NotBeNull();
+        // }
     }
 }

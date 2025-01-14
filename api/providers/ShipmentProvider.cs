@@ -182,5 +182,15 @@ public class ShipmentProvider : BaseProvider<Shipment>
         return shipment;
     }
 
+    public List<Order?>? GetOrdersByShipment(Guid shipmentId)
+    {
+        return _db.OrderShipments
+          .Where(os => os.ShipmentId == shipmentId)
+          .Include(os => os.Order)
+          .ThenInclude(o => o.OrderItems)
+          .Select(os => os.Order)
+          .ToList();
+    }
+
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);
 }

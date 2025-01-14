@@ -18,9 +18,13 @@ Content-Type: application/json
   "total_package_weight": 3.4,
   "items": [
     {
-      "item_id": "fae716d1-5649-4e26-a56c-12a8679e9629",
-      "amount": 5
+      "item_id": "dac06dda-eda1-4557-8eef-e4b0b0545ae7",
+      "amount": 51
     }
+  ],
+  "orders": [
+    "4b8273b8-535b-4378-87e1-852a5adab5d8",
+    "e495587e-f200-4633-ae88-563612d57d11"
   ]
 }
 ###
@@ -75,4 +79,10 @@ Content-Type: application/json
 
 ### COMMIT SHIPMENT (change ID to the ID in your database)
 PUT http://localhost:5000/api/shipments/ef2bb6bb-8865-4fc1-b009-c2e9b848daec/commit
+Content-Type: application/json
+###
+
+
+### Get orders from shipment (change ID to the ID in your database)
+GET http://localhost:5000/api/shipments/86335c30-65ab-4854-ace1-d6a56bca36fd/orders
 Content-Type: application/json

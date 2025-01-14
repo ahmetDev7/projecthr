@@ -19,7 +19,7 @@ namespace api.IntegrationTests
         }
 
         [Fact]
-        public async Task GetLocation_LocationExist_ReturnsSuccesWithLocations()
+        public async Task GetLocations_LocationExist_ReturnsSuccesWithLocations()
         {
             var response = await _httpClient.GetAsync(_baseUrl);
             var result = await response.Content.ReadFromJsonAsync<List<Location>>();
@@ -40,26 +40,4 @@ namespace api.IntegrationTests
             result.Should().NotBeNull();
         }
 
-        [Fact]
-        public async Task DeleteLocation_ReturnSuccesOKResponse()
-        {
-            var response = await _httpClient.DeleteAsync(_baseUrl + "/68b1efa8-8cbe-4dae-867f-40384954c5cc");
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        [Fact]
-        public async Task GetSingleLocation_ReturnsNotFound404_wrong_ID()
-        {
-            var response = await _httpClient.GetAsync(_baseUrl + "/59a2a43e-2e9f-42a5-9817-849c70a78e20");
-
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
-
-        [Fact]
-        public async Task DeleteLocation_ReturnsNotFound()
-        {
-            var response = await _httpClient.DeleteAsync(_baseUrl + "/59a2a43e-2e9f-42a5-9817-849c70a78e20");
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
     }
-}

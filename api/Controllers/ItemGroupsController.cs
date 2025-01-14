@@ -1,6 +1,7 @@
 using DTO.Item;
 using DTO.ItemGroup;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -14,6 +15,7 @@ public class ItemGroupsController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Create([FromBody] ItemGroupRequest req)
     {
         ItemGroup? newItemGroup = _itemGroupProvider.Create(req);
@@ -35,6 +37,7 @@ public class ItemGroupsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Update(Guid id, [FromBody] ItemGroupRequest req)
     {
         ItemGroup? updatedItemGroup = _itemGroupProvider.Update(id, req);
@@ -56,6 +59,7 @@ public class ItemGroupsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public IActionResult Delete(Guid id)
     {
         ItemGroup? deletedItemGroup = _itemGroupProvider.Delete(id);
@@ -77,6 +81,7 @@ public class ItemGroupsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         ItemGroup? foundItemGroup = _itemGroupProvider.GetById(id);
@@ -98,6 +103,7 @@ public class ItemGroupsController : ControllerBase
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_itemGroupProvider.GetAll().Select(ig => new ItemGroupResponse
     {
         Id = ig.Id,

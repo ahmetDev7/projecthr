@@ -10,7 +10,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
     private IValidator<ShipmentRequest> _shipmentRequestValidator;
     private IValidator<UpdateShipmentItemDTO> _updateShipmentRequestValidation;
 
-    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> updateShipmentRequestValidation ) : base(db)
+    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> updateShipmentRequestValidation) : base(db)
     {
         _shipmentValidator = validator;
         _shipmentRequestValidator = shipmentRequestValidator;

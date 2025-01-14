@@ -46,7 +46,7 @@ public class UpdateShipmentRequestValidation : AbstractValidator<UpdateShipmentI
                 }
             }
         });
-        
+
         // Validation to check if item is in DB is in ShipmentValidation
         RuleFor(req => req.Orders)
            .Custom((orders, context) =>

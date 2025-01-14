@@ -1,6 +1,7 @@
 using DTO.Item;
 using DTO.Order;
 using DTO.Shipment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -15,6 +16,7 @@ public class ShipmentsController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,logistics")]
     public IActionResult Create([FromBody] ShipmentRequest req)
     {
         Shipment? newShipment = _shipmentProvider.Create(req);
@@ -53,6 +55,7 @@ public class ShipmentsController : ControllerBase
 
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,logistics")]
     public IActionResult Update(Guid id, [FromBody] ShipmentRequest req)
     {
         Shipment? foundShipment = _shipmentProvider.GetById(id);
@@ -97,6 +100,7 @@ public class ShipmentsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin,warehousemanager")]
     public IActionResult Delete(Guid id)
     {
         Shipment? deletedShipment = _shipmentProvider.Delete(id);
@@ -134,6 +138,7 @@ public class ShipmentsController : ControllerBase
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_shipmentProvider.GetAll()?.Select(s => new ShipmentResponse
     {
         Id = s.Id,
@@ -161,6 +166,7 @@ public class ShipmentsController : ControllerBase
     }).ToList());
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Shipment? foundShipment = _shipmentProvider.GetById(id);
@@ -199,6 +205,7 @@ public class ShipmentsController : ControllerBase
     }
 
     [HttpPut("{id}/commit")]
+    [Authorize(Roles = "admin,warehousemanager,logistics")]
     public IActionResult ActionCommit(Guid id)
     {
         Shipment? foundShipment = _shipmentProvider.GetById(id);
@@ -245,6 +252,7 @@ public class ShipmentsController : ControllerBase
     }
 
     [HttpGet("{shipmentId}/orders")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult GetOrderByShipment(Guid shipmentId)
     {
         return Ok(_shipmentProvider.GetOrdersByShipment(shipmentId)?.Select(o => new OrderResponse
@@ -276,6 +284,7 @@ public class ShipmentsController : ControllerBase
 
 
     [HttpGet("{shipmentId}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult GetShipmentItems(Guid shipmentId)
     {
         Shipment? foundShipment = _shipmentProvider.GetById(shipmentId);
@@ -305,6 +314,7 @@ public class ShipmentsController : ControllerBase
     }
 
     [HttpPut("{shipmentId}/items")]
+    [Authorize(Roles = "admin,warehousemanager,logistics")]
     public IActionResult UpdateShipmentItems(Guid shipmentId, [FromBody] List<ShipmentItemRR> reqShipmentItems)
     {
         Shipment? foundShipment = _shipmentProvider.GetById(shipmentId);
@@ -344,6 +354,7 @@ public class ShipmentsController : ControllerBase
     }
 
     [HttpPut("{shipmentId}/orders")]
+    [Authorize(Roles = "admin,warehousemanager,logistics")]
     public IActionResult UpdateShipmentOrders(Guid shipmentId, [FromBody] List<Guid?> reqOrderIds)
     {
         Shipment? foundShipment = _shipmentProvider.GetById(shipmentId);

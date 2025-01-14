@@ -1,5 +1,4 @@
 using System.Data;
-using DTO.ItemGroup;
 using DTO.Order;
 using Microsoft.AspNetCore.Mvc;
 
@@ -92,6 +91,17 @@ public class OrdersController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Update(Guid id, [FromBody] OrderRequest req)
     {
+        Order? foundOrder = _orderProvider.GetById(id);
+        if (foundOrder == null)
+        {
+            return NotFound(new { message = $"Order not found for id '{id}'" });
+        }
+
+        if (foundOrder.OrderStatus == OrderStatus.Closed)
+        {
+            throw new ApiFlowException("This order has been closed and cannot be updated.", StatusCodes.Status409Conflict);
+        }
+
         Order? updatedOrder = _orderProvider.Update(id, req);
 
         return updatedOrder == null
@@ -159,10 +169,8 @@ public class OrdersController : ControllerBase
         Order? foundOrder = _orderProvider.GetById(id);
         return foundOrder == null
             ? NotFound(new { message = $"Order not found for id '{id}'" })
-            : Ok(new
-            {
-                message = "Order found!",
-                order = new OrderResponse
+            : Ok(
+                new OrderResponse
                 {
                     Id = foundOrder.Id,
                     OrderDate = foundOrder.OrderDate,
@@ -187,7 +195,7 @@ public class OrdersController : ControllerBase
                         Amount = oi.Amount
                     }).ToList()
                 }
-            });
+            );
     }
 
     [HttpGet("{id}/items")]
@@ -201,6 +209,52 @@ public class OrdersController : ControllerBase
             ItemId = oi.ItemId,
             Amount = oi.Amount
         }).ToList());
+    }
+
+    [HttpPut("{id}/commit")]
+    public IActionResult ActionCommit(Guid id)
+    {
+        Order? foundOrder = _orderProvider.GetById(id);
+        if (foundOrder == null) return NotFound(new { message = $"Order not found for id '{id}'" });
+
+        if (foundOrder.OrderStatus == OrderStatus.Closed)
+        {
+            throw new ApiFlowException("This order has already been closed. Updates are not allowed.", StatusCodes.Status409Conflict);
+        }
+
+        Order? commitedOrder = _orderProvider.CommitOrder(foundOrder);
+
+        return Ok(
+            new
+            {
+                message = "Order closed!",
+                commited_order = new OrderResponse
+                {
+                    Id = commitedOrder.Id,
+                    OrderDate = commitedOrder.OrderDate,
+                    RequestDate = commitedOrder.RequestDate,
+                    Reference = commitedOrder.Reference,
+                    ReferenceExtra = commitedOrder.ReferenceExtra,
+                    OrderStatus = commitedOrder.OrderStatus,
+                    Notes = commitedOrder.Notes,
+                    PickingNotes = commitedOrder.PickingNotes,
+                    TotalAmount = commitedOrder.TotalAmount,
+                    TotalDiscount = commitedOrder.TotalDiscount,
+                    TotalTax = commitedOrder.TotalTax,
+                    TotalSurcharge = commitedOrder.TotalSurcharge,
+                    WarehouseId = commitedOrder.WarehouseId,
+                    ShipToClientId = commitedOrder.ShipToClientId,
+                    BillToClientId = commitedOrder.BillToClientId,
+                    CreatedAt = commitedOrder.CreatedAt,
+                    UpdatedAt = commitedOrder.UpdatedAt,
+                    Items = commitedOrder.OrderItems?.Select(oi => new OrderItemRequest
+                    {
+                        ItemId = oi.ItemId,
+                        Amount = oi.Amount
+                    }).ToList()
+                }
+            }
+        );
     }
 
 }

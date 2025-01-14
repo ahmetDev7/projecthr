@@ -83,6 +83,8 @@ jobs:
   integration_tests_and_code_coverage:
     name: Run Integration Tests & Generate Code Coverage Report
     runs-on: ubuntu-latest
+    environment: 
+      name: keys
     needs: build
     steps:
       - uses: actions/checkout@v4
@@ -90,6 +92,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+      - name: Set up .env.json file
+        run: |
+          echo '{' > api.IntegrationTests/.env.json
+          echo '  "API_ADMIN": "${{ secrets.API_ADMIN }}"' >> api.IntegrationTests/.env.json
+          echo '}' >> api.IntegrationTests/.env.json
       - name: Run Integration Tests & Generate Report
         run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --collect:"XPlat Code Coverage"
       - name: ReportGenerator for Integration Tests

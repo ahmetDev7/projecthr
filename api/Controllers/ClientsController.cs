@@ -3,6 +3,7 @@ using DTO.Address;
 using DTO.Client;
 using DTO.Contact;
 using DTO.Order;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -17,6 +18,7 @@ public class ClientsController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create([FromBody] ClientRequest req)
     {
         Client? createClient = _clientProvider.Create(req);
@@ -62,6 +64,7 @@ public class ClientsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Update(Guid id, [FromBody] ClientRequest req)
     {
         Client? updatedClient = _clientProvider.Update(id, req);
@@ -110,6 +113,7 @@ public class ClientsController : ControllerBase
 
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Client? foundClient = _clientProvider.GetById(id);
@@ -155,7 +159,8 @@ public class ClientsController : ControllerBase
     }
 
 
-    [HttpGet]
+    [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult ShowAll()
     {
         List<Client>? clients = _clientProvider.GetAll();
@@ -196,6 +201,7 @@ public class ClientsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public IActionResult Delete(Guid id)
     {
         Client? deletedClient = _clientProvider.Delete(id);

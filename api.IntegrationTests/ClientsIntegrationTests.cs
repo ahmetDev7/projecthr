@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -21,16 +22,27 @@ namespace api.IntegrationTests
         [Fact]
         public async Task GetClients_ClientsExist_ReturnsSuccesWithClients()
         {
+            var apiKey = ApiKeyLoader.LoadApiKeyFromJson(".env.json", "API_ADMIN");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+
             var response = await _httpClient.GetAsync(_baseUrl);
-            var result = await response.Content.ReadFromJsonAsync<List<Client>>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var result = await response.Content.ReadFromJsonAsync<List<Client>>();
 
             result.Should().HaveCount(2);
         }
 
+
         [Fact]
         public async Task GetSingleClient_ReturnsSuccesWithClient()
         {
+            var apiKey = ApiKeyLoader.LoadApiKeyFromJson(".env.json", "API_ADMIN");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+
             var response = await _httpClient.GetAsync(_baseUrl + "/8f568644-4d30-4658-ab68-c80d0636ba8f");
             var result = await response.Content.ReadFromJsonAsync<Client>();
             response.StatusCode.Should().Be(HttpStatusCode.OK);

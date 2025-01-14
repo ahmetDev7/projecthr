@@ -3,6 +3,7 @@ using DTO.Address;
 using DTO.Client;
 using DTO.Contact;
 using DTO.Order;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -146,7 +147,8 @@ public class ClientsController : ControllerBase
     }
 
 
-    [HttpGet]
+    [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult ShowAll()
     {
         List<Client>? clients = _clientProvider.GetAll();

@@ -1,32 +1,33 @@
 using System.Data;
-using DTO.ItemGroup;
 using DTO.Order;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Utils.Date;
 
 
 public class OrderProvider : BaseProvider<Order>
 {
+    private IValidator<OrderRequest> _orderRequestValidator;
     private IValidator<Order> _orderValidator;
 
-    public OrderProvider(AppDbContext db, IValidator<Order> validator) : base(db)
+    public OrderProvider(AppDbContext db, IValidator<Order> validator, IValidator<OrderRequest> orValidator) : base(db)
     {
         _orderValidator = validator;
+        _orderRequestValidator = orValidator;
     }
 
     public override List<Order>? GetAll() => _db.Orders.Include(o => o.OrderItems).ToList();
-    public override Order? GetById(Guid id) =>
-    _db.Orders.Include(o => o.OrderItems).FirstOrDefault(order => order.Id == id);
+    public override Order? GetById(Guid id) => _db.Orders.Include(o => o.OrderItems).FirstOrDefault(order => order.Id == id);
 
-    public List<OrderItem> GetRelatedOrderById(Guid id) =>
-     _db.Orders.Where(o => o.Id == id).SelectMany(o => o.OrderItems).ToList();
+    public List<OrderItem> GetRelatedOrderById(Guid id) => _db.Orders.Where(o => o.Id == id).SelectMany(o => o.OrderItems).ToList();
 
     public override Order? Create(BaseDTO createValues)
     {
         OrderRequest? req = createValues as OrderRequest;
         if (req == null) throw new ApiFlowException("Could not process create order request. Save new order failed.");
+
+        _orderRequestValidator.ValidateAndThrow(req);
+
         Order newOrder = new Order(newInstance: true)
         {
             OrderDate = DateUtil.ToUtcOrNull(req.OrderDate),
@@ -43,12 +44,27 @@ public class OrderProvider : BaseProvider<Order>
             WarehouseId = req.WarehouseId,
             BillToClientId = req.BillToClientId,
             ShipToClientId = req.ShipToClientId,
-            OrderItems = req.OrderItems?.Select(oi => new OrderItem
+            OrderItems = req.OrderItems?.Select(oi => new OrderItem(newInstance: true)
             {
                 ItemId = oi.ItemId,
                 Amount = oi.Amount
             }).ToList()
         };
+
+        if (newOrder.OrderDate == null)
+        {
+            newOrder.OrderDate = DateUtil.ToUtcOrNull(newOrder.CreatedAt);
+        }
+
+        if (newOrder.RequestDate == null)
+        {
+            newOrder.RequestDate = DateUtil.ToUtcOrNull(newOrder.OrderDate);
+        }
+
+        if (newOrder.OrderStatus == null)
+        {
+            newOrder.OrderStatus = OrderStatus.Pending;
+        }
 
         ValidateModel(newOrder);
         _db.Orders.Add(newOrder);
@@ -58,6 +74,7 @@ public class OrderProvider : BaseProvider<Order>
 
     public override Order? Delete(Guid id)
     {
+        // TODO: ON DELETE: Recalculate on_hand and orderd amount
         Order? foundOrder = _db.Orders.FirstOrDefault(s => s.Id == id);
         if (foundOrder == null) return null;
 
@@ -70,9 +87,9 @@ public class OrderProvider : BaseProvider<Order>
     {
         OrderRequest? req = updateValues as OrderRequest;
         if (req == null) throw new ApiFlowException("Could not process update order request. Update failed.");
+        _orderRequestValidator.ValidateAndThrow(req);
 
         Order? existingOrder = _db.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.Id == id);
-        if (existingOrder == null) throw new ApiFlowException($"Order not found for id '{id}'");
 
         existingOrder.OrderDate = DateUtil.ToUtcOrNull(req.OrderDate);
         existingOrder.RequestDate = DateUtil.ToUtcOrNull(req.RequestDate);
@@ -90,11 +107,27 @@ public class OrderProvider : BaseProvider<Order>
         existingOrder.WarehouseId = req.WarehouseId;
         existingOrder.SetUpdatedAt();
 
+        if (existingOrder.OrderDate == null)
+        {
+            existingOrder.OrderDate = DateUtil.ToUtcOrNull(existingOrder.CreatedAt);
+        }
+
+        if (existingOrder.RequestDate == null)
+        {
+            existingOrder.RequestDate = DateUtil.ToUtcOrNull(existingOrder.OrderDate);
+        }
+
+        if (existingOrder.OrderStatus == null)
+        {
+            existingOrder.OrderStatus = OrderStatus.Pending;
+        }
+
+
+        _db.OrderItems.RemoveRange(existingOrder.OrderItems);
+
         if (req.OrderItems != null)
         {
-            _db.OrderItems.RemoveRange(existingOrder.OrderItems);
-
-            existingOrder.OrderItems = req.OrderItems.Select(oi => new OrderItem
+            existingOrder.OrderItems = req.OrderItems.Select(oi => new OrderItem(newInstance: true)
             {
                 ItemId = oi.ItemId,
                 Amount = oi.Amount
@@ -102,11 +135,18 @@ public class OrderProvider : BaseProvider<Order>
         }
 
         ValidateModel(existingOrder);
-
         _db.Orders.Update(existingOrder);
         SaveToDBOrFail();
 
         return existingOrder;
+    }
+
+    public Order? CommitOrder(Order order)
+    {
+        order.OrderStatus = OrderStatus.Closed;
+        _db.Orders.Update(order);
+        SaveToDBOrFail();
+        return order;
     }
 
     protected override void ValidateModel(Order model) => _orderValidator.ValidateAndThrow(model);

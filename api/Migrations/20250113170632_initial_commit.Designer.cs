@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250107152841_create_tbl_mtm_warehouse_contact")]
-    partial class create_tbl_mtm_warehouse_contact
+    [Migration("20250113170632_initial_commit")]
+    partial class initial_commit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -472,9 +472,8 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("OrderStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PickingNotes")
                         .HasColumnType("text");
@@ -486,6 +485,7 @@ namespace api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("RequestDate")
+                        .IsRequired()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("ShipToClientId")
@@ -539,6 +539,7 @@ namespace api.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("OrderId")
+                        .IsRequired()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -551,6 +552,35 @@ namespace api.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("OrderShipment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ShipmentId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ShipmentId");
+
+                    b.ToTable("OrderShipments");
                 });
 
             modelBuilder.Entity("Shipment", b =>
@@ -574,10 +604,6 @@ namespace api.Migrations
 
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("uuid");
 
                     b.Property<string>("PaymentType")
                         .IsRequired()
@@ -614,8 +640,6 @@ namespace api.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Shipments");
                 });
@@ -878,13 +902,13 @@ namespace api.Migrations
             modelBuilder.Entity("InventoryLocation", b =>
                 {
                     b.HasOne("Inventory", "Inventory")
-                        .WithMany()
+                        .WithMany("InventoryLocations")
                         .HasForeignKey("InventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Location", "Location")
-                        .WithMany()
+                        .WithMany("InventoryLocations")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -968,20 +992,34 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Order", null)
+                    b.HasOne("Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId");
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Shipment", b =>
-                {
-                    b.HasOne("Order", null)
-                        .WithMany("Shipments")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("OrderShipment", b =>
+                {
+                    b.HasOne("Order", "Order")
+                        .WithMany("OrderShipments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shipment", "Shipment")
+                        .WithMany("OrderShipments")
+                        .HasForeignKey("ShipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Shipment");
                 });
 
             modelBuilder.Entity("ShipmentItem", b =>
@@ -1105,6 +1143,11 @@ namespace api.Migrations
                     b.Navigation("WarehouseContacts");
                 });
 
+            modelBuilder.Entity("Inventory", b =>
+                {
+                    b.Navigation("InventoryLocations");
+                });
+
             modelBuilder.Entity("Item", b =>
                 {
                     b.Navigation("Inventory");
@@ -1133,6 +1176,8 @@ namespace api.Migrations
 
             modelBuilder.Entity("Location", b =>
                 {
+                    b.Navigation("InventoryLocations");
+
                     b.Navigation("TransfersFrom");
 
                     b.Navigation("TransfersTo");
@@ -1142,11 +1187,13 @@ namespace api.Migrations
                 {
                     b.Navigation("OrderItems");
 
-                    b.Navigation("Shipments");
+                    b.Navigation("OrderShipments");
                 });
 
             modelBuilder.Entity("Shipment", b =>
                 {
+                    b.Navigation("OrderShipments");
+
                     b.Navigation("ShipmentItems");
                 });
 

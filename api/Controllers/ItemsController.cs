@@ -94,7 +94,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "admin")]    
+    [Authorize(Roles = "admin")]
     public IActionResult Delete(Guid id)
     {
         Item? foundItem = _itemsProvider.GetById(id);

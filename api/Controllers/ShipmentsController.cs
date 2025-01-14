@@ -167,30 +167,34 @@ public class ShipmentsController : ControllerBase
 
         return (foundShipment == null)
             ? NotFound(new { message = $"Shipment not found for id '{id}'" })
-            : Ok(new ShipmentResponse
+            : Ok(new
             {
-                Id = foundShipment.Id,
-                OrderDate = foundShipment.OrderDate,
-                RequestDate = foundShipment.RequestDate,
-                ShipmentDate = foundShipment.ShipmentDate,
-                ShipmentType = foundShipment.ShipmentType.ToString(),
-                ShipmentStatus = foundShipment.ShipmentStatus.ToString(),
-                Notes = foundShipment.Notes,
-                CarrierCode = foundShipment.CarrierCode,
-                CarrierDescription = foundShipment.CarrierDescription,
-                ServiceCode = foundShipment.ServiceCode,
-                PaymentType = foundShipment.PaymentType.ToString(),
-                TransferMode = foundShipment.TransferMode.ToString(),
-                TotalPackageCount = foundShipment.TotalPackageCount,
-                TotalPackageWeight = foundShipment.TotalPackageWeight,
-                CreatedAt = foundShipment.CreatedAt,
-                UpdatedAt = foundShipment.UpdatedAt,
-                Items = foundShipment.ShipmentItems?.Select(item => new ShipmentItemRR
+                message = "Shipment found!",
+                found_Shipment = new ShipmentResponse
                 {
-                    ItemId = item.ItemId,
-                    Amount = item.Amount
-                }).ToList(),
-                Orders = foundShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+                    Id = foundShipment.Id,
+                    OrderDate = foundShipment.OrderDate,
+                    RequestDate = foundShipment.RequestDate,
+                    ShipmentDate = foundShipment.ShipmentDate,
+                    ShipmentType = foundShipment.ShipmentType.ToString(),
+                    ShipmentStatus = foundShipment.ShipmentStatus.ToString(),
+                    Notes = foundShipment.Notes,
+                    CarrierCode = foundShipment.CarrierCode,
+                    CarrierDescription = foundShipment.CarrierDescription,
+                    ServiceCode = foundShipment.ServiceCode,
+                    PaymentType = foundShipment.PaymentType.ToString(),
+                    TransferMode = foundShipment.TransferMode.ToString(),
+                    TotalPackageCount = foundShipment.TotalPackageCount,
+                    TotalPackageWeight = foundShipment.TotalPackageWeight,
+                    CreatedAt = foundShipment.CreatedAt,
+                    UpdatedAt = foundShipment.UpdatedAt,
+                    Items = foundShipment.ShipmentItems?.Select(item => new ShipmentItemRR
+                    {
+                        ItemId = item.ItemId,
+                        Amount = item.Amount
+                    }).ToList(),
+                    Orders = foundShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+                }
             });
     }
 

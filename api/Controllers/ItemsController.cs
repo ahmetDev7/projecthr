@@ -97,26 +97,30 @@ public class ItemsController : ControllerBase
 
         return (foundItem == null)
             ? NotFound(new { message = $"Item not found for id '{id}'" })
-            : Ok(new ItemResponse
+            : Ok(new
             {
-                Id = foundItem.Id,
-                Code = foundItem.Code,
-                Description = foundItem.Description,
-                ShortDescription = foundItem.ShortDescription,
-                UpcCode = foundItem.UpcCode,
-                ModelNumber = foundItem.ModelNumber,
-                CommodityCode = foundItem.CommodityCode,
-                UnitPurchaseQuantity = foundItem.UnitPurchaseQuantity,
-                UnitOrderQuantity = foundItem.UnitOrderQuantity,
-                PackOrderQuantity = foundItem.PackOrderQuantity,
-                SupplierReferenceCode = foundItem.SupplierReferenceCode,
-                SupplierPartNumber = foundItem.SupplierPartNumber,
-                ItemGroupId = foundItem.ItemGroupId,
-                ItemLineId = foundItem.ItemLineId,
-                ItemTypeId = foundItem.ItemTypeId,
-                SupplierId = foundItem.SupplierId,
-                CreatedAt = foundItem.CreatedAt,
-                UpdatedAt = foundItem.UpdatedAt
+                message = "Item found!",
+                Item = new ItemResponse
+                {
+                    Id = foundItem.Id,
+                    Code = foundItem.Code,
+                    Description = foundItem.Description,
+                    ShortDescription = foundItem.ShortDescription,
+                    UpcCode = foundItem.UpcCode,
+                    ModelNumber = foundItem.ModelNumber,
+                    CommodityCode = foundItem.CommodityCode,
+                    UnitPurchaseQuantity = foundItem.UnitPurchaseQuantity,
+                    UnitOrderQuantity = foundItem.UnitOrderQuantity,
+                    PackOrderQuantity = foundItem.PackOrderQuantity,
+                    SupplierReferenceCode = foundItem.SupplierReferenceCode,
+                    SupplierPartNumber = foundItem.SupplierPartNumber,
+                    ItemGroupId = foundItem.ItemGroupId,
+                    ItemLineId = foundItem.ItemLineId,
+                    ItemTypeId = foundItem.ItemTypeId,
+                    SupplierId = foundItem.SupplierId,
+                    CreatedAt = foundItem.CreatedAt,
+                    UpdatedAt = foundItem.UpdatedAt
+                }
             });
     }
 

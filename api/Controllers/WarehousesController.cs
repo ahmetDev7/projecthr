@@ -170,43 +170,47 @@ public class WarehousesController : ControllerBase
     {
         Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
         if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-        return Ok(new WarehouseResponse
+        return Ok(new
         {
-            Id = foundWarehouse.Id,
-            Code = foundWarehouse.Code,
-            Name = foundWarehouse.Name,
-            Contacts = foundWarehouse.WarehouseContacts.Select(wc => new ContactResponse
+            message = "Warehouse retrieved successfully!",
+            Warehouse = new WarehouseResponse
             {
-                Id = wc.ContactId,
-                Name = wc.Contact?.Name,
-                Function = wc.Contact?.Function,
-                Phone = wc.Contact?.Phone,
-                Email = wc.Contact?.Email,
-                CreatedAt = wc.Contact?.CreatedAt,
-                UpdatedAt = wc.Contact?.UpdatedAt
-            }).ToList(),
-            Address = new AddressResponse
-            {
-                Id = foundWarehouse.AddressId,
-                Street = foundWarehouse.Address?.Street,
-                HouseNumber = foundWarehouse.Address?.HouseNumber,
-                HouseNumberExtension = foundWarehouse.Address?.HouseNumberExtension,
-                HouseNumberExtensionExtra = foundWarehouse.Address?.HouseNumberExtensionExtra,
-                ZipCode = foundWarehouse.Address?.ZipCode,
-                City = foundWarehouse.Address?.City,
-                Province = foundWarehouse.Address?.Province,
-                CountryCode = foundWarehouse.Address?.CountryCode,
-                CreatedAt = foundWarehouse.Address?.CreatedAt,
-                UpdatedAt = foundWarehouse.Address?.UpdatedAt
-            },
-            Dock = new DockResponse
-            {
-                Id = foundWarehouse?.Dock?.Id,
-                CreatedAt = foundWarehouse?.Dock?.CreatedAt,
-                UpdatedAt = foundWarehouse?.Dock?.UpdatedAt,
-            },
-            CreatedAt = foundWarehouse?.CreatedAt,
-            UpdatedAt = foundWarehouse?.UpdatedAt,
+                Id = foundWarehouse.Id,
+                Code = foundWarehouse.Code,
+                Name = foundWarehouse.Name,
+                Contacts = foundWarehouse.WarehouseContacts.Select(wc => new ContactResponse
+                {
+                    Id = wc.ContactId,
+                    Name = wc.Contact?.Name,
+                    Function = wc.Contact?.Function,
+                    Phone = wc.Contact?.Phone,
+                    Email = wc.Contact?.Email,
+                    CreatedAt = wc.Contact?.CreatedAt,
+                    UpdatedAt = wc.Contact?.UpdatedAt
+                }).ToList(),
+                Address = new AddressResponse
+                {
+                    Id = foundWarehouse.AddressId,
+                    Street = foundWarehouse.Address?.Street,
+                    HouseNumber = foundWarehouse.Address?.HouseNumber,
+                    HouseNumberExtension = foundWarehouse.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = foundWarehouse.Address?.HouseNumberExtensionExtra,
+                    ZipCode = foundWarehouse.Address?.ZipCode,
+                    City = foundWarehouse.Address?.City,
+                    Province = foundWarehouse.Address?.Province,
+                    CountryCode = foundWarehouse.Address?.CountryCode,
+                    CreatedAt = foundWarehouse.Address?.CreatedAt,
+                    UpdatedAt = foundWarehouse.Address?.UpdatedAt
+                },
+                Dock = new DockResponse
+                {
+                    Id = foundWarehouse.Dock?.Id,
+                    CreatedAt = foundWarehouse.Dock?.CreatedAt,
+                    UpdatedAt = foundWarehouse.Dock?.UpdatedAt,
+                },
+                CreatedAt = foundWarehouse.CreatedAt,
+                UpdatedAt = foundWarehouse.UpdatedAt,
+            }
         });
     }
 

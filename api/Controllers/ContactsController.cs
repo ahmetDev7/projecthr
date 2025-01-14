@@ -67,16 +67,21 @@ public class ContactsController : ControllerBase
         if (foundContact == null)
             return NotFound(new { message = $"Contact not found for id {id}" });
 
-        return Ok(new ContactResponse
+        return Ok(new
         {
-            Id = foundContact.Id,
-            Name = foundContact.Name,
-            Function = foundContact.Function,
-            Phone = foundContact.Phone,
-            Email = foundContact.Email,
-            CreatedAt = foundContact.CreatedAt,
-            UpdatedAt = foundContact.UpdatedAt
+            message = "Contact found!",
+            Contact = new ContactResponse
+            {
+                Id = foundContact.Id,
+                Name = foundContact.Name,
+                Function = foundContact.Function,
+                Phone = foundContact.Phone,
+                Email = foundContact.Email,
+                CreatedAt = foundContact.CreatedAt,
+                UpdatedAt = foundContact.UpdatedAt
+            }
         });
+
     }
 
     [HttpGet()]

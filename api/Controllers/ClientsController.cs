@@ -69,36 +69,41 @@ public class ClientsController : ControllerBase
         if (updatedClient == null) BadRequest(new { message = "Client update failed." });
 
         Client? foundClient = _clientProvider.GetById(updatedClient.Id);
-        return Ok(new ClientResponse
+        return Ok(new
         {
-            Id = foundClient.Id,
-            Name = foundClient.Name,
-            Contact = new ContactResponse
+            message = "Client updated!",
+            new_client = new ClientResponse
             {
-                Id = foundClient.ContactId,
-                Name = foundClient.Contact?.Name,
-                Function = foundClient.Contact?.Function,
-                Phone = foundClient.Contact?.Phone,
-                Email = foundClient.Contact?.Email,
-                CreatedAt = foundClient.Contact?.CreatedAt,
-                UpdatedAt = foundClient.Contact?.UpdatedAt
-            },
-            Address = new AddressResponse
-            {
-                Id = foundClient.AddressId,
-                Street = foundClient.Address?.Street,
-                HouseNumber = foundClient.Address?.HouseNumber,
-                HouseNumberExtension = foundClient.Address?.HouseNumberExtension,
-                HouseNumberExtensionExtra = foundClient.Address?.HouseNumberExtensionExtra,
-                ZipCode = foundClient.Address?.ZipCode,
-                City = foundClient.Address?.City,
-                Province = foundClient.Address?.Province,
-                CountryCode = foundClient.Address?.CountryCode,
-                CreatedAt = foundClient.Address?.CreatedAt,
-                UpdatedAt = foundClient.Address?.UpdatedAt
-            },
-            CreatedAt = foundClient.CreatedAt,
-            UpdatedAt = foundClient.UpdatedAt
+                Id = updatedClient.Id,
+                Name = updatedClient.Name,
+                Contact = new ContactResponse
+                {
+                    Id = updatedClient.ContactId,
+                    Name = updatedClient.Contact?.Name,
+                    Phone = updatedClient.Contact?.Phone,
+                    Email = updatedClient.Contact?.Email,
+                    Function = updatedClient.Contact?.Function,
+                    CreatedAt = updatedClient.Contact?.CreatedAt,
+                    UpdatedAt = updatedClient.Contact?.UpdatedAt
+
+                },
+                Address = new AddressResponse
+                {
+                    Id = updatedClient.AddressId,
+                    Street = updatedClient.Address?.Street,
+                    HouseNumber = updatedClient.Address?.HouseNumber,
+                    HouseNumberExtension = updatedClient.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = updatedClient.Address?.HouseNumberExtensionExtra,
+                    ZipCode = updatedClient.Address?.ZipCode,
+                    City = updatedClient.Address?.City,
+                    Province = updatedClient.Address?.Province,
+                    CountryCode = updatedClient.Address?.CountryCode,
+                    CreatedAt = updatedClient.Address?.CreatedAt,
+                    UpdatedAt = updatedClient.Address?.UpdatedAt
+                },
+                CreatedAt = updatedClient.CreatedAt,
+                UpdatedAt = updatedClient.UpdatedAt
+            }
         });
 
     }
@@ -111,37 +116,41 @@ public class ClientsController : ControllerBase
 
         if (foundClient == null) return NotFound(new { message = "Client not found." });
 
-        return Ok(new ClientResponse
+        return Ok(new
         {
-            Id = foundClient.Id,
-            Name = foundClient.Name,
-            Contact = new ContactResponse
+            message = "Client found!",
+            new_client = new ClientResponse
             {
-                Id = foundClient.ContactId,
-                Name = foundClient.Contact?.Name,
-                Function = foundClient.Contact?.Function,
-                Phone = foundClient.Contact?.Phone,
-                Email = foundClient.Contact?.Email,
-                CreatedAt = foundClient.Contact?.CreatedAt,
-                UpdatedAt = foundClient.Contact?.UpdatedAt
+                Id = foundClient.Id,
+                Name = foundClient.Name,
+                Contact = new ContactResponse
+                {
+                    Id = foundClient.ContactId,
+                    Name = foundClient.Contact?.Name,
+                    Phone = foundClient.Contact?.Phone,
+                    Email = foundClient.Contact?.Email,
+                    Function = foundClient.Contact?.Function,
+                    CreatedAt = foundClient.Contact?.CreatedAt,
+                    UpdatedAt = foundClient.Contact?.UpdatedAt
 
-            },
-            Address = new AddressResponse
-            {
-                Id = foundClient.AddressId,
-                Street = foundClient.Address?.Street,
-                HouseNumber = foundClient.Address?.HouseNumber,
-                HouseNumberExtension = foundClient.Address?.HouseNumberExtension,
-                HouseNumberExtensionExtra = foundClient.Address?.HouseNumberExtensionExtra,
-                ZipCode = foundClient.Address?.ZipCode,
-                City = foundClient.Address?.City,
-                Province = foundClient.Address?.Province,
-                CountryCode = foundClient.Address?.CountryCode,
-                CreatedAt = foundClient.Address?.CreatedAt,
-                UpdatedAt = foundClient.Address?.UpdatedAt
-            },
-            CreatedAt = foundClient.CreatedAt,
-            UpdatedAt = foundClient.UpdatedAt
+                },
+                Address = new AddressResponse
+                {
+                    Id = foundClient.AddressId,
+                    Street = foundClient.Address?.Street,
+                    HouseNumber = foundClient.Address?.HouseNumber,
+                    HouseNumberExtension = foundClient.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = foundClient.Address?.HouseNumberExtensionExtra,
+                    ZipCode = foundClient.Address?.ZipCode,
+                    City = foundClient.Address?.City,
+                    Province = foundClient.Address?.Province,
+                    CountryCode = foundClient.Address?.CountryCode,
+                    CreatedAt = foundClient.Address?.CreatedAt,
+                    UpdatedAt = foundClient.Address?.UpdatedAt
+                },
+                CreatedAt = foundClient.CreatedAt,
+                UpdatedAt = foundClient.UpdatedAt
+            }
         });
     }
 

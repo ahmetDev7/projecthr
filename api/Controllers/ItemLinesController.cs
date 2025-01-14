@@ -91,13 +91,17 @@ public class ItemLinesController : ControllerBase
 
         return (foundItemLine == null)
             ? NotFound(new { message = $"Item Line not found for id '{id}'" })
-            : Ok(new ItemLineResponse
+            : Ok(new
             {
-                Id = foundItemLine.Id,
-                Name = foundItemLine.Name,
-                Description = foundItemLine.Description,
-                CreatedAt = foundItemLine.CreatedAt,
-                UpdatedAt = foundItemLine.UpdatedAt
+                message = "Item line found!",
+                Item_Line = new ItemLineResponse
+                {
+                    Id = foundItemLine.Id,
+                    Name = foundItemLine.Name,
+                    Description = foundItemLine.Description,
+                    CreatedAt = foundItemLine.CreatedAt,
+                    UpdatedAt = foundItemLine.UpdatedAt
+                }
             });
     }
 

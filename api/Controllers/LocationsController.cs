@@ -84,15 +84,19 @@ public class LocationsController : ControllerBase
         Location? foundLocation = _locationsProvider.GetById(id);
         return foundLocation == null
             ? NotFound(new { message = $"Location not found for id '{id}'" })
-            : Ok(new LocationResponse
+            : Ok(new
             {
-                Id = foundLocation.Id,
-                Row = foundLocation.Row,
-                Rack = foundLocation.Rack,
-                Shelf = foundLocation.Shelf,
-                WarehouseId = foundLocation.WarehouseId,
-                CreatedAt = foundLocation.CreatedAt,
-                UpdatedAt = foundLocation.UpdatedAt,
+                message = "Location found!",
+                Location = new LocationResponse
+                {
+                    Id = foundLocation.Id,
+                    Row = foundLocation.Row,
+                    Rack = foundLocation.Rack,
+                    Shelf = foundLocation.Shelf,
+                    WarehouseId = foundLocation.WarehouseId,
+                    CreatedAt = foundLocation.CreatedAt,
+                    UpdatedAt = foundLocation.UpdatedAt,
+                }
             });
     }
 

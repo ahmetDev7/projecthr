@@ -145,7 +145,7 @@ public class SuppliersController : ControllerBase
 
         return Ok(new
         {
-            Message = "Supplier succesfully deleted",
+            Message = "Supplier deleted",
             deleted_supplier = new SupplierResponse
             {
                 Id = deletedSupplier.Id,
@@ -187,38 +187,42 @@ public class SuppliersController : ControllerBase
 
         if (supplier == null) return NotFound(new { message = $"Supplier not found for id '{id}'" });
 
-        return Ok(new SupplierResponse
+        return Ok(new
         {
-            Id = supplier.Id,
-            Name = supplier.Name,
-            Code = supplier.Code,
-            Reference = supplier.Reference,
-            Contact = new ContactResponse
+            message = "Supplier found!",
+            Supplier = new SupplierResponse
             {
-                Id = supplier.ContactId,
-                Name = supplier.Contact?.Name,
-                Function = supplier.Contact?.Function,
-                Phone = supplier.Contact?.Phone,
-                Email = supplier.Contact?.Email,
-                CreatedAt = supplier.Contact?.CreatedAt,
-                UpdatedAt = supplier.Contact?.UpdatedAt
-            },
-            Address = new AddressResponse
-            {
-                Id = supplier.AddressId,
-                Street = supplier.Address?.Street,
-                HouseNumber = supplier.Address?.HouseNumber,
-                HouseNumberExtension = supplier.Address?.HouseNumberExtension,
-                HouseNumberExtensionExtra = supplier.Address?.HouseNumberExtensionExtra,
-                ZipCode = supplier.Address?.ZipCode,
-                City = supplier.Address?.City,
-                Province = supplier.Address?.Province,
-                CountryCode = supplier.Address?.CountryCode,
-                CreatedAt = supplier.Address?.CreatedAt,
-                UpdatedAt = supplier.Address?.UpdatedAt
-            },
-            CreatedAt = supplier.CreatedAt,
-            UpdatedAt = supplier.UpdatedAt
+                Id = supplier.Id,
+                Name = supplier.Name,
+                Code = supplier.Code,
+                Reference = supplier.Reference,
+                Contact = new ContactResponse
+                {
+                    Id = supplier.ContactId,
+                    Name = supplier.Contact?.Name,
+                    Function = supplier.Contact?.Function,
+                    Phone = supplier.Contact?.Phone,
+                    Email = supplier.Contact?.Email,
+                    CreatedAt = supplier.Contact?.CreatedAt,
+                    UpdatedAt = supplier.Contact?.UpdatedAt
+                },
+                Address = new AddressResponse
+                {
+                    Id = supplier.AddressId,
+                    Street = supplier.Address?.Street,
+                    HouseNumber = supplier.Address?.HouseNumber,
+                    HouseNumberExtension = supplier.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = supplier.Address?.HouseNumberExtensionExtra,
+                    ZipCode = supplier.Address?.ZipCode,
+                    City = supplier.Address?.City,
+                    Province = supplier.Address?.Province,
+                    CountryCode = supplier.Address?.CountryCode,
+                    CreatedAt = supplier.Address?.CreatedAt,
+                    UpdatedAt = supplier.Address?.UpdatedAt
+                },
+                CreatedAt = supplier.CreatedAt,
+                UpdatedAt = supplier.UpdatedAt
+            }
         });
     }
     [HttpGet]

@@ -56,6 +56,8 @@ jobs:
   unit_tests_and_code_coverage:
     name: Run Unit Tests & Generate Code Coverage Report
     runs-on: ubuntu-latest
+    environment: 
+      name: keys
     needs: build
     steps:
       - uses: actions/checkout@v4
@@ -63,6 +65,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+      - name: Set up .env.json file
+        run: |
+          echo '{' > .env.json
+          echo '  "API_ADMIN": "${{ secrets.API_ADMIN }}",' >> .env.json
+          echo '}' >> .env.json
       - name: Run Unit Tests & Generate Report
         run: dotnet test api.Tests/api.Tests.csproj --collect:"XPlat Code Coverage"
       - name: ReportGenerator for Unit Tests

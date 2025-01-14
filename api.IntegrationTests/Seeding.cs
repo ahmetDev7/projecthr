@@ -18,6 +18,7 @@ namespace api.IntegrationTests
             db.Suppliers.AddRange(GetSuppliers());
             db.Docks.AddRange(GetDocks());
             db.Clients.AddRange(GetClients());
+            db.Orders.AddRange(GetOrders());
             db.SaveChanges();
         }
 
@@ -211,6 +212,35 @@ namespace api.IntegrationTests
                     AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099"),
                 }
 
+            };
+        }
+        private static List<Order> GetOrders()
+        {
+            return new List<Order>()
+            {
+                new Order(newInstance:true)
+                {
+                    Id = Guid.Parse("7ffe0c5e-c188-47a4-9dcf-f3e17c2ff41c"),
+                    OrderDate = DateTime.UtcNow,
+                    OrderStatus = "Pending",
+                    WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
+                    BillToClientId = Guid.Parse("68b7ef68-b6a7-45de-a6f8-7656b7af44b7"),
+                    OrderItems = new List<OrderItem>
+                    {
+                        new OrderItem(newInstance: true)
+                        {
+                            Id = Guid.Parse("c92d1c2e-b81b-476d-8f11-76818140f7bc"),
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 2
+                        },
+                        new OrderItem(newInstance: true)
+                        {
+                            Id = Guid.Parse("f0b34d6a-8f11-48a5-b0ad-20b63b2cd19a"),
+                            ItemId = Guid.Parse("ab868b64-2a27-451a-be78-105e824547be"),
+                            Amount = 4
+                        }
+                    }
+                }
             };
         }
 

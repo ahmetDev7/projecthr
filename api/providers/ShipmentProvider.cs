@@ -8,13 +8,13 @@ public class ShipmentProvider : BaseProvider<Shipment>
 {
     private IValidator<Shipment> _shipmentValidator;
     private IValidator<ShipmentRequest> _shipmentRequestValidator;
-    private IValidator<UpdateShipmentItemDTO> _shipmentItemRequestValidator;
+    private IValidator<UpdateShipmentItemDTO> _updateShipmentRequestValidation;
 
-    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> shipmentItemRequestValidator) : base(db)
+    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> updateShipmentRequestValidation) : base(db)
     {
         _shipmentValidator = validator;
         _shipmentRequestValidator = shipmentRequestValidator;
-        _shipmentItemRequestValidator = shipmentItemRequestValidator;
+        _updateShipmentRequestValidation = updateShipmentRequestValidation;
     }
 
     public override Shipment? GetById(Guid id) =>
@@ -212,7 +212,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
             Orders = shipment?.OrderShipments?.Select(os => os.OrderId).ToList()
         };
 
-        _shipmentItemRequestValidator.ValidateAndThrow(reqDTO);
+        _updateShipmentRequestValidation.ValidateAndThrow(reqDTO);
 
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
         try
@@ -224,6 +224,46 @@ public class ShipmentProvider : BaseProvider<Shipment>
                 {
                     ItemId = si.ItemId,
                     Amount = si.Amount
+                }).ToList();
+            }
+
+            ValidateModel(shipment);
+            _db.Shipments.Update(shipment);
+            SaveToDBOrFail();
+            transaction.Commit();
+            return shipment;
+        }
+        catch (Exception)
+        {
+            transaction.Rollback();
+            throw;
+        }
+    }
+
+    public Shipment? UpdateShipmentOrders(Shipment shipment, List<Guid?> reqOrderIds)
+    {
+        var reqDTO = new UpdateShipmentItemDTO()
+        {
+            Items = shipment.ShipmentItems.Select(si => new ShipmentItemRR()
+            {
+                ItemId = si.ItemId,
+                Amount = si.Amount
+            }).ToList(),
+            Orders = reqOrderIds
+        };
+
+
+        _updateShipmentRequestValidation.ValidateAndThrow(reqDTO);
+
+        using IDbContextTransaction transaction = _db.Database.BeginTransaction();
+        try
+        {
+            _db.OrderShipments.RemoveRange(shipment.OrderShipments);
+            if (reqOrderIds.Count() > 0)
+            {
+                shipment.OrderShipments = reqOrderIds.Select(o => new OrderShipment(newInstance: true)
+                {
+                    OrderId = o
                 }).ToList();
             }
 

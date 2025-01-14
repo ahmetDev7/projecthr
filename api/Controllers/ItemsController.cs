@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO.Item;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -24,6 +25,7 @@ public class ItemsController : ControllerBase
     */
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create([FromBody] ItemRequest req)
     {
         Item? newItem = _itemsProvider.Create(req);
@@ -57,6 +59,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,sales")]
     public IActionResult Update(Guid id, [FromBody] ItemRequest req)
     {
         Item? updatedItem = _itemsProvider.Update(id, req);
@@ -91,6 +94,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]    
     public IActionResult Delete(Guid id)
     {
         Item? foundItem = _itemsProvider.GetById(id);
@@ -127,6 +131,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Item? foundItem = _itemsProvider.GetById(id);
@@ -161,6 +166,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_itemsProvider.GetAll()?.Select(i => new ItemResponse
     {
         Id = i.Id,
@@ -184,6 +190,7 @@ public class ItemsController : ControllerBase
     }).ToList());
 
     [HttpGet("{id}/inventories")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult GetInventories(Guid id)
     {
         Inventory? foundInventory = _itemsProvider.GetInventory(id);
@@ -215,6 +222,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet("{id}/inventories/totals")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult GetInventoriesTotals(Guid id)
     {
         Inventory? foundInventory = _itemsProvider.GetInventory(id);

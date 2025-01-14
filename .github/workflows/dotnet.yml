@@ -65,11 +65,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-      - name: Set up .env.json file
-        run: |
-          echo '{' > .env.json
-          echo '  "API_ADMIN": "${{ secrets.API_ADMIN }}",' >> .env.json
-          echo '}' >> .env.json
       - name: Run Unit Tests & Generate Report
         run: dotnet test api.Tests/api.Tests.csproj --collect:"XPlat Code Coverage"
       - name: ReportGenerator for Unit Tests
@@ -97,6 +92,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+      - name: Set up .env.json file
+        run: |
+          echo '{' > .env.json
+          echo '  "API_ADMIN": "${{ secrets.API_ADMIN }}",' >> .env.json
+          echo '}' >> .env.json
       - name: Run Integration Tests & Generate Report
         run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --collect:"XPlat Code Coverage"
       - name: ReportGenerator for Integration Tests

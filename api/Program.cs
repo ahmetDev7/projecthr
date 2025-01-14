@@ -154,7 +154,7 @@ builder.Services.AddScoped<IValidator<Dock>, DockValidator>();
 builder.Services.AddScoped<IValidator<WarehouseRequest>, WarehouseRequestValidator>();
 builder.Services.AddScoped<IValidator<ShipmentRequest>, ShipmentRequestValidator>();
 builder.Services.AddScoped<IValidator<OrderRequest>, OrderRequestValidator>();
-
+builder.Services.AddScoped<IValidator<UpdateShipmentItemDTO>, ShipmentItemRequestValidator>();
 
 
 builder.Services.AddControllers().AddJsonOptions(options =>

@@ -1,22 +1,17 @@
 using DTO.Shipment;
 using FluentValidation;
 
-public class ShipmentRequestValidator : AbstractValidator<ShipmentRequest>
+public class ShipmentItemRequestValidator : AbstractValidator<UpdateShipmentItemDTO>
 {
-    public ShipmentRequestValidator(AppDbContext db)
+    public ShipmentItemRequestValidator(AppDbContext db)
     {
-        RuleFor(ShipmentRequest => ShipmentRequest.Orders)
-           .Custom((orders, context) =>
-           {
-               if (orders != null && CollectionUtil.ContainsDuplicateId(orders.Select(o => o).ToList()))
-               {
-                   context.AddFailure("Orders must have unique order IDs. Duplicate orders are not allowed.");
-               }
-           });
 
-        RuleFor(ShipmentRequest => ShipmentRequest.Items)
+        RuleFor(req => req.Items)
             .NotEmpty().WithMessage("items is required.")
-            .NotNull().WithMessage("items is required.")
+            .NotNull().WithMessage("items is required.");
+
+        // Validation to check if item is in DB is in ShipmentValidation
+        RuleFor(req => req.Items)
             .Custom((items, context) =>
             {
                 if (items != null && CollectionUtil.ContainsDuplicateId(items.Select(i => i.ItemId).ToList()))
@@ -25,23 +20,7 @@ public class ShipmentRequestValidator : AbstractValidator<ShipmentRequest>
                 }
             });
 
-        RuleForEach(ShipmentRequest => ShipmentRequest.Orders).ChildRules(order =>
-        {
-            order.RuleFor(order => order)
-                .NotNull().WithMessage("The order_id field is required.")
-                .NotEmpty().WithMessage("The order_id field cannot be empty.")
-                .Custom((orderId, context) =>
-                {
-                    if (orderId != null && !db.Orders.Any(i => i.Id == orderId))
-                    {
-                        context.AddFailure("orders", $"The provided order {orderId} does not exist.");
-                        return;
-                    }
-                });
-        });
-
-
-        RuleFor(ShipmentRequest => ShipmentRequest).Custom((req, context) =>
+        RuleFor(req => req).Custom((req, context) =>
         {
             foreach (Guid? orderId in req.Orders ?? [])
             {
@@ -63,7 +42,6 @@ public class ShipmentRequestValidator : AbstractValidator<ShipmentRequest>
                             return;
                         }
                     }
-
                     // FUTURE FEATURE: shipment_item amount not exceeding order_item amount
                 }
             }

@@ -94,9 +94,9 @@ jobs:
           dotnet-version: 8.0.x
       - name: Set up .env.json file
         run: |
-          echo '{' > .env.json
-          echo '  "API_ADMIN": "${{ secrets.API_ADMIN }}",' >> .env.json
-          echo '}' >> .env.json
+          echo '{' > api.IntegrationTests/.env.json
+          echo '  "API_ADMIN": "${{ secrets.API_ADMIN }}",' >> api.IntegrationTests/.env.json
+          echo '}' >> api.IntegrationTests/.env.json
       - name: Run Integration Tests & Generate Report
         run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --collect:"XPlat Code Coverage"
       - name: ReportGenerator for Integration Tests

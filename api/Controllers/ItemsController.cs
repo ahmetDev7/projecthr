@@ -90,6 +90,42 @@ public class ItemsController : ControllerBase
             });
     }
 
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        Item? foundItem = _itemsProvider.GetById(id);
+        if (foundItem == null) return NotFound(new { message = $"Item not found for id '{id}'" });
+
+        _itemsProvider.Delete(id);
+
+        return Ok(
+            new
+            {
+                message = "Item deleted!",
+                deleted_item = new ItemResponse
+                {
+                    Id = foundItem.Id,
+                    Code = foundItem.Code,
+                    Description = foundItem.Description,
+                    ShortDescription = foundItem.ShortDescription,
+                    UpcCode = foundItem.UpcCode,
+                    ModelNumber = foundItem.ModelNumber,
+                    CommodityCode = foundItem.CommodityCode,
+                    UnitPurchaseQuantity = foundItem.UnitPurchaseQuantity,
+                    UnitOrderQuantity = foundItem.UnitOrderQuantity,
+                    PackOrderQuantity = foundItem.PackOrderQuantity,
+                    SupplierReferenceCode = foundItem.SupplierReferenceCode,
+                    SupplierPartNumber = foundItem.SupplierPartNumber,
+                    ItemGroupId = foundItem.ItemGroupId,
+                    ItemLineId = foundItem.ItemLineId,
+                    ItemTypeId = foundItem.ItemTypeId,
+                    SupplierId = foundItem.SupplierId,
+                    CreatedAt = foundItem.CreatedAt,
+                    UpdatedAt = foundItem.UpdatedAt
+                }
+            });
+    }
+
     [HttpGet("{id}")]
     public IActionResult ShowSingle(Guid id)
     {

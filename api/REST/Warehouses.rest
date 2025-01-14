@@ -2,16 +2,11 @@ POST http://localhost:5000/api/warehouses/
 Content-Type: application/json
 
 {
-  "code": "WD_001",
+  "code": "WD_002",
   "name": "Sample Warehouse multi contact",
-  "contact_ids": [
-    "3087768f-d44f-404b-a1b1-54a691ea94b7",
-    "438a616f-d0d9-4c86-9443-18ec3139f9ae",
-    "47048a9c-1892-4b34-b8db-b6c99c873af9"
-  ],
-  "address_id": "59fdc093-b2d0-41fd-96b2-8f58030e53be"
+  "contact_ids": ["d7ab8478-bcf8-4bd5-9fb7-a92ff66f448b"],
+  "address_id": "0071cb5d-bd6f-4398-8dba-e60ef0aa3bdd"
 }
-###
 ###
 
 PUT http://localhost:5000/api/warehouses/5559d711-a141-46b3-b30b-4860f4d7879b
@@ -42,7 +37,7 @@ Content-Type: application/json
 ###
 
 ### GET DOCK and DOCK ITEMS FROM WAREHOUSE
-GET http://localhost:5000/api/warehouses/eed6a18f-38ef-450a-bcc4-e0cbcfb82a57/dock
+GET http://localhost:5000/api/warehouses/4bb69c11-f4b0-439f-b584-62df6ebdfcc6/dock
 Content-Type: application/json
 ###
 

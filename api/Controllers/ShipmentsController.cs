@@ -1,3 +1,4 @@
+using DTO.Item;
 using DTO.Order;
 using DTO.Shipment;
 using Microsoft.AspNetCore.Mvc;
@@ -197,7 +198,7 @@ public class ShipmentsController : ControllerBase
     public IActionResult ActionCommit(Guid id)
     {
         Shipment? foundShipment = _shipmentProvider.GetById(id);
-        if (foundShipment == null) return NotFound(new { message = $"Shipment not found for id '{id}'" });
+        if (foundShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'", StatusCodes.Status404NotFound);
 
         if (foundShipment.ShipmentStatus == ShipmentStatus.Delivered)
         {
@@ -266,6 +267,36 @@ public class ShipmentsController : ControllerBase
                 ItemId = oi.ItemId,
                 Amount = oi.Amount
             }).ToList()
+        }).ToList());
+    }
+
+
+    [HttpGet("{shipmentId}/items")]
+    public IActionResult GetShipmentItems(Guid shipmentId)
+    {
+        Shipment? foundShipment = _shipmentProvider.GetById(shipmentId);
+        if (foundShipment == null) throw new ApiFlowException($"Shipment not found for id '{shipmentId}'", StatusCodes.Status404NotFound);
+
+        return Ok(_shipmentProvider.GetShipmentItems(shipmentId)?.Select(i => new ItemResponse
+        {
+            Id = i.Id,
+            Code = i.Code,
+            Description = i.Description,
+            ShortDescription = i.ShortDescription,
+            UpcCode = i.UpcCode,
+            ModelNumber = i.ModelNumber,
+            CommodityCode = i.CommodityCode,
+            UnitPurchaseQuantity = i.UnitPurchaseQuantity,
+            UnitOrderQuantity = i.UnitOrderQuantity,
+            PackOrderQuantity = i.PackOrderQuantity,
+            SupplierReferenceCode = i.SupplierReferenceCode,
+            SupplierPartNumber = i.SupplierPartNumber,
+            ItemGroupId = i.ItemGroupId,
+            ItemLineId = i.ItemLineId,
+            ItemTypeId = i.ItemTypeId,
+            SupplierId = i.SupplierId,
+            CreatedAt = i.CreatedAt,
+            UpdatedAt = i.UpdatedAt
         }).ToList());
     }
 }

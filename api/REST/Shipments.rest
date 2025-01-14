@@ -82,7 +82,13 @@ PUT http://localhost:5000/api/shipments/ef2bb6bb-8865-4fc1-b009-c2e9b848daec/com
 Content-Type: application/json
 ###
 
-
 ### Get orders from shipment (change ID to the ID in your database)
 GET http://localhost:5000/api/shipments/86335c30-65ab-4854-ace1-d6a56bca36fd/orders
 Content-Type: application/json
+###
+
+
+### Get items from shipment (change ID to the ID in your database)
+GET http://localhost:5000/api/shipments/86335c30-65ab-4854-ace1-d6a56bca36fd/items
+Content-Type: application/json
+###

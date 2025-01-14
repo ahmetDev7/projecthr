@@ -192,5 +192,15 @@ public class ShipmentProvider : BaseProvider<Shipment>
           .ToList();
     }
 
+    public List<Item> GetShipmentItems(Guid shipmentId)
+    {
+        return _db.Shipments
+                  .Where(s => s.Id == shipmentId)
+                  .Include(s => s.ShipmentItems)
+                  .ThenInclude(si => si.Item)
+                  .SelectMany(s => s.ShipmentItems.Select(si => si.Item))
+                  .ToList();
+    }
+
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);
 }

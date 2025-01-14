@@ -10,6 +10,7 @@ namespace api.IntegrationTests
         public static void IntializeTestDB(AppDbContext db)
         {
             db.ItemTypes.AddRange(GetItemTypes());
+            db.ItemGroups.AddRange(GetItemGroups());
             db.ItemLines.AddRange(GetItemLines());
             db.Locations.AddRange(GetLocations());
             db.Addresses.AddRange(GetAddresses());
@@ -33,6 +34,15 @@ namespace api.IntegrationTests
             };
         }
 
+        private static List<ItemGroup> GetItemGroups()
+        {
+            return new List<ItemGroup>(){
+                new ItemGroup(newInstance: true) { Id = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"), Name = "Item Group 1", Description = "Description Item Group 1" },
+                new ItemGroup(newInstance: true) { Id = Guid.Parse("4428de87-dd7f-4879-823b-ec9f97e50add"), Name = "Item Group 2", Description = "Description Item Group 2" },
+                new ItemGroup(newInstance: true) { Id = Guid.Parse("00654a9f-83c1-49db-acb0-6d908c0520fc"), Name = "Item Group 3", Description = "Description Item Group 3" }
+            };
+        }
+
         private static List<ItemLine> GetItemLines()
         {
             return new List<ItemLine>(){
@@ -41,6 +51,7 @@ namespace api.IntegrationTests
                 new ItemLine(newInstance: true) { Id = Guid.Parse("1a460afb-7922-4eec-a633-cebea9b9f3fb"), Name = "Item Line 3", Description = "Description Item Line 3"}
             };
         }
+
         private static List<Item> GetItems()
         {
             return new List<Item>()
@@ -60,6 +71,7 @@ namespace api.IntegrationTests
                     SupplierReferenceCode = "AB20",
                     SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
                     ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210"),
+                    ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"),
                     ItemLineId = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43")
                 },
                 new Item(newInstance:true)
@@ -74,6 +86,7 @@ namespace api.IntegrationTests
                     SupplierReferenceCode = "02BA",
                     SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
                     ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210"),
+                    ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"),
                     ItemLineId = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43")
                 }
             };

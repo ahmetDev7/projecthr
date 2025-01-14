@@ -1,3 +1,4 @@
+using DTO.Order;
 using DTO.Shipment;
 using Microsoft.AspNetCore.Mvc;
 
@@ -236,5 +237,35 @@ public class ShipmentsController : ControllerBase
                 }
             }
         );
+    }
+
+    [HttpGet("{shipmentId}/orders")]
+    public IActionResult GetOrderByShipment(Guid shipmentId)
+    {
+        return Ok(_shipmentProvider.GetOrdersByShipment(shipmentId)?.Select(o => new OrderResponse
+        {
+            Id = o.Id,
+            OrderDate = o.OrderDate,
+            RequestDate = o.RequestDate,
+            Reference = o.Reference,
+            ReferenceExtra = o.ReferenceExtra,
+            OrderStatus = o.OrderStatus,
+            Notes = o.Notes,
+            PickingNotes = o.PickingNotes,
+            TotalAmount = o.TotalAmount,
+            TotalDiscount = o.TotalDiscount,
+            TotalTax = o.TotalTax,
+            TotalSurcharge = o.TotalSurcharge,
+            WarehouseId = o.WarehouseId,
+            ShipToClientId = o.ShipToClientId,
+            BillToClientId = o.BillToClientId,
+            CreatedAt = o.CreatedAt,
+            UpdatedAt = o.UpdatedAt,
+            Items = o.OrderItems?.Select(oi => new OrderItemRequest
+            {
+                ItemId = oi.ItemId,
+                Amount = oi.Amount
+            }).ToList()
+        }).ToList());
     }
 }

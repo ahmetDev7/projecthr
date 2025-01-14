@@ -9,12 +9,14 @@ public class ShipmentProvider : BaseProvider<Shipment>
     private IValidator<Shipment> _shipmentValidator;
     private IValidator<ShipmentRequest> _shipmentRequestValidator;
     private IValidator<UpdateShipmentItemDTO> _updateShipmentRequestValidation;
+    private readonly InventoriesProvider _inventoriesProvider;
 
-    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> updateShipmentRequestValidation) : base(db)
+    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> updateShipmentRequestValidation, InventoriesProvider inventoriesProvider) : base(db)
     {
         _shipmentValidator = validator;
         _shipmentRequestValidator = shipmentRequestValidator;
         _updateShipmentRequestValidation = updateShipmentRequestValidation;
+        _inventoriesProvider = inventoriesProvider;
     }
 
     public override Shipment? GetById(Guid id) =>
@@ -78,6 +80,12 @@ public class ShipmentProvider : BaseProvider<Shipment>
             _db.Shipments.Add(newShipment);
             SaveToDBOrFail();
 
+            // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND
+            foreach (ShipmentItemRR? row in req?.Items ?? [])
+            {
+                if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+            }
+
             transaction.Commit();
             return newShipment;
         }
@@ -117,8 +125,8 @@ public class ShipmentProvider : BaseProvider<Shipment>
             existingShipment.PaymentType = req.PaymentType;
             existingShipment.SetUpdatedAt();
 
-
-            _db.ShipmentItems.RemoveRange(existingShipment.ShipmentItems);
+            var oldShipmentItems = existingShipment.ShipmentItems;
+            _db.ShipmentItems.RemoveRange(oldShipmentItems);
             if (req.Items != null)
             {
                 existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem(newInstance: true)
@@ -127,7 +135,6 @@ public class ShipmentProvider : BaseProvider<Shipment>
                     Amount = si.Amount
                 }).ToList();
             }
-
 
             _db.OrderShipments.RemoveRange(existingShipment.OrderShipments);
             if (req.Orders != null)
@@ -157,6 +164,23 @@ public class ShipmentProvider : BaseProvider<Shipment>
             _db.Shipments.Update(existingShipment);
             SaveToDBOrFail();
             transaction.Commit();
+
+            // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND
+            foreach (ShipmentItemRR? row in req?.Items ?? [])
+            {
+                if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+            }
+
+            // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND [FOR OLD SHIPMENT ITEMS]
+            if (req?.Items != null)
+            {
+                var removedShipmentItems = oldShipmentItems.Where(oldShipmentItem => !req.Items.Any(newItem => newItem.ItemId == oldShipmentItem.ItemId)).ToList();
+                foreach (ShipmentItem? row in removedShipmentItems ?? [])
+                {
+                    if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+                }
+            }
+
             return existingShipment;
         }
         catch (Exception)
@@ -169,10 +193,18 @@ public class ShipmentProvider : BaseProvider<Shipment>
     public override Shipment? Delete(Guid id)
     {
         Shipment? foundShipment = GetById(id);
+        ICollection<ShipmentItem>? shipmentItems = foundShipment?.ShipmentItems;
         if (foundShipment == null) return null;
 
         _db.Shipments.Remove(foundShipment);
         SaveToDBOrFail();
+
+        // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND
+        foreach (ShipmentItem? row in shipmentItems ?? [])
+        {
+            if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+        }
+
         return foundShipment;
     }
 
@@ -217,7 +249,8 @@ public class ShipmentProvider : BaseProvider<Shipment>
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
         try
         {
-            _db.ShipmentItems.RemoveRange(shipment.ShipmentItems);
+            var oldShipmentItems = shipment.ShipmentItems;
+            _db.ShipmentItems.RemoveRange(oldShipmentItems);
             if (shipmentItems.Count() > 0)
             {
                 shipment.ShipmentItems = shipmentItems.Select(si => new ShipmentItem(newInstance: true)
@@ -230,6 +263,24 @@ public class ShipmentProvider : BaseProvider<Shipment>
             ValidateModel(shipment);
             _db.Shipments.Update(shipment);
             SaveToDBOrFail();
+
+
+            // TOTAL_EXPECTED TRIGGERD IF INBOUND
+            foreach (ShipmentItem? row in shipment.ShipmentItems ?? [])
+            {
+                if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+            }
+
+            // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND [FOR OLD SHIPMENT ITEMS]
+            if (shipment.ShipmentItems != null)
+            {
+                var removedShipmentItems = oldShipmentItems.Where(oldShipmentItem => !shipment.ShipmentItems.Any(newItem => newItem.ItemId == oldShipmentItem.ItemId)).ToList();
+                foreach (ShipmentItem? row in removedShipmentItems ?? [])
+                {
+                    if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+                }
+            }
+
             transaction.Commit();
             return shipment;
         }

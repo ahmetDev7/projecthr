@@ -167,5 +167,19 @@ public class InventoriesProvider : BaseProvider<Inventory>
         total_available int FIXME: (total on hand + total expected) - (total ordered + total allocated)
     */
 
+    public void CalculateTotalExpected(Guid? itemId)
+    {
+        int totalExpected = _db.ShipmentItems.Include(si => si.Shipment).Where(si => si.ItemId == itemId && si.Shipment.ShipmentType == ShipmentType.I).Sum(si => si.Amount) ?? 0;
+        Inventory? inventory = GetInventoryByItemId(itemId);
+        if (inventory == null)
+        {
+            throw new ApiFlowException($"An error occurred while updating the total expected quantity for item with ID: {itemId}. Please ensure the item exists in inventory.");
+        }
+
+        inventory.TotalExpected = totalExpected;
+        _db.Inventories.Update(inventory);
+        SaveToDBOrFail();
+    }
+
     public int CalculateTotalOnHand(Guid inventoryId) => _db.InventoryLocations.Where(il => il.InventoryId == inventoryId).Sum(il => il.OnHandAmount);
 }

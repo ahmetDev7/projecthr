@@ -338,4 +338,43 @@ public class ShipmentsController : ControllerBase
             Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
         });
     }
+
+    [HttpPut("{shipmentId}/orders")]
+    public IActionResult UpdateShipmentOrders(Guid shipmentId, [FromBody] List<Guid?> reqOrderIds)
+    {
+        Shipment? foundShipment = _shipmentProvider.GetById(shipmentId);
+        if (foundShipment == null) throw new ApiFlowException($"Shipment not found for id '{shipmentId}'", StatusCodes.Status404NotFound);
+
+        if (foundShipment.ShipmentStatus == ShipmentStatus.Delivered)
+        {
+            throw new ApiFlowException("This shipment has already been delivered. Updates are not allowed.", StatusCodes.Status409Conflict);
+        }
+
+        Shipment? updatedShipment = _shipmentProvider.UpdateShipmentOrders(foundShipment, reqOrderIds);
+        return Ok(new ShipmentResponse
+        {
+            Id = updatedShipment.Id,
+            OrderDate = updatedShipment.OrderDate,
+            RequestDate = updatedShipment.RequestDate,
+            ShipmentDate = updatedShipment.ShipmentDate,
+            ShipmentType = updatedShipment.ShipmentType.ToString(),
+            ShipmentStatus = updatedShipment.ShipmentStatus.ToString(),
+            Notes = updatedShipment.Notes,
+            CarrierCode = updatedShipment.CarrierCode,
+            CarrierDescription = updatedShipment.CarrierDescription,
+            ServiceCode = updatedShipment.ServiceCode,
+            PaymentType = updatedShipment.PaymentType.ToString(),
+            TransferMode = updatedShipment.TransferMode.ToString(),
+            TotalPackageCount = updatedShipment.TotalPackageCount,
+            TotalPackageWeight = updatedShipment.TotalPackageWeight,
+            CreatedAt = updatedShipment.CreatedAt,
+            UpdatedAt = updatedShipment.UpdatedAt,
+            Items = updatedShipment.ShipmentItems?.Select(item => new ShipmentItemRR
+            {
+                ItemId = item.ItemId,
+                Amount = item.Amount
+            }).ToList(),
+            Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+        });
+    }
 }

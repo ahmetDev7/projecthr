@@ -104,3 +104,10 @@ Content-Type: application/json
     }
 ]
 ###
+
+### UPDATE orders from shipment (change ID to the ID in your database)
+PUT http://localhost:5000/api/shipments/6efdee99-e458-45a3-840e-042bf39241d1/orders
+Content-Type: application/json
+
+[]
+###

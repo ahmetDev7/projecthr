@@ -1,9 +1,9 @@
 using DTO.Shipment;
 using FluentValidation;
 
-public class ShipmentItemRequestValidator : AbstractValidator<UpdateShipmentItemDTO>
+public class UpdateShipmentRequestValidation : AbstractValidator<UpdateShipmentItemDTO>
 {
-    public ShipmentItemRequestValidator(AppDbContext db)
+    public UpdateShipmentRequestValidation(AppDbContext db)
     {
 
         RuleFor(req => req.Items)
@@ -45,9 +45,31 @@ public class ShipmentItemRequestValidator : AbstractValidator<UpdateShipmentItem
                     // FUTURE FEATURE: shipment_item amount not exceeding order_item amount
                 }
             }
+        });
+        
+        // Validation to check if item is in DB is in ShipmentValidation
+        RuleFor(req => req.Orders)
+           .Custom((orders, context) =>
+           {
+               if (orders != null && CollectionUtil.ContainsDuplicateId(orders.Select(o => o).ToList()))
+               {
+                   context.AddFailure("Orders must have unique order IDs. Duplicate orders are not allowed.");
+               }
+           });
 
-
-
+        RuleForEach(req => req.Orders).ChildRules(order =>
+        {
+            order.RuleFor(order => order)
+                .NotNull().WithMessage("orders is required.")
+                .NotEmpty().WithMessage("orders is required.")
+                .Custom((orderId, context) =>
+                {
+                    if (orderId != null && !db.Orders.Any(i => i.Id == orderId))
+                    {
+                        context.AddFailure("orders", $"The provided order {orderId} does not exist.");
+                        return;
+                    }
+                });
         });
     }
 }

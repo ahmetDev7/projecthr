@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.cs
-    public partial class initial : Migration
-========
     public partial class initial_commit : Migration
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -99,8 +95,6 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.cs
-========
                 name: "Shipments",
                 columns: table => new
                 {
@@ -127,7 +121,6 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.cs
                 name: "Warehouses",
                 columns: table => new
                 {
@@ -283,17 +276,10 @@ namespace api.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.cs
-                    RequestDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Reference = table.Column<string>(type: "text", nullable: true),
-                    ReferenceExtra = table.Column<string>(type: "text", nullable: true),
-                    OrderStatus = table.Column<string>(type: "text", nullable: false),
-========
                     RequestDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Reference = table.Column<string>(type: "text", nullable: true),
                     ReferenceExtra = table.Column<string>(type: "text", nullable: true),
                     OrderStatus = table.Column<int>(type: "integer", nullable: false),
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.cs
                     Notes = table.Column<string>(type: "text", nullable: true),
                     PickingNotes = table.Column<string>(type: "text", nullable: true),
                     TotalAmount = table.Column<decimal>(type: "numeric", nullable: true),
@@ -380,8 +366,6 @@ namespace api.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Transfers",
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.cs
-========
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -466,7 +450,6 @@ namespace api.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Inventories",
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.cs
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -493,26 +476,6 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.cs
-                name: "Shipments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    RequestDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ShipmentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ShipmentType = table.Column<string>(type: "text", nullable: false),
-                    ShipmentStatus = table.Column<string>(type: "text", nullable: true),
-                    Notes = table.Column<string>(type: "text", nullable: true),
-                    CarrierCode = table.Column<string>(type: "text", nullable: false),
-                    CarrierDescription = table.Column<string>(type: "text", nullable: true),
-                    ServiceCode = table.Column<string>(type: "text", nullable: false),
-                    PaymentType = table.Column<string>(type: "text", nullable: false),
-                    TransferMode = table.Column<string>(type: "text", nullable: false),
-                    TotalPackageCount = table.Column<int>(type: "integer", nullable: true),
-                    TotalPackageWeight = table.Column<decimal>(type: "numeric", nullable: true),
-========
                 name: "OrderItems",
                 columns: table => new
                 {
@@ -520,17 +483,11 @@ namespace api.Migrations
                     ItemId = table.Column<Guid>(type: "uuid", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
                     Amount = table.Column<int>(type: "integer", nullable: false),
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.cs
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.cs
-                    table.PrimaryKey("PK_Shipments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Shipments_Orders_OrderId",
-========
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
                         name: "FK_OrderItems_Items_ItemId",
@@ -540,7 +497,6 @@ namespace api.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderItems_Orders_OrderId",
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.cs
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -548,40 +504,18 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.cs
-                name: "DockItems",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DockId = table.Column<Guid>(type: "uuid", nullable: false),
-========
                 name: "ShipmentItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ShipmentId = table.Column<Guid>(type: "uuid", nullable: false),
                     ItemId = table.Column<Guid>(type: "uuid", nullable: false),
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.cs
                     Amount = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.cs
-                    table.PrimaryKey("PK_DockItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DockItems_Docks_DockId",
-                        column: x => x.DockId,
-                        principalTable: "Docks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DockItems_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-========
                     table.PrimaryKey("PK_ShipmentItems", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ShipmentItems_Items_ItemId",
@@ -593,63 +527,8 @@ namespace api.Migrations
                         name: "FK_ShipmentItems_Shipments_ShipmentId",
                         column: x => x.ShipmentId,
                         principalTable: "Shipments",
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.cs
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Inventories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    ItemReference = table.Column<string>(type: "text", nullable: true),
-                    TotalOnHand = table.Column<int>(type: "integer", nullable: false),
-                    TotalExpected = table.Column<int>(type: "integer", nullable: false),
-                    TotalOrderd = table.Column<int>(type: "integer", nullable: false),
-                    TotalAvailable = table.Column<int>(type: "integer", nullable: false),
-                    TotalAllocated = table.Column<int>(type: "integer", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inventories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Inventories_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderItems",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Amount = table.Column<int>(type: "integer", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrderItems_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderItems_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -676,34 +555,6 @@ namespace api.Migrations
                         name: "FK_TransferItems_Transfers_TransferId",
                         column: x => x.TransferId,
                         principalTable: "Transfers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InventoryLocations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    InventoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    OnHandAmount = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InventoryLocations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InventoryLocations_Inventories_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InventoryLocations_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });

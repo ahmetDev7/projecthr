@@ -11,13 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-<<<<<<<< HEAD:api/Migrations/20250113125046_initial.Designer.cs
-    [Migration("20250113125046_initial")]
-    partial class initial
-========
-    [Migration("20250113170632_initial_commit")]
+    [Migration("20250114180249_initial_commit")]
     partial class initial_commit
->>>>>>>> origin/development:api/Migrations/20250113170632_initial_commit.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

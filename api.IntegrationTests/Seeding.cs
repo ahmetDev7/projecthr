@@ -222,7 +222,7 @@ namespace api.IntegrationTests
                 {
                     Id = Guid.Parse("7ffe0c5e-c188-47a4-9dcf-f3e17c2ff41c"),
                     OrderDate = DateTime.UtcNow,
-                    OrderStatus = "Pending",
+                    OrderStatus = OrderStatus.Pending,
                     WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
                     BillToClientId = Guid.Parse("68b7ef68-b6a7-45de-a6f8-7656b7af44b7"),
                     OrderItems = new List<OrderItem>

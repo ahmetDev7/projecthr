@@ -3,9 +3,9 @@ POST http://localhost:5000/api/clients
 Content-Type: application/json
 
 {
-  "name": "Client D",
-  "contact_id": "3f2488a2-7747-4541-b29a-a28735ebd921",
-  "address_id": "016d60c2-a192-497a-b72c-49a1dedc3dab"
+  "name": "Client TEST 1",
+  "contact_id": "d7ab8478-bcf8-4bd5-9fb7-a92ff66f448b",
+  "address_id": "0071cb5d-bd6f-4398-8dba-e60ef0aa3bdd"
 }
 ###
 # Update Client with Contact ID and Address ID

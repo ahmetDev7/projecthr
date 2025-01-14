@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -12,6 +13,7 @@ public class InventoriesController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,logistics")]
     public IActionResult Create([FromBody] InventoryRequest req)
     {
         if (req.ItemId.HasValue && _inventoriesProvider.GetInventoryByItemId(req.ItemId.Value) != null)
@@ -51,6 +53,7 @@ public class InventoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,logistics")]
     public IActionResult Update(Guid id, [FromBody] InventoryRequest req)
     {
         Inventory? updatedInventory = _inventoriesProvider.Update(id, req);
@@ -85,6 +88,7 @@ public class InventoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Delete(Guid id)
     {
         Inventory? foundInventory = _inventoriesProvider.GetById(id);
@@ -125,6 +129,7 @@ public class InventoriesController : ControllerBase
 
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Inventory? foundInventory = _inventoriesProvider.GetById(id);
@@ -159,6 +164,7 @@ public class InventoriesController : ControllerBase
 
 
     [HttpGet]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_inventoriesProvider.GetAll().Select(i => new InventoryResponse()
     {
         Id = i.Id,

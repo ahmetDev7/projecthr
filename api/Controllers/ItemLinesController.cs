@@ -112,6 +112,7 @@ public class ItemLinesController : ControllerBase
     }
 
     [HttpGet("{itemLineId}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowRelatedItems(Guid itemLineId) =>
         Ok(_itemLinesProvider.GetRelatedItemsById(itemLineId)
         .Select(i => new ItemResponse

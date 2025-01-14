@@ -1,5 +1,6 @@
 using System.Data;
 using DTO.Order;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -14,6 +15,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create([FromBody] OrderRequest req)
     {
         Order? newOrder = _orderProvider.Create(req);
@@ -52,6 +54,7 @@ public class OrdersController : ControllerBase
 
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin,warehousemanager")]
     public IActionResult Delete(Guid id)
     {
         Order? deletedOrder = _orderProvider.Delete(id);
@@ -89,6 +92,7 @@ public class OrdersController : ControllerBase
             });
     }
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Update(Guid id, [FromBody] OrderRequest req)
     {
         Order? foundOrder = _orderProvider.GetById(id);
@@ -137,6 +141,7 @@ public class OrdersController : ControllerBase
             });
     }
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_orderProvider.GetAll()?.Select(o => new OrderResponse
     {
         Id = o.Id,
@@ -164,6 +169,7 @@ public class OrdersController : ControllerBase
     }).ToList());
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Order? foundOrder = _orderProvider.GetById(id);
@@ -199,6 +205,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet("{id}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowOrderItems(Guid id)
     {
         List<OrderItem> orderItems = _orderProvider.GetRelatedOrderById(id);
@@ -212,6 +219,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPut("{id}/commit")]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult ActionCommit(Guid id)
     {
         Order? foundOrder = _orderProvider.GetById(id);

@@ -11,6 +11,7 @@ namespace api.IntegrationTests
         {
             db.ItemTypes.AddRange(GetItemTypes());
             db.ItemGroups.AddRange(GetItemGroups());
+            db.ItemLines.AddRange(GetItemLines());
             db.Locations.AddRange(GetLocations());
             db.Addresses.AddRange(GetAddresses());
             db.Warehouses.AddRange(GetWarehouses());
@@ -19,7 +20,8 @@ namespace api.IntegrationTests
             db.Suppliers.AddRange(GetSuppliers());
             db.Docks.AddRange(GetDocks());
             db.Clients.AddRange(GetClients());
-            // db.Orders.AddRange(GetOrders());
+            db.Orders.AddRange(GetOrders());
+            db.Shipments.AddRange(GetShipments());
             db.SaveChanges();
         }
 
@@ -38,6 +40,15 @@ namespace api.IntegrationTests
                 new ItemGroup(newInstance: true) { Id = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"), Name = "Item Group 1", Description = "Description Item Group 1" },
                 new ItemGroup(newInstance: true) { Id = Guid.Parse("4428de87-dd7f-4879-823b-ec9f97e50add"), Name = "Item Group 2", Description = "Description Item Group 2" },
                 new ItemGroup(newInstance: true) { Id = Guid.Parse("00654a9f-83c1-49db-acb0-6d908c0520fc"), Name = "Item Group 3", Description = "Description Item Group 3" }
+            };
+        }
+
+        private static List<ItemLine> GetItemLines()
+        {
+            return new List<ItemLine>(){
+                new ItemLine(newInstance: true) { Id = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43"), Name = "Item Line 1", Description = "Description Item Line 1"},
+                new ItemLine(newInstance: true) { Id = Guid.Parse("5555260d-e59d-442d-8dfc-305d53a8e4f5"), Name = "Item Line 2", Description = "Description Item Line 2"},
+                new ItemLine(newInstance: true) { Id = Guid.Parse("1a460afb-7922-4eec-a633-cebea9b9f3fb"), Name = "Item Line 3", Description = "Description Item Line 3"}
             };
         }
 
@@ -60,7 +71,8 @@ namespace api.IntegrationTests
                     SupplierReferenceCode = "AB20",
                     SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
                     ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210"),
-                    ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd")
+                    ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"),
+                    ItemLineId = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43")
                 },
                 new Item(newInstance:true)
                 {
@@ -74,7 +86,8 @@ namespace api.IntegrationTests
                     SupplierReferenceCode = "02BA",
                     SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
                     ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210"),
-                    ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd")
+                    ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"),
+                    ItemLineId = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43")
                 }
             };
 
@@ -227,35 +240,51 @@ namespace api.IntegrationTests
 
             };
         }
-        // private static List<Order> GetOrders()
-        // {
-        //     return new List<Order>()
-        //     {
-        //         new Order(newInstance:true)
-        //         {
-        //             Id = Guid.Parse("7ffe0c5e-c188-47a4-9dcf-f3e17c2ff41c"),
-        //             OrderDate = DateTime.UtcNow,
-        //             OrderStatus = OrderStatus.Pending,
-        //             WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
-        //             BillToClientId = Guid.Parse("68b7ef68-b6a7-45de-a6f8-7656b7af44b7"),
-        //             OrderItems = new List<OrderItem>
-        //             {
-        //                 new OrderItem(newInstance: true)
-        //                 {
-        //                     Id = Guid.Parse("c92d1c2e-b81b-476d-8f11-76818140f7bc"),
-        //                     ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
-        //                     Amount = 2
-        //                 },
-        //                 new OrderItem(newInstance: true)
-        //                 {
-        //                     Id = Guid.Parse("f0b34d6a-8f11-48a5-b0ad-20b63b2cd19a"),
-        //                     ItemId = Guid.Parse("ab868b64-2a27-451a-be78-105e824547be"),
-        //                     Amount = 4
-        //                 }
-        //             }
-        //         }
-        //     };
-        // }
+        private static List<Order> GetOrders()
+        {
+            return new List<Order>()
+            {
+                new Order(newInstance:true)
+                {
+                    Id = Guid.Parse("7ffe0c5e-c188-47a4-9dcf-f3e17c2ff41c"),
+                    OrderDate = DateTime.UtcNow,
+                    RequestDate = DateTime.UtcNow,
+                    OrderStatus = OrderStatus.Pending,
+                    WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
+                    BillToClientId = Guid.Parse("68b7ef68-b6a7-45de-a6f8-7656b7af44b7"),
+                    OrderItems = new List<OrderItem>
+                    {
+                        new OrderItem(newInstance: true)
+                        {
+                            Id = Guid.Parse("c92d1c2e-b81b-476d-8f11-76818140f7bc"),
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 2
+                        },
+                        new OrderItem(newInstance: true)
+                        {
+                            Id = Guid.Parse("f0b34d6a-8f11-48a5-b0ad-20b63b2cd19a"),
+                            ItemId = Guid.Parse("ab868b64-2a27-451a-be78-105e824547be"),
+                            Amount = 4
+                        }
+                    }
+                }
+            };
+        }
+        private static List<Shipment> GetShipments()
+        {
+            return new List<Shipment>()
+            {
+                new Shipment(newInstance:true)
+                {
+                    Id = Guid.Parse("9f0f1aaa-7cfb-48ed-bcfc-7f33c62ecf74"),
+                    ShipmentType = ShipmentType.O,
+                    CarrierCode = "010101",
+                    ServiceCode = "304402",
+                    PaymentType = PaymentType.Manual,
+                    TransferMode = TransferMode.Sea
+                }
+            };
+        }
 
     }
 }

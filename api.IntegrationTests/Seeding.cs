@@ -10,6 +10,7 @@ namespace api.IntegrationTests
         public static void IntializeTestDB(AppDbContext db)
         {
             db.ItemTypes.AddRange(GetItemTypes());
+            db.ItemGroups.AddRange(GetItemGroups());
             db.Locations.AddRange(GetLocations());
             db.Addresses.AddRange(GetAddresses());
             db.Warehouses.AddRange(GetWarehouses());
@@ -30,6 +31,16 @@ namespace api.IntegrationTests
                 new ItemType(newInstance: true) { Id = Guid.Parse("23a60ea1-4471-4f1f-b0f5-a25527121647"), Name = "Item Type 3", Description = "Description Item Type 3" }
             };
         }
+
+        private static List<ItemGroup> GetItemGroups()
+        {
+            return new List<ItemGroup>(){
+                new ItemGroup(newInstance: true) { Id = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"), Name = "Item Group 1", Description = "Description Item Group 1" },
+                new ItemGroup(newInstance: true) { Id = Guid.Parse("4428de87-dd7f-4879-823b-ec9f97e50add"), Name = "Item Group 2", Description = "Description Item Group 2" },
+                new ItemGroup(newInstance: true) { Id = Guid.Parse("00654a9f-83c1-49db-acb0-6d908c0520fc"), Name = "Item Group 3", Description = "Description Item Group 3" }
+            };
+        }
+
         private static List<Item> GetItems()
         {
             return new List<Item>()
@@ -48,7 +59,8 @@ namespace api.IntegrationTests
                     PackOrderQuantity = 20,
                     SupplierReferenceCode = "AB20",
                     SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
-                    ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210")
+                    ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210"),
+                    ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd")
                 },
                 new Item(newInstance:true)
                 {
@@ -61,7 +73,8 @@ namespace api.IntegrationTests
                     PackOrderQuantity = 2,
                     SupplierReferenceCode = "02BA",
                     SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
-                    ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210")
+                    ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210"),
+                    ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd")
                 }
             };
 

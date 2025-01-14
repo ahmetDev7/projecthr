@@ -50,7 +50,9 @@ namespace api.IntegrationTests
         public async Task GetAllItemsSpecificSingle_ReturnsSuccesWithRelatedItems()
         {
             var response = await _httpClient.GetAsync(_baseUrl + "/4604084f-a55f-484f-8707-feae90c72fcd" + "/items");
+
             var result = await response.Content.ReadFromJsonAsync<List<Item>>();
+            
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().HaveCount(2);

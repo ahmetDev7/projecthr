@@ -43,8 +43,8 @@ public class ContactProvider : BaseProvider<Contact>
         Contact? foundContact = _db.Contacts.FirstOrDefault(c => c.Id == id);
         if (foundContact == null) return null;
 
-        if (
-            _db.WarehouseContacts.Any(wc => wc.ContactId == id) ||
+
+        if (_db.Warehouses.Any(w => w.ContactId == id) ||
             _db.Clients.Any(c => c.ContactId == id) ||
             _db.Suppliers.Any(s => s.ContactId == id))
         {

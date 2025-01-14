@@ -1,90 +1,55 @@
 using DTO.Shipment;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Utils.Date;
 
 public class ShipmentProvider : BaseProvider<Shipment>
 {
     private IValidator<Shipment> _shipmentValidator;
-    private IValidator<ShipmentRequest> _shipmentRequestValidator;
 
-    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator) : base(db)
+    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator) : base(db)
     {
         _shipmentValidator = validator;
-        _shipmentRequestValidator = shipmentRequestValidator;
     }
 
     public override Shipment? GetById(Guid id) =>
-        _db.Shipments.Include(s => s.ShipmentItems).Include(s => s.OrderShipments).FirstOrDefault(s => s.Id == id);
+        _db.Shipments.Include(s => s.ShipmentItems).FirstOrDefault(s => s.Id == id);
 
-    public override List<Shipment>? GetAll() => _db.Shipments.Include(s => s.ShipmentItems).Include(s => s.OrderShipments).ToList();
+    public override List<Shipment>? GetAll() => _db.Shipments.Include(s => s.ShipmentItems).ToList();
 
     public override Shipment? Create(BaseDTO createValues)
     {
         ShipmentRequest? req = createValues as ShipmentRequest;
         if (req == null) throw new ApiFlowException("Could not process create shipment request. Save new shipment failed.");
 
-        _shipmentRequestValidator.ValidateAndThrow(req);
-
-        using IDbContextTransaction transaction = _db.Database.BeginTransaction();
-        try
+        Shipment newShipment = new Shipment(newInstance: true)
         {
-            Shipment newShipment = new Shipment(newInstance: true)
+            OrderId = req.OrderId,
+            OrderDate = req.OrderDate,
+            RequestDate = req.RequestDate,
+            ShipmentDate = req.ShipmentDate,
+            Notes = req.Notes,
+            CarrierCode = req.CarrierCode,
+            CarrierDescription = req.CarrierDescription,
+            ServiceCode = req.ServiceCode,
+            TotalPackageCount = req.TotalPackageCount,
+            TotalPackageWeight = req.TotalPackageWeight,
+            ShipmentItems = req.Items?.Select(item => new ShipmentItem
             {
-                ShipmentDate = DateUtil.ToUtcOrNull(req.ShipmentDate),
-                OrderDate = DateUtil.ToUtcOrNull(req.OrderDate),
-                RequestDate = DateUtil.ToUtcOrNull(req.RequestDate),
-                Notes = req.Notes,
-                CarrierCode = req.CarrierCode,
-                CarrierDescription = req.CarrierDescription,
-                ServiceCode = req.ServiceCode,
-                TotalPackageCount = req.TotalPackageCount,
-                TotalPackageWeight = req.TotalPackageWeight,
-                ShipmentStatus = req.ShipmentStatus,
-                ShipmentType = req.ShipmentType,
-                TransferMode = req.TransferMode,
-                PaymentType = req.PaymentType,
-                ShipmentItems = req.Items?.Select(item => new ShipmentItem(newInstance: true)
-                {
-                    ItemId = item.ItemId,
-                    Amount = item.Amount
-                }).ToList(),
-                OrderShipments = req.Orders?.Select(o => new OrderShipment(newInstance: true)
-                {
-                    OrderId = o
-                }).ToList(),
+                ItemId = item.ItemId ?? throw new ApiFlowException("Item ID cannot be null."),
+                Amount = item.Amount ?? throw new ApiFlowException("Amount cannot be null.")
+            }).ToList()
+        };
 
-            };
+        newShipment.SetShipmentType(req.ShipmentType);
+        newShipment.SetShipmentStatus(req.ShipmentStatus);
+        newShipment.SetPaymentType(req.PaymentType);
+        newShipment.SetTransferMode(req.TransferMode);
 
-            if (req.OrderDate == null)
-            {
-                newShipment.OrderDate = DateUtil.ToUtcOrNull(newShipment.CreatedAt);
-            }
-
-            if (req.RequestDate == null)
-            {
-                newShipment.RequestDate = DateUtil.ToUtcOrNull(newShipment.OrderDate);
-            }
-
-            if (req.ShipmentStatus == null)
-            {
-                newShipment.ShipmentStatus = ShipmentStatus.Plan;
-            }
-
-            ValidateModel(newShipment);
-            _db.Shipments.Add(newShipment);
-            SaveToDBOrFail();
-
-            transaction.Commit();
-            return newShipment;
-        }
-        catch (Exception)
-        {
-            transaction.Rollback();
-            throw;
-        }
-
+        ValidateModel(newShipment);
+        _db.Shipments.Add(newShipment);
+        SaveToDBOrFail();
+        return newShipment;
     }
 
     public override Shipment? Update(Guid id, BaseDTO updateValues)
@@ -92,76 +57,41 @@ public class ShipmentProvider : BaseProvider<Shipment>
         ShipmentRequest? req = updateValues as ShipmentRequest;
         if (req == null) throw new ApiFlowException("Could not process update shipment request. Update failed.");
 
-        _shipmentRequestValidator.ValidateAndThrow(req);
+        Shipment? existingShipment = _db.Shipments.Include(o => o.ShipmentItems).FirstOrDefault(o => o.Id == id);
+        if (existingShipment == null) throw new ApiFlowException($"Shipment not found for id '{id}'");
 
-        Shipment? existingShipment = GetById(id);
-        if (existingShipment == null) return null;
-
-        using IDbContextTransaction transaction = _db.Database.BeginTransaction();
-        try
+        existingShipment.OrderId = req.OrderId;
+        existingShipment.OrderDate = DateUtil.ToUtcOrNull(req.OrderDate);
+        existingShipment.RequestDate = DateUtil.ToUtcOrNull(req.RequestDate);
+        existingShipment.ShipmentDate = DateUtil.ToUtcOrNull(req.ShipmentDate);
+        existingShipment.SetShipmentType(req.ShipmentType);
+        existingShipment.SetShipmentStatus(req.ShipmentStatus);
+        existingShipment.Notes = req.Notes;
+        existingShipment.CarrierCode = req.CarrierCode;
+        existingShipment.CarrierDescription = req.CarrierDescription;
+        existingShipment.ServiceCode = req.ServiceCode;
+        existingShipment.SetPaymentType(req.PaymentType);
+        existingShipment.SetTransferMode(req.TransferMode);
+        existingShipment.TotalPackageCount = req.TotalPackageCount;
+        existingShipment.TotalPackageWeight = req.TotalPackageWeight;
+        existingShipment.SetUpdatedAt();
+        if (req.Items != null)
         {
-            existingShipment.OrderDate = DateUtil.ToUtcOrNull(req.OrderDate);
-            existingShipment.RequestDate = DateUtil.ToUtcOrNull(req.RequestDate);
-            existingShipment.ShipmentDate = DateUtil.ToUtcOrNull(req.ShipmentDate);
-            existingShipment.Notes = req.Notes;
-            existingShipment.CarrierCode = req.CarrierCode;
-            existingShipment.CarrierDescription = req.CarrierDescription;
-            existingShipment.ServiceCode = req.ServiceCode;
-            existingShipment.TotalPackageCount = req.TotalPackageCount;
-            existingShipment.TotalPackageWeight = req.TotalPackageWeight;
-            existingShipment.ShipmentStatus = req.ShipmentStatus;
-            existingShipment.ShipmentType = req.ShipmentType;
-            existingShipment.TransferMode = req.TransferMode;
-            existingShipment.PaymentType = req.PaymentType;
-            existingShipment.SetUpdatedAt();
-
-
             _db.ShipmentItems.RemoveRange(existingShipment.ShipmentItems);
-            if (req.Items != null)
+
+            existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem(newInstance: true)
             {
-                existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem(newInstance: true)
-                {
-                    ItemId = si.ItemId,
-                    Amount = si.Amount
-                }).ToList();
-            }
-
-
-            _db.OrderShipments.RemoveRange(existingShipment.OrderShipments);
-            if (req.Orders != null)
-            {
-                existingShipment.OrderShipments = req.Orders?.Select(o => new OrderShipment(newInstance: true)
-                {
-                    OrderId = o
-                }).ToList();
-            }
-
-            if (req.OrderDate == null)
-            {
-                existingShipment.OrderDate = DateUtil.ToUtcOrNull(existingShipment.CreatedAt);
-            }
-
-            if (req.RequestDate == null)
-            {
-                existingShipment.RequestDate = DateUtil.ToUtcOrNull(existingShipment.OrderDate);
-            }
-
-            if (req.ShipmentStatus == null)
-            {
-                existingShipment.ShipmentStatus = ShipmentStatus.Plan;
-            }
-
-            ValidateModel(existingShipment);
-            _db.Shipments.Update(existingShipment);
-            SaveToDBOrFail();
-            transaction.Commit();
-            return existingShipment;
+                ItemId = si.ItemId,
+                Amount = si.Amount
+            }).ToList();
         }
-        catch (Exception)
-        {
-            transaction.Rollback();
-            throw;
-        }
+
+        ValidateModel(existingShipment);
+
+        _db.Shipments.Update(existingShipment);
+        SaveToDBOrFail();
+
+        return existingShipment;
     }
 
     public override Shipment? Delete(Guid id)
@@ -172,14 +102,6 @@ public class ShipmentProvider : BaseProvider<Shipment>
         _db.Shipments.Remove(foundShipment);
         SaveToDBOrFail();
         return foundShipment;
-    }
-
-    public Shipment? CommitShipment(Shipment shipment)
-    {
-        shipment.ShipmentStatus = ShipmentStatus.Delivered;
-        _db.Shipments.Update(shipment);
-        SaveToDBOrFail();
-        return shipment;
     }
 
     protected override void ValidateModel(Shipment model) => _shipmentValidator.ValidateAndThrow(model);

@@ -17,6 +17,4 @@ public class Location : BaseModel
 
     public ICollection<Transfer>? TransfersTo { get; set; }
     public ICollection<Transfer>? TransfersFrom { get; set; }
-
-    public ICollection<InventoryLocation>? InventoryLocations { get; set; }
 }

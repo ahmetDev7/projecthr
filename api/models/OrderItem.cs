@@ -1,5 +1,6 @@
+using System;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class OrderItem : BaseModel
 {
@@ -10,11 +11,6 @@ public class OrderItem : BaseModel
     public Guid? ItemId { get; set; }
 
     public Item? Item { get; set; }
-
-    [Required]
-    public Guid? OrderId { get; set; }
-
-    public Order? Order { get; set; }
 
     [Required]
     public int? Amount { get; set; }

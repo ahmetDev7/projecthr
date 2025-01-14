@@ -16,5 +16,6 @@ public class Contact : BaseModel
     [Required]
     public string? Email { get; set; }
 
-    public ICollection<WarehouseContact> WarehouseContacts { get; set; }
+    // Navigation property for warehouses
+    public ICollection<Warehouse>? Warehouses { get; set; }
 }

@@ -2,11 +2,11 @@ POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
 
 {
-  "code": "SUPPLIER_1",
-  "name": "SUPPLIER 1",
+  "code": "dit is een get item test",
+  "name": "string",
   "reference": "123-ABCD",
-  "contact_id": "e8483c51-1634-439d-958c-161bf9e7b61f",
-  "address_id": "6d22935a-6c3f-418e-8bba-03b92cb38265"
+  "contact_id": "8d2e7d61-e596-46e4-acd8-e85ef8805110",
+  "address_id": "b372cf41-44f1-4823-a97c-316fef12ba27"
 }
 
 ###

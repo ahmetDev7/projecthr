@@ -8,24 +8,18 @@ namespace DTO.Order
     {
         [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }
-
         [JsonPropertyName("request_date")]
         public DateTime? RequestDate { get; set; }
-
         [JsonPropertyName("reference")]
         public string? Reference { get; set; }
-
         [JsonPropertyName("reference_extra")]
         public string? ReferenceExtra { get; set; }
-
         [JsonPropertyName("order_status")]
-        public OrderStatus? OrderStatus { get; set; }
-
+        public string? OrderStatus { get; set; }
         [JsonPropertyName("note")]
         public string? Notes { get; set; }
         [JsonPropertyName("picking_notes")]
         public string? PickingNotes { get; set; }
-
         [JsonPropertyName("total_amount")]
         public decimal? TotalAmount { get; set; }
 
@@ -36,16 +30,12 @@ namespace DTO.Order
 
         [JsonPropertyName("total_surcharge")]
         public decimal? TotalSurcharge { get; set; }
-
         [JsonPropertyName("warehouse_id")]
         public Guid? WarehouseId { get; set; }
-
         [JsonPropertyName("order_items")]
         public List<OrderItemRequest>? OrderItems { get; set; }
-
         [JsonPropertyName("bill_to_client")]
         public Guid? BillToClientId { get; set; }
-
         [JsonPropertyName("ship_to_client")]
         public Guid? ShipToClientId { get; set; }
 
@@ -58,25 +48,18 @@ namespace DTO.Order
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
-
         [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }
-
         [JsonPropertyName("request_date")]
         public DateTime? RequestDate { get; set; }
-
         [JsonPropertyName("reference")]
         public string? Reference { get; set; }
-
         [JsonPropertyName("reference_extra")]
         public string? ReferenceExtra { get; set; }
-
         [JsonPropertyName("order_status")]
-        public OrderStatus? OrderStatus { get; set; }
-
+        public string? OrderStatus { get; set; }
         [JsonPropertyName("note")]
         public string? Notes { get; set; }
-
         [JsonPropertyName("picking_notes")]
         public string? PickingNotes { get; set; }
 
@@ -85,13 +68,11 @@ namespace DTO.Order
 
         [JsonPropertyName("total_discount")]
         public decimal? TotalDiscount { get; set; }
-
         [JsonPropertyName("total_tax")]
         public decimal? TotalTax { get; set; }
 
         [JsonPropertyName("total_surcharge")]
         public decimal? TotalSurcharge { get; set; }
-
         [JsonPropertyName("warehouseid")]
         public Guid? WarehouseId { get; set; }
 
@@ -100,7 +81,6 @@ namespace DTO.Order
 
         [JsonPropertyName("bill_to_client")]
         public Guid? BillToClientId { get; set; }
-
         [JsonPropertyName("ship_to_client")]
         public Guid? ShipToClientId { get; set; }
 

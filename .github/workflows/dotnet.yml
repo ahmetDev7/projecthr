@@ -53,7 +53,7 @@ jobs:
           retention-days: 5
         if: ${{ failure() }}
 
-  unit_tests_and_code_coverage:
+  test_and_code_coverage:
     name: Run Unit Tests & Generate Code Coverage Report
     runs-on: ubuntu-latest
     needs: build
@@ -65,54 +65,25 @@ jobs:
           dotnet-version: 8.0.x
       - name: Run Unit Tests & Generate Report
         run: dotnet test api.Tests/api.Tests.csproj --collect:"XPlat Code Coverage"
-      - name: ReportGenerator for Unit Tests
+      - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.4.1
         with:
           reports: 'api.Tests/TestResults/*/coverage.cobertura.xml'
           targetdir: 'api.Tests/Report'
           reporttypes: 'MarkdownSummaryGithub'
           classfilters: '+EnumUtil' # Temporarily
-      - name: Upload Unit Tests Coverage Report Artifact
+      - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: CoverageReportUnitTests
+          name: CoverageReport       
           path: 'api.Tests/Report'
-      - name: Add Unit Test Coverage Report to Summary
-        run: cat api.Tests/Report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
-
-  integration_tests_and_code_coverage:
-    name: Run Integration Tests & Generate Code Coverage Report
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-      - name: Run Integration Tests & Generate Report
-        run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --collect:"XPlat Code Coverage"
-      - name: ReportGenerator for Integration Tests
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.4.1
-        with:
-          reports: 'api.IntegrationTests/TestResults/*/coverage.cobertura.xml'
-          targetdir: 'api.IntegrationTests/Report'
-          reporttypes: 'MarkdownSummaryGithub'
-      - name: Upload Integration Tests Coverage Report Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: CoverageReportIntegrationTests
-          path: 'api.IntegrationTests/Report'
-      - name: Add Integration Test Coverage Report to Summary
-        run: cat api.IntegrationTests/Report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
-  
+      - name: Add Coverage Report to Summary
+        run: cat api.Tests/Report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY  
 
   dotnet_publish:
     name: Publish
     runs-on: ubuntu-latest
-    needs:
-      - unit_tests_and_code_coverage
-      - integration_tests_and_code_coverage
+    needs: test_and_code_coverage
     if: ${{ github.ref_name == 'release' }} 
     steps:
       - uses: actions/checkout@v4

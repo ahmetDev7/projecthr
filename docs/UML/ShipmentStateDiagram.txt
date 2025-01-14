@@ -1,13 +1,12 @@
 @startuml
-[*] --> Plan: Employee creates shipment
+[*] --> Pending : Employee creates shipment
 
-state "Plan" as Plan
 state "Pending" as Pending
 state "Transit" as Transit
 state "Delivered" as Delivered
 
-Plan--> Plan: Validates if shipment items are in order
-Plan --> Pending
+
+Pending --> Pending : Validates if shipment items are in order
 Pending --> Transit : Give packed items to carrier
 Transit --> Delivered : Carrier delivers items to client
 Delivered --> [*]

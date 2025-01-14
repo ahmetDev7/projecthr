@@ -2,13 +2,12 @@
 [*] --> Pending : Order received via phone from client
 
 state "Pending" as Pending
-state "Being_Packed" as Being_Packed
-state "Closed" as Closed
+state "Packed" as Packed
+state "Delivered" as Delivered
 
-Pending --> Being_Packed: Validate warehouse stock\n(Ensure items are available in warehouse)\nPUT /orders/{order_id}
-Being_Packed--> Being_Packed: Validation fails\n(Return error: Unable to reserve stock)
-Being_Packed--> Closed: Confirm stock consistency\nPUT /orders/{order_id}
+Pending --> Packed : Validate warehouse stock\n(Ensure items are available in warehouse)\nPUT /orders/{order_id}
+Packed --> Delivered : Confirm stock consistency\nPUT /orders/{order_id}
 
-
-Closed--> [*]
+Packed --> Packed : Validation fails\n(Return error: Unable to reserve stock)
+Delivered --> [*]
 @enduml

@@ -52,7 +52,7 @@ namespace api.IntegrationTests
             var response = await _httpClient.GetAsync(_baseUrl + "/dac7430d-c2c9-48f3-ad74-f443649c0c43" + "/items");
 
             var result = await response.Content.ReadFromJsonAsync<List<Item>>();
-            
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().HaveCount(2);

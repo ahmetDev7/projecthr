@@ -83,8 +83,6 @@ jobs:
   integration_tests_and_code_coverage:
     name: Run Integration Tests & Generate Code Coverage Report
     runs-on: ubuntu-latest
-    environment: 
-      name: keys
     needs: build
     steps:
       - uses: actions/checkout@v4

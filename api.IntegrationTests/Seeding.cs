@@ -236,6 +236,20 @@ namespace api.IntegrationTests
                     Name = "Tim",
                     ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
                     AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099"),
+                },
+                new Client(newInstance:true)
+                {
+                    Id = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
+                    Name = "Client 2",
+                    ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
+                    AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099"),
+                },
+                new Client(newInstance:true)
+                {
+                    Id = Guid.Parse("39fbea38-bb4b-49db-b9dc-fe1aec620441"),
+                    Name = "Client 3",
+                    ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
+                    AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099"),
                 }
 
             };
@@ -251,7 +265,7 @@ namespace api.IntegrationTests
                     RequestDate = DateTime.UtcNow,
                     OrderStatus = OrderStatus.Pending,
                     WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
-                    BillToClientId = Guid.Parse("68b7ef68-b6a7-45de-a6f8-7656b7af44b7"),
+                    BillToClientId = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
                     OrderItems = new List<OrderItem>
                     {
                         new OrderItem(newInstance: true)

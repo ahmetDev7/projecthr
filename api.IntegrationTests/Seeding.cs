@@ -19,6 +19,7 @@ namespace api.IntegrationTests
             db.Docks.AddRange(GetDocks());
             db.Clients.AddRange(GetClients());
             db.Orders.AddRange(GetOrders());
+            db.Shipments.AddRange(GetShipments());
             db.SaveChanges();
         }
 
@@ -222,7 +223,8 @@ namespace api.IntegrationTests
                 {
                     Id = Guid.Parse("7ffe0c5e-c188-47a4-9dcf-f3e17c2ff41c"),
                     OrderDate = DateTime.UtcNow,
-                    OrderStatus = "Pending",
+                    RequestDate = DateTime.UtcNow,
+                    OrderStatus = OrderStatus.Pending,
                     WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
                     BillToClientId = Guid.Parse("68b7ef68-b6a7-45de-a6f8-7656b7af44b7"),
                     OrderItems = new List<OrderItem>
@@ -240,6 +242,21 @@ namespace api.IntegrationTests
                             Amount = 4
                         }
                     }
+                }
+            };
+        }
+        private static List<Shipment> GetShipments()
+        {
+            return new List<Shipment>()
+            {
+                new Shipment(newInstance:true)
+                {
+                    Id = Guid.Parse("9f0f1aaa-7cfb-48ed-bcfc-7f33c62ecf74"),
+                    ShipmentType = ShipmentType.O,
+                    CarrierCode = "010101",
+                    ServiceCode = "304402",
+                    PaymentType = PaymentType.Manual,
+                    TransferMode = TransferMode.Sea
                 }
             };
         }

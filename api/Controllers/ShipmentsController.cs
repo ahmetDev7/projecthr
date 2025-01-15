@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using DTO.Item;
 using DTO.Order;
 using DTO.Shipment;
@@ -19,6 +20,8 @@ public class ShipmentsController : ControllerBase
     [Authorize(Roles = "admin,warehousemanager,logistics")]
     public IActionResult Create([FromBody] ShipmentRequest req)
     {
+        string? role = User.FindFirst(ClaimTypes.Role)?.Value;
+        req.CreatedBy = role;
         Shipment? newShipment = _shipmentProvider.Create(req);
         if (newShipment == null) throw new ApiFlowException("Saving new Shipment failed.");
 
@@ -48,7 +51,8 @@ public class ShipmentsController : ControllerBase
                     ItemId = item.ItemId,
                     Amount = item.Amount
                 }).ToList(),
-                Orders = newShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+                Orders = newShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList(),
+                CreatedBy = newShipment.CreatedBy
             }
         });
     }
@@ -94,7 +98,8 @@ public class ShipmentsController : ControllerBase
                     ItemId = item.ItemId,
                     Amount = item.Amount
                 }).ToList(),
-                Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+                Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList(),
+                CreatedBy = updatedShipment.CreatedBy
             }
         });
     }
@@ -132,7 +137,8 @@ public class ShipmentsController : ControllerBase
                     ItemId = item.ItemId,
                     Amount = item.Amount
                 }).ToList(),
-                Orders = deletedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+                Orders = deletedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList(),
+                CreatedBy = deletedShipment.CreatedBy
             }
         });
     }
@@ -162,7 +168,8 @@ public class ShipmentsController : ControllerBase
             ItemId = item.ItemId,
             Amount = item.Amount
         }).ToList(),
-        Orders = s?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+        Orders = s?.OrderShipments?.Select(os => os.OrderId)?.ToList(),
+        CreatedBy = s.CreatedBy
     }).ToList());
 
     [HttpGet("{id}")]
@@ -199,7 +206,8 @@ public class ShipmentsController : ControllerBase
                         ItemId = item.ItemId,
                         Amount = item.Amount
                     }).ToList(),
-                    Orders = foundShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+                    Orders = foundShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList(),
+                    CreatedBy = foundShipment.CreatedBy
                 }
             });
     }
@@ -245,7 +253,8 @@ public class ShipmentsController : ControllerBase
                         ItemId = item.ItemId,
                         Amount = item.Amount
                     }).ToList(),
-                    Orders = commitedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+                    Orders = commitedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList(),
+                    CreatedBy = commitedShipment.CreatedBy
                 }
             }
         );
@@ -309,7 +318,8 @@ public class ShipmentsController : ControllerBase
             ItemTypeId = i.ItemTypeId,
             SupplierId = i.SupplierId,
             CreatedAt = i.CreatedAt,
-            UpdatedAt = i.UpdatedAt
+            UpdatedAt = i.UpdatedAt,
+            CreatedBy = i.CreatedBy
         }).ToList());
     }
 
@@ -349,7 +359,8 @@ public class ShipmentsController : ControllerBase
                 ItemId = item.ItemId,
                 Amount = item.Amount
             }).ToList(),
-            Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+            Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList(),
+            CreatedBy = updatedShipment.CreatedBy
         });
     }
 
@@ -389,7 +400,8 @@ public class ShipmentsController : ControllerBase
                 ItemId = item.ItemId,
                 Amount = item.Amount
             }).ToList(),
-            Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList()
+            Orders = updatedShipment?.OrderShipments?.Select(os => os.OrderId)?.ToList(),
+            CreatedBy = updatedShipment.CreatedBy
         });
     }
 }

@@ -54,4 +54,6 @@ public class Shipment : BaseModel
     public void SetPaymentType(string? strPaymentType) => PaymentType = EnumUtil.ParseOrIgnore<PaymentType>(strPaymentType);
     public void SetTransferMode(string? strTransferMode) => TransferMode = EnumUtil.ParseOrIgnore<TransferMode>(strTransferMode);
 
+    public string? CreatedBy { get; set; }
+
 }

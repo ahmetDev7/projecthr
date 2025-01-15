@@ -58,7 +58,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
                 {
                     OrderId = o
                 }).ToList(),
-
+                CreatedBy = req.CreatedBy
             };
 
             if (req.OrderDate == null)

@@ -1,6 +1,7 @@
 ### CREATE ORDER
 POST http://localhost:5000/api/orders
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
     "order_date": "2024-11-17T00:00:00Z",
@@ -14,14 +15,14 @@ Content-Type: application/json
     "total_discount": 0,
     "total_tax": 0,
     "total_surcharge": 0,
-    "warehouse_id": "ebdca3ca-9450-4a1d-8378-768a0eeb8fa8",
+    "warehouse_id": "b2a860ae-fd1c-422d-923b-035fac241356",
     "order_items": [
       {
-        "item_id": "fae716d1-5649-4e26-a56c-12a8679e9629",
+        "item_id": "5dc623ec-3669-4254-b401-37010bff95cb",
         "amount": 20
       }
     ],
-    "bill_to_client": "f1414a49-f10e-47bd-a1c9-a1b2443478f0"
+    "bill_to_client": "8be1ef5b-672a-4880-a7b1-f4d160e39393"
 }
 ###
 
@@ -54,15 +55,20 @@ Content-Type: application/json
 }
 
 ### GET ORDER BY ID (change ID to existing ID in your database)
-GET http://localhost:5000/api/orders/41ebb47d-93d2-4aee-bbd5-3749f3c28cad
+GET http://localhost:5000/api/orders/b4085f48-22d8-43c4-99d6-da703b0da3ba
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
+
 ###
 
 # Get order items by order ID
-GET http://localhost:5000/api/orders/41ebb47d-93d2-4aee-bbd5-3749f3c28cad/items
+GET http://localhost:5000/api/orders/b4085f48-22d8-43c4-99d6-da703b0da3ba/items
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
+
 ###
 GET http://localhost:5000/api/orders
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 Content-Type: application/json
 ###
 

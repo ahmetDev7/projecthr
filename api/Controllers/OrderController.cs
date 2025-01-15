@@ -1,4 +1,5 @@
 using System.Data;
+using System.Security.Claims;
 using DTO.Order;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,9 @@ public class OrdersController : ControllerBase
     [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create([FromBody] OrderRequest req)
     {
+        string? role = User.FindFirst(ClaimTypes.Role)?.Value;
+        req.CreatedBy = role;
+
         Order? newOrder = _orderProvider.Create(req);
         if (newOrder == null) throw new ApiFlowException("Saving new order failed.");
 
@@ -43,6 +47,7 @@ public class OrdersController : ControllerBase
                 BillToClientId = newOrder.BillToClientId,
                 CreatedAt = newOrder.CreatedAt,
                 UpdatedAt = newOrder.UpdatedAt,
+                CreatedBy = newOrder.CreatedBy,
                 Items = newOrder.OrderItems?.Select(oi => new OrderItemRequest
                 {
                     ItemId = oi.ItemId,
@@ -83,6 +88,7 @@ public class OrdersController : ControllerBase
                     BillToClientId = deletedOrder.BillToClientId,
                     CreatedAt = deletedOrder.CreatedAt,
                     UpdatedAt = deletedOrder.UpdatedAt,
+                    CreatedBy = deletedOrder.CreatedBy,
                     Items = deletedOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,
@@ -132,6 +138,7 @@ public class OrdersController : ControllerBase
                     BillToClientId = updatedOrder.BillToClientId,
                     CreatedAt = updatedOrder.CreatedAt,
                     UpdatedAt = updatedOrder.UpdatedAt,
+                    CreatedBy = updatedOrder.CreatedBy,
                     Items = updatedOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,
@@ -161,6 +168,7 @@ public class OrdersController : ControllerBase
         BillToClientId = o.BillToClientId,
         CreatedAt = o.CreatedAt,
         UpdatedAt = o.UpdatedAt,
+        CreatedBy = o.CreatedBy,
         Items = o.OrderItems?.Select(oi => new OrderItemRequest
         {
             ItemId = oi.ItemId,
@@ -195,6 +203,7 @@ public class OrdersController : ControllerBase
                     BillToClientId = foundOrder.BillToClientId,
                     CreatedAt = foundOrder.CreatedAt,
                     UpdatedAt = foundOrder.UpdatedAt,
+                    CreatedBy = foundOrder.CreatedBy,                    
                     Items = foundOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,
@@ -255,6 +264,7 @@ public class OrdersController : ControllerBase
                     BillToClientId = commitedOrder.BillToClientId,
                     CreatedAt = commitedOrder.CreatedAt,
                     UpdatedAt = commitedOrder.UpdatedAt,
+                    CreatedBy = foundOrder.CreatedBy,
                     Items = commitedOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,

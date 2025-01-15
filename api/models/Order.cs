@@ -53,4 +53,5 @@ public class Order : BaseModel
     public Client? BillToClient { get; set; }
 
     public ICollection<OrderShipment>? OrderShipments { get; set; }
+    public string? CreatedBy { get; set; }
 }

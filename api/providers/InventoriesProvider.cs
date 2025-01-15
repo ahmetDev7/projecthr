@@ -171,7 +171,7 @@ public class InventoriesProvider : BaseProvider<Inventory>
     {
         int totalExpected = _db.ShipmentItems.Include(si => si.Shipment).Where(si => si.ItemId == itemId && si.Shipment.ShipmentType == ShipmentType.I).Sum(si => si.Amount) ?? 0;
         Inventory? inventory = GetInventoryByItemId(itemId);
-        
+
         if (inventory == null)
         {
             throw new ApiFlowException($"An error occurred while updating the total expected quantity for item with ID: {itemId}. Please ensure the item exists in inventory.");
@@ -195,6 +195,51 @@ public class InventoriesProvider : BaseProvider<Inventory>
         _db.Inventories.Update(inventory);
         SaveToDBOrFail();
     }
+
+    public void CalculateTotalAllocated(Guid itemId, Guid? shipmentIdThatWasInTransit = null)
+    {
+        List<Order>? closedOrders = _db.Orders
+            .Where(o => o.OrderStatus == OrderStatus.Closed)
+            .Include(o => o.OrderShipments)
+            .ThenInclude(os => os.Shipment)
+            .ThenInclude(s => s.ShipmentItems)
+            .ToList();
+
+        if (closedOrders == null || !closedOrders.Any())
+        {
+            return;
+        }
+
+        int? totalAllocated = 0;
+        foreach (Order? closedOrder in closedOrders)
+        {
+            foreach (OrderShipment? orderShipment in closedOrder.OrderShipments ?? [])
+            {
+
+                // Check either shipmentIdThatWasInTransit or shipment status
+                if (shipmentIdThatWasInTransit.HasValue)
+                {
+                    if (orderShipment.ShipmentId != shipmentIdThatWasInTransit) continue;
+                }
+                else
+                {
+                    if (orderShipment.Shipment?.ShipmentStatus != ShipmentStatus.Transit) continue;
+                }
+
+                totalAllocated += orderShipment?.Shipment?.ShipmentItems?.Where(item => item.ItemId == itemId).Sum(item => item.Amount);
+            }
+        }
+        Inventory? inventory = GetInventoryByItemId(itemId);
+        if (inventory == null)
+        {
+            throw new ApiFlowException($"An error occurred while updating the total orderd quantity for item with ID: {itemId}. Please ensure the item exists in inventory.");
+        }
+
+        inventory.TotalAllocated = totalAllocated ?? 0;
+        _db.Inventories.Update(inventory);
+        SaveToDBOrFail();
+    }
+
 
     public int CalculateTotalOnHand(Guid inventoryId) => _db.InventoryLocations.Where(il => il.InventoryId == inventoryId).Sum(il => il.OnHandAmount);
 }

@@ -105,13 +105,15 @@ public class OrderProvider : BaseProvider<Order>
             _db.Orders.Remove(foundOrder);
             SaveToDBOrFail();
 
-            // TOTAL_ORDERD TRIGGERD IF STATUS PENDING
+            
             foreach (var row in oldOrderItems ?? [])
             {
-                if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalOrderd(row.ItemId.Value);
+                if (row.ItemId.HasValue)
+                {
+                    _inventoriesProvider.CalculateTotalOrderd(row.ItemId.Value); // TOTAL_ORDERD TRIGGERD IF STATUS PENDING
+                    _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+                }
             }
-
-            // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT --
 
             transaction.Commit();
             return foundOrder;
@@ -195,8 +197,6 @@ public class OrderProvider : BaseProvider<Order>
                 if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalOrderd(row.ItemId.Value);
             }
 
-            //FIXME: TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT ++
-
             transaction.Commit();
             return existingOrder;
         }
@@ -216,10 +216,14 @@ public class OrderProvider : BaseProvider<Order>
             _db.Orders.Update(order);
             SaveToDBOrFail();
 
-            // TOTAL_ORDERD TRIGGERD IF STATUS Changes to other status
+
             foreach (OrderItem? row in order.OrderItems ?? [])
             {
-                if (row.ItemId.HasValue) _inventoriesProvider.CalculateTotalOrderd(row.ItemId.Value);
+                if (row.ItemId.HasValue)
+                {
+                    _inventoriesProvider.CalculateTotalOrderd(row.ItemId.Value); // TOTAL_ORDERD TRIGGERD IF STATUS Changes to other status
+                    _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+                }
             }
 
             transaction.Commit();

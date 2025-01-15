@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO.Item;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -28,6 +29,8 @@ public class ItemsController : ControllerBase
     [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create([FromBody] ItemRequest req)
     {
+        string? role = User.FindFirst(ClaimTypes.Role)?.Value;
+        req.CreatedBy = role;
         Item? newItem = _itemsProvider.Create(req);
         if (newItem == null) throw new ApiFlowException("Saving new Item failed.");
 
@@ -53,7 +56,8 @@ public class ItemsController : ControllerBase
                 ItemTypeId = newItem.ItemTypeId,
                 SupplierId = newItem.SupplierId,
                 CreatedAt = newItem.CreatedAt,
-                UpdatedAt = newItem.UpdatedAt
+                UpdatedAt = newItem.UpdatedAt,
+                CreatedBy = newItem.CreatedBy,
             }
         });
     }
@@ -88,7 +92,8 @@ public class ItemsController : ControllerBase
                     ItemTypeId = updatedItem.ItemTypeId,
                     SupplierId = updatedItem.SupplierId,
                     CreatedAt = updatedItem.CreatedAt,
-                    UpdatedAt = updatedItem.UpdatedAt
+                    UpdatedAt = updatedItem.UpdatedAt,
+                    CreatedBy = updatedItem.CreatedBy,
                 }
             });
     }
@@ -125,7 +130,8 @@ public class ItemsController : ControllerBase
                     ItemTypeId = foundItem.ItemTypeId,
                     SupplierId = foundItem.SupplierId,
                     CreatedAt = foundItem.CreatedAt,
-                    UpdatedAt = foundItem.UpdatedAt
+                    UpdatedAt = foundItem.UpdatedAt,
+                    CreatedBy = foundItem.CreatedBy,
                 }
             });
     }
@@ -160,7 +166,9 @@ public class ItemsController : ControllerBase
                     ItemTypeId = foundItem.ItemTypeId,
                     SupplierId = foundItem.SupplierId,
                     CreatedAt = foundItem.CreatedAt,
-                    UpdatedAt = foundItem.UpdatedAt
+                    UpdatedAt = foundItem.UpdatedAt,
+                    CreatedBy = foundItem.CreatedBy,
+
                 }
             });
     }
@@ -186,7 +194,8 @@ public class ItemsController : ControllerBase
         ItemTypeId = i.ItemTypeId,
         SupplierId = i.SupplierId,
         CreatedAt = i.CreatedAt,
-        UpdatedAt = i.UpdatedAt
+        UpdatedAt = i.UpdatedAt,
+        CreatedBy = i.CreatedBy,
     }).ToList());
 
     [HttpGet("{id}/inventories")]

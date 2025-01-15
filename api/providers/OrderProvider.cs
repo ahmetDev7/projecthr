@@ -105,7 +105,7 @@ public class OrderProvider : BaseProvider<Order>
             _db.Orders.Remove(foundOrder);
             SaveToDBOrFail();
 
-            
+
             foreach (var row in oldOrderItems ?? [])
             {
                 if (row.ItemId.HasValue)

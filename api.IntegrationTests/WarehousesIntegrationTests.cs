@@ -19,7 +19,7 @@ namespace api.IntegrationTests
             {
                 AllowAutoRedirect = false
             });
-            
+
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminKey);
         }
 

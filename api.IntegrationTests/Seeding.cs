@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Protocols;
+using SQLitePCL;
 
 namespace api.IntegrationTests
 {
@@ -22,6 +24,8 @@ namespace api.IntegrationTests
             db.Clients.AddRange(GetClients());
             db.Orders.AddRange(GetOrders());
             db.Shipments.AddRange(GetShipments());
+            db.Transfers.AddRange(GetTransfers());
+            db.Inventories.AddRange(GetInventories());
             db.SaveChanges();
         }
 
@@ -299,6 +303,52 @@ namespace api.IntegrationTests
                 }
             };
         }
+
+        private static List<Transfer> GetTransfers()
+        {
+            return new List<Transfer>()
+            {
+                new Transfer(newInstance:true)
+                {
+                    Id = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f203e"),
+                    TransferFromId = Guid.Parse("91629396-1d08-4f77-9049-c49216870112"),
+                    TransferToId = Guid.Parse("e6786fad-435b-460f-b6dd-11dd32b3b6a6"),
+                    TransferStatus = TransferStatus.Pending,
+                    Reference = "TST-0273",
+                    TransferItems = new List<TransferItem>()
+                    {
+                        new TransferItem
+                        {
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 100
+                        }
+                    }
+                }
+            };
+        }
+
+        private static List<Inventory> GetInventories()
+        {
+            return new List<Inventory>()
+            {
+                new Inventory(newInstance:true)
+                {
+                    Description = "INVENTORY ITEM INTEGRATION TEST DESCRIPTION",
+                    ItemReference = "INVENTORY ITEM INTEGRATION TEST REFERENCE",
+                    ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                    InventoryLocations = new List<InventoryLocation>()
+                    {
+                        new InventoryLocation
+                        {
+                            LocationId = Guid.Parse("91629396-1d08-4f77-9049-c49216870112"),
+                            OnHandAmount = 500
+                        }
+                    }
+                }
+            };
+        }
+
+
 
     }
 }

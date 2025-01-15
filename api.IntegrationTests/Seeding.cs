@@ -333,6 +333,7 @@ namespace api.IntegrationTests
             {
                 new Inventory(newInstance:true)
                 {
+                    Id = Guid.Parse("722eec5c-9de0-4993-8aea-3b473ec30d22"),
                     Description = "INVENTORY ITEM INTEGRATION TEST DESCRIPTION",
                     ItemReference = "INVENTORY ITEM INTEGRATION TEST REFERENCE",
                     ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),

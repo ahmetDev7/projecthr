@@ -171,12 +171,27 @@ public class InventoriesProvider : BaseProvider<Inventory>
     {
         int totalExpected = _db.ShipmentItems.Include(si => si.Shipment).Where(si => si.ItemId == itemId && si.Shipment.ShipmentType == ShipmentType.I).Sum(si => si.Amount) ?? 0;
         Inventory? inventory = GetInventoryByItemId(itemId);
+        
         if (inventory == null)
         {
             throw new ApiFlowException($"An error occurred while updating the total expected quantity for item with ID: {itemId}. Please ensure the item exists in inventory.");
         }
 
         inventory.TotalExpected = totalExpected;
+        _db.Inventories.Update(inventory);
+        SaveToDBOrFail();
+    }
+
+    public void CalculateTotalOrderd(Guid? itemId)
+    {
+        int totalOrderd = _db.OrderItems.Include(o => o.Order).Where(o => o.ItemId == itemId && o.Order.OrderStatus == OrderStatus.Pending).Sum(o => o.Amount) ?? 0;
+        Inventory? inventory = GetInventoryByItemId(itemId);
+        if (inventory == null)
+        {
+            throw new ApiFlowException($"An error occurred while updating the total orderd quantity for item with ID: {itemId}. Please ensure the item exists in inventory.");
+        }
+
+        inventory.TotalOrderd = totalOrderd;
         _db.Inventories.Update(inventory);
         SaveToDBOrFail();
     }

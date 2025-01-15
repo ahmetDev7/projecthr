@@ -203,7 +203,7 @@ public class OrdersController : ControllerBase
                     BillToClientId = foundOrder.BillToClientId,
                     CreatedAt = foundOrder.CreatedAt,
                     UpdatedAt = foundOrder.UpdatedAt,
-                    CreatedBy = foundOrder.CreatedBy,                    
+                    CreatedBy = foundOrder.CreatedBy,
                     Items = foundOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,

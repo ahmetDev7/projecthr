@@ -1,12 +1,13 @@
 POST http://localhost:5000/api/Suppliers
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
   "code": "SUPPLIER_1",
   "name": "SUPPLIER 1",
   "reference": "123-ABCD",
-  "contact_id": "e8483c51-1634-439d-958c-161bf9e7b61f",
-  "address_id": "6d22935a-6c3f-418e-8bba-03b92cb38265"
+  "contact_id": "56e02ed3-522d-45da-a80c-40ccaed4659d",
+  "address_id": "457700a8-4d08-4d2d-94be-19465b28a0d1"
 }
 
 ###
@@ -18,7 +19,7 @@ Content-Type: application/json
   "name": "string",
   "reference": "string",
   "contact_id": "f012a7c7-dfb0-4e54-9516-57bd51f9a7f8",
-  "address_id": "016d60c2-a192-497a-b72c-49a1dedc3dab"
+  "address_id": "457700a8-4d08-4d2d-94be-19465b28a0d1"
 }
 
 ###

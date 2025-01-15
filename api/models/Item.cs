@@ -58,4 +58,6 @@ public class Item : BaseModel
 
     public Inventory? Inventory { get; set; }
     public ICollection<TransferItem>? TransferItems { get; set; } // transfer_items table connection
+
+    public string? CreatedBy { get; set; }
 }

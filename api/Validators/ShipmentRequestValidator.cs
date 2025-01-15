@@ -56,7 +56,7 @@ public class ShipmentRequestValidator : AbstractValidator<ShipmentRequest>
                             return;
                         }
 
-                        bool orderIsClosed = db.Orders.Any(o => o.OrderStatus == OrderStatus.Closed);
+                        bool orderIsClosed = db.Orders.Any(o => o.OrderStatus == OrderStatus.Closed && o.Id == orderId);
                         if (orderIsClosed)
                         {
                             context.AddFailure("orders", $"The order with ID {orderId} is closed. Shipments can no longer be assigned to a closed order.");

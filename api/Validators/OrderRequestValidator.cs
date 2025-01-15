@@ -1,5 +1,4 @@
 using DTO.Order;
-using DTO.Shipment;
 using FluentValidation;
 
 public class OrderRequestValidator : AbstractValidator<OrderRequest>
@@ -18,5 +17,14 @@ public class OrderRequestValidator : AbstractValidator<OrderRequest>
         RuleFor(OrderRequest => OrderRequest.OrderItems)
             .NotNull().WithMessage("order_items required")
             .NotEmpty().WithMessage("order_items cannot be empty.");
+
+        RuleFor(OrderRequest => OrderRequest.OrderStatus)
+            .Custom((orderStatus, context) =>
+            {
+                if (orderStatus == OrderStatus.Closed)
+                {
+                    context.AddFailure("A order cannot have a status of 'Closed'. The 'Closed' status is only applicable when using the commit endpoint.");
+                }
+            });
     }
 }

@@ -74,5 +74,8 @@ public class ShipmentValidator : AbstractValidator<Shipment>
                     }
                 });
         });
+
+
+        //FIXME: CUSTOM RULE TO CHECKING IF SHIPMENT_ITEM HAS INVENTORY
     }
 }

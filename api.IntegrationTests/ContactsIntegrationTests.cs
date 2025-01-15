@@ -9,7 +9,7 @@ namespace api.IntegrationTests
     public class ContactsIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "/api/Addresses";
+        private readonly string _baseUrl = "/api/Contacts";
         private readonly string adminKey = ApiKeyLoader.LoadApiKeyFromJson(".env.json", "API_ADMIN");
 
         public ContactsIntegrationTests(CustomWebApplicationFactory<Program> factory)
@@ -31,13 +31,13 @@ namespace api.IntegrationTests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().HaveCount(2);
+            result.Should().HaveCount(1);
         }
 
         [Fact]
         public async Task GetSingleContacts_ReturnsSuccesWithContacts()
         {
-            var response = await _httpClient.GetAsync(_baseUrl + "/cefc9e60-7d37-41f5-b3c8-3144894f207e");
+            var response = await _httpClient.GetAsync(_baseUrl + "/88366127-2bb6-4656-ac24-760a27623a07");
 
             var result = await response.Content.ReadFromJsonAsync<Contact>();
 

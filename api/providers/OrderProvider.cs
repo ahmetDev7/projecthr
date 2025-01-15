@@ -51,6 +51,7 @@ public class OrderProvider : BaseProvider<Order>
                 WarehouseId = req.WarehouseId,
                 BillToClientId = req.BillToClientId,
                 ShipToClientId = req.ShipToClientId,
+                CreatedBy = req.CreatedBy,
                 OrderItems = req.OrderItems?.Select(oi => new OrderItem(newInstance: true)
                 {
                     ItemId = oi.ItemId,

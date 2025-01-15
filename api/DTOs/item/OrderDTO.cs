@@ -49,8 +49,8 @@ namespace DTO.Order
         [JsonPropertyName("ship_to_client")]
         public Guid? ShipToClientId { get; set; }
 
-        //TODO:
-        //  shipment_id uuid [ref: > shipments.id]
+        [JsonPropertyName("created_by")]
+        public string? CreatedBy { get; set; }
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -110,8 +110,9 @@ namespace DTO.Order
         [JsonPropertyName("updated_at")]
         public DateTime? UpdatedAt { get; set; }
 
-        //TODO:
-        //  shipment_id uuid [ref: > shipments.id]
+
+        [JsonPropertyName("created_by")]
+        public string? CreatedBy { get; set; }
     }
     public class OrderItemRequest : BaseDTO
     {

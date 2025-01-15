@@ -1,11 +1,12 @@
 POST http://localhost:5000/api/warehouses/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
   "code": "WD_002",
   "name": "Sample Warehouse multi contact",
-  "contact_ids": ["d7ab8478-bcf8-4bd5-9fb7-a92ff66f448b"],
-  "address_id": "0071cb5d-bd6f-4398-8dba-e60ef0aa3bdd"
+  "contact_ids": ["56e02ed3-522d-45da-a80c-40ccaed4659d"],
+  "address_id": "457700a8-4d08-4d2d-94be-19465b28a0d1"
 }
 ###
 
@@ -24,6 +25,8 @@ Content-Type: application/json
 ### GET WAREHOUSES
 GET http://localhost:5000/api/warehouses
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
+
 ###
 
 ### GET WAREHOUSE BY ID

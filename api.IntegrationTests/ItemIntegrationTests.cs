@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -9,6 +10,7 @@ namespace api.IntegrationTests
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl = "/api/Items";
+        private readonly string adminKey = ApiKeyLoader.LoadApiKeyFromJson(".env.json", "API_ADMIN");
 
         public ItemIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
@@ -16,6 +18,8 @@ namespace api.IntegrationTests
             {
                 AllowAutoRedirect = false
             });
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminKey);
         }
 
         [Fact]

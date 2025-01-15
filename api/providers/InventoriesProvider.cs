@@ -159,14 +159,6 @@ public class InventoriesProvider : BaseProvider<Inventory>
         SaveToDBOrFail();
     }
 
-    /*
-        total_on_hand int FIXME: Optellen op basis van inventory_locations SUM
-        total_expected int FIXME: (inbound shipments) items amount optellen
-        total_ordered int FIXME: als het ordered is maar nog niet klaar is (alles optellen met status pending)
-        total_allocated int FIXME: als order is afgerond en shipment is onderweg (toegewezen aan shipment)
-        total_available int FIXME: (total on hand + total expected) - (total ordered + total allocated)
-    */
-
     public void CalculateTotalExpected(Guid? itemId)
     {
         int totalExpected = _db.ShipmentItems.Include(si => si.Shipment).Where(si => si.ItemId == itemId && si.Shipment.ShipmentType == ShipmentType.I).Sum(si => si.Amount) ?? 0;
@@ -180,6 +172,7 @@ public class InventoriesProvider : BaseProvider<Inventory>
         inventory.TotalExpected = totalExpected;
         _db.Inventories.Update(inventory);
         SaveToDBOrFail();
+        CalculateTotalAvailable(itemId);
     }
 
     public void CalculateTotalOrderd(Guid? itemId)
@@ -194,6 +187,8 @@ public class InventoriesProvider : BaseProvider<Inventory>
         inventory.TotalOrderd = totalOrderd;
         _db.Inventories.Update(inventory);
         SaveToDBOrFail();
+        CalculateTotalAvailable(itemId);
+
     }
 
     public void CalculateTotalAllocated(Guid itemId, Guid? shipmentIdThatWasInTransit = null)
@@ -236,6 +231,21 @@ public class InventoriesProvider : BaseProvider<Inventory>
         }
 
         inventory.TotalAllocated = totalAllocated ?? 0;
+        _db.Inventories.Update(inventory);
+        SaveToDBOrFail();
+        CalculateTotalAvailable(itemId);
+    }
+
+    //(total on hand + total expected) - (total ordered + total allocated)
+    public void CalculateTotalAvailable(Guid? itemId)
+    {
+        Inventory? inventory = GetInventoryByItemId(itemId);
+        if (inventory == null)
+        {
+            throw new ApiFlowException($"An error occurred while updating the total orderd quantity for item with ID: {itemId}. Please ensure the item exists in inventory.");
+        }
+
+        inventory.TotalAvailable = (inventory.TotalOnHand + inventory.TotalExpected) - (inventory.TotalOrderd + inventory.TotalAllocated);
         _db.Inventories.Update(inventory);
         SaveToDBOrFail();
     }

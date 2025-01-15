@@ -55,6 +55,9 @@ namespace DTO.Shipment
         [JsonPropertyName("orders")]
         public List<Guid?>? Orders { get; set; }
 
+        [JsonPropertyName("created_by")]
+        public string? CreatedBy { get; set; }
+
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -113,6 +116,9 @@ namespace DTO.Shipment
 
         [JsonPropertyName("orders")]
         public List<Guid?>? Orders { get; set; }
+
+        [JsonPropertyName("created_by")]
+        public string? CreatedBy { get; set; }
 
     }
 

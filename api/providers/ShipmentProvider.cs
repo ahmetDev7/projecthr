@@ -2,7 +2,7 @@ using DTO.Shipment;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Utils.Date;
+using api.Utils.Date;
 
 public class ShipmentProvider : BaseProvider<Shipment>
 {

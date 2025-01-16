@@ -71,7 +71,7 @@ jobs:
           reports: 'api.Tests/TestResults/*/coverage.cobertura.xml'
           targetdir: 'api.Tests/Report'
           reporttypes: 'MarkdownSummaryGithub'
-          classfilters: '+api.utils.CollectionUtil;+api.utils.DateUtil;+api.utils.EnumUtil;+api.utils.NumberUtil'
+          classfilters: '+api/utils/CollectionUtil;+api/utils/DateUtil;+api/utils/EnumUtil;+api/utils/NumberUtil'
       - name: Upload Unit Tests Coverage Report Artifact
         uses: actions/upload-artifact@v4
         with:

@@ -7,8 +7,14 @@ using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using DTO.Shipment;
 using DTO.Order;
+using Serilog;
+using Serilog.Sinks.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 var connectionString = "";
 var securityKey = "";
 
@@ -23,6 +29,16 @@ if (!builder.Environment.IsEnvironment("Test"))
     if (securityKey == null) throw new InvalidOperationException("The required environment variable 'SECURITY_KEY' is not set.");
 
     builder.Services.AddSingleton(securityKey);
+
+    builder.Host.UseSerilog();
+    Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.PostgreSQL(
+        connectionString: connectionString,
+        tableName: "Logs",
+        needAutoCreateTable: true
+    )
+    .CreateLogger();
 }
 
 // Add services to the container.
@@ -163,6 +179,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 var app = builder.Build();
 
 
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -170,6 +187,10 @@ app.MapGet("/", () => "CargoHub API 🚚📦");
 
 
 app.MapControllers();
+if (!builder.Environment.IsEnvironment("Test"))
+{
+    app.UseMiddleware<RequestResponseLoggingMiddleware>();
+}
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.UseSwagger();
 

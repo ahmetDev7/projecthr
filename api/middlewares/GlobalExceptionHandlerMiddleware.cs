@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using System.Text.Json;
 using FluentValidation;
+using Serilog;
 
 public class GlobalExceptionHandlingMiddleware
 {
@@ -23,6 +25,7 @@ public class GlobalExceptionHandlingMiddleware
             context.Response.ContentType = CONTENT_TYPE;
             string response = JsonSerializer.Serialize(new { messages = new[] { new { error = afe.Message } } });
             await context.Response.WriteAsync(response);
+            LogException(afe);
         }
         catch (ValidationException ex)
         {
@@ -36,6 +39,8 @@ public class GlobalExceptionHandlingMiddleware
 
             string response = JsonSerializer.Serialize(errorDetails);
             await context.Response.WriteAsync(response);
+            LogException(ex);
+
         }
         catch (Exception ex)
         {
@@ -50,8 +55,12 @@ public class GlobalExceptionHandlingMiddleware
             });
 
             await context.Response.WriteAsync(response);
-            //TODO: add logging
-            //TODO add: DbUpdateException
+            LogException(ex);
         }
+    }
+
+    private void LogException(Exception ex)
+    {
+        Log.ForContext("StackTrace", ex.StackTrace).Error(ex, $"Exception: {ex.Message}");
     }
 }

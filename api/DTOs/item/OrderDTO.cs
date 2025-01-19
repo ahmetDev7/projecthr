@@ -104,6 +104,9 @@ namespace DTO.Order
         [JsonPropertyName("ship_to_client")]
         public Guid? ShipToClientId { get; set; }
 
+        [JsonPropertyName("shipments")]
+        public List<Guid?>? Shipments { get; set; }
+
         [JsonPropertyName("created_at")]
         public DateTime? CreatedAt { get; set; }
 

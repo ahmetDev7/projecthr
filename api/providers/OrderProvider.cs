@@ -20,8 +20,8 @@ public class OrderProvider : BaseProvider<Order>
         _inventoriesProvider = inventoriesProvider;
     }
 
-    public override List<Order>? GetAll() => _db.Orders.Include(o => o.OrderItems).ToList();
-    public override Order? GetById(Guid id) => _db.Orders.Include(o => o.OrderItems).FirstOrDefault(order => order.Id == id);
+    public override List<Order>? GetAll() => _db.Orders.Include(o => o.OrderItems).Include(o => o.OrderShipments).ToList();
+    public override Order? GetById(Guid id) => _db.Orders.Include(o => o.OrderItems).Include(o => o.OrderShipments).FirstOrDefault(order => order.Id == id);
 
     public List<OrderItem> GetRelatedOrderById(Guid id) => _db.Orders.Where(o => o.Id == id).SelectMany(o => o.OrderItems).ToList();
 
@@ -132,7 +132,7 @@ public class OrderProvider : BaseProvider<Order>
         if (req == null) throw new ApiFlowException("Could not process update order request. Update failed.");
         _orderRequestValidator.ValidateAndThrow(req);
 
-        Order? existingOrder = _db.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.Id == id);
+        Order? existingOrder = GetById(id);
 
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
         try

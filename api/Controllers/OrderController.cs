@@ -52,7 +52,7 @@ public class OrdersController : ControllerBase
                 {
                     ItemId = oi.ItemId,
                     Amount = oi.Amount
-                }).ToList()
+                }).ToList(),
             }
         });
     }
@@ -93,7 +93,8 @@ public class OrdersController : ControllerBase
                     {
                         ItemId = oi.ItemId,
                         Amount = oi.Amount
-                    }).ToList()
+                    }).ToList(),
+                    Shipments = deletedOrder?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
                 }
             });
     }
@@ -143,7 +144,8 @@ public class OrdersController : ControllerBase
                     {
                         ItemId = oi.ItemId,
                         Amount = oi.Amount
-                    }).ToList()
+                    }).ToList(),
+                    Shipments = updatedOrder?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
                 }
             });
     }
@@ -173,7 +175,8 @@ public class OrdersController : ControllerBase
         {
             ItemId = oi.ItemId,
             Amount = oi.Amount
-        }).ToList()
+        }).ToList(),
+        Shipments = o?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
     }).ToList());
 
     [HttpGet("{id}")]
@@ -208,7 +211,8 @@ public class OrdersController : ControllerBase
                     {
                         ItemId = oi.ItemId,
                         Amount = oi.Amount
-                    }).ToList()
+                    }).ToList(),
+                    Shipments = foundOrder?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
                 }
             );
     }
@@ -269,7 +273,8 @@ public class OrdersController : ControllerBase
                     {
                         ItemId = oi.ItemId,
                         Amount = oi.Amount
-                    }).ToList()
+                    }).ToList(),
+                    Shipments = foundOrder?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
                 }
             }
         );

@@ -152,6 +152,18 @@ namespace api.IntegrationTests
                     City = "Amsterdam",
                     Province = "Noord-Holland",
                     CountryCode = "NL"
+                },
+                new Address(newInstance: true)
+                {
+                    Id = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61088"),
+                    Street = "Street 3",
+                    HouseNumber = "3",
+                    HouseNumberExtension = "B",
+                    HouseNumberExtensionExtra = "C",
+                    ZipCode = "4567AB",
+                    City = "Amsterdam",
+                    Province = "Noord-Holland",
+                    CountryCode = "NL"
                 }
             };
         }

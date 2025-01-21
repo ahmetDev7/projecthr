@@ -32,7 +32,7 @@ namespace api.IntegrationTests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().HaveCount(2);
+            result.Should().HaveCount(3);
         }
 
         [Fact]
@@ -87,12 +87,12 @@ namespace api.IntegrationTests
         [Fact]
         public async Task DeleteAddress_DeleteExistingAddress_CheckIfAddress()
         {
-            var deleteResponse = await _httpClient.DeleteAsync(_baseUrl + "/" + "2ff2c789-726b-4dee-b026-622b48a61099");
+            string url = _baseUrl + "/2ff2c789-726b-4dee-b026-622b48a61088";
+            var deleteResponse = await _httpClient.DeleteAsync(url);
 
             deleteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var getResponse = await _httpClient.GetAsync(_baseUrl + "/" + "2ff2c789-726b-4dee-b026-622b48a61099");
-
+            var getResponse = await _httpClient.GetAsync(url);
             getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 

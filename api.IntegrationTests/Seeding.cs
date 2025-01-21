@@ -177,6 +177,13 @@ namespace api.IntegrationTests
                     Name = "Alperen",
                     Phone = "0644089743",
                     Email = "Dev@Gmail.com"
+                },
+                new Contact(newInstance:true)
+                {
+                    Id = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a10"),
+                    Name = "Test",
+                    Phone = "0644089743",
+                    Email = "Test@Gmail.com"
                 }
             };
         }

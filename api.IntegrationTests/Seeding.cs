@@ -380,7 +380,7 @@ namespace api.IntegrationTests
                             Id = Guid.Parse("c92d1c2e-b81b-476d-8f11-76818140f7bc"),
                             ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
                             Amount = 2
-                        }                        
+                        }
                     }
                 },
                 new Order(newInstance:true)
@@ -398,7 +398,7 @@ namespace api.IntegrationTests
                             Id = Guid.Parse("7b2064ae-9a05-4434-aaff-e941d08d4f9c"),
                             ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
                             Amount = 33
-                        }                        
+                        }
                     }
                 },
                 new Order(newInstance:true)
@@ -415,7 +415,7 @@ namespace api.IntegrationTests
                         {
                             ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
                             Amount = 17
-                        }                        
+                        }
                     }
                 }
             };

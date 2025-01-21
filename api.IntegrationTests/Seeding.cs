@@ -231,6 +231,15 @@ namespace api.IntegrationTests
                     ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
                     AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099")
 
+                },
+                new Supplier(newInstance:true)
+                {
+                    Id = Guid.Parse("1c989e40-9b2e-4cd7-bff2-abf42d977e88"),
+                    Code = "37462",
+                    Name = "Rick Lowman",
+                    ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
+                    AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099")
+
                 }
             };
         }

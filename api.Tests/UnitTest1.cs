@@ -15,7 +15,9 @@ public class UnitTest1
         Assert.Equal(expectedResult, result);
     }
 
-    public void Test_StringToEnum_ReturnsCorrectEnum(){        
+    [Fact]
+    public void Test_StringToEnum_ReturnsCorrectEnum()
+    {
         // Arrange
         string strTransferStatus = "Pending";
 

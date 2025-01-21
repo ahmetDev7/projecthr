@@ -108,6 +108,43 @@ namespace api.IntegrationTests
                     ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"),
                     ItemLineId = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43")
                 }
+                ,
+                new Item(newInstance:true)
+                {
+                    Id = Guid.Parse("a0def768-b4b2-484d-80f4-3268719ccc3d"),
+                    Code = "3213244",
+                    UpcCode = "3213244",
+                    ModelNumber = "3213244",
+                    UnitPurchaseQuantity = 2,
+                    UnitOrderQuantity = 2,
+                    PackOrderQuantity = 2,
+                    SupplierReferenceCode = "02BA",
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                },
+                new Item(newInstance:true)
+                {
+                    Id = Guid.Parse("a0def768-b4b2-484d-80f4-3268719ccc4d"), // for update inventory
+                    Code = "323",
+                    UpcCode = "323",
+                    ModelNumber = "323",
+                    UnitPurchaseQuantity = 323,
+                    UnitOrderQuantity = 2323,
+                    PackOrderQuantity = 323,
+                    SupplierReferenceCode = "02BA",
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                },
+                new Item(newInstance:true)
+                {
+                    Id = Guid.Parse("a0def768-b4b2-484d-80f4-3268719ccc5d"), // for delete inventory
+                    Code = "89789",
+                    UpcCode = "89789",
+                    ModelNumber = "89789",
+                    UnitPurchaseQuantity = 22,
+                    UnitOrderQuantity = 82,
+                    PackOrderQuantity = 29,
+                    SupplierReferenceCode = "02342BA",
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                }
             };
 
         }
@@ -411,6 +448,13 @@ namespace api.IntegrationTests
                             OnHandAmount = 500
                         }
                     }
+                },
+                new Inventory(newInstance:true)
+                {
+                    Id = Guid.Parse("722eec5c-9de0-4993-8aea-3b473ec30d79"),
+                    Description = "INVENTORY ITEM INTEGRATION TEST DESCRIPTION 002",
+                    ItemReference = "INVENTORY ITEM INTEGRATION TEST REFERENCE 002",
+                    ItemId = Guid.Parse("a0def768-b4b2-484d-80f4-3268719ccc5d")
                 }
             };
         }

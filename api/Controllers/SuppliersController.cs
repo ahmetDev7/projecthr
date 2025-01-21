@@ -3,6 +3,7 @@ using DTO.Supplier;
 using DTO.Item;
 using DTO.Address;
 using DTO.Contact;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -15,6 +16,7 @@ public class SuppliersController : ControllerBase
         _supplierProvider = supplierProvider;
     }
     [HttpGet("{id}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult GetItemsSupplier(Guid id)
     {
         List<Item> items = _supplierProvider.GetItemsBySupplierId(id);
@@ -46,6 +48,7 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create(SupplierRequest request)
     {
         Supplier? supplier = _supplierProvider.Create(request);
@@ -93,6 +96,7 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Update(Guid id, SupplierRequest request)
     {
         Supplier? updatedSupplier = _supplierProvider.Update(id, request);
@@ -138,6 +142,7 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin,warehousemanager")]
     public IActionResult Delete(Guid id)
     {
         Supplier? deletedSupplier = _supplierProvider.Delete(id);
@@ -181,6 +186,7 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Supplier? supplier = _supplierProvider.GetById(id);
@@ -226,6 +232,7 @@ public class SuppliersController : ControllerBase
         });
     }
     [HttpGet]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_supplierProvider.GetAll().Select(ig => new SupplierResponse
     {
         Id = ig.Id,

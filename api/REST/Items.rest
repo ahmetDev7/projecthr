@@ -1,5 +1,6 @@
 ### GET ITEM BY ID
-GET http://localhost:5000/api/items/18063ce1-1726-4d2c-9de8-9f90673f0e66
+GET http://localhost:5000/api/items/5dc623ec-3669-4254-b401-37010bff95cb
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 Content-Type: application/json
 ###
 
@@ -16,11 +17,14 @@ Content-Type: application/json
 ### GET ALL ITEM 
 GET http://localhost:5000/api/items/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
+
 ###
 
 ### CREATE ITEM
 POST http://localhost:5000/api/items
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
   "code": "ITEM TEST 21",
@@ -37,7 +41,7 @@ Content-Type: application/json
   "item_group_id": null,
   "item_line_id": null,
   "item_type_id": null,
-  "supplier_id": "d337b2d9-655d-4ddb-b35b-de80c0c60520"
+  "supplier_id": "7aa5d911-e1d7-4fc2-94ed-8c7a5b0c5f33"
 }
 ###
 

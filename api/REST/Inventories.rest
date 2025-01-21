@@ -1,18 +1,15 @@
 
 POST http://localhost:5000/api/inventories
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
   "description": "INVENTORY ITEM 2 DESCRIPTION",
   "item_reference": "INVENTORY ITEM REFERENCE",
-  "item_id": "fae716d1-5649-4e26-a56c-12a8679e9629",
+  "item_id": "5dc623ec-3669-4254-b401-37010bff95cb",
   "locations": [
     {
-      "location_id": "ecebc75b-b8fa-4cf1-bbaa-751e125e650b",
-      "on_hand": 50
-    },
-    {
-      "location_id": "9731cbb8-81da-4d86-ac7f-cf29df3d4542",
+      "location_id": "f331b8ba-de9f-4770-b04b-c4a096f0db60",
       "on_hand": 50
     }
   ]

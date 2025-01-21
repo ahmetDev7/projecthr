@@ -1,5 +1,6 @@
 using DTO.Item;
 using DTO.ItemType;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -96,6 +97,7 @@ public class ItemTypesController : ControllerBase
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_itemTypesProvider.GetAll().Select(it => new ItemTypeResponse
     {
         Id = it.Id,
@@ -106,6 +108,7 @@ public class ItemTypesController : ControllerBase
     }).ToList());
 
     [HttpGet("{itemTypeId}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowRelatedItems(Guid itemTypeId) =>
         Ok(_itemTypesProvider.GetRelatedItemsById(itemTypeId)
         .Select(i => new ItemResponse

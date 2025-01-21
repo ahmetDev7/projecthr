@@ -2,19 +2,20 @@ using DTO.Shipment;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Utils.Date;
 
 public class ShipmentProvider : BaseProvider<Shipment>
 {
     private IValidator<Shipment> _shipmentValidator;
     private IValidator<ShipmentRequest> _shipmentRequestValidator;
     private IValidator<UpdateShipmentItemDTO> _updateShipmentRequestValidation;
+    private readonly InventoriesProvider _inventoriesProvider;
 
-    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> updateShipmentRequestValidation) : base(db)
+    public ShipmentProvider(AppDbContext db, IValidator<Shipment> validator, IValidator<ShipmentRequest> shipmentRequestValidator, IValidator<UpdateShipmentItemDTO> updateShipmentRequestValidation, InventoriesProvider inventoriesProvider) : base(db)
     {
         _shipmentValidator = validator;
         _shipmentRequestValidator = shipmentRequestValidator;
         _updateShipmentRequestValidation = updateShipmentRequestValidation;
+        _inventoriesProvider = inventoriesProvider;
     }
 
     public override Shipment? GetById(Guid id) =>
@@ -56,7 +57,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
                 {
                     OrderId = o
                 }).ToList(),
-
+                CreatedBy = req.CreatedBy
             };
 
             if (req.OrderDate == null)
@@ -77,6 +78,16 @@ public class ShipmentProvider : BaseProvider<Shipment>
             ValidateModel(newShipment);
             _db.Shipments.Add(newShipment);
             SaveToDBOrFail();
+
+            // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND
+            foreach (ShipmentItemRR? row in req?.Items ?? [])
+            {
+                if (row.ItemId.HasValue)
+                {
+                    _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+                    _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+                }
+            }
 
             transaction.Commit();
             return newShipment;
@@ -99,6 +110,8 @@ public class ShipmentProvider : BaseProvider<Shipment>
         Shipment? existingShipment = GetById(id);
         if (existingShipment == null) return null;
 
+        ShipmentStatus? oldStatus = existingShipment.ShipmentStatus;
+
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
         try
         {
@@ -117,8 +130,8 @@ public class ShipmentProvider : BaseProvider<Shipment>
             existingShipment.PaymentType = req.PaymentType;
             existingShipment.SetUpdatedAt();
 
-
-            _db.ShipmentItems.RemoveRange(existingShipment.ShipmentItems);
+            var oldShipmentItems = existingShipment.ShipmentItems;
+            _db.ShipmentItems.RemoveRange(oldShipmentItems);
             if (req.Items != null)
             {
                 existingShipment.ShipmentItems = req.Items.Select(si => new ShipmentItem(newInstance: true)
@@ -127,7 +140,6 @@ public class ShipmentProvider : BaseProvider<Shipment>
                     Amount = si.Amount
                 }).ToList();
             }
-
 
             _db.OrderShipments.RemoveRange(existingShipment.OrderShipments);
             if (req.Orders != null)
@@ -157,6 +169,33 @@ public class ShipmentProvider : BaseProvider<Shipment>
             _db.Shipments.Update(existingShipment);
             SaveToDBOrFail();
             transaction.Commit();
+
+            Guid? shipmentIdThatWasInTransit = oldStatus == ShipmentStatus.Transit ? existingShipment.Id : null;
+
+            // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND
+            foreach (ShipmentItemRR? row in req?.Items ?? [])
+            {
+                if (row.ItemId.HasValue)
+                {
+                    _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+                    _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value, shipmentIdThatWasInTransit); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+                }
+            }
+
+            // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND [FOR OLD SHIPMENT ITEMS]
+            if (req?.Items != null)
+            {
+                var removedShipmentItems = oldShipmentItems.Where(oldShipmentItem => !req.Items.Any(newItem => newItem.ItemId == oldShipmentItem.ItemId)).ToList();
+                foreach (ShipmentItem? row in removedShipmentItems ?? [])
+                {
+                    if (row.ItemId.HasValue)
+                    {
+                        _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+                        _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value, shipmentIdThatWasInTransit); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+                    }
+                }
+            }
+
             return existingShipment;
         }
         catch (Exception)
@@ -169,18 +208,46 @@ public class ShipmentProvider : BaseProvider<Shipment>
     public override Shipment? Delete(Guid id)
     {
         Shipment? foundShipment = GetById(id);
+
+        ICollection<ShipmentItem>? shipmentItems = foundShipment?.ShipmentItems;
         if (foundShipment == null) return null;
+
+        ShipmentStatus? oldStatus = foundShipment?.ShipmentStatus;
 
         _db.Shipments.Remove(foundShipment);
         SaveToDBOrFail();
+
+        Guid? shipmentIdThatWasInTransit = oldStatus == ShipmentStatus.Transit ? foundShipment.Id : null;
+        // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND
+        foreach (ShipmentItem? row in shipmentItems ?? [])
+        {
+            if (row.ItemId.HasValue)
+            {
+                _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value);
+                _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value, shipmentIdThatWasInTransit); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+            }
+        }
+
         return foundShipment;
     }
 
     public Shipment? CommitShipment(Shipment shipment)
     {
+        ShipmentStatus? oldStatus = shipment?.ShipmentStatus;
+        var oldShipmentItems = shipment.ShipmentItems;
+        Guid? shipmentIdThatWasInTransit = oldStatus == ShipmentStatus.Transit ? shipment.Id : null;
         shipment.ShipmentStatus = ShipmentStatus.Delivered;
         _db.Shipments.Update(shipment);
         SaveToDBOrFail();
+
+        foreach (ShipmentItem? row in oldShipmentItems ?? [])
+        {
+            if (row.ItemId.HasValue)
+            {
+                _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value, shipmentIdThatWasInTransit); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+            }
+        }
+
         return shipment;
     }
 
@@ -214,10 +281,13 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
         _updateShipmentRequestValidation.ValidateAndThrow(reqDTO);
 
+        ShipmentStatus? oldStatus = shipment?.ShipmentStatus;
+
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
         try
         {
-            _db.ShipmentItems.RemoveRange(shipment.ShipmentItems);
+            var oldShipmentItems = shipment.ShipmentItems;
+            _db.ShipmentItems.RemoveRange(oldShipmentItems);
             if (shipmentItems.Count() > 0)
             {
                 shipment.ShipmentItems = shipmentItems.Select(si => new ShipmentItem(newInstance: true)
@@ -230,6 +300,31 @@ public class ShipmentProvider : BaseProvider<Shipment>
             ValidateModel(shipment);
             _db.Shipments.Update(shipment);
             SaveToDBOrFail();
+
+            Guid? shipmentIdThatWasInTransit = oldStatus == ShipmentStatus.Transit ? shipment.Id : null;
+            foreach (ShipmentItem? row in shipment.ShipmentItems ?? [])
+            {
+                if (row.ItemId.HasValue)
+                {
+                    _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value); // TOTAL_EXPECTED TRIGGERD IF INBOUND
+                    _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value, shipmentIdThatWasInTransit); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+                }
+            }
+
+
+            if (shipment.ShipmentItems != null)
+            {
+                var removedShipmentItems = oldShipmentItems.Where(oldShipmentItem => !shipment.ShipmentItems.Any(newItem => newItem.ItemId == oldShipmentItem.ItemId)).ToList();
+                foreach (ShipmentItem? row in removedShipmentItems ?? [])
+                {
+                    if (row.ItemId.HasValue)
+                    {
+                        _inventoriesProvider.CalculateTotalExpected(row.ItemId.Value); // TOTAL_EXPECTED CALCULATION TRIGGERD IF INBOUND [FOR OLD SHIPMENT ITEMS]
+                        _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value, shipmentIdThatWasInTransit); // TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+                    }
+                }
+            }
+
             transaction.Commit();
             return shipment;
         }
@@ -254,6 +349,7 @@ public class ShipmentProvider : BaseProvider<Shipment>
 
 
         _updateShipmentRequestValidation.ValidateAndThrow(reqDTO);
+        ShipmentStatus? oldStatus = shipment?.ShipmentStatus;
 
         using IDbContextTransaction transaction = _db.Database.BeginTransaction();
         try
@@ -271,6 +367,17 @@ public class ShipmentProvider : BaseProvider<Shipment>
             ValidateModel(shipment);
             _db.Shipments.Update(shipment);
             SaveToDBOrFail();
+
+            Guid? shipmentIdThatWasInTransit = oldStatus == ShipmentStatus.Transit ? shipment.Id : null;
+            foreach (ShipmentItem? row in shipment.ShipmentItems ?? [])
+            {
+                if (row.ItemId.HasValue)
+                {
+                    _inventoriesProvider.CalculateTotalAllocated(row.ItemId.Value, shipmentIdThatWasInTransit);// TOTAL_ALLOCATED TRIGGERD IF STATUS CLOSED AND SHIPMENT IS SHIPMENT_STATUS.TRANSIT
+                }
+            }
+
+
             transaction.Commit();
             return shipment;
         }

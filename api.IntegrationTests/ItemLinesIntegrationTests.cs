@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -9,6 +10,7 @@ namespace api.IntegrationTests
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl = "/api/ItemLines";
+        private readonly string adminKey = ApiKeyLoader.LoadApiKeyFromJson(".env.json", "API_ADMIN");
 
         public ItemLinesIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
@@ -16,13 +18,17 @@ namespace api.IntegrationTests
             {
                 AllowAutoRedirect = false
             });
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminKey);
         }
 
         [Fact]
         public async Task GetAllItemLines_ItemLinesExist_ReturnsSuccesWithItemLines()
         {
             var response = await _httpClient.GetAsync(_baseUrl);
+
             var result = await response.Content.ReadFromJsonAsync<List<ItemLine>>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().HaveCount(3);
@@ -32,7 +38,9 @@ namespace api.IntegrationTests
         public async Task GetSingleItemLine_ReturnsSuccesWithItemLine()
         {
             var response = await _httpClient.GetAsync(_baseUrl + "/dac7430d-c2c9-48f3-ad74-f443649c0c43");
+
             var result = await response.Content.ReadFromJsonAsync<ItemLine>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().NotBeNull();
@@ -42,7 +50,9 @@ namespace api.IntegrationTests
         public async Task GetAllItemsSpecificSingle_ReturnsSuccesWithRelatedItems()
         {
             var response = await _httpClient.GetAsync(_baseUrl + "/dac7430d-c2c9-48f3-ad74-f443649c0c43" + "/items");
+
             var result = await response.Content.ReadFromJsonAsync<List<Item>>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().HaveCount(2);

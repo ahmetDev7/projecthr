@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Utils.Number;
 
 public class Item : BaseModel
 {
@@ -58,4 +57,6 @@ public class Item : BaseModel
 
     public Inventory? Inventory { get; set; }
     public ICollection<TransferItem>? TransferItems { get; set; } // transfer_items table connection
+
+    public string? CreatedBy { get; set; }
 }

@@ -246,6 +246,7 @@ public class ClientsController : ControllerBase
     }
 
     [HttpGet("{clientId}/orders")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowRelatedOrders(Guid clientId) =>
         Ok(_clientProvider.GetRelatedOrdersById(clientId)
         .Select(o => new OrderResponse

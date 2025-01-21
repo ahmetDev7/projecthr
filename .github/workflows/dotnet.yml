@@ -71,7 +71,7 @@ jobs:
           reports: 'api.Tests/TestResults/*/coverage.cobertura.xml'
           targetdir: 'api.Tests/Report'
           reporttypes: 'MarkdownSummaryGithub'
-          classfilters: '+EnumUtil' # Temporarily
+          classfilters: '+CollectionUtil;+DateUtil;+EnumUtil;+NumberUtil'
       - name: Upload Unit Tests Coverage Report Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -93,7 +93,15 @@ jobs:
       - name: Set up .env.json file
         run: |
           echo '{' > api.IntegrationTests/.env.json
-          echo '  "API_ADMIN": "${{ secrets.API_ADMIN }}"' >> api.IntegrationTests/.env.json
+          echo '  "API_ADMIN": "${{ secrets.API_ADMIN }}",' >> api.IntegrationTests/.env.json
+          echo '  "API_WAREHOUSEMANAGER": "${{ secrets.API_WAREHOUSEMANAGER }}",' >> api.IntegrationTests/.env.json
+          echo '  "API_INVENTORYMANAGER": "${{ secrets.API_INVENTORYMANAGER }}",' >> api.IntegrationTests/.env.json
+          echo '  "API_FLOORMANAGER": "${{ secrets.API_FLOORMANAGER }}",' >> api.IntegrationTests/.env.json
+          echo '  "API_OPERATIVE": "${{ secrets.API_OPERATIVE }}",' >> api.IntegrationTests/.env.json
+          echo '  "API_SUPERVISOR": "${{ secrets.API_SUPERVISOR }}",' >> api.IntegrationTests/.env.json
+          echo '  "API_ANALYST": "${{ secrets.API_ANALYST }}",' >> api.IntegrationTests/.env.json
+          echo '  "API_LOGISTICS": "${{ secrets.API_LOGISTICS }}",' >> api.IntegrationTests/.env.json
+          echo '  "API_SALES": "${{ secrets.API_SALES }}"' >> api.IntegrationTests/.env.json
           echo '}' >> api.IntegrationTests/.env.json
       - name: Run Integration Tests & Generate Report
         run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --collect:"XPlat Code Coverage"

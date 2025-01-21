@@ -14,4 +14,17 @@ public class UnitTest1
         // Assert
         Assert.Equal(expectedResult, result);
     }
+
+    [Fact]
+    public void Test_StringToEnum_ReturnsCorrectEnum()
+    {
+        // Arrange
+        string strTransferStatus = "Pending";
+
+        // Act
+        TransferStatus? result = EnumUtil.ParseOrIgnore<TransferStatus>(strTransferStatus);
+
+        // Assert
+        Assert.Equal(result, TransferStatus.Pending);
+    }
 }

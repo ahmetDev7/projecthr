@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace api.IntegrationTests
 {
-    public class ItemIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
+    public class TransfersIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "/api/Items";
+        private readonly string _baseUrl = "/api/transfers";
         private readonly string adminKey = ApiKeyLoader.LoadApiKeyFromJson(".env.json", "API_ADMIN");
 
-        public ItemIntegrationTests(CustomWebApplicationFactory<Program> factory)
+        public TransfersIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
             _httpClient = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -23,20 +23,24 @@ namespace api.IntegrationTests
         }
 
         [Fact]
-        public async Task GetItem_ItemExist_ReturnsSuccesWithItem()
+        public async Task GetAllTransfers_TransfersExists_ReturnSuccessWithTransfers()
         {
             var response = await _httpClient.GetAsync(_baseUrl);
-            var result = await response.Content.ReadFromJsonAsync<List<Item>>();
+
+            var result = await response.Content.ReadFromJsonAsync<List<Transfer>>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().HaveCount(2);
+            result.Should().HaveCount(1);
         }
 
         [Fact]
-        public async Task GetSingleItem_ReturnsSuccesWithItem()
+        public async Task GetSingleTransfer_ReturnSuccessWithTransfer()
         {
-            var response = await _httpClient.GetAsync(_baseUrl + "/ab868b64-2a27-451a-be78-105e824547be");
-            var result = await response.Content.ReadFromJsonAsync<Item>();
+            var response = await _httpClient.GetAsync(_baseUrl + "/cefc9e60-7d37-41f5-b3c8-3144894f203e");
+
+            var result = await response.Content.ReadFromJsonAsync<Transfer>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().NotBeNull();

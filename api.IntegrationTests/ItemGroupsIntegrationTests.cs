@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -9,6 +10,7 @@ namespace api.IntegrationTests
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl = "/api/ItemGroups";
+        private readonly string adminKey = ApiKeyLoader.LoadApiKeyFromJson(".env.json", "API_ADMIN");
 
         public ItemGroupsIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
@@ -16,13 +18,17 @@ namespace api.IntegrationTests
             {
                 AllowAutoRedirect = false
             });
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminKey);
         }
 
         [Fact]
         public async Task GetAllItemGroups_ItemGroupsExist_ReturnsSuccesWithItemTypes()
         {
             var response = await _httpClient.GetAsync(_baseUrl);
+
             var result = await response.Content.ReadFromJsonAsync<List<ItemType>>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().HaveCount(3);
@@ -32,7 +38,9 @@ namespace api.IntegrationTests
         public async Task GetSingleItemGroup_ReturnsSuccesWithItemGroup()
         {
             var response = await _httpClient.GetAsync(_baseUrl + "/4604084f-a55f-484f-8707-feae90c72fcd");
+
             var result = await response.Content.ReadFromJsonAsync<ItemGroup>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().NotBeNull();
@@ -42,7 +50,9 @@ namespace api.IntegrationTests
         public async Task GetAllItemsSpecificSingle_ReturnsSuccesWithRelatedItems()
         {
             var response = await _httpClient.GetAsync(_baseUrl + "/4604084f-a55f-484f-8707-feae90c72fcd" + "/items");
+
             var result = await response.Content.ReadFromJsonAsync<List<Item>>();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().HaveCount(2);
@@ -59,6 +69,7 @@ namespace api.IntegrationTests
             };
 
             var response = await _httpClient.PostAsJsonAsync(_baseUrl, newItemGroup);
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
@@ -72,6 +83,7 @@ namespace api.IntegrationTests
             };
 
             var updateResponse = await _httpClient.PutAsJsonAsync(_baseUrl + "/" + "4428de87-dd7f-4879-823b-ec9f97e50add", updatedItemGroup);
+
             updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 

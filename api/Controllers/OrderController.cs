@@ -1,5 +1,7 @@
 using System.Data;
+using System.Security.Claims;
 using DTO.Order;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -14,8 +16,12 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create([FromBody] OrderRequest req)
     {
+        string? role = User.FindFirst(ClaimTypes.Role)?.Value;
+        req.CreatedBy = role;
+
         Order? newOrder = _orderProvider.Create(req);
         if (newOrder == null) throw new ApiFlowException("Saving new order failed.");
 
@@ -41,17 +47,19 @@ public class OrdersController : ControllerBase
                 BillToClientId = newOrder.BillToClientId,
                 CreatedAt = newOrder.CreatedAt,
                 UpdatedAt = newOrder.UpdatedAt,
+                CreatedBy = newOrder.CreatedBy,
                 Items = newOrder.OrderItems?.Select(oi => new OrderItemRequest
                 {
                     ItemId = oi.ItemId,
                     Amount = oi.Amount
-                }).ToList()
+                }).ToList(),
             }
         });
     }
 
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin,warehousemanager")]
     public IActionResult Delete(Guid id)
     {
         Order? deletedOrder = _orderProvider.Delete(id);
@@ -80,15 +88,18 @@ public class OrdersController : ControllerBase
                     BillToClientId = deletedOrder.BillToClientId,
                     CreatedAt = deletedOrder.CreatedAt,
                     UpdatedAt = deletedOrder.UpdatedAt,
+                    CreatedBy = deletedOrder.CreatedBy,
                     Items = deletedOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,
                         Amount = oi.Amount
-                    }).ToList()
+                    }).ToList(),
+                    Shipments = deletedOrder?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
                 }
             });
     }
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Update(Guid id, [FromBody] OrderRequest req)
     {
         Order? foundOrder = _orderProvider.GetById(id);
@@ -128,15 +139,18 @@ public class OrdersController : ControllerBase
                     BillToClientId = updatedOrder.BillToClientId,
                     CreatedAt = updatedOrder.CreatedAt,
                     UpdatedAt = updatedOrder.UpdatedAt,
+                    CreatedBy = updatedOrder.CreatedBy,
                     Items = updatedOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,
                         Amount = oi.Amount
-                    }).ToList()
+                    }).ToList(),
+                    Shipments = updatedOrder?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
                 }
             });
     }
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_orderProvider.GetAll()?.Select(o => new OrderResponse
     {
         Id = o.Id,
@@ -156,14 +170,17 @@ public class OrdersController : ControllerBase
         BillToClientId = o.BillToClientId,
         CreatedAt = o.CreatedAt,
         UpdatedAt = o.UpdatedAt,
+        CreatedBy = o.CreatedBy,
         Items = o.OrderItems?.Select(oi => new OrderItemRequest
         {
             ItemId = oi.ItemId,
             Amount = oi.Amount
-        }).ToList()
+        }).ToList(),
+        Shipments = o?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
     }).ToList());
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Order? foundOrder = _orderProvider.GetById(id);
@@ -189,16 +206,19 @@ public class OrdersController : ControllerBase
                     BillToClientId = foundOrder.BillToClientId,
                     CreatedAt = foundOrder.CreatedAt,
                     UpdatedAt = foundOrder.UpdatedAt,
+                    CreatedBy = foundOrder.CreatedBy,
                     Items = foundOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,
                         Amount = oi.Amount
-                    }).ToList()
+                    }).ToList(),
+                    Shipments = foundOrder?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
                 }
             );
     }
 
     [HttpGet("{id}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowOrderItems(Guid id)
     {
         List<OrderItem> orderItems = _orderProvider.GetRelatedOrderById(id);
@@ -212,6 +232,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPut("{id}/commit")]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult ActionCommit(Guid id)
     {
         Order? foundOrder = _orderProvider.GetById(id);
@@ -247,11 +268,13 @@ public class OrdersController : ControllerBase
                     BillToClientId = commitedOrder.BillToClientId,
                     CreatedAt = commitedOrder.CreatedAt,
                     UpdatedAt = commitedOrder.UpdatedAt,
+                    CreatedBy = foundOrder.CreatedBy,
                     Items = commitedOrder.OrderItems?.Select(oi => new OrderItemRequest
                     {
                         ItemId = oi.ItemId,
                         Amount = oi.Amount
-                    }).ToList()
+                    }).ToList(),
+                    Shipments = foundOrder?.OrderShipments?.Select(os => os.ShipmentId).ToList(),
                 }
             }
         );

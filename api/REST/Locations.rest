@@ -11,12 +11,13 @@ Content-Type: application/json
 ### CREATE LOCATION
 POST http://localhost:5000/api/locations
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
     "row" : "200",
     "rack" : "200",
     "shelf" : "200",
-    "warehouse_id" : "4bb69c11-f4b0-439f-b584-62df6ebdfcc6"
+    "warehouse_id" : "b2a860ae-fd1c-422d-923b-035fac241356"
 }
 ###
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using DTO.Contact;
 using DTO.Address;
 
@@ -14,6 +15,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "admin,warehousemanager")]
     public IActionResult Create([FromBody] WarehouseRequest req)
     {
         Warehouse? createdWarehouse = _warehouseProvider.Create(req);
@@ -66,6 +68,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin")]
     public IActionResult Update(Guid id, [FromBody] WarehouseRequest req)
     {
         Warehouse? updatedWarehouse = _warehouseProvider.Update(id, req);
@@ -117,6 +120,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public IActionResult Delete(Guid id)
     {
         Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
@@ -166,6 +170,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public ActionResult<Warehouse> ShowSingle(Guid id)
     {
         Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
@@ -215,6 +220,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_warehouseProvider.GetAll().Select(w => new WarehouseResponse
     {
         Id = w.Id,
@@ -256,6 +262,7 @@ public class WarehousesController : ControllerBase
     }).ToList());
 
     [HttpGet("{warehouseId}/locations")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult GetLocationsByWarehouse(Guid warehouseId) => Ok(_warehouseProvider.GetLocationsByWarehouseId(warehouseId).Select(l => new LocationResponse
     {
         Id = l.Id,
@@ -268,6 +275,7 @@ public class WarehousesController : ControllerBase
     }));
 
     [HttpGet("{warehouseId}/dock")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult GetWarehouseDock(Guid warehouseId)
     {
         Warehouse? foundWarehouse = _warehouseProvider.GetById(warehouseId);

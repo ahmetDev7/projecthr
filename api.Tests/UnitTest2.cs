@@ -1,4 +1,3 @@
-using Utils.Number;
 namespace api.Tests;
 
 public class UnitTest2

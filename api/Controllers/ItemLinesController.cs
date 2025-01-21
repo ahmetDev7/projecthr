@@ -1,5 +1,6 @@
 using DTO.Item;
 using DTO.ItemLine;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -14,6 +15,7 @@ public class ItemLinesController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Create([FromBody] ItemLineRequest req)
     {
         ItemLine? newItemLine = _itemLinesProvider.Create(req);
@@ -34,6 +36,7 @@ public class ItemLinesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Update(Guid id, [FromBody] ItemLineRequest req)
     {
         ItemLine? updatedItemLine = _itemLinesProvider.Update(id, req);
@@ -55,6 +58,7 @@ public class ItemLinesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public IActionResult Delete(Guid id)
     {
         ItemLine? deletedItemLine = _itemLinesProvider.Delete(id);
@@ -75,6 +79,7 @@ public class ItemLinesController : ControllerBase
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_itemLinesProvider.GetAll().Select(il => new ItemLineResponse
     {
         Id = il.Id,
@@ -85,6 +90,7 @@ public class ItemLinesController : ControllerBase
     }).ToList());
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         ItemLine? foundItemLine = _itemLinesProvider.GetById(id);
@@ -106,6 +112,7 @@ public class ItemLinesController : ControllerBase
     }
 
     [HttpGet("{itemLineId}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowRelatedItems(Guid itemLineId) =>
         Ok(_itemLinesProvider.GetRelatedItemsById(itemLineId)
         .Select(i => new ItemResponse

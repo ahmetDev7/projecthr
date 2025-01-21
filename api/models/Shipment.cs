@@ -1,13 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using Utils.Number;
 
 public class Shipment : BaseModel
 {
     public Shipment() { }
     public Shipment(bool newInstance = false, bool isUpdate = false) : base(newInstance, isUpdate) { }
 
-    [Required]
-    public Guid? OrderId { get; set; }
     public DateTime? OrderDate { get; set; }
     public DateTime? RequestDate { get; set; }
     public DateTime? ShipmentDate { get; set; }
@@ -31,7 +28,7 @@ public class Shipment : BaseModel
     public int? TotalPackageCount
     {
         get => _totalPackageCount;
-        set => _totalPackageCount = NumberUtil.EnsureNonNegative((int)value);
+        set => _totalPackageCount = NumberUtil.EnsureNonNegative(value.Value);
     }
 
     private decimal _totalPackageWeight = 0;
@@ -39,10 +36,12 @@ public class Shipment : BaseModel
     public decimal? TotalPackageWeight
     {
         get => _totalPackageWeight;
-        set => _totalPackageWeight = NumberUtil.EnsureNonNegativeWithFourDecimals((decimal)value);
+        set => _totalPackageWeight = NumberUtil.EnsureNonNegativeWithFourDecimals(value.Value);
     }
 
     public ICollection<ShipmentItem>? ShipmentItems { get; set; }
+
+    public ICollection<OrderShipment>? OrderShipments { get; set; }
 
     public void SetShipmentType(string? strShipmentType) => ShipmentType = EnumUtil.ParseOrIgnore<ShipmentType>(strShipmentType);
 
@@ -53,5 +52,7 @@ public class Shipment : BaseModel
 
     public void SetPaymentType(string? strPaymentType) => PaymentType = EnumUtil.ParseOrIgnore<PaymentType>(strPaymentType);
     public void SetTransferMode(string? strTransferMode) => TransferMode = EnumUtil.ParseOrIgnore<TransferMode>(strTransferMode);
+
+    public string? CreatedBy { get; set; }
 
 }

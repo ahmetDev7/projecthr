@@ -12,14 +12,6 @@ public class WarehouseValidator : AbstractValidator<Warehouse>
             .NotNull().WithMessage("code is required.")
             .NotEmpty().WithMessage("code cannot be empty.");
 
-        RuleFor(Warehouse => Warehouse.ContactId)
-            .NotNull().WithMessage("contact_id is required.")
-            .NotEmpty().WithMessage("contact_id cannot be empty.")
-            .Custom((ContactId, context) =>
-            {
-                if (!db.Contacts.Any(ig => ig.Id == ContactId)) context.AddFailure("contact_id", "The provided contact_id does not exist.");
-            });
-
         RuleFor(Warehouse => Warehouse.AddressId)
             .NotNull().WithMessage("address_id is required.")
             .NotEmpty().WithMessage("address_id cannot be empty.")

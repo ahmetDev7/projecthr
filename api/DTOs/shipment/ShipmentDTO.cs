@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
-using Utils.Number;
 
 namespace DTO.Shipment
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ShipmentRequest : BaseDTO
     {
-        [JsonPropertyName("order_id")]
-        public Guid? OrderId { get; set; }
-
         [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }
 
@@ -20,10 +16,12 @@ namespace DTO.Shipment
         public DateTime? ShipmentDate { get; set; }
 
         [JsonPropertyName("shipment_type")]
-        public string? ShipmentType { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public ShipmentType? ShipmentType { get; set; }
 
         [JsonPropertyName("shipment_status")]
-        public string? ShipmentStatus { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public ShipmentStatus? ShipmentStatus { get; set; }
 
         [JsonPropertyName("notes")]
         public string? Notes { get; set; }
@@ -38,33 +36,28 @@ namespace DTO.Shipment
         public string? ServiceCode { get; set; }
 
         [JsonPropertyName("payment_type")]
-        public string? PaymentType { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public PaymentType? PaymentType { get; set; }
 
         [JsonPropertyName("transfer_mode")]
-        public string? TransferMode { get; set; }
-
-        private int _totalPackageCount = 0;
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public TransferMode? TransferMode { get; set; }
 
         [JsonPropertyName("total_package_count")]
-        public int? TotalPackageCount
-        {
-            get => _totalPackageCount;
-            set => _totalPackageCount = NumberUtil.EnsureNonNegative((int)value);
-        }
-
-        private decimal _totalPackageWeight = 0;
+        public int? TotalPackageCount { get; set; }
 
         [JsonPropertyName("total_package_weight")]
-        public decimal? TotalPackageWeight
-        {
-            get => _totalPackageWeight;
-            set => _totalPackageWeight = NumberUtil.EnsureNonNegativeWithFourDecimals((decimal)value);
-        }
+        public decimal? TotalPackageWeight { get; set; }
 
         [JsonPropertyName("items")]
         public List<ShipmentItemRR>? Items { get; set; }
 
-        // TODO: Add Order ID (UUID)
+        [JsonPropertyName("orders")]
+        public List<Guid?>? Orders { get; set; }
+
+        [JsonPropertyName("created_by")]
+        public string? CreatedBy { get; set; }
+
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -72,9 +65,6 @@ namespace DTO.Shipment
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
-
-        [JsonPropertyName("order_id")]
-        public Guid? OrderId { get; set; }
 
         [JsonPropertyName("order_date")]
         public DateTime? OrderDate { get; set; }
@@ -123,6 +113,13 @@ namespace DTO.Shipment
 
         [JsonPropertyName("items")]
         public List<ShipmentItemRR>? Items { get; set; }
+
+        [JsonPropertyName("orders")]
+        public List<Guid?>? Orders { get; set; }
+
+        [JsonPropertyName("created_by")]
+        public string? CreatedBy { get; set; }
+
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -133,6 +130,16 @@ namespace DTO.Shipment
 
         [JsonPropertyName("amount")]
         public int? Amount { get; set; }
+    }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class UpdateShipmentItemDTO : BaseDTO
+    {
+        [JsonPropertyName("items")]
+        public List<ShipmentItemRR>? Items { get; set; }
+
+        [JsonPropertyName("orders")]
+        public List<Guid?>? Orders { get; set; }
     }
 }
 

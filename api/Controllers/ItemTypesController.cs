@@ -1,5 +1,6 @@
 using DTO.Item;
 using DTO.ItemType;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -81,17 +82,22 @@ public class ItemTypesController : ControllerBase
 
         return (foundItemType == null)
             ? NotFound(new { message = $"Item Type not found for id '{id}'" })
-            : Ok(new ItemTypeResponse
+            : Ok(new
             {
-                Id = foundItemType.Id,
-                Name = foundItemType.Name,
-                Description = foundItemType.Description,
-                CreatedAt = foundItemType.CreatedAt,
-                UpdatedAt = foundItemType.UpdatedAt
+                message = "Item type found!",
+                Item_Type = new ItemTypeResponse
+                {
+                    Id = foundItemType.Id,
+                    Name = foundItemType.Name,
+                    Description = foundItemType.Description,
+                    CreatedAt = foundItemType.CreatedAt,
+                    UpdatedAt = foundItemType.UpdatedAt
+                }
             });
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_itemTypesProvider.GetAll().Select(it => new ItemTypeResponse
     {
         Id = it.Id,
@@ -102,6 +108,7 @@ public class ItemTypesController : ControllerBase
     }).ToList());
 
     [HttpGet("{itemTypeId}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowRelatedItems(Guid itemTypeId) =>
         Ok(_itemTypesProvider.GetRelatedItemsById(itemTypeId)
         .Select(i => new ItemResponse

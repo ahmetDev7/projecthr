@@ -3,6 +3,7 @@ using DTO.Supplier;
 using DTO.Item;
 using DTO.Address;
 using DTO.Contact;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -15,6 +16,7 @@ public class SuppliersController : ControllerBase
         _supplierProvider = supplierProvider;
     }
     [HttpGet("{id}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult GetItemsSupplier(Guid id)
     {
         List<Item> items = _supplierProvider.GetItemsBySupplierId(id);
@@ -46,6 +48,7 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create(SupplierRequest request)
     {
         Supplier? supplier = _supplierProvider.Create(request);
@@ -93,6 +96,7 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Update(Guid id, SupplierRequest request)
     {
         Supplier? updatedSupplier = _supplierProvider.Update(id, request);
@@ -138,6 +142,7 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin,warehousemanager")]
     public IActionResult Delete(Guid id)
     {
         Supplier? deletedSupplier = _supplierProvider.Delete(id);
@@ -145,7 +150,7 @@ public class SuppliersController : ControllerBase
 
         return Ok(new
         {
-            Message = "Supplier succesfully deleted",
+            Message = "Supplier deleted",
             deleted_supplier = new SupplierResponse
             {
                 Id = deletedSupplier.Id,
@@ -181,47 +186,53 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Supplier? supplier = _supplierProvider.GetById(id);
 
         if (supplier == null) return NotFound(new { message = $"Supplier not found for id '{id}'" });
 
-        return Ok(new SupplierResponse
+        return Ok(new
         {
-            Id = supplier.Id,
-            Name = supplier.Name,
-            Code = supplier.Code,
-            Reference = supplier.Reference,
-            Contact = new ContactResponse
+            message = "Supplier found!",
+            Supplier = new SupplierResponse
             {
-                Id = supplier.ContactId,
-                Name = supplier.Contact?.Name,
-                Function = supplier.Contact?.Function,
-                Phone = supplier.Contact?.Phone,
-                Email = supplier.Contact?.Email,
-                CreatedAt = supplier.Contact?.CreatedAt,
-                UpdatedAt = supplier.Contact?.UpdatedAt
-            },
-            Address = new AddressResponse
-            {
-                Id = supplier.AddressId,
-                Street = supplier.Address?.Street,
-                HouseNumber = supplier.Address?.HouseNumber,
-                HouseNumberExtension = supplier.Address?.HouseNumberExtension,
-                HouseNumberExtensionExtra = supplier.Address?.HouseNumberExtensionExtra,
-                ZipCode = supplier.Address?.ZipCode,
-                City = supplier.Address?.City,
-                Province = supplier.Address?.Province,
-                CountryCode = supplier.Address?.CountryCode,
-                CreatedAt = supplier.Address?.CreatedAt,
-                UpdatedAt = supplier.Address?.UpdatedAt
-            },
-            CreatedAt = supplier.CreatedAt,
-            UpdatedAt = supplier.UpdatedAt
+                Id = supplier.Id,
+                Name = supplier.Name,
+                Code = supplier.Code,
+                Reference = supplier.Reference,
+                Contact = new ContactResponse
+                {
+                    Id = supplier.ContactId,
+                    Name = supplier.Contact?.Name,
+                    Function = supplier.Contact?.Function,
+                    Phone = supplier.Contact?.Phone,
+                    Email = supplier.Contact?.Email,
+                    CreatedAt = supplier.Contact?.CreatedAt,
+                    UpdatedAt = supplier.Contact?.UpdatedAt
+                },
+                Address = new AddressResponse
+                {
+                    Id = supplier.AddressId,
+                    Street = supplier.Address?.Street,
+                    HouseNumber = supplier.Address?.HouseNumber,
+                    HouseNumberExtension = supplier.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = supplier.Address?.HouseNumberExtensionExtra,
+                    ZipCode = supplier.Address?.ZipCode,
+                    City = supplier.Address?.City,
+                    Province = supplier.Address?.Province,
+                    CountryCode = supplier.Address?.CountryCode,
+                    CreatedAt = supplier.Address?.CreatedAt,
+                    UpdatedAt = supplier.Address?.UpdatedAt
+                },
+                CreatedAt = supplier.CreatedAt,
+                UpdatedAt = supplier.UpdatedAt
+            }
         });
     }
     [HttpGet]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_supplierProvider.GetAll().Select(ig => new SupplierResponse
     {
         Id = ig.Id,

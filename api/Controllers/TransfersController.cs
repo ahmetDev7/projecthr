@@ -1,4 +1,5 @@
 using DTO.Item;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -13,6 +14,7 @@ public class TransfersController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor")]
     public IActionResult Create([FromBody] TransferRequestCreate req)
     {
         Transfer? newTransfer = _transferProvider.Create(req);
@@ -40,6 +42,7 @@ public class TransfersController : ControllerBase
     }
 
     [HttpPut("{transferId}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor")]
     public IActionResult Update(Guid transferId, [FromBody] TransferRequestUpdate req)
     {
         // transfer exists
@@ -76,6 +79,7 @@ public class TransfersController : ControllerBase
 
 
     [HttpDelete("{transferId}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Delete(Guid transferId)
     {
         Transfer? newTransfer = _transferProvider.Delete(transferId);
@@ -103,6 +107,7 @@ public class TransfersController : ControllerBase
     }
 
     [HttpPut("{transferId}/commit")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor")]
     public IActionResult CommitTransfer(Guid transferId)
     {
         Transfer? commitedTransfer = _transferProvider.CommitTransfer(transferId);
@@ -130,30 +135,37 @@ public class TransfersController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst")]
     public IActionResult ShowSingle(Guid id)
     {
         Transfer? foundTransfer = _transferProvider.GetById(id);
 
         return (foundTransfer == null)
             ? NotFound(new { message = $"Transfer not found for id '{id}'" })
-            : Ok(new TransferResponse
+            : Ok(new
             {
-                Id = foundTransfer.Id,
-                Reference = foundTransfer.Reference,
-                TransferFromId = foundTransfer.TransferFromId,
-                TransferToId = foundTransfer.TransferToId,
-                TransferStatus = foundTransfer.TransferStatus.ToString(),
-                Items = foundTransfer.TransferItems?.Select(ti => new TransferItemDTO()
+                message = "Transfer retrieved successfully!",
+                Transfer = new TransferResponse
                 {
-                    ItemId = ti.ItemId,
-                    Amount = ti.Amount,
-                }).ToList(),
-                CreatedAt = foundTransfer.CreatedAt,
-                UpdatedAt = foundTransfer.UpdatedAt,
+                    Id = foundTransfer.Id,
+                    Reference = foundTransfer.Reference,
+                    TransferFromId = foundTransfer.TransferFromId,
+                    TransferToId = foundTransfer.TransferToId,
+                    TransferStatus = foundTransfer.TransferStatus.ToString(),
+                    Items = foundTransfer.TransferItems?.Select(ti => new TransferItemDTO
+                    {
+                        ItemId = ti.ItemId,
+                        Amount = ti.Amount
+                    }).ToList(),
+                    CreatedAt = foundTransfer.CreatedAt,
+                    UpdatedAt = foundTransfer.UpdatedAt,
+                }
             });
+
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst")]
     public IActionResult ShowAll() => Ok(_transferProvider.GetAll().Select(t => new TransferResponse
     {
         Id = t.Id,
@@ -171,6 +183,7 @@ public class TransfersController : ControllerBase
     }));
 
     [HttpGet("{transferId}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst")]
     public IActionResult GetItemsFromTransfer(Guid transferId)
     {
         Transfer? foundTransfer = _transferProvider.GetById(transferId);

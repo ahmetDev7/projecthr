@@ -1,6 +1,7 @@
 using DTO.Item;
 using DTO.ItemGroup;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -14,23 +15,29 @@ public class ItemGroupsController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Create([FromBody] ItemGroupRequest req)
     {
         ItemGroup? newItemGroup = _itemGroupProvider.Create(req);
         if (newItemGroup == null) throw new ApiFlowException("Saving new Item Group failed.");
 
 
-        return Ok(new ItemGroupResponse
+        return Ok(new
         {
-            Id = newItemGroup.Id,
-            Name = newItemGroup.Name,
-            Description = newItemGroup.Description,
-            CreatedAt = newItemGroup.CreatedAt,
-            UpdatedAt = newItemGroup.UpdatedAt
+            message = "Item group created!",
+            ItemGroup = new ItemGroupResponse
+            {
+                Id = newItemGroup.Id,
+                Name = newItemGroup.Name,
+                Description = newItemGroup.Description,
+                CreatedAt = newItemGroup.CreatedAt,
+                UpdatedAt = newItemGroup.UpdatedAt
+            }
         });
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Update(Guid id, [FromBody] ItemGroupRequest req)
     {
         ItemGroup? updatedItemGroup = _itemGroupProvider.Update(id, req);
@@ -52,6 +59,7 @@ public class ItemGroupsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public IActionResult Delete(Guid id)
     {
         ItemGroup? deletedItemGroup = _itemGroupProvider.Delete(id);
@@ -59,6 +67,7 @@ public class ItemGroupsController : ControllerBase
 
         return Ok(new
         {
+            message = "Item group deleted!",
             deleted_item_group = new ItemGroupResponse
             {
                 Id = deletedItemGroup.Id,
@@ -68,26 +77,33 @@ public class ItemGroupsController : ControllerBase
                 UpdatedAt = deletedItemGroup.UpdatedAt
             }
         });
+
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         ItemGroup? foundItemGroup = _itemGroupProvider.GetById(id);
 
         return (foundItemGroup == null)
             ? NotFound(new { message = $"Item group not found for id '{id}'" })
-            : Ok(new ItemGroupResponse
+            : Ok(new
             {
-                Id = foundItemGroup.Id,
-                Name = foundItemGroup.Name,
-                Description = foundItemGroup.Description,
-                CreatedAt = foundItemGroup.CreatedAt,
-                UpdatedAt = foundItemGroup.UpdatedAt
+                message = "Item group found!",
+                ItemGroup = new ItemGroupResponse
+                {
+                    Id = foundItemGroup.Id,
+                    Name = foundItemGroup.Name,
+                    Description = foundItemGroup.Description,
+                    CreatedAt = foundItemGroup.CreatedAt,
+                    UpdatedAt = foundItemGroup.UpdatedAt
+                }
             });
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_itemGroupProvider.GetAll().Select(ig => new ItemGroupResponse
     {
         Id = ig.Id,
@@ -96,6 +112,7 @@ public class ItemGroupsController : ControllerBase
     }).ToList());
 
     [HttpGet("{itemGroupId}/items")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,analyst,logistics,sales")]
     public IActionResult ShowRelatedItems(Guid itemGroupId) =>
         Ok(_itemGroupProvider.GetRelatedItemsById(itemGroupId)
         .Select(i => new ItemResponse

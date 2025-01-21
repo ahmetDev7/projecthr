@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using DTO.Contact;
 using DTO.Address;
 
@@ -14,6 +15,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "admin,warehousemanager")]
     public IActionResult Create([FromBody] WarehouseRequest req)
     {
         Warehouse? createdWarehouse = _warehouseProvider.Create(req);
@@ -28,17 +30,16 @@ public class WarehousesController : ControllerBase
                     Id = createdWarehouse.Id,
                     Code = createdWarehouse.Code,
                     Name = createdWarehouse.Name,
-                    Contact = new ContactResponse
+                    Contacts = createdWarehouse.WarehouseContacts.Select(wc => new ContactResponse
                     {
-                        Id = createdWarehouse.ContactId,
-                        Name = createdWarehouse.Contact?.Name,
-                        Function = createdWarehouse.Contact?.Function,
-                        Phone = createdWarehouse.Contact?.Phone,
-                        Email = createdWarehouse.Contact?.Email,
-                        CreatedAt = createdWarehouse.Contact?.CreatedAt,
-                        UpdatedAt = createdWarehouse.Contact?.UpdatedAt
-
-                    },
+                        Id = wc.ContactId,
+                        Name = wc.Contact?.Name,
+                        Function = wc.Contact?.Function,
+                        Phone = wc.Contact?.Phone,
+                        Email = wc.Contact?.Email,
+                        CreatedAt = wc.Contact?.CreatedAt,
+                        UpdatedAt = wc.Contact?.UpdatedAt
+                    }).ToList(),
                     Address = new AddressResponse
                     {
                         Id = createdWarehouse.AddressId,
@@ -67,6 +68,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin")]
     public IActionResult Update(Guid id, [FromBody] WarehouseRequest req)
     {
         Warehouse? updatedWarehouse = _warehouseProvider.Update(id, req);
@@ -81,16 +83,16 @@ public class WarehousesController : ControllerBase
                     Id = id,
                     Code = updatedWarehouse.Code,
                     Name = updatedWarehouse.Name,
-                    Contact = new ContactResponse
+                    Contacts = updatedWarehouse.WarehouseContacts.Select(wc => new ContactResponse
                     {
-                        Id = updatedWarehouse.ContactId,
-                        Name = updatedWarehouse.Contact?.Name,
-                        Function = updatedWarehouse.Contact?.Function,
-                        Phone = updatedWarehouse.Contact?.Phone,
-                        Email = updatedWarehouse.Contact?.Email,
-                        CreatedAt = updatedWarehouse.Contact?.CreatedAt,
-                        UpdatedAt = updatedWarehouse.Contact?.UpdatedAt
-                    },
+                        Id = wc.ContactId,
+                        Name = wc.Contact?.Name,
+                        Function = wc.Contact?.Function,
+                        Phone = wc.Contact?.Phone,
+                        Email = wc.Contact?.Email,
+                        CreatedAt = wc.Contact?.CreatedAt,
+                        UpdatedAt = wc.Contact?.UpdatedAt
+                    }).ToList(),
                     Address = new AddressResponse
                     {
                         Id = updatedWarehouse.AddressId,
@@ -118,6 +120,7 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public IActionResult Delete(Guid id)
     {
         Warehouse? deletedWarehouse = _warehouseProvider.Delete(id);
@@ -130,16 +133,16 @@ public class WarehousesController : ControllerBase
                 Id = deletedWarehouse.Id,
                 Code = deletedWarehouse.Code,
                 Name = deletedWarehouse.Name,
-                Contact = new ContactResponse
+                Contacts = deletedWarehouse.WarehouseContacts.Select(wc => new ContactResponse
                 {
-                    Id = deletedWarehouse.ContactId,
-                    Name = deletedWarehouse.Contact?.Name,
-                    Function = deletedWarehouse.Contact?.Function,
-                    Phone = deletedWarehouse.Contact?.Phone,
-                    Email = deletedWarehouse.Contact?.Email,
-                    CreatedAt = deletedWarehouse.Contact?.CreatedAt,
-                    UpdatedAt = deletedWarehouse.Contact?.UpdatedAt
-                },
+                    Id = wc.ContactId,
+                    Name = wc.Contact?.Name,
+                    Function = wc.Contact?.Function,
+                    Phone = wc.Contact?.Phone,
+                    Email = wc.Contact?.Email,
+                    CreatedAt = wc.Contact?.CreatedAt,
+                    UpdatedAt = wc.Contact?.UpdatedAt
+                }).ToList(),
                 Address = new AddressResponse
                 {
                     Id = deletedWarehouse.AddressId,
@@ -167,66 +170,72 @@ public class WarehousesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public ActionResult<Warehouse> ShowSingle(Guid id)
     {
         Warehouse? foundWarehouse = _warehouseProvider.GetById(id);
         if (foundWarehouse == null) return NotFound(new { message = $"Warehouse not found for id '{id}'" });
-        return Ok(new WarehouseResponse
+        return Ok(new
         {
-            Id = foundWarehouse.Id,
-            Code = foundWarehouse.Code,
-            Name = foundWarehouse.Name,
-            Contact = new ContactResponse
+            message = "Warehouse retrieved successfully!",
+            Warehouse = new WarehouseResponse
             {
-                Id = foundWarehouse.ContactId,
-                Name = foundWarehouse.Contact?.Name,
-                Function = foundWarehouse.Contact?.Function,
-                Phone = foundWarehouse.Contact?.Phone,
-                Email = foundWarehouse.Contact?.Email,
-                CreatedAt = foundWarehouse.Contact?.CreatedAt,
-                UpdatedAt = foundWarehouse.Contact?.UpdatedAt
-            },
-            Address = new AddressResponse
-            {
-                Id = foundWarehouse.AddressId,
-                Street = foundWarehouse.Address?.Street,
-                HouseNumber = foundWarehouse.Address?.HouseNumber,
-                HouseNumberExtension = foundWarehouse.Address?.HouseNumberExtension,
-                HouseNumberExtensionExtra = foundWarehouse.Address?.HouseNumberExtensionExtra,
-                ZipCode = foundWarehouse.Address?.ZipCode,
-                City = foundWarehouse.Address?.City,
-                Province = foundWarehouse.Address?.Province,
-                CountryCode = foundWarehouse.Address?.CountryCode,
-                CreatedAt = foundWarehouse.Address?.CreatedAt,
-                UpdatedAt = foundWarehouse.Address?.UpdatedAt
-            },
-            Dock = new DockResponse
-            {
-                Id = foundWarehouse?.Dock?.Id,
-                CreatedAt = foundWarehouse?.Dock?.CreatedAt,
-                UpdatedAt = foundWarehouse?.Dock?.UpdatedAt,
-            },
-            CreatedAt = foundWarehouse?.CreatedAt,
-            UpdatedAt = foundWarehouse?.UpdatedAt,
+                Id = foundWarehouse.Id,
+                Code = foundWarehouse.Code,
+                Name = foundWarehouse.Name,
+                Contacts = foundWarehouse.WarehouseContacts.Select(wc => new ContactResponse
+                {
+                    Id = wc.ContactId,
+                    Name = wc.Contact?.Name,
+                    Function = wc.Contact?.Function,
+                    Phone = wc.Contact?.Phone,
+                    Email = wc.Contact?.Email,
+                    CreatedAt = wc.Contact?.CreatedAt,
+                    UpdatedAt = wc.Contact?.UpdatedAt
+                }).ToList(),
+                Address = new AddressResponse
+                {
+                    Id = foundWarehouse.AddressId,
+                    Street = foundWarehouse.Address?.Street,
+                    HouseNumber = foundWarehouse.Address?.HouseNumber,
+                    HouseNumberExtension = foundWarehouse.Address?.HouseNumberExtension,
+                    HouseNumberExtensionExtra = foundWarehouse.Address?.HouseNumberExtensionExtra,
+                    ZipCode = foundWarehouse.Address?.ZipCode,
+                    City = foundWarehouse.Address?.City,
+                    Province = foundWarehouse.Address?.Province,
+                    CountryCode = foundWarehouse.Address?.CountryCode,
+                    CreatedAt = foundWarehouse.Address?.CreatedAt,
+                    UpdatedAt = foundWarehouse.Address?.UpdatedAt
+                },
+                Dock = new DockResponse
+                {
+                    Id = foundWarehouse.Dock?.Id,
+                    CreatedAt = foundWarehouse.Dock?.CreatedAt,
+                    UpdatedAt = foundWarehouse.Dock?.UpdatedAt,
+                },
+                CreatedAt = foundWarehouse.CreatedAt,
+                UpdatedAt = foundWarehouse.UpdatedAt,
+            }
         });
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_warehouseProvider.GetAll().Select(w => new WarehouseResponse
     {
         Id = w.Id,
         Code = w.Code,
         Name = w.Name,
-        Contact = new ContactResponse
+        Contacts = w.WarehouseContacts.Select(wc => new ContactResponse
         {
-            Id = w.ContactId,
-            Name = w.Contact?.Name,
-            Function = w.Contact?.Function,
-            Phone = w.Contact?.Phone,
-            Email = w.Contact?.Email,
-            CreatedAt = w.Contact?.CreatedAt,
-            UpdatedAt = w.Contact?.UpdatedAt
-        },
+            Id = wc.ContactId,
+            Name = wc.Contact?.Name,
+            Function = wc.Contact?.Function,
+            Phone = wc.Contact?.Phone,
+            Email = wc.Contact?.Email,
+            CreatedAt = wc.Contact?.CreatedAt,
+            UpdatedAt = wc.Contact?.UpdatedAt
+        }).ToList(),
         Address = new AddressResponse
         {
             Id = w.AddressId,
@@ -253,6 +262,7 @@ public class WarehousesController : ControllerBase
     }).ToList());
 
     [HttpGet("{warehouseId}/locations")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult GetLocationsByWarehouse(Guid warehouseId) => Ok(_warehouseProvider.GetLocationsByWarehouseId(warehouseId).Select(l => new LocationResponse
     {
         Id = l.Id,
@@ -265,6 +275,7 @@ public class WarehousesController : ControllerBase
     }));
 
     [HttpGet("{warehouseId}/dock")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,analyst,logistics,sales")]
     public IActionResult GetWarehouseDock(Guid warehouseId)
     {
         Warehouse? foundWarehouse = _warehouseProvider.GetById(warehouseId);

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -13,6 +14,7 @@ public class LocationsController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager")]
     public IActionResult Create([FromBody] LocationRequest req)
     {
         Location? newLocation = _locationsProvider.Create(req);
@@ -34,6 +36,7 @@ public class LocationsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager")]
     public IActionResult Update(Guid id, [FromBody] LocationRequest req)
     {
         Location? updatedLocation = _locationsProvider.Update(id, req);
@@ -57,6 +60,7 @@ public class LocationsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager")]
     public IActionResult Delete(Guid id)
     {
         Location? deletedLocation = _locationsProvider.Delete(id);
@@ -79,24 +83,30 @@ public class LocationsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Location? foundLocation = _locationsProvider.GetById(id);
         return foundLocation == null
             ? NotFound(new { message = $"Location not found for id '{id}'" })
-            : Ok(new LocationResponse
+            : Ok(new
             {
-                Id = foundLocation.Id,
-                Row = foundLocation.Row,
-                Rack = foundLocation.Rack,
-                Shelf = foundLocation.Shelf,
-                WarehouseId = foundLocation.WarehouseId,
-                CreatedAt = foundLocation.CreatedAt,
-                UpdatedAt = foundLocation.UpdatedAt,
+                message = "Location found!",
+                Location = new LocationResponse
+                {
+                    Id = foundLocation.Id,
+                    Row = foundLocation.Row,
+                    Rack = foundLocation.Rack,
+                    Shelf = foundLocation.Shelf,
+                    WarehouseId = foundLocation.WarehouseId,
+                    CreatedAt = foundLocation.CreatedAt,
+                    UpdatedAt = foundLocation.UpdatedAt,
+                }
             });
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_locationsProvider.GetAll().Select(l => new LocationResponse
     {
         Id = l.Id,

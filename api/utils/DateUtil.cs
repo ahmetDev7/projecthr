@@ -1,4 +1,3 @@
-namespace Utils.Date;
 public static class DateUtil
 {
     public static DateTime? ToUtcOrNull(DateTime? dateTime) =>

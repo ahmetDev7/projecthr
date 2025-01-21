@@ -10,13 +10,13 @@ public class AppDbContext : DbContext
     public DbSet<Item> Items { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<ShipmentItem> ShipmentItems { get; set; }
+    public DbSet<OrderShipment> OrderShipments { get; set; }
     public DbSet<ItemGroup> ItemGroups { get; set; }
     public DbSet<ItemLine> ItemLines { get; set; }
     public DbSet<ItemType> ItemTypes { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
-
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<TransferItem> TransferItems { get; set; }
     public DbSet<Client> Clients { get; set; }
@@ -24,6 +24,7 @@ public class AppDbContext : DbContext
     public DbSet<Dock> Docks { get; set; }
     public DbSet<DockItem> DockItems { get; set; }
     public DbSet<InventoryLocation> InventoryLocations { get; set; }
+    public DbSet<WarehouseContact> WarehouseContacts { get; set; }
 
 
 

@@ -5,3 +5,4 @@ api.Tests/obj
 api.Tests/TestResults
 api.IntegrationTests/bin
 api.IntegrationTests/obj
+api.IntegrationTests/.env.json

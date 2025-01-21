@@ -1,11 +1,12 @@
 # Create Client with Contact ID and Address ID
 POST http://localhost:5000/api/clients
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
-  "name": "Client D",
-  "contact_id": "3f2488a2-7747-4541-b29a-a28735ebd921",
-  "address_id": "016d60c2-a192-497a-b72c-49a1dedc3dab"
+  "name": "Client TEST 1",
+  "contact_id": "56e02ed3-522d-45da-a80c-40ccaed4659d",
+  "address_id": "457700a8-4d08-4d2d-94be-19465b28a0d1"
 }
 ###
 # Update Client with Contact ID and Address ID

@@ -1,36 +1,41 @@
 
 POST http://localhost:5000/api/inventories
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
-  "description": "INVENTORY ITEM 3 DESCRIPTION",
-  "item_reference": "INVENTORY ITEM 3 REFERENCE",
-  "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
+  "description": "INVENTORY ITEM 2 DESCRIPTION",
+  "item_reference": "INVENTORY ITEM REFERENCE",
+  "item_id": "5dc623ec-3669-4254-b401-37010bff95cb",
   "locations": [
     {
-      "location_id": "646fd5c8-425e-44a9-9d5a-3d603e692092",
-      "on_hand": 17
+      "location_id": "f331b8ba-de9f-4770-b04b-c4a096f0db60",
+      "on_hand": 50
     }
   ]
 }
 ###
 
-PUT http://localhost:5000/api/inventories/39201c04-2adc-42f1-982a-b47852ec3e86
+PUT http://localhost:5000/api/inventories/bc3e3137-f8d8-4e38-876a-02730b090828
 Content-Type: application/json
 
 {
-  "description": "The description",
+  "description": "The description UPDATED",
   "item_reference": "Some item",
-  "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
+  "item_id": "783f5737-f98c-4116-a25b-576bc9477e2f",
   "locations": [
     {
-      "location_id": "a38df692-09ed-418a-8c53-7ea765a895ce",
-      "on_hand": 800
+      "location_id": "ecebc75b-b8fa-4cf1-bbaa-751e125e650b",
+      "on_hand": 50
+    },
+    {
+      "location_id": "9731cbb8-81da-4d86-ac7f-cf29df3d4542",
+      "on_hand": 50
     }
     ,
     {
-      "location_id": "afb7929f-5929-4574-a652-5ef7b830ede0",
-      "on_hand": 800
+      "location_id": "1ffb9844-8e23-4fef-b723-736c316e4fed",
+      "on_hand": 100
     }
   ]
 }

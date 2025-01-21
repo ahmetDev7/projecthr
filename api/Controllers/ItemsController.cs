@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DTO.Item;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -24,8 +26,11 @@ public class ItemsController : ControllerBase
     */
 
     [HttpPost()]
+    [Authorize(Roles = "admin,warehousemanager,logistics,sales")]
     public IActionResult Create([FromBody] ItemRequest req)
     {
+        string? role = User.FindFirst(ClaimTypes.Role)?.Value;
+        req.CreatedBy = role;
         Item? newItem = _itemsProvider.Create(req);
         if (newItem == null) throw new ApiFlowException("Saving new Item failed.");
 
@@ -51,12 +56,14 @@ public class ItemsController : ControllerBase
                 ItemTypeId = newItem.ItemTypeId,
                 SupplierId = newItem.SupplierId,
                 CreatedAt = newItem.CreatedAt,
-                UpdatedAt = newItem.UpdatedAt
+                UpdatedAt = newItem.UpdatedAt,
+                CreatedBy = newItem.CreatedBy,
             }
         });
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,sales")]
     public IActionResult Update(Guid id, [FromBody] ItemRequest req)
     {
         Item? updatedItem = _itemsProvider.Update(id, req);
@@ -85,42 +92,89 @@ public class ItemsController : ControllerBase
                     ItemTypeId = updatedItem.ItemTypeId,
                     SupplierId = updatedItem.SupplierId,
                     CreatedAt = updatedItem.CreatedAt,
-                    UpdatedAt = updatedItem.UpdatedAt
+                    UpdatedAt = updatedItem.UpdatedAt,
+                    CreatedBy = updatedItem.CreatedBy,
+                }
+            });
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
+    public IActionResult Delete(Guid id)
+    {
+        Item? foundItem = _itemsProvider.GetById(id);
+        if (foundItem == null) return NotFound(new { message = $"Item not found for id '{id}'" });
+
+        _itemsProvider.Delete(id);
+
+        return Ok(
+            new
+            {
+                message = "Item deleted!",
+                deleted_item = new ItemResponse
+                {
+                    Id = foundItem.Id,
+                    Code = foundItem.Code,
+                    Description = foundItem.Description,
+                    ShortDescription = foundItem.ShortDescription,
+                    UpcCode = foundItem.UpcCode,
+                    ModelNumber = foundItem.ModelNumber,
+                    CommodityCode = foundItem.CommodityCode,
+                    UnitPurchaseQuantity = foundItem.UnitPurchaseQuantity,
+                    UnitOrderQuantity = foundItem.UnitOrderQuantity,
+                    PackOrderQuantity = foundItem.PackOrderQuantity,
+                    SupplierReferenceCode = foundItem.SupplierReferenceCode,
+                    SupplierPartNumber = foundItem.SupplierPartNumber,
+                    ItemGroupId = foundItem.ItemGroupId,
+                    ItemLineId = foundItem.ItemLineId,
+                    ItemTypeId = foundItem.ItemTypeId,
+                    SupplierId = foundItem.SupplierId,
+                    CreatedAt = foundItem.CreatedAt,
+                    UpdatedAt = foundItem.UpdatedAt,
+                    CreatedBy = foundItem.CreatedBy,
                 }
             });
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowSingle(Guid id)
     {
         Item? foundItem = _itemsProvider.GetById(id);
 
         return (foundItem == null)
             ? NotFound(new { message = $"Item not found for id '{id}'" })
-            : Ok(new ItemResponse
+            : Ok(new
             {
-                Id = foundItem.Id,
-                Code = foundItem.Code,
-                Description = foundItem.Description,
-                ShortDescription = foundItem.ShortDescription,
-                UpcCode = foundItem.UpcCode,
-                ModelNumber = foundItem.ModelNumber,
-                CommodityCode = foundItem.CommodityCode,
-                UnitPurchaseQuantity = foundItem.UnitPurchaseQuantity,
-                UnitOrderQuantity = foundItem.UnitOrderQuantity,
-                PackOrderQuantity = foundItem.PackOrderQuantity,
-                SupplierReferenceCode = foundItem.SupplierReferenceCode,
-                SupplierPartNumber = foundItem.SupplierPartNumber,
-                ItemGroupId = foundItem.ItemGroupId,
-                ItemLineId = foundItem.ItemLineId,
-                ItemTypeId = foundItem.ItemTypeId,
-                SupplierId = foundItem.SupplierId,
-                CreatedAt = foundItem.CreatedAt,
-                UpdatedAt = foundItem.UpdatedAt
+                message = "Item found!",
+                Item = new ItemResponse
+                {
+                    Id = foundItem.Id,
+                    Code = foundItem.Code,
+                    Description = foundItem.Description,
+                    ShortDescription = foundItem.ShortDescription,
+                    UpcCode = foundItem.UpcCode,
+                    ModelNumber = foundItem.ModelNumber,
+                    CommodityCode = foundItem.CommodityCode,
+                    UnitPurchaseQuantity = foundItem.UnitPurchaseQuantity,
+                    UnitOrderQuantity = foundItem.UnitOrderQuantity,
+                    PackOrderQuantity = foundItem.PackOrderQuantity,
+                    SupplierReferenceCode = foundItem.SupplierReferenceCode,
+                    SupplierPartNumber = foundItem.SupplierPartNumber,
+                    ItemGroupId = foundItem.ItemGroupId,
+                    ItemLineId = foundItem.ItemLineId,
+                    ItemTypeId = foundItem.ItemTypeId,
+                    SupplierId = foundItem.SupplierId,
+                    CreatedAt = foundItem.CreatedAt,
+                    UpdatedAt = foundItem.UpdatedAt,
+                    CreatedBy = foundItem.CreatedBy,
+
+                }
             });
     }
 
     [HttpGet()]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult ShowAll() => Ok(_itemsProvider.GetAll()?.Select(i => new ItemResponse
     {
         Id = i.Id,
@@ -140,10 +194,12 @@ public class ItemsController : ControllerBase
         ItemTypeId = i.ItemTypeId,
         SupplierId = i.SupplierId,
         CreatedAt = i.CreatedAt,
-        UpdatedAt = i.UpdatedAt
+        UpdatedAt = i.UpdatedAt,
+        CreatedBy = i.CreatedBy,
     }).ToList());
 
     [HttpGet("{id}/inventories")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult GetInventories(Guid id)
     {
         Inventory? foundInventory = _itemsProvider.GetInventory(id);
@@ -175,6 +231,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet("{id}/inventories/totals")]
+    [Authorize(Roles = "admin,warehousemanager,inventorymanager,floormanager,operative,supervisor,analyst,logistics,sales")]
     public IActionResult GetInventoriesTotals(Guid id)
     {
         Inventory? foundInventory = _itemsProvider.GetInventory(id);

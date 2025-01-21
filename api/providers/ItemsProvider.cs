@@ -49,7 +49,8 @@ public class ItemsProvider : BaseProvider<Item>
             ItemGroupId = req.ItemGroupId,
             ItemLineId = req.ItemLineId,
             ItemTypeId = req.ItemTypeId,
-            SupplierId = req.SupplierId
+            SupplierId = req.SupplierId,
+            CreatedBy = req.CreatedBy
         };
 
         ValidateModel(newItem);
@@ -89,6 +90,28 @@ public class ItemsProvider : BaseProvider<Item>
         SaveToDBOrFail();
 
         return existingItem;
+    }
+
+    public override Item? Delete(Guid id)
+    {
+        if (
+            _db.OrderItems.Any(row => row.ItemId == id)
+            || _db.ShipmentItems.Any(row => row.ItemId == id)
+            || _db.DockItems.Any(row => row.ItemId == id)
+            || _db.TransferItems.Any(row => row.ItemId == id)
+            || _db.Inventories.Any(row => row.ItemId == id)
+        )
+        {
+            throw new ApiFlowException("This item is related to one of the following relations: Order, Shipment, Dock, Transfer, or Inventory. Please unlink any relation before deleting the item.", StatusCodes.Status409Conflict);
+        }
+
+        Item? foundItem = GetById(id);
+        if (foundItem == null) throw new ApiFlowException("Item not found", StatusCodes.Status404NotFound);
+
+
+        _db.Items.Remove(foundItem);
+        SaveToDBOrFail();
+        return foundItem;
     }
 
 

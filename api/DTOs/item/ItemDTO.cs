@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Utils.Number;
 
 namespace DTO.Item
 {
@@ -65,6 +64,9 @@ namespace DTO.Item
 
         [JsonPropertyName("supplier_id")]
         public Guid? SupplierId { get; set; }
+
+        [JsonPropertyName("created_by")]
+        public string? CreatedBy { get; set; }
     }
 
     public class ItemResponse : BaseDTO
@@ -122,5 +124,7 @@ namespace DTO.Item
 
         [JsonPropertyName("updated_at")]
         public DateTime? UpdatedAt { get; set; }
+        [JsonPropertyName("created_by")]
+        public string? CreatedBy { get; set; }
     }
 }

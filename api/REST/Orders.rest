@@ -1,76 +1,76 @@
 ### CREATE ORDER
 POST http://localhost:5000/api/orders
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 
 {
     "order_date": "2024-11-17T00:00:00Z",
     "request_date": "2025-11-16T00:00:00Z",
     "reference": "1234",
     "reference_extra": "",
-    "order_status": "besteld",
+    "order_status": "pending",
     "note": "0",
     "picking_notes": "",
     "total_amount": 1.35,
     "total_discount": 0,
     "total_tax": 0,
     "total_surcharge": 0,
-    "warehouse_id": "b00f364b-7f7f-46b4-9048-0e6a962c1762",
+    "warehouse_id": "b2a860ae-fd1c-422d-923b-035fac241356",
     "order_items": [
       {
-        "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
-        "amount": 23
+        "item_id": "5dc623ec-3669-4254-b401-37010bff95cb",
+        "amount": 20
       }
     ],
-    "bill_to_client": "68f5aec1-f1f4-44ca-ad6e-e0d701632cef",
-    "ship_to_client": null,
-    "created_at": "2024-12-02T15:29:21.754146Z",
-    "updated_at": "2024-12-02T15:29:21.754147Z"
-  }
+    "bill_to_client": "8be1ef5b-672a-4880-a7b1-f4d160e39393"
+}
+###
+
 ### DELETE ORDER (change ID to the ID in your database)
-DELETE http://localhost:5000/api/orders/efd1f0dd-7030-46ea-809c-e7cd9c2a1d6a
+DELETE http://localhost:5000/api/orders/56067412-ff38-4c1c-85bf-11478bacf276
 Content-Type: application/json
 
 ###
 
 =======
 ### UPDATE ORDER
-PUT http://localhost:5000/api/orders/0415f598-6998-4340-8275-999dafb961e8
+PUT http://localhost:5000/api/orders/187633e2-5186-4346-b8ff-4e0614618c17
 Content-Type: application/json
 
-{
-    "order_date": "2024-11-17T00:00:00Z",
-    "request_date": "2025-11-16T00:00:00Z",
-    "reference": "1234",
-    "reference_extra": "",
-    "order_status": "besteld",
-    "note": "0",
-    "picking_notes": "",
-    "total_amount": 1.35,
+{    
+    "reference": "UPDATED ORDER REFERENCE 002",
+    "reference_extra": "UPDATED ORDER REFERENCE EXTRA 123",
+    "order_status": "pending",
+    "note": "Pack with plastic pls",
+    "picking_notes": "Pick with an other forklift",
+    "total_amount": 50,
     "total_discount": 0,
-    "total_tax": 0,
-    "total_surcharge": 0,
-    "warehouse_id": "b00f364b-7f7f-46b4-9048-0e6a962c1762",
-    "order_items": [
-        {
-            "item_id": "45a937f6-2724-40a4-8c9d-629f7c573ac9",
-            "amount": 23
-        }
-    ],
-    "bill_to_client": "68f5aec1-f1f4-44ca-ad6e-e0d701632cef",
-    "ship_to_client": null,
-    "created_at": "2025-01-05T13:40:19.6006503Z",
-    "updated_at": "2025-01-05T13:40:19.6006503Z"
+    "total_tax": 11,
+    "total_surcharge": 10,
+    "warehouse_id": "ebdca3ca-9450-4a1d-8378-768a0eeb8fa8",
+
+    "bill_to_client": "f1414a49-f10e-47bd-a1c9-a1b2443478f0",
+    "ship_to_client": "f1414a49-f10e-47bd-a1c9-a1b2443478f0"
+
 }
 
 ### GET ORDER BY ID (change ID to existing ID in your database)
-GET http://localhost:5000/api/orders/0415f598-6998-4340-8275-999dafb961e8
+GET http://localhost:5000/api/orders/b4085f48-22d8-43c4-99d6-da703b0da3ba
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
+
 ###
 
 # Get order items by order ID
-GET http://localhost:5000/api/orders/ce3c28e1-d246-4c2c-a0db-3a26a169d9fb/items
+GET http://localhost:5000/api/orders/b4085f48-22d8-43c4-99d6-da703b0da3ba/items
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
+
 ###
 GET http://localhost:5000/api/orders
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiJ9.iRC-kafxS-kFeS894SbcIEFiAP-y8Nu9Ji0cz9K_h9c
 Content-Type: application/json
 ###
+
+PUT http://localhost:5000/api/orders/84aa00ad-1bc2-41c6-9d30-807f48091719/commit
+Content-Type: application/json

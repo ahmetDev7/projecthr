@@ -61,6 +61,7 @@ namespace api.IntegrationTests
             {
                 WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49"),
                 BillToClientId = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
+                OrderStatus = OrderStatus.Pending,
                 OrderItems = new List<OrderItemRequest>() {
                     new OrderItemRequest() {
                         ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),

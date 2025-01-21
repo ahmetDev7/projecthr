@@ -22,10 +22,10 @@ namespace api.IntegrationTests
             db.Suppliers.AddRange(GetSuppliers());
             db.Docks.AddRange(GetDocks());
             db.Clients.AddRange(GetClients());
-            db.Orders.AddRange(GetOrders());
-            db.Shipments.AddRange(GetShipments());
             db.Transfers.AddRange(GetTransfers());
             db.Inventories.AddRange(GetInventories());
+            db.Shipments.AddRange(GetShipments());
+            db.Orders.AddRange(GetOrders());
             db.SaveChanges();
         }
 
@@ -426,12 +426,41 @@ namespace api.IntegrationTests
             {
                 new Shipment(newInstance:true)
                 {
-                    Id = Guid.Parse("9f0f1aaa-7cfb-48ed-bcfc-7f33c62ecf74"),
+                    Id = Guid.Parse("9f0f1aaa-7cfb-48ed-bcfc-7f33c62ecf74"), // for linking with an order
                     ShipmentType = ShipmentType.O,
                     CarrierCode = "010101",
                     ServiceCode = "304402",
                     PaymentType = PaymentType.Manual,
-                    TransferMode = TransferMode.Sea
+                    TransferMode = TransferMode.Sea,
+                    ShipmentStatus = ShipmentStatus.Plan,
+                    OrderDate = new DateTime().ToUniversalTime(),
+                    RequestDate = new DateTime().ToUniversalTime(),
+                    ShipmentItems = new List<ShipmentItem>(){
+                        new ShipmentItem() {
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 21
+                        }
+                    }
+                },
+                new Shipment(newInstance:true)
+                {
+                    Id = Guid.Parse("67833cb8-9d20-4c13-922b-26c354a97a9f"), // to status deliverd
+                    ShipmentType = ShipmentType.I,
+                    CarrierCode = "894357",
+                    ServiceCode = "8923478-DB",
+                    PaymentType = PaymentType.Automatic,
+                    TransferMode = TransferMode.Air,
+                    ShipmentStatus = ShipmentStatus.Plan
+                },
+                new Shipment(newInstance:true) // to delete
+                {
+                    Id = Guid.Parse("4786f6b5-b2ed-4ed9-9cff-7d5333e4925e"),
+                    ShipmentType = ShipmentType.I,
+                    CarrierCode = "894357",
+                    ServiceCode = "8923478-DB",
+                    PaymentType = PaymentType.Automatic,
+                    TransferMode = TransferMode.Ground,
+                    ShipmentStatus = ShipmentStatus.Delivered
                 }
             };
         }

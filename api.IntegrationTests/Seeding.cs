@@ -180,6 +180,13 @@ namespace api.IntegrationTests
                 },
                 new Contact(newInstance:true)
                 {
+                    Id = Guid.Parse("77366127-2bb6-4656-ac24-760a27623a08"),
+                    Name = "Jan",
+                    Phone = "06549898814",
+                    Email = "jan@gmail.com"
+                },
+                new Contact(newInstance:true) // NOTE: To be deleted
+                {
                     Id = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a10"),
                     Name = "Test",
                     Phone = "0644089743",
@@ -204,6 +211,14 @@ namespace api.IntegrationTests
                     Id = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
                     Code = "321",
                     Name = "Neevletsma",
+                    AddressId = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f207e")
+                }
+                ,
+                new Warehouse(newInstance: true) // to be deleted
+                {
+                    Id = Guid.Parse("832a3030-4297-4e97-ba5e-c563241ec982"),
+                    Code = "82346",
+                    Name = "Dutch Korps",
                     AddressId = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f207e")
                 }
             };

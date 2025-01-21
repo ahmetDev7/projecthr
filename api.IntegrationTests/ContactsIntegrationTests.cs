@@ -32,7 +32,7 @@ namespace api.IntegrationTests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().HaveCount(1);
+            result.Should().HaveCount(2);
         }
 
         [Fact]

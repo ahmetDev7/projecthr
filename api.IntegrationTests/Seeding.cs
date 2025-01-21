@@ -78,6 +78,21 @@ namespace api.IntegrationTests
                     ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"),
                     ItemLineId = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43")
                 },
+                    new Item(newInstance:true)
+                {
+                    Id = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e651"),
+                    Code = "222",
+                    Description = "222",
+                    ShortDescription = "222",
+                    UpcCode = "222",
+                    ModelNumber = "222",
+                    CommodityCode = "222",
+                    UnitPurchaseQuantity = 20,
+                    UnitOrderQuantity = 20,
+                    PackOrderQuantity = 20,
+                    SupplierReferenceCode = "AB202424",
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                },
                 new Item(newInstance:true)
                 {
                     Id = Guid.Parse("ab868b64-2a27-451a-be78-105e824547be"),
@@ -121,6 +136,14 @@ namespace api.IntegrationTests
                     Row = "2",
                     Rack = "3",
                     Shelf = "5",
+                    WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49")
+                },
+                new Location(newInstance: true)
+                {
+                    Id = Guid.Parse("68b1efa8-8cbe-4dae-867f-40384954c5cd"),
+                    Row = "12",
+                    Rack = "13",
+                    Shelf = "25",
                     WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49")
                 }
             };

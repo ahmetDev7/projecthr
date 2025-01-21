@@ -56,7 +56,7 @@ namespace api.IntegrationTests
             var result = await response.Content.ReadFromJsonAsync<List<Order>>();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().HaveCount(1);
+            result.Should().HaveCount(3);
         }
 
         [Fact]

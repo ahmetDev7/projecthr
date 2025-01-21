@@ -371,7 +371,7 @@ namespace api.IntegrationTests
                     OrderDate = DateTime.UtcNow,
                     RequestDate = DateTime.UtcNow,
                     OrderStatus = OrderStatus.Pending,
-                    WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
+                    WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49"),
                     BillToClientId = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
                     OrderItems = new List<OrderItem>
                     {
@@ -380,13 +380,42 @@ namespace api.IntegrationTests
                             Id = Guid.Parse("c92d1c2e-b81b-476d-8f11-76818140f7bc"),
                             ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
                             Amount = 2
-                        },
+                        }                        
+                    }
+                },
+                new Order(newInstance:true)
+                {
+                    Id = Guid.Parse("9eb03425-c377-443b-bf5a-3010de9f4d7d"), // to update
+                    OrderDate = DateTime.UtcNow,
+                    RequestDate = DateTime.UtcNow,
+                    OrderStatus = OrderStatus.Being_Packed,
+                    WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49"),
+                    BillToClientId = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
+                    OrderItems = new List<OrderItem>
+                    {
                         new OrderItem(newInstance: true)
                         {
-                            Id = Guid.Parse("f0b34d6a-8f11-48a5-b0ad-20b63b2cd19a"),
-                            ItemId = Guid.Parse("ab868b64-2a27-451a-be78-105e824547be"),
-                            Amount = 4
-                        }
+                            Id = Guid.Parse("7b2064ae-9a05-4434-aaff-e941d08d4f9c"),
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 33
+                        }                        
+                    }
+                },
+                new Order(newInstance:true)
+                {
+                    Id = Guid.Parse("797146d4-d13c-4c00-b89d-fb04980f728d"), // to delete
+                    OrderDate = DateTime.UtcNow,
+                    RequestDate = DateTime.UtcNow,
+                    OrderStatus = OrderStatus.Being_Packed,
+                    WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49"),
+                    BillToClientId = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
+                    OrderItems = new List<OrderItem>
+                    {
+                        new OrderItem(newInstance: true)
+                        {
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 17
+                        }                        
                     }
                 }
             };

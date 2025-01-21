@@ -426,6 +426,22 @@ namespace api.IntegrationTests
                             Amount = 100
                         }
                     }
+                },
+                new Transfer(newInstance:true) // to be deleted
+                {
+                    Id = Guid.Parse("4e889392-bd86-4305-a31f-db5d8d0ff17a"),
+                    TransferFromId = Guid.Parse("91629396-1d08-4f77-9049-c49216870112"),
+                    TransferToId = Guid.Parse("e6786fad-435b-460f-b6dd-11dd32b3b6a6"),
+                    TransferStatus = TransferStatus.Pending,
+                    Reference = "TST-024872",
+                    TransferItems = new List<TransferItem>()
+                    {
+                        new TransferItem
+                        {
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 56
+                        }
+                    }
                 }
             };
         }

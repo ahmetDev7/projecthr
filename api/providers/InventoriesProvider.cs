@@ -46,7 +46,7 @@ public class InventoriesProvider : BaseProvider<Inventory>
             {
                 FillInventoryLocations(req.Locations, newInventory.Id);
             }
-            
+
             newInventory.TotalOnHand = CalculateTotalOnHand(newInventory.Id);
             SaveToDBOrFail();
 

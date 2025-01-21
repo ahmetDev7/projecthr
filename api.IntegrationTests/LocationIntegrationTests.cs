@@ -57,7 +57,7 @@ namespace api.IntegrationTests
             });
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
-        
+
         // update
         [Fact]
         public async Task UpdateLocation_UpdateLocation()

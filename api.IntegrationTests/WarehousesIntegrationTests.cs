@@ -50,7 +50,7 @@ namespace api.IntegrationTests
             var result = await response.Content.ReadFromJsonAsync<List<LocationResponse>>();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            result.Should().HaveCount(3);
+            result.Should().HaveCount(4);
         }
 
         [Fact]

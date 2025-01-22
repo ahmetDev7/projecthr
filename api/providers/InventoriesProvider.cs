@@ -42,7 +42,11 @@ public class InventoriesProvider : BaseProvider<Inventory>
         try
         {
             _db.Inventories.Add(newInventory);
-            FillInventoryLocations(req.Locations, newInventory.Id);
+            if (req.Locations != null)
+            {
+                FillInventoryLocations(req.Locations, newInventory.Id);
+            }
+
             newInventory.TotalOnHand = CalculateTotalOnHand(newInventory.Id);
             SaveToDBOrFail();
 

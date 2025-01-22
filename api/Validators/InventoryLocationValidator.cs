@@ -12,7 +12,7 @@ public class InventoryRequestValidator : AbstractValidator<InventoryRequest>
                    context.AddFailure("locations must have unique location IDs. Duplicate location IDs are not allowed.");
                }
 
-               foreach (InventoryLocationRR? row in inventoryLocations)
+               foreach (InventoryLocationRR? row in inventoryLocations ?? [])
                {
                    if (db.Locations.Any(l => l.Id == row.LocationId) == false)
                    {

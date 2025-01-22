@@ -116,7 +116,6 @@ namespace api.IntegrationTests
             result.Should().NotBeNull();
         }
 
-
         // Delete
         [Fact]
         public async Task DeleteTransfer_DeleteExistingTransfer_CheckIfTransfer()
@@ -128,6 +127,13 @@ namespace api.IntegrationTests
 
             var getResponse = await _httpClient.GetAsync(url);
             getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task GetSingleTransfer_ReturnsNotFoundWithTransfer()
+        {
+            var response = await _httpClient.GetAsync(_baseUrl + "/758a3484-cedf-426f-b22c-f0aeed23bc37");
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
 }

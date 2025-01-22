@@ -116,5 +116,12 @@ namespace api.IntegrationTests
             var getResponse = await _httpClient.GetAsync(url);
             getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
+
+        [Fact]
+        public async Task GetSingleOrder_ReturnsNotFoundWithOrder()
+        {
+            var response = await _httpClient.GetAsync(_baseUrl + "/758a3484-cedf-426f-b22c-f0aeed23bc37");
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
     }
 }

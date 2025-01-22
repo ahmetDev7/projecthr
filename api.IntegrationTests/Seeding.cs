@@ -22,10 +22,10 @@ namespace api.IntegrationTests
             db.Suppliers.AddRange(GetSuppliers());
             db.Docks.AddRange(GetDocks());
             db.Clients.AddRange(GetClients());
-            db.Orders.AddRange(GetOrders());
-            db.Shipments.AddRange(GetShipments());
             db.Transfers.AddRange(GetTransfers());
             db.Inventories.AddRange(GetInventories());
+            db.Shipments.AddRange(GetShipments());
+            db.Orders.AddRange(GetOrders());
             db.SaveChanges();
         }
 
@@ -78,6 +78,21 @@ namespace api.IntegrationTests
                     ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"),
                     ItemLineId = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43")
                 },
+                    new Item(newInstance:true)
+                {
+                    Id = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e651"),
+                    Code = "222",
+                    Description = "222",
+                    ShortDescription = "222",
+                    UpcCode = "222",
+                    ModelNumber = "222",
+                    CommodityCode = "222",
+                    UnitPurchaseQuantity = 20,
+                    UnitOrderQuantity = 20,
+                    PackOrderQuantity = 20,
+                    SupplierReferenceCode = "AB202424",
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                },
                 new Item(newInstance:true)
                 {
                     Id = Guid.Parse("ab868b64-2a27-451a-be78-105e824547be"),
@@ -92,6 +107,43 @@ namespace api.IntegrationTests
                     ItemTypeId = Guid.Parse("276b1f8f-f695-46f4-9db0-78ec3f358210"),
                     ItemGroupId = Guid.Parse("4604084f-a55f-484f-8707-feae90c72fcd"),
                     ItemLineId = Guid.Parse("dac7430d-c2c9-48f3-ad74-f443649c0c43")
+                }
+                ,
+                new Item(newInstance:true)
+                {
+                    Id = Guid.Parse("a0def768-b4b2-484d-80f4-3268719ccc3d"),
+                    Code = "3213244",
+                    UpcCode = "3213244",
+                    ModelNumber = "3213244",
+                    UnitPurchaseQuantity = 2,
+                    UnitOrderQuantity = 2,
+                    PackOrderQuantity = 2,
+                    SupplierReferenceCode = "02BA",
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                },
+                new Item(newInstance:true)
+                {
+                    Id = Guid.Parse("a0def768-b4b2-484d-80f4-3268719ccc4d"), // for update inventory
+                    Code = "323",
+                    UpcCode = "323",
+                    ModelNumber = "323",
+                    UnitPurchaseQuantity = 323,
+                    UnitOrderQuantity = 2323,
+                    PackOrderQuantity = 323,
+                    SupplierReferenceCode = "02BA",
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
+                },
+                new Item(newInstance:true)
+                {
+                    Id = Guid.Parse("a0def768-b4b2-484d-80f4-3268719ccc5d"), // for delete inventory
+                    Code = "89789",
+                    UpcCode = "89789",
+                    ModelNumber = "89789",
+                    UnitPurchaseQuantity = 22,
+                    UnitOrderQuantity = 82,
+                    PackOrderQuantity = 29,
+                    SupplierReferenceCode = "02342BA",
+                    SupplierId = Guid.Parse("87155264-b98e-4d7a-bb9a-fd1c8eb070b8"),
                 }
             };
 
@@ -121,6 +173,14 @@ namespace api.IntegrationTests
                     Row = "2",
                     Rack = "3",
                     Shelf = "5",
+                    WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49")
+                },
+                new Location(newInstance: true)
+                {
+                    Id = Guid.Parse("68b1efa8-8cbe-4dae-867f-40384954c5cd"),
+                    Row = "12",
+                    Rack = "13",
+                    Shelf = "25",
                     WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49")
                 }
             };
@@ -152,6 +212,18 @@ namespace api.IntegrationTests
                     City = "Amsterdam",
                     Province = "Noord-Holland",
                     CountryCode = "NL"
+                },
+                new Address(newInstance: true)
+                {
+                    Id = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61088"),
+                    Street = "Street 3",
+                    HouseNumber = "3",
+                    HouseNumberExtension = "B",
+                    HouseNumberExtensionExtra = "C",
+                    ZipCode = "4567AB",
+                    City = "Amsterdam",
+                    Province = "Noord-Holland",
+                    CountryCode = "NL"
                 }
             };
         }
@@ -165,6 +237,20 @@ namespace api.IntegrationTests
                     Name = "Alperen",
                     Phone = "0644089743",
                     Email = "Dev@Gmail.com"
+                },
+                new Contact(newInstance:true)
+                {
+                    Id = Guid.Parse("77366127-2bb6-4656-ac24-760a27623a08"),
+                    Name = "Jan",
+                    Phone = "06549898814",
+                    Email = "jan@gmail.com"
+                },
+                new Contact(newInstance:true) // NOTE: To be deleted
+                {
+                    Id = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a10"),
+                    Name = "Test",
+                    Phone = "0644089743",
+                    Email = "Test@Gmail.com"
                 }
             };
         }
@@ -185,6 +271,14 @@ namespace api.IntegrationTests
                     Id = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
                     Code = "321",
                     Name = "Neevletsma",
+                    AddressId = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f207e")
+                }
+                ,
+                new Warehouse(newInstance: true) // to be deleted
+                {
+                    Id = Guid.Parse("832a3030-4297-4e97-ba5e-c563241ec982"),
+                    Code = "82346",
+                    Name = "Dutch Korps",
                     AddressId = Guid.Parse("cefc9e60-7d37-41f5-b3c8-3144894f207e")
                 }
             };
@@ -209,6 +303,15 @@ namespace api.IntegrationTests
                     Id = Guid.Parse("1c989e40-9b2e-4cd7-bff2-abf42d977e27"),
                     Code = "4321",
                     Name = "Ottor",
+                    ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
+                    AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099")
+
+                },
+                new Supplier(newInstance:true)
+                {
+                    Id = Guid.Parse("1c989e40-9b2e-4cd7-bff2-abf42d977e88"),
+                    Code = "37462",
+                    Name = "Rick Lowman",
                     ContactId = Guid.Parse("88366127-2bb6-4656-ac24-760a27623a07"),
                     AddressId = Guid.Parse("2ff2c789-726b-4dee-b026-622b48a61099")
 
@@ -268,7 +371,7 @@ namespace api.IntegrationTests
                     OrderDate = DateTime.UtcNow,
                     RequestDate = DateTime.UtcNow,
                     OrderStatus = OrderStatus.Pending,
-                    WarehouseId = Guid.Parse("8798e409-e0b5-4575-a95d-2d8136d595ec"),
+                    WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49"),
                     BillToClientId = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
                     OrderItems = new List<OrderItem>
                     {
@@ -277,12 +380,41 @@ namespace api.IntegrationTests
                             Id = Guid.Parse("c92d1c2e-b81b-476d-8f11-76818140f7bc"),
                             ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
                             Amount = 2
-                        },
+                        }
+                    }
+                },
+                new Order(newInstance:true)
+                {
+                    Id = Guid.Parse("9eb03425-c377-443b-bf5a-3010de9f4d7d"), // to update
+                    OrderDate = DateTime.UtcNow,
+                    RequestDate = DateTime.UtcNow,
+                    OrderStatus = OrderStatus.Being_Packed,
+                    WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49"),
+                    BillToClientId = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
+                    OrderItems = new List<OrderItem>
+                    {
                         new OrderItem(newInstance: true)
                         {
-                            Id = Guid.Parse("f0b34d6a-8f11-48a5-b0ad-20b63b2cd19a"),
-                            ItemId = Guid.Parse("ab868b64-2a27-451a-be78-105e824547be"),
-                            Amount = 4
+                            Id = Guid.Parse("7b2064ae-9a05-4434-aaff-e941d08d4f9c"),
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 33
+                        }
+                    }
+                },
+                new Order(newInstance:true)
+                {
+                    Id = Guid.Parse("797146d4-d13c-4c00-b89d-fb04980f728d"), // to delete
+                    OrderDate = DateTime.UtcNow,
+                    RequestDate = DateTime.UtcNow,
+                    OrderStatus = OrderStatus.Being_Packed,
+                    WarehouseId = Guid.Parse("78b5c277-8784-4eb6-ac7d-a1f07dab6e49"),
+                    BillToClientId = Guid.Parse("5adfa1e2-f6ee-4ce2-a1ea-95e8a990a4f3"),
+                    OrderItems = new List<OrderItem>
+                    {
+                        new OrderItem(newInstance: true)
+                        {
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 17
                         }
                     }
                 }
@@ -294,12 +426,41 @@ namespace api.IntegrationTests
             {
                 new Shipment(newInstance:true)
                 {
-                    Id = Guid.Parse("9f0f1aaa-7cfb-48ed-bcfc-7f33c62ecf74"),
+                    Id = Guid.Parse("9f0f1aaa-7cfb-48ed-bcfc-7f33c62ecf74"), // for linking with an order
                     ShipmentType = ShipmentType.O,
                     CarrierCode = "010101",
                     ServiceCode = "304402",
                     PaymentType = PaymentType.Manual,
-                    TransferMode = TransferMode.Sea
+                    TransferMode = TransferMode.Sea,
+                    ShipmentStatus = ShipmentStatus.Plan,
+                    OrderDate = new DateTime().ToUniversalTime(),
+                    RequestDate = new DateTime().ToUniversalTime(),
+                    ShipmentItems = new List<ShipmentItem>(){
+                        new ShipmentItem() {
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 21
+                        }
+                    }
+                },
+                new Shipment(newInstance:true)
+                {
+                    Id = Guid.Parse("67833cb8-9d20-4c13-922b-26c354a97a9f"), // to status deliverd
+                    ShipmentType = ShipmentType.I,
+                    CarrierCode = "894357",
+                    ServiceCode = "8923478-DB",
+                    PaymentType = PaymentType.Automatic,
+                    TransferMode = TransferMode.Air,
+                    ShipmentStatus = ShipmentStatus.Plan
+                },
+                new Shipment(newInstance:true) // to delete
+                {
+                    Id = Guid.Parse("4786f6b5-b2ed-4ed9-9cff-7d5333e4925e"),
+                    ShipmentType = ShipmentType.I,
+                    CarrierCode = "894357",
+                    ServiceCode = "8923478-DB",
+                    PaymentType = PaymentType.Automatic,
+                    TransferMode = TransferMode.Ground,
+                    ShipmentStatus = ShipmentStatus.Delivered
                 }
             };
         }
@@ -321,6 +482,22 @@ namespace api.IntegrationTests
                         {
                             ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
                             Amount = 100
+                        }
+                    }
+                },
+                new Transfer(newInstance:true) // to be deleted
+                {
+                    Id = Guid.Parse("4e889392-bd86-4305-a31f-db5d8d0ff17a"),
+                    TransferFromId = Guid.Parse("91629396-1d08-4f77-9049-c49216870112"),
+                    TransferToId = Guid.Parse("e6786fad-435b-460f-b6dd-11dd32b3b6a6"),
+                    TransferStatus = TransferStatus.Pending,
+                    Reference = "TST-024872",
+                    TransferItems = new List<TransferItem>()
+                    {
+                        new TransferItem
+                        {
+                            ItemId = Guid.Parse("629b77d6-0256-4d35-a47a-53369042e645"),
+                            Amount = 56
                         }
                     }
                 }
@@ -345,6 +522,13 @@ namespace api.IntegrationTests
                             OnHandAmount = 500
                         }
                     }
+                },
+                new Inventory(newInstance:true)
+                {
+                    Id = Guid.Parse("722eec5c-9de0-4993-8aea-3b473ec30d79"),
+                    Description = "INVENTORY ITEM INTEGRATION TEST DESCRIPTION 002",
+                    ItemReference = "INVENTORY ITEM INTEGRATION TEST REFERENCE 002",
+                    ItemId = Guid.Parse("a0def768-b4b2-484d-80f4-3268719ccc5d")
                 }
             };
         }

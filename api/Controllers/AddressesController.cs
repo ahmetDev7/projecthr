@@ -89,8 +89,7 @@ public class AddressesController : ControllerBase
     public IActionResult ShowSingle(Guid id)
     {
         Address? foundAddress = _addressProvider.GetById(id);
-
-        if (foundAddress == null) throw new ApiFlowException($"Address not found for id '{id}'");
+        if (foundAddress == null) throw new ApiFlowException($"Address not found for id '{id}'", StatusCodes.Status404NotFound);
 
         return Ok(new
         {
@@ -115,8 +114,7 @@ public class AddressesController : ControllerBase
     public IActionResult Delete(Guid id)
     {
         Address? deletedAddress = _addressProvider.Delete(id);
-
-        if (deletedAddress == null) throw new ApiFlowException($"Address not found for id '{id}'");
+        if (deletedAddress == null) throw new ApiFlowException($"Address not found for id '{id}'", StatusCodes.Status404NotFound);
 
         return Ok(new
         {

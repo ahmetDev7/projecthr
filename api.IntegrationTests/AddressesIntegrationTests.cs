@@ -96,5 +96,11 @@ namespace api.IntegrationTests
             getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
+        [Fact]
+        public async Task GetSingleAddress_ReturnsNotFoundWithAddress()
+        {
+            var response = await _httpClient.GetAsync(_baseUrl + "/5c3bbdd4-419c-4605-8303-197e4596b25a");
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
     }
 }

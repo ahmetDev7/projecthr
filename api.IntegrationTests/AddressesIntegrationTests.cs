@@ -95,7 +95,7 @@ namespace api.IntegrationTests
             var getResponse = await _httpClient.GetAsync(url);
             getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
-        
+
         [Fact]
         public async Task GetSingleAddress_ReturnsNotFoundWithAddress()
         {

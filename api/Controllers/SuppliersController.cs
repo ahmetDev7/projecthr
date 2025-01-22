@@ -41,7 +41,8 @@ public class SuppliersController : ControllerBase
             ItemTypeId = item.ItemTypeId,
             SupplierId = item.SupplierId,
             CreatedAt = item.CreatedAt,
-            UpdatedAt = item.UpdatedAt
+            UpdatedAt = item.UpdatedAt,
+            CreatedBy = item.CreatedBy
         }).ToList();
 
         return Ok(itemsSupplier);
